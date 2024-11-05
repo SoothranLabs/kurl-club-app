@@ -1,0 +1,57 @@
+echo '🔄 Pre-commit checks: formatting, linting, type-checking, building the project, commit message, and branch name.'
+
+# Check Prettier standards
+npm run check-format ||
+(
+    echo '❌ Code formatting failed. Please run "npm run format" to align with Prettier standards. Add changes and commit again.'
+    false
+)
+
+# Check ESLint Standards
+npm run check-lint ||
+(
+    echo '❌ Linting failed. Review the errors above and update code according to ESLint standards. Add changes and commit again.'
+    false
+)
+
+# Check tsconfig standards
+npm run check-types ||
+(
+    echo '❌ Type checking failed. Please resolve the type issues listed above before committing.'
+    false
+)
+
+# If everything passes... Now we can build
+echo '🔍 Code checks passed. Initiating build process...'
+
+npm run build ||
+(
+    echo '❌ Build failed. Review the errors above and resolve them before committing.'
+    false
+)
+
+# Check commit message format
+echo '🔍 Validating commit message...'
+COMMIT_MSG_FILE=$1
+
+npx commitlint --edit "$COMMIT_MSG_FILE" ||
+(
+    echo '❌ Commit message does not follow the conventional format. Please adhere to the commit message guidelines.'
+    false
+)
+
+# Check branch name format
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+BRANCH_PATTERN="^(feature|bugfix|docs|chore)/\d+-[a-z-]+$"
+
+echo "🔍 Checking branch name: $BRANCH_NAME"
+
+if ! echo "$BRANCH_NAME" | grep -Eq "$BRANCH_PATTERN"; then
+    echo "❌ Invalid branch name: $BRANCH_NAME"
+    echo "Branch names must follow the pattern: <type>/<issue-number>-<short-description>"
+    echo "Example: feature/456-user-profile-page"
+    exit 1
+fi
+
+# If everything passes... Now we can commit
+echo '✅ All checks passed. Proceeding with commit.'
