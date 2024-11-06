@@ -1,7 +1,7 @@
-import { useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
-import { createClient } from "@/services/supabase/client";
-import { Button } from "../ui/button";
+import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
+import { createClient } from '@/services/supabase/client';
+import { Button } from '../ui/button';
 
 const SignOutButton = () => {
   const queryClient = useQueryClient();

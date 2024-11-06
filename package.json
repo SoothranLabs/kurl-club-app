@@ -8,9 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "check-format": "prettier --check .",
+    "format": "prettier --write .",
     "check-lint": "eslint . --ext ts --ext tsx --ext js",
     "check-types": "tsc --pretty --noEmit",
-    "check-commit": "npx commitlint --from=HEAD~1 && git symbolic-ref --short HEAD | grep -E '^(feature|bugfix|docs|chore)/\\d+-[a-z-]+'",
+    "check-all": "npm run format && npm run check-lint && npm run check-types",
     "prepare": "husky"
   },
   "dependencies": {
@@ -32,8 +33,6 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.5.0",
-    "@commitlint/config-conventional": "^19.5.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
