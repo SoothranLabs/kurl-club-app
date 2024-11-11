@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-figtree), sans-serif;
+  background-color: var(--background);
+  color: var(--primary-text);
 }
 
 @layer base {
@@ -35,38 +37,55 @@ body {
     --radius: 0.5rem;
   }
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    /* background */
+    --background: #11141c;
+    /* text */
+    --text-primary: #ffffff;
+    --text-secondary: #e7e8e8;
+    --text-link: #90a8ed;
+    /* button */
+    --btn-primary-bg: #d3f702;
+    --btn-primary-text: #11141c;
+    /* input */
+    --input-label-color: #b5b6b9;
+    --input-bg: #24272e;
+    /* chips */
+    --chip-primary-bg: #f1fdb1;
+    --chip-success-border: #22a311;
+    --chip-success-bg: #22a3111a;
+    --chip-danger-border: #d72f4d;
+    --chip-danger-bg: #d72f4d1a;
+    --chip-warning-border: #bf7a28;
+    --chip-warning-bg: #d2862c1a;
+    /* tabs */
+    --tab-primary-text: #9c9da1;
+    --tab-primary-text-active: #f1fdb1;
+    --tab-secondary-bg-active: #1c1f24;
+    /* breadcrumb */
+    --breadcrumb-text: #929397;
+    /* card */
+    --card-primary-bg: #282b32;
+    --card-secondary-bg: #414349;
+    /* table */
+    --table-border-color: #606267;
+    --table-box-shadow: 6px -8px 14px 0px #00000024;
+    /* border width*/
+    --border-width-100: 1px;
+    --border-width-200: 2px;
+    --border-width-300: 3px;
+    /* border radius */
+    --border-small: 6px;
+    --border-normal: 8px;
+
+    /* colors */
+    /* gray */
+    --gray-500: #747578;
+    /* green */
+    --green-700: #96af01;
+    --green-450: #ebfb8b;
+    --green-400: #f7ff93;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
 }
