@@ -18,5 +18,6 @@
     "fs",
     "http",
     "net"
-  ]
+  ],
+  "cSpell.words": ["figtree"]
 }
