@@ -87,5 +87,27 @@ body {
   }
 }
 
-@layer base {
+@layer utilities {
+  /* =====  SHADCN OVERRIDES */
+  .shad-input {
+    @apply h-11 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
+  }
+
+  /* =====  REACT PHONE NUMBER INPUT OVERRIDES */
+  .input-phone {
+    @apply mt-2 h-11 rounded-md px-3 text-sm border !important;
+  }
+}
+
+/* =====  REACT PHONE NUMBER INPUT OVERRIDES */
+.PhoneInputInput {
+  outline: none;
+  margin-left: 4px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.PhoneInputInput::placeholder {
+  color: #1a1d21;
 }

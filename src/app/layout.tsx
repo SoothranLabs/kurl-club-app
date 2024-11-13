@@ -50,7 +50,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${figtree.className} antialiased`}>
+      <body className={`${figtree.className} bg-background-dark antialiased`}>
         <QueryProvider>
           <ThemeProvider
             attribute="class"
