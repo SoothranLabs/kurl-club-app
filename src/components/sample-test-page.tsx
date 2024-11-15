@@ -9,8 +9,8 @@ import { SelectItem } from '@/components/ui/select';
 
 import { PatientFormValidation } from '@/lib/validation';
 
-import CustomFormField, { FormFieldType } from '@/components/custom-form-field';
 import FileUploader from './file-uploader';
+import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -41,50 +41,35 @@ const SampleTestPage = () => {
       <form className="space-y-12 flex-1">
         <section className="space-y-6">
           {/* INPUT */}
-          <CustomFormField
-            fieldType={FormFieldType.INPUT}
+          <KFormField
+            fieldType={KFormFieldType.INPUT}
             control={form.control}
             name="name"
             label="Full Name"
             placeholder="John Doe"
-            iconSrc="/vercel.svg"
-            iconAlt="user"
           />
 
-          {/* EMAIL & PHONE */}
-          <div className="flex flex-col gap-6 xl:flex-row">
-            <CustomFormField
-              fieldType={FormFieldType.INPUT}
-              control={form.control}
-              name="email"
-              label="Email"
-              placeholder="johndoe@email.com"
-              iconSrc="/assets/icons/email.svg"
-              iconAlt="email"
-            />
-
-            <CustomFormField
-              fieldType={FormFieldType.PHONE_INPUT}
-              control={form.control}
-              name="phone"
-              label="Phone number"
-              placeholder="(555) 123-4567"
-            />
-          </div>
-        </section>
-        {/* TEXT AREA */}
-        <div className="flex flex-col gap-6 xl:flex-row">
-          <CustomFormField
-            fieldType={FormFieldType.TEXTAREA}
+          {/* TEXT AREA */}
+          <KFormField
+            fieldType={KFormFieldType.TEXTAREA}
             control={form.control}
             name="familyMedicalHistory"
             label=" Family medical history (if relevant)"
             placeholder="Mother had brain cancer, Father has hypertension"
           />
 
+          {/* PHONE INPUT */}
+          <KFormField
+            fieldType={KFormFieldType.PHONE_INPUT}
+            control={form.control}
+            name="phone"
+            label="Phone number"
+            placeholder="(555) 123-4567"
+          />
+
           {/* SELECT */}
-          <CustomFormField
-            fieldType={FormFieldType.SELECT}
+          <KFormField
+            fieldType={KFormFieldType.SELECT}
             control={form.control}
             name="identificationType"
             label="Identification Type"
@@ -95,12 +80,20 @@ const SampleTestPage = () => {
                 {type}
               </SelectItem>
             ))}
-          </CustomFormField>
-        </div>
+          </KFormField>
+
+          {/* DATE_PICKER */}
+          <KFormField
+            fieldType={KFormFieldType.DATE_PICKER}
+            control={form.control}
+            name="birthDate"
+            label="Date of birth"
+          />
+        </section>
 
         <section className="space-y-6">
-          <CustomFormField
-            fieldType={FormFieldType.SKELETON}
+          <KFormField
+            fieldType={KFormFieldType.SKELETON}
             control={form.control}
             name="identificationDocument"
             label="Scanned Copy of Identification Document"
@@ -111,8 +104,8 @@ const SampleTestPage = () => {
             )}
           />
 
-          <CustomFormField
-            fieldType={FormFieldType.CHECKBOX}
+          <KFormField
+            fieldType={KFormFieldType.CHECKBOX}
             control={form.control}
             name="privacyConsent"
             label="I acknowledge that I have reviewed and agree to the

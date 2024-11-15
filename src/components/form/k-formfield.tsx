@@ -7,7 +7,6 @@ import {
   FieldPath,
   ControllerRenderProps,
 } from 'react-hook-form';
-import Image from 'next/image';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 
@@ -18,17 +17,17 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
+import { KFieldWrapper } from '@/components/form/k-field-wrapper';
+import { KDatePicker } from '@/components/form/k-datepicker';
 
-export enum FormFieldType {
+export enum KFormFieldType {
   INPUT = 'input',
   TEXTAREA = 'textarea',
   PHONE_INPUT = 'phoneInput',
@@ -40,12 +39,10 @@ export enum FormFieldType {
 
 interface CustomProps<T extends FieldValues> {
   control: Control<T>;
-  fieldType: FormFieldType;
+  fieldType: KFormFieldType;
   name: FieldPath<T>;
   label?: string;
   placeholder?: string;
-  iconSrc?: string;
-  iconAlt?: string;
   disabled?: boolean;
   dateFormat?: string;
   showTimeSelect?: boolean;
@@ -62,42 +59,29 @@ const RenderField = <T extends FieldValues>({
   field: ControllerRenderProps<T, FieldPath<T>>;
   props: CustomProps<T>;
 }) => {
-  const {
-    fieldType,
-    iconSrc,
-    iconAlt,
-    placeholder,
-    renderSkeleton,
-    children,
-    name,
-    label,
-  } = props;
+  const { fieldType, placeholder, renderSkeleton, children, name, label } =
+    props;
 
   switch (fieldType) {
-    case FormFieldType.INPUT:
+    case KFormFieldType.INPUT:
       return (
-        <div className="flex rounded-md border border-dark-500">
-          {iconSrc && (
-            <Image
-              src={iconSrc}
-              height={24}
-              width={24}
-              alt={iconAlt || 'icon'}
-              className="ml-2"
-            />
-            // <span className="ml-2">{iconSrc}</span>
-          )}
-          <FormControl>
-            <Input
-              placeholder={placeholder}
-              {...field}
-              className="shad-input border-0"
-            />
-          </FormControl>
-        </div>
+        <FormControl>
+          <KFieldWrapper label={label} id={name}>
+            <input type="text" {...field} />
+          </KFieldWrapper>
+        </FormControl>
       );
 
-    case FormFieldType.PHONE_INPUT:
+    case KFormFieldType.TEXTAREA:
+      return (
+        <FormControl>
+          <KFieldWrapper label={label} id={name}>
+            <textarea {...field} disabled={props.disabled} />
+          </KFieldWrapper>
+        </FormControl>
+      );
+
+    case KFormFieldType.PHONE_INPUT:
       return (
         <FormControl>
           <PhoneInput
@@ -107,26 +91,12 @@ const RenderField = <T extends FieldValues>({
             withCountryCallingCode
             value={field.value as E164Number | undefined}
             onChange={field.onChange}
-            className="input-phone"
+            className="peer input-phone"
           />
         </FormControl>
       );
 
-    case FormFieldType.DATE_PICKER:
-      return (
-        <div className="flex rounded-md border border-dark-500 bg-dark-400">
-          <Image
-            src="/assets/icons/calendar.svg"
-            height={24}
-            width={24}
-            alt="calendar"
-            className="ml-2"
-          />
-          <FormControl>{/* Add date picker component here */}</FormControl>
-        </div>
-      );
-
-    case FormFieldType.SELECT:
+    case KFormFieldType.SELECT:
       return (
         <FormControl>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -142,19 +112,20 @@ const RenderField = <T extends FieldValues>({
         </FormControl>
       );
 
-    case FormFieldType.TEXTAREA:
+    case KFormFieldType.DATE_PICKER:
       return (
         <FormControl>
-          <Textarea
-            placeholder={placeholder}
-            {...field}
-            className="shad-textArea"
-            disabled={props.disabled}
+          <KDatePicker
+            numberOfMonths={2}
+            label={'Pick a date range'}
+            showPresets
+            onChange={(date) => field.onChange(date)}
+            value={field.value}
           />
         </FormControl>
       );
 
-    case FormFieldType.CHECKBOX:
+    case KFormFieldType.CHECKBOX:
       return (
         <FormControl>
           <div className="flex items-center gap-4">
@@ -170,7 +141,7 @@ const RenderField = <T extends FieldValues>({
         </FormControl>
       );
 
-    case FormFieldType.SKELETON:
+    case KFormFieldType.SKELETON:
       return renderSkeleton ? renderSkeleton(field) : null;
 
     default:
@@ -204,7 +175,7 @@ const RenderField = <T extends FieldValues>({
  * @param {React.ReactNode} [children] - Optional. Elements rendered inside the select field dropdown.
  * @param {(field: ControllerRenderProps<T, FieldPath<T>>) => React.ReactNode} [renderSkeleton] - Optional. Render function for skeleton placeholder (only for SKELETON type).
  */
-const CustomFormField = <T extends FieldValues>(props: CustomProps<T>) => {
+export function KFormField<T extends FieldValues>(props: CustomProps<T>) {
   const { control, fieldType, name, label } = props;
 
   return (
@@ -213,7 +184,7 @@ const CustomFormField = <T extends FieldValues>(props: CustomProps<T>) => {
       name={name}
       render={({ field }) => (
         <FormItem className="flex-1">
-          {fieldType !== FormFieldType.CHECKBOX && label && (
+          {fieldType === KFormFieldType.CHECKBOX && label && (
             <FormLabel>{label}</FormLabel>
           )}
 
@@ -223,6 +194,4 @@ const CustomFormField = <T extends FieldValues>(props: CustomProps<T>) => {
       )}
     />
   );
-};
-
-export default CustomFormField;
+}
