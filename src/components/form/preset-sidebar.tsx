@@ -26,13 +26,13 @@ const PresetSidebar: React.FC<PresetSidebarProps> = ({
   );
 
   return (
-    <div className="flex flex-col bg-secondary-blue-800 border-r border-primary-blue-400 rounded-tl-md rounded-bl-md">
+    <div className="flex flex-col bg-secondary-blue-800 border-r border-primary-blue-400 rounded-tl-md rounded-bl-md min-w-[174px] max-w-[174px]">
       {presets.map((preset) => (
         <button
           key={preset}
           onClick={() => onSelectPreset(preset)}
           className={cn(
-            'px-3.5 py-3 text-[13px] text-left text-white hover:text-primary-green-500 hover:bg-secondary-blue-600 transition-colors duration-300',
+            'px-4 py-3 text-[13px] text-left text-white hover:text-primary-green-500 hover:bg-secondary-blue-600 k-transition',
             activePreset === preset
               ? 'bg-secondary-blue-600 text-primary-green-500'
               : 'bg-transparent'

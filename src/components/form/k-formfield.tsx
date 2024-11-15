@@ -45,7 +45,9 @@ interface CustomProps<T extends FieldValues> {
   placeholder?: string;
   disabled?: boolean;
   dateFormat?: string;
-  showTimeSelect?: boolean;
+  numberOfMonths?: number;
+  dateLabel?: string;
+  showPresets?: boolean;
   children?: React.ReactNode;
   renderSkeleton?: (
     field: ControllerRenderProps<T, FieldPath<T>>
@@ -59,8 +61,17 @@ const RenderField = <T extends FieldValues>({
   field: ControllerRenderProps<T, FieldPath<T>>;
   props: CustomProps<T>;
 }) => {
-  const { fieldType, placeholder, renderSkeleton, children, name, label } =
-    props;
+  const {
+    fieldType,
+    placeholder,
+    renderSkeleton,
+    children,
+    name,
+    label,
+    numberOfMonths,
+    dateLabel,
+    showPresets,
+  } = props;
 
   switch (fieldType) {
     case KFormFieldType.INPUT:
@@ -116,9 +127,9 @@ const RenderField = <T extends FieldValues>({
       return (
         <FormControl>
           <KDatePicker
-            numberOfMonths={2}
-            label={'Pick a date range'}
-            showPresets
+            numberOfMonths={numberOfMonths}
+            label={dateLabel}
+            showPresets={showPresets}
             onChange={(date) => field.onChange(date)}
             value={field.value}
           />
@@ -128,7 +139,7 @@ const RenderField = <T extends FieldValues>({
     case KFormFieldType.CHECKBOX:
       return (
         <FormControl>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <Checkbox
               id={name}
               checked={field.value}
@@ -184,7 +195,7 @@ export function KFormField<T extends FieldValues>(props: CustomProps<T>) {
       name={name}
       render={({ field }) => (
         <FormItem className="flex-1">
-          {fieldType === KFormFieldType.CHECKBOX && label && (
+          {fieldType === KFormFieldType.SKELETON && label && (
             <FormLabel>{label}</FormLabel>
           )}
 

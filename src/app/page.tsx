@@ -20,12 +20,13 @@ export default function Home() {
         <Button>KurlClub Button</Button>
         <Button variant="secondary">KurlClub Secoindary</Button>
         <Button>
-          <KCalenderMonth /> KurlClub with icon
+          <KCalenderMonth className="bg-black" /> KurlClub with icon
         </Button>
         <Button variant="outline" size="icon">
           <KCalenderMonth />
         </Button>
         <Button className="rounded-2xl">With style</Button>
+        <Button className="w-fit">With w-fit</Button>
       </div>
       <SignOutButton />
       <ThemeModeToggle />

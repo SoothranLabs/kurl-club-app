@@ -16,9 +16,9 @@ import {
 import PresetSidebar from './preset-sidebar';
 
 interface KDatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
-  numberOfMonths: number;
+  numberOfMonths?: number;
   showPresets?: boolean;
-  label: string;
+  label?: string;
   value?: DateRange | undefined;
   onDateChange?: (range: DateRange | undefined) => void;
 }
@@ -68,7 +68,15 @@ export function KDatePicker({
 
   return (
     <div className={cn('grid gap-2', className)}>
-      <Popover open={isPopoverOpen} onOpenChange={() => setIsPopoverOpen(true)}>
+      <Popover
+        open={isPopoverOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            handleCancel();
+          }
+          setIsPopoverOpen(open);
+        }}
+      >
         <PopoverTrigger asChild>
           <Button
             id="date"
@@ -96,7 +104,7 @@ export function KDatePicker({
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="flex w-auto overflow-hidden border border-white/60 bg-secondary-blue-800 p-0"
+          className="flex w-auto overflow-hidden rounded-xl border border-primary-blue-400 bg-secondary-blue-800 p-0"
           align="start"
         >
           {/* Sidebar with Preset Options */}
@@ -118,6 +126,7 @@ export function KDatePicker({
                 onSelect={setTempDate}
                 numberOfMonths={numberOfMonths}
                 classNames={{ day_selected: 'selected-date' }}
+                className="p-5"
                 aria-label="Date range calendar"
               />
             </div>

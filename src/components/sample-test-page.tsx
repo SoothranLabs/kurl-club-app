@@ -88,6 +88,9 @@ const SampleTestPage = () => {
             control={form.control}
             name="birthDate"
             label="Date of birth"
+            numberOfMonths={2}
+            dateLabel="Pick a date range"
+            showPresets
           />
         </section>
 

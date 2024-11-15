@@ -53,6 +53,7 @@ export function KFieldWrapper({
           ...sharedProps,
           ref: textareaRef,
           onInput: resizeTextarea,
+          className: `${sharedProps.className} resize-none min-h-[150px] max-h-[150px]`,
         }
       );
     }
@@ -73,7 +74,7 @@ export function KFieldWrapper({
       {label && (
         <label
           htmlFor={id}
-          className="absolute text-sm duration-300 text-primary-blue-100 transform -translate-y-3.5 scale-75 top-5 z-10 origin-[0] start-3 cursor-text
+          className="absolute text-sm duration-300 text-primary-blue-100 transform -translate-y-3.5 scale-75 top-5 z-10 origin-[0] start-4 cursor-text
                      peer-focus:text-primary-blue-100 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
                      peer-focus:scale-75 peer-focus:-translate-y-3.5 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
         >

@@ -9,6 +9,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        sm: ['13px', '1.5rem'],
+      },
+      transitionDuration: {
+        400: '400ms',
+      },
       colors: {
         primary: {
           green: {
