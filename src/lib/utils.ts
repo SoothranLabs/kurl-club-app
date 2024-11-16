@@ -51,3 +51,9 @@ export function calculateDateRange(preset: string): DateRange | undefined {
       return undefined;
   }
 }
+
+// Adds leading zero if single digit for calender
+export const formatDayWithLeadingZero = (day: Date): string => {
+  const dayNumber = day.getDate();
+  return dayNumber.toString().padStart(2, '0');
+};

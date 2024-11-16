@@ -5,7 +5,7 @@ import { addDays, format } from 'date-fns';
 import { KCalenderMonth } from '@/components/icons';
 import { DateRange } from 'react-day-picker';
 
-import { calculateDateRange, cn } from '@/lib/utils';
+import { calculateDateRange, cn, formatDayWithLeadingZero } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -115,7 +115,7 @@ export function KDatePicker({
             />
           )}
 
-          <div className="flex flex-col justify-between">
+          <div className="flex flex-col justify-between gap-[23px] p-4">
             {/* Calendar Component */}
             <div className="rounded-md text-white">
               <Calendar
@@ -126,13 +126,14 @@ export function KDatePicker({
                 onSelect={setTempDate}
                 numberOfMonths={numberOfMonths}
                 classNames={{ day_selected: 'selected-date' }}
-                className="p-5"
+                className="p-0"
                 aria-label="Date range calendar"
+                formatDay={formatDayWithLeadingZero}
               />
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end gap-2 p-4">
+            <div className="flex justify-end gap-2">
               <Button variant="secondary" onClick={handleCancel}>
                 Cancel
               </Button>

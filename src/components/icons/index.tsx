@@ -28,3 +28,68 @@ export const KCalenderMonth: React.FC<SVGProps<SVGSVGElement>> = (props) => (
     </g>
   </svg>
 );
+
+export const KChevronLeftIcon: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <mask
+      id="mask0_272_2944"
+      style={{ maskType: 'alpha' }}
+      maskUnits="userSpaceOnUse"
+      x="0"
+      y="0"
+      width="24"
+      height="24"
+    >
+      <rect width="24" height="24" fill="#D9D9D9" />
+    </mask>
+    <g mask="url(#mask0_272_2944)">
+      <path
+        d="M9 19L2 12L9 5L10.2425 6.2425L4.485 12L10.2425 17.7575L9 19Z"
+        fill="white"
+      />
+    </g>
+  </svg>
+);
+
+export const KChevronRightIcon: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <mask
+      id="mask0_272_2949"
+      style={{ maskType: 'alpha' }}
+      maskUnits="userSpaceOnUse"
+      x="0"
+      y="0"
+      width="24"
+      height="24"
+    >
+      <rect
+        x="24"
+        y="24"
+        width="24"
+        height="24"
+        transform="rotate(-180 24 24)"
+        fill="#D9D9D9"
+      />
+    </mask>
+    <g mask="url(#mask0_272_2949)">
+      <path
+        d="M15 5L22 12L15 19L13.7575 17.7575L19.515 12L13.7575 6.2425L15 5Z"
+        fill="white"
+      />
+    </g>
+  </svg>
+);
