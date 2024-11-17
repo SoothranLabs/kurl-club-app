@@ -1,32 +1,53 @@
 import * as React from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
 interface PresetSidebarProps {
+  presets: string[];
   activePreset: string | null;
   onSelectPreset: (preset: string) => void;
+  years: number[];
+  currentYear: string;
+  onYearChange: (year: string) => void;
 }
 
 const PresetSidebar: React.FC<PresetSidebarProps> = ({
+  presets,
   activePreset,
   onSelectPreset,
+  years,
+  currentYear,
+  onYearChange,
 }) => {
-  const presets = React.useMemo(
-    () => [
-      'Today',
-      'Yesterday',
-      'This Week',
-      'Last Week',
-      'Past Two Weeks',
-      'This Month',
-      'Last Month',
-      'This Year',
-      'Last Year',
-    ],
-    []
-  );
-
   return (
     <div className="flex flex-col bg-secondary-blue-800 border-r border-primary-blue-400 rounded-tl-md rounded-bl-md min-w-[174px] max-w-[174px]">
+      {/* Year Selector */}
+      <div className="p-2 border-b border-primary-blue-400">
+        <Select onValueChange={onYearChange} value={currentYear}>
+          <SelectTrigger className="bg-secondary-blue-500 text-white placeholder:text-white border-0 appearance-none focus:outline-none focus:ring-0 focus:ring-offset-0">
+            <SelectValue placeholder="Year" />
+          </SelectTrigger>
+          <SelectContent className="shad-select-content">
+            {years.map((year) => (
+              <SelectItem
+                key={year}
+                value={year.toString()}
+                className="shad-select-item"
+              >
+                {year}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Preset Buttons */}
       {presets.map((preset) => (
         <button
           key={preset}

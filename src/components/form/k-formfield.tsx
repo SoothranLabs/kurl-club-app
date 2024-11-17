@@ -130,7 +130,7 @@ const RenderField = <T extends FieldValues>({
             numberOfMonths={numberOfMonths}
             label={dateLabel}
             showPresets={showPresets}
-            onChange={(date) => field.onChange(date)}
+            onChange={field.onChange}
             value={field.value}
           />
         </FormControl>

@@ -22,6 +22,8 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      weekStartsOn={1}
+      fixedWeeks={true}
       className={cn('p-3', className)}
       classNames={{
         months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-7 sm:space-y-0',
@@ -54,7 +56,8 @@ function Calendar({
         day_range_end: 'day-range-end bg-primary-green-500 text-black',
         day_selected:
           'bg-primary-green-500 text-white hover:bg-primary-green-500 hover:text-white focus:bg-primary-green-500 focus:text-black',
-        day_today: 'text-primary-green-200 rounded-full',
+        day_today:
+          'text-primary-green-200 rounded-full border border-primary-green-500',
         day_outside:
           'day-outside text-primary-blue-300 aria-selected:bg-primary-blue-300/50 aria-selected:text-primary-blue-300',
         day_disabled: 'text-muted-foreground opacity-50',
