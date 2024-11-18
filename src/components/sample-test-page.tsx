@@ -1,16 +1,23 @@
 'use client';
 
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+
+import useUser from '@/hooks/useUser';
 
 import { Form, FormControl } from '@/components/ui/form';
-import { SelectItem } from '@/components/ui/select';
+import { SelectGroup, SelectItem, SelectLabel } from '@/components/ui/select';
+import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { Button } from '@/components/ui/button';
+
+import { KCalenderMonth } from '@/components/icons';
+import { ThemeModeToggle } from '@/components/theme-toggler';
 
 import { PatientFormValidation } from '@/lib/validation';
 
-import FileUploader from './file-uploader';
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import FileUploader from '@/components/file-uploader';
+import SignOutButton from '@/components/auth/signout-button';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -27,6 +34,8 @@ const IdentificationTypes = [
 ];
 
 const SampleTestPage = () => {
+  const { data: user, isFetching, error } = useUser();
+
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
@@ -36,87 +45,129 @@ const SampleTestPage = () => {
     },
   });
 
+  if (isFetching) return <p>Loading...</p>;
+  if (error) return <p>Error loading user data.</p>;
+
   return (
-    <Form {...form}>
-      <form className="space-y-12 flex-1">
-        <section className="space-y-6">
-          {/* INPUT */}
-          <KFormField
-            fieldType={KFormFieldType.INPUT}
-            control={form.control}
-            name="name"
-            label="Full Name"
-            placeholder="John Doe"
-          />
+    <div className="flex flex-col items-center gap-10">
+      <div className="flex items-center gap-6">
+        <Button>Welcome {user?.display_name || 'Guest'} to KurlClub</Button>
+        <SignOutButton />
+        <ThemeModeToggle />
+      </div>
+      <div className="flex gap-10">
+        <div className="flex flex-col gap-5">
+          <Button>KurlClub Button</Button>
+          <Button variant="secondary">KurlClub Secondary</Button>
+          <Button>
+            <KCalenderMonth className="text-black" /> KurlClub with icon
+          </Button>
+          <Button variant="outline" size="icon">
+            <KCalenderMonth />
+          </Button>
+          <Button className="rounded-2xl">With style</Button>
+          <Button className="w-fit">With w-fit</Button>
+        </div>
+        <Form {...form}>
+          <form className="space-y-12 flex-1">
+            <section className="space-y-6">
+              {/* INPUT */}
+              <KFormField
+                fieldType={KFormFieldType.INPUT}
+                control={form.control}
+                name="name"
+                label="Full Name"
+                placeholder="John Doe"
+              />
 
-          {/* TEXT AREA */}
-          <KFormField
-            fieldType={KFormFieldType.TEXTAREA}
-            control={form.control}
-            name="familyMedicalHistory"
-            label=" Family medical history (if relevant)"
-            placeholder="Mother had brain cancer, Father has hypertension"
-          />
+              {/* PASSWORD */}
+              <KFormField
+                fieldType={KFormFieldType.PASSWORD}
+                control={form.control}
+                name="email"
+                label="Password"
+                placeholder="Enter your password"
+              />
 
-          {/* PHONE INPUT */}
-          <KFormField
-            fieldType={KFormFieldType.PHONE_INPUT}
-            control={form.control}
-            name="phone"
-            label="Phone number"
-            placeholder="(555) 123-4567"
-          />
+              {/* TEXT AREA */}
+              <KFormField
+                fieldType={KFormFieldType.TEXTAREA}
+                control={form.control}
+                name="familyMedicalHistory"
+                label=" Family medical history (if relevant)"
+                placeholder="Mother had brain cancer, Father has hypertension"
+              />
 
-          {/* SELECT */}
-          <KFormField
-            fieldType={KFormFieldType.SELECT}
-            control={form.control}
-            name="identificationType"
-            label="Identification Type"
-            placeholder="Select identification type"
-          >
-            {IdentificationTypes.map((type, i) => (
-              <SelectItem key={type + i} value={type}>
-                {type}
-              </SelectItem>
-            ))}
-          </KFormField>
+              {/* PHONE INPUT */}
+              <KFormField
+                fieldType={KFormFieldType.PHONE_INPUT}
+                control={form.control}
+                name="phone"
+                label="Phone number"
+                placeholder="(555) 123-4567"
+              />
 
-          {/* DATE_PICKER */}
-          <KFormField
-            fieldType={KFormFieldType.DATE_PICKER}
-            control={form.control}
-            name="birthDate"
-            label="Date of birth"
-            numberOfMonths={2}
-            dateLabel="Pick a date range"
-            showPresets
-          />
-        </section>
+              {/* SELECT */}
+              <KFormField
+                fieldType={KFormFieldType.SELECT}
+                control={form.control}
+                name="identificationType"
+                label="Identification Type"
+                placeholder="Select identification type"
+              >
+                <SelectGroup>
+                  <SelectLabel className="mb-3">
+                    Select Identification Type
+                  </SelectLabel>
+                  {IdentificationTypes.map((type, i) => (
+                    <SelectItem
+                      key={type + i}
+                      value={type}
+                      className="shad-select-item"
+                    >
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </KFormField>
 
-        <section className="space-y-6">
-          <KFormField
-            fieldType={KFormFieldType.SKELETON}
-            control={form.control}
-            name="identificationDocument"
-            label="Scanned Copy of Identification Document"
-            renderSkeleton={() => (
-              <FormControl>
-                <FileUploader />
-              </FormControl>
-            )}
-          />
+              {/* DATE_PICKER */}
+              <KFormField
+                fieldType={KFormFieldType.DATE_PICKER}
+                control={form.control}
+                name="birthDate"
+                label="Date of birth"
+                numberOfMonths={2}
+                dateLabel="Pick a date range"
+                showPresets
+              />
+            </section>
 
-          <KFormField
-            fieldType={KFormFieldType.CHECKBOX}
-            control={form.control}
-            name="privacyConsent"
-            label="I acknowledge that I have reviewed and agree to the
+            <section className="space-y-6">
+              <KFormField
+                fieldType={KFormFieldType.SKELETON}
+                control={form.control}
+                name="identificationDocument"
+                label="Scanned Copy of Identification Document"
+                renderSkeleton={() => (
+                  <FormControl>
+                    <FileUploader />
+                  </FormControl>
+                )}
+              />
+
+              <KFormField
+                fieldType={KFormFieldType.CHECKBOX}
+                control={form.control}
+                name="privacyConsent"
+                label="I acknowledge that I have reviewed and agree to the
             privacy policy"
-          />
-        </section>
-      </form>
-    </Form>
+              />
+            </section>
+          </form>
+        </Form>
+      </div>
+    </div>
   );
 };
 

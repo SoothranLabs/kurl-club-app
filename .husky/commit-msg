@@ -5,7 +5,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Define the regex pattern for the commit message
-commit_regex='^(feat|fix|style|refactor|test)\((frontend|backend|auth|db|other)\)(!)?: \[#[0-9]+\] .{1,50}$|^(chore|docs): .{1,50}$'
+commit_regex='^(feat|fix|style|refactor|test)\((frontend|backend|auth|db|other)\)(!)?: \[#[0-9]+\] .{1,75}$|^(chore|docs): .{1,75}$'
 
 # Get the commit message from the file passed as an argument
 commit_message=$(cat "$1")

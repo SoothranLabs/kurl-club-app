@@ -111,7 +111,7 @@ export function KDatePicker({
             className="justify-start text-left px-3 py-2 font-semibold text-sm w-fit"
             onClick={() => setIsPopoverOpen(true)}
           >
-            <KCalenderMonth />
+            <KCalenderMonth className="text-primary-green-500" />
             {date?.from ? (
               date.to ? (
                 `${format(date.from, 'LLL dd, y')} - ${format(date.to, 'LLL dd, y')}`

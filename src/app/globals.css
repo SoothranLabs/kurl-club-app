@@ -8,6 +8,11 @@ body {
   color: var(--primary-text);
 }
 
+svg {
+  width: auto !important;
+  height: auto !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -90,7 +95,7 @@ body {
 @layer utilities {
   /* =====  SHADCN OVERRIDES */
   .shad-select-trigger {
-    @apply bg-secondary-blue-500 text-white placeholder:text-white h-14 border-0 appearance-none focus:outline-none focus:ring-0 focus:ring-offset-0 !important;
+    @apply bg-secondary-blue-500 text-white placeholder:text-white h-14 border-0 appearance-none focus:ring-0 hover:outline hover:outline-secondary-blue-400 focus:outline focus:outline-primary-green-700 transition-colors duration-300 ease-in-out !important;
   }
 
   .shad-select-content {
@@ -98,7 +103,7 @@ body {
   }
 
   .shad-select-item {
-    @apply hover:bg-secondary-blue-600 k-transition cursor-pointer data-[state=checked]:bg-secondary-blue-600 data-[state=checked]:text-primary-green-500 !important;
+    @apply hover:bg-secondary-blue-600 k-transition py-2 cursor-pointer data-[state=checked]:bg-secondary-blue-600 data-[state=checked]:text-primary-green-500 !important;
   }
 
   /* =====  REACT PHONE NUMBER INPUT OVERRIDES */
@@ -107,7 +112,7 @@ body {
   }
 
   .k-input {
-    @apply block w-full rounded-md px-4 pb-2.5 pt-6 text-sm font-semibold text-white bg-secondary-blue-500 border-0 appearance-none focus:outline-none focus:ring-0 !important;
+    @apply block w-full rounded-md px-4 pb-2.5 pt-6 text-sm font-semibold text-white bg-secondary-blue-500 border-0 appearance-none hover:outline-secondary-blue-400 hover:outline focus:outline focus:outline-primary-green-700 focus:ring-0 transition-colors duration-300 ease-in-out !important;
   }
 
   .k-transition {
@@ -124,7 +129,16 @@ body {
   outline: none;
   background: transparent;
   font-size: 14px;
+  height: fit-content;
   font-weight: 500;
+}
+
+.input-phone:hover {
+  outline: 1px solid #53555b;
+}
+
+.input-phone:focus-within {
+  outline: 1px solid #96af01;
 }
 
 /* =====  DATE_PICKER OVERRIDES */

@@ -1,29 +1,30 @@
-'use client';
-
-import React, {
-  ReactNode,
-  useEffect,
-  useRef,
-  ReactElement,
-  useCallback,
-} from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { KView, KViewOff } from '../icons';
 
 type KFieldWrapperProps = {
   label?: string;
   id: string;
-  children: ReactNode;
   className?: string;
+  type?: 'text' | 'password' | 'email' | 'textarea' | 'number';
+  value?: string;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  disabled?: boolean;
 };
 
 export function KFieldWrapper({
   label,
   id,
-  children,
   className = '',
+  type = 'text',
+  value,
+  onChange,
+  disabled,
 }: KFieldWrapperProps) {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-  // Resize function for dynamically adjusting textarea height
   const resizeTextarea = useCallback(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
@@ -32,51 +33,57 @@ export function KFieldWrapper({
   }, []);
 
   useEffect(() => {
-    // Initial resize on mount
-    resizeTextarea();
-  }, [resizeTextarea]);
+    if (type === 'textarea') resizeTextarea();
+  }, [resizeTextarea, type]);
 
-  // Function to clone the child with appropriate props and styles
-  const cloneChild = (child: ReactNode) => {
-    if (!React.isValidElement(child)) return child;
+  const commonProps = {
+    id,
+    value,
+    onChange,
+    disabled,
+    placeholder: ' ',
+    className: `peer k-input ${className}`,
+  };
 
-    const sharedProps = {
-      id,
-      placeholder: ' ',
-      className: `peer k-input ${child.props.className || ''}`,
-    };
-
-    if (child.type === 'textarea') {
-      return React.cloneElement(
-        child as ReactElement<React.HTMLProps<HTMLTextAreaElement>>,
-        {
-          ...sharedProps,
-          ref: textareaRef,
-          onInput: resizeTextarea,
-          className: `${sharedProps.className} resize-none min-h-[150px] max-h-[150px]`,
-        }
+  const renderInput = () => {
+    if (type === 'textarea') {
+      return (
+        <textarea
+          {...commonProps}
+          ref={textareaRef}
+          onInput={resizeTextarea}
+          className={`resize-none min-h-[150px] max-h-[150px] ${commonProps.className}`}
+        />
       );
     }
 
-    if (child.type === 'input') {
-      return React.cloneElement(
-        child as ReactElement<React.HTMLProps<HTMLInputElement>>,
-        sharedProps
-      );
-    }
-
-    return child;
+    return (
+      <input
+        {...commonProps}
+        type={type === 'password' && isPasswordVisible ? 'text' : type}
+      />
+    );
   };
 
   return (
-    <div className={`relative ${className}`}>
-      {React.Children.map(children, cloneChild)}
+    <div className={`relative flex items-center group ${className}`}>
+      {renderInput()}
+      {type === 'password' && value && (
+        <button
+          type="button"
+          onClick={() => setIsPasswordVisible((prev) => !prev)}
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary-blue-100"
+          tabIndex={-1}
+        >
+          {isPasswordVisible ? <KView /> : <KViewOff />}
+        </button>
+      )}
       {label && (
         <label
           htmlFor={id}
           className="absolute text-sm duration-300 text-primary-blue-100 transform -translate-y-3.5 scale-75 top-5 z-10 origin-[0] start-4 cursor-text
-                     peer-focus:text-primary-blue-100 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
-                     peer-focus:scale-75 peer-focus:-translate-y-3.5 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100
+            peer-focus:scale-75 peer-focus:-translate-y-3.5"
         >
           {label}
         </label>
