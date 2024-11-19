@@ -8,6 +8,11 @@ body {
   color: var(--primary-text);
 }
 
+svg {
+  width: auto !important;
+  height: auto !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -87,5 +92,61 @@ body {
   }
 }
 
-@layer base {
+@layer utilities {
+  /* =====  SHADCN OVERRIDES */
+  .shad-select-trigger {
+    @apply bg-secondary-blue-500 text-white placeholder:text-white h-14 border-0 appearance-none focus:ring-0 hover:outline hover:outline-secondary-blue-400 focus:outline focus:outline-primary-green-700 transition-colors duration-300 ease-in-out !important;
+  }
+
+  .shad-select-content {
+    @apply bg-secondary-blue-700 border-primary-blue-400 text-white !important;
+  }
+
+  .shad-select-item {
+    @apply hover:bg-secondary-blue-600 k-transition py-2 cursor-pointer data-[state=checked]:bg-secondary-blue-600 data-[state=checked]:text-primary-green-500 !important;
+  }
+
+  /* =====  REACT PHONE NUMBER INPUT OVERRIDES */
+  .input-phone {
+    @apply w-full rounded-md py-[17px] px-4 text-base text-white bg-secondary-blue-500 border-0 appearance-none focus:outline-none focus:ring-0 !important;
+  }
+
+  .k-input {
+    @apply block w-full rounded-md px-4 pb-2.5 pt-6 text-sm font-semibold text-white bg-secondary-blue-500 border-0 appearance-none hover:outline-secondary-blue-400 hover:outline focus:outline focus:outline-primary-green-700 focus:ring-0 transition-colors duration-300 ease-in-out !important;
+  }
+
+  .k-transition {
+    @apply transition-colors duration-400;
+  }
+
+  .checkbox-label {
+    @apply cursor-pointer text-sm font-normal text-white peer-disabled:cursor-not-allowed peer-disabled:opacity-70 md:leading-none;
+  }
+}
+
+/* =====  REACT PHONE NUMBER INPUT OVERRIDES */
+.PhoneInputInput {
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  height: fit-content;
+  font-weight: 500;
+}
+
+.input-phone:hover {
+  outline: 1px solid #53555b;
+}
+
+.input-phone:focus-within {
+  outline: 1px solid #96af01;
+}
+
+/* =====  DATE_PICKER OVERRIDES */
+.selected-date {
+  background-color: #d3f702;
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
