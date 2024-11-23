@@ -48,7 +48,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({
   });
 
   return (
-    <div className="w-full max-w-[400px]">
+    <div className="w-full max-w-full sm:max-w-[500px] md:max-w-[60%] md:min-w-[400px]">
       {!verification ? (
         <>
           {/* back arrow */}
@@ -64,7 +64,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({
             </div>
           )}
           {/* header */}
-          <div className="flex flex-col gap-2.5 mb-9">
+          <div className="flex flex-col gap-2.5 mb-6 sm:mb-8">
             <h5 className="text-white text-[32px] font-semibold leading-normal">
               {title}
             </h5>
@@ -84,7 +84,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({
                 </p>
                 <span className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-primary-blue-400 to-primary-blue-400"></span>
               </div>
-              <div className="flex w-full items-center gap-3 mt-5">
+              <div className="flex flex-col sm:flex-row w-full items-center gap-3 mt-5">
                 <Button
                   variant="outline"
                   className="gap-2 py-2.5 w-full h-[46px] font-normal"

@@ -9,8 +9,10 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import AuthWrapper from './auth-wrapper';
 import { Button } from '../ui/button';
+import { useRouter } from 'next/navigation';
 
 function LoginForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
@@ -29,7 +31,7 @@ function LoginForm() {
       footerLink="/auth/register"
     >
       <Form {...form}>
-        <form className="flex flex-col gap-8">
+        <form className="flex flex-col gap-6 sm:gap-8">
           <KFormField
             fieldType={KFormFieldType.INPUT}
             control={form.control}
@@ -42,7 +44,14 @@ function LoginForm() {
             name="name"
             label="Enter password"
           />
-          <Button className="px-3 py-4 h-[46px]">Login</Button>
+          <Button
+            onClick={() => {
+              router.push('/');
+            }}
+            className="px-3 py-4 h-[46px]"
+          >
+            Login
+          </Button>
         </form>
       </Form>
     </AuthWrapper>
