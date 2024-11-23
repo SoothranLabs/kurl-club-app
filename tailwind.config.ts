@@ -8,9 +8,18 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      sm: { min: '767px' },
+      md: { min: '991px' },
+      lg: { min: '1050px' },
+      xl: { min: '1248px' },
+    },
     extend: {
       fontSize: {
         sm: ['13px', '1.5rem'],
+      },
+      lineHeight: {
+        normal: '1.09', // 109%
       },
       transitionDuration: {
         400: '400ms',

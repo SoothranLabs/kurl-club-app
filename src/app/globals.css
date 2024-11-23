@@ -112,11 +112,11 @@ svg {
   }
 
   .k-input {
-    @apply block w-full rounded-md px-4 pb-2.5 pt-6 text-sm font-semibold text-white bg-secondary-blue-500 border-0 appearance-none hover:outline-secondary-blue-400 hover:outline focus:outline focus:outline-primary-green-700 focus:ring-0 transition-colors duration-300 ease-in-out !important;
+    @apply block w-full rounded-md px-4 pb-2.5 pt-6 text-sm font-semibold text-white bg-secondary-blue-500 border-0 appearance-none hover:outline-secondary-blue-400 hover:outline hover:outline-1 focus:outline focus:outline-primary-green-700 focus:ring-0 transition-colors k-transition ease-in-out !important;
   }
 
   .k-transition {
-    @apply transition-colors duration-400;
+    @apply transition-all duration-400;
   }
 
   .checkbox-label {
