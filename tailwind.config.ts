@@ -12,6 +12,9 @@ const config: Config = {
       fontSize: {
         sm: ['13px', '1.5rem'],
       },
+      lineHeight: {
+        normal: '1.09', // 109%
+      },
       transitionDuration: {
         400: '400ms',
       },
