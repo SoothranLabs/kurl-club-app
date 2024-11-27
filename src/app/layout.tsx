@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { QueryProvider } from '@/providers/query-provider';
+import { Toaster } from 'sonner';
 import './globals.css';
 
 const figtree = localFont({
@@ -58,6 +59,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <Toaster richColors position="top-right" />
             {children}
           </ThemeProvider>
         </QueryProvider>

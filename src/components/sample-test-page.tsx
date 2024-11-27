@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import useUser from '@/hooks/useUser';
+import useUser from '@/hooks/use-user';
 
 import { Form, FormControl } from '@/components/ui/form';
 import { SelectGroup, SelectItem, SelectLabel } from '@/components/ui/select';
@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { KCalenderMonth } from '@/components/icons';
 import { ThemeModeToggle } from '@/components/theme-toggler';
 
-import { PatientFormValidation } from '@/lib/validation';
+import { RegisterSchema } from '@/schemas';
 
 import FileUploader from '@/components/file-uploader';
 import SignOutButton from '@/components/auth/signout-button';
@@ -36,12 +36,13 @@ const IdentificationTypes = [
 const SampleTestPage = () => {
   const { data: user, isFetching, error } = useUser();
 
-  const form = useForm<z.infer<typeof PatientFormValidation>>({
-    resolver: zodResolver(PatientFormValidation),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      name: '',
       email: '',
-      phone: '',
+      password: '',
+      confirmPassword: '',
+      privacyConsent: false,
     },
   });
 
@@ -75,7 +76,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.INPUT}
                 control={form.control}
-                name="name"
+                name="password"
                 label="Full Name"
                 placeholder="John Doe"
               />
@@ -85,7 +86,7 @@ const SampleTestPage = () => {
                 fieldType={KFormFieldType.PASSWORD}
                 control={form.control}
                 name="email"
-                label="Password"
+                label="confirmPassword"
                 placeholder="Enter your password"
               />
 
@@ -93,7 +94,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.TEXTAREA}
                 control={form.control}
-                name="familyMedicalHistory"
+                name="password"
                 label=" Family medical history (if relevant)"
                 placeholder="Mother had brain cancer, Father has hypertension"
               />
@@ -102,7 +103,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.PHONE_INPUT}
                 control={form.control}
-                name="phone"
+                name="password"
                 label="Phone number"
                 placeholder="(555) 123-4567"
               />
@@ -111,7 +112,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.SELECT}
                 control={form.control}
-                name="identificationType"
+                name="confirmPassword"
                 label="Identification Type"
                 placeholder="Select identification type"
               >
@@ -135,7 +136,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.DATE_PICKER}
                 control={form.control}
-                name="birthDate"
+                name="password"
                 label="Date of birth"
                 numberOfMonths={2}
                 dateLabel="Pick a date range"
@@ -147,7 +148,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.SKELETON}
                 control={form.control}
-                name="identificationDocument"
+                name="password"
                 label="Scanned Copy of Identification Document"
                 renderSkeleton={() => (
                   <FormControl>
