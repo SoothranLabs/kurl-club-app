@@ -1,13 +1,7 @@
-import AuthVerify from '@/components/auth/auth-verify';
-import React from 'react';
-import LoginLayout from '@/components/auth/auth-layout';
+import { AuthWrapper } from '@/components/auth/auth-wrapper';
 
 function VerifyPage() {
-  return (
-    <LoginLayout>
-      <AuthVerify />
-    </LoginLayout>
-  );
+  return <AuthWrapper verification />;
 }
 
 export default VerifyPage;

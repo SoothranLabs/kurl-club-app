@@ -191,7 +191,7 @@ export function KFormField<T extends FieldValues>(props: CustomProps<T>) {
           )}
 
           <RenderField field={field} props={props} />
-          <FormMessage className="shad-error" />
+          <FormMessage className="text-alert-red-400 before:content-['*'] before:mr-[1px]" />
         </FormItem>
       )}
     />

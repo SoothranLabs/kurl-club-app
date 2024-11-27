@@ -1,39 +1,40 @@
 'use client';
 
 import { useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { register } from '@/services/actions/register';
-import { RegisterSchema } from '@/schemas';
+import { updatePassword } from '@/services/actions/update-user';
+import { UpdatePasswordSchema } from '@/schemas';
 
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { AuthWrapper } from '@/components/auth/auth-wrapper';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 
-export const RegisterForm = () => {
+export const UpdatePasswordForm = () => {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  const form = useForm<z.infer<typeof UpdatePasswordSchema>>({
+    resolver: zodResolver(UpdatePasswordSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      newPassword: '',
       confirmPassword: '',
-      privacyConsent: false,
     },
   });
 
-  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = (values: z.infer<typeof UpdatePasswordSchema>) => {
     startTransition(() => {
-      register(values).then((data) => {
+      updatePassword(values).then((data) => {
         if (data.error) {
           toast.error(data.error);
         } else if (data.success) {
           toast.success(data.success);
+          router.push('/auth/verify');
         }
       });
     });
@@ -42,15 +43,13 @@ export const RegisterForm = () => {
   return (
     <AuthWrapper
       header={{
-        title: 'Create an Account',
-        description: 'Sign up to get started with our platform',
+        title: 'Change Password',
+        description: 'Create a new password',
       }}
       footer={{
         linkUrl: '/auth/login',
-        linkText: 'Already have an account?',
-        isLogin: false,
+        linkText: 'Back to login',
       }}
-      socials
     >
       <Form {...form}>
         <form
@@ -58,18 +57,10 @@ export const RegisterForm = () => {
           className="flex flex-col gap-8"
         >
           <KFormField
-            fieldType={KFormFieldType.INPUT}
-            control={form.control}
-            disabled={isPending}
-            name="email"
-            label="Email Address"
-          />
-
-          <KFormField
             fieldType={KFormFieldType.PASSWORD}
             control={form.control}
             disabled={isPending}
-            name="password"
+            name="newPassword"
             label="Password"
           />
           <KFormField
@@ -79,20 +70,13 @@ export const RegisterForm = () => {
             name="confirmPassword"
             label="Confirm Password"
           />
-          <KFormField
-            fieldType={KFormFieldType.CHECKBOX}
-            control={form.control}
-            disabled={isPending}
-            name="privacyConsent"
-            label="I agree to the terms and conditions"
-          />
 
           <Button
             type="submit"
             disabled={isPending}
             className="px-3 py-4 h-[46px]"
           >
-            Sign Up
+            Change password
           </Button>
         </form>
       </Form>
