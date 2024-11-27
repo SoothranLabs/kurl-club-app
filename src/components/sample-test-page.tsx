@@ -4,8 +4,6 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import useUser from '@/hooks/use-user';
-
 import { Form, FormControl } from '@/components/ui/form';
 import { SelectGroup, SelectItem, SelectLabel } from '@/components/ui/select';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
@@ -17,7 +15,6 @@ import { ThemeModeToggle } from '@/components/theme-toggler';
 import { RegisterSchema } from '@/schemas';
 
 import FileUploader from '@/components/file-uploader';
-import SignOutButton from '@/components/auth/signout-button';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -34,8 +31,6 @@ const IdentificationTypes = [
 ];
 
 const SampleTestPage = () => {
-  const { data: user, isFetching, error } = useUser();
-
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -46,14 +41,9 @@ const SampleTestPage = () => {
     },
   });
 
-  if (isFetching) return <p>Loading...</p>;
-  if (error) return <p>Error loading user data.</p>;
-
   return (
     <div className="flex flex-col items-center gap-10">
       <div className="flex items-center gap-6">
-        <Button>Welcome {user?.display_name || 'Guest'} to KurlClub</Button>
-        <SignOutButton />
         <ThemeModeToggle />
       </div>
       <div className="flex gap-10">
