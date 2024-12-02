@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
-type Step<T> = {
+export type Step<T> = {
   id: string;
   name: string;
   fields: Path<T>[];

@@ -101,3 +101,43 @@ export const UpdatePasswordSchema = z
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   });
+
+//Phone-Verify-Schema
+export const phoneVerify = z.object({
+  phone: z
+    .string({ required_error: 'Phone number is required' })
+    .regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number' }),
+});
+
+//OTP Schema
+export const OTPSchema = z.object({
+  otp: z
+    .string({ required_error: 'OTP is required' })
+    .regex(/^\d{6}$/, { message: 'OTP must be a 6-digits' }),
+});
+
+//GYM Details Schema
+export const GymDetailsSchema = z.object({
+  name: z
+    .string({ required_error: 'Name is required' })
+    .min(1, { message: 'Name cannot be empty' }),
+
+  address: z
+    .string({ required_error: 'Address is required' })
+    .min(1, { message: 'Address cannot be empty' }),
+
+  phone: z
+    .string({ required_error: 'Phone number is required' })
+    .regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number ' }),
+
+  email: z
+    .string({ required_error: 'Email is required' })
+    .email({ message: 'Invalid email address' }),
+});
+
+// Trainer Form Schema
+export const TrainerFormSchema = z.object({
+  email: z
+    .string({ required_error: 'Email is required' })
+    .email({ message: 'Invalid email address' }),
+});

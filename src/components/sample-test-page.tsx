@@ -1,5 +1,6 @@
 'use client';
 
+// import React, { useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -13,8 +14,17 @@ import { KCalenderMonth } from '@/components/icons';
 import { ThemeModeToggle } from '@/components/theme-toggler';
 
 import { RegisterSchema } from '@/schemas';
-
 import FileUploader from '@/components/file-uploader';
+import MultiStepFormExample from '@/components/verify/stepper-modal';
+
+import {
+  Dialog,
+  DialogContent,
+  // DialogDescription,
+  // DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -45,9 +55,20 @@ const SampleTestPage = () => {
     <div className="flex flex-col items-center gap-10">
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Share</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogTitle></DialogTitle>
+            <MultiStepFormExample />
+          </DialogContent>
+        </Dialog>
       </div>
       <div className="flex gap-10">
         <div className="flex flex-col gap-5">
+          {/* Trigger Button */}
           <Button>KurlClub Button</Button>
           <Button variant="secondary">KurlClub Secondary</Button>
           <Button>
