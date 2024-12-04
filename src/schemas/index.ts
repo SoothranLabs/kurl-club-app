@@ -1,3 +1,4 @@
+import { isValidPhoneNumber } from 'react-phone-number-input';
 import * as z from 'zod';
 
 // Register Schema
@@ -102,42 +103,96 @@ export const UpdatePasswordSchema = z
     path: ['confirmPassword'],
   });
 
-//Phone-Verify-Schema
-export const phoneVerify = z.object({
-  phone: z
-    .string({ required_error: 'Phone number is required' })
-    .regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number' }),
+// Onboarding Form Schema
+// Phone Verify Schema
+export const PhoneVerifySchema = z.object({
+  phone: z.string().refine((val) => isValidPhoneNumber(val), {
+    message:
+      'Invalid phone number. Please provide a valid number with country code.',
+  }),
 });
 
-//OTP Schema
+// OTP Schema
 export const OTPSchema = z.object({
   otp: z
-    .string({ required_error: 'OTP is required' })
-    .regex(/^\d{6}$/, { message: 'OTP must be a 6-digits' }),
+    .string()
+    .length(6, 'OTP must be exactly 6 digits')
+    .regex(/^\d{6}$/, 'OTP must contain only numbers')
+    .refine((val) => val !== '', {
+      message: 'OTP cannot be empty',
+    }),
 });
 
-//GYM Details Schema
+// GYM Details Schema
 export const GymDetailsSchema = z.object({
-  name: z
-    .string({ required_error: 'Name is required' })
-    .min(1, { message: 'Name cannot be empty' }),
+  gymName: z
+    .string()
+    .min(1, 'Gym name is required')
+    .max(100, 'Gym name should not exceed 100 characters')
+    .trim(),
 
-  address: z
-    .string({ required_error: 'Address is required' })
-    .min(1, { message: 'Address cannot be empty' }),
+  addressLine1: z
+    .string()
+    .min(1, 'Address Line 1 is required')
+    .max(200, 'Address Line 1 should not exceed 200 characters')
+    .trim(),
 
-  phone: z
-    .string({ required_error: 'Phone number is required' })
-    .regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number ' }),
+  // Address Line 2 is optional, apply max before optional
+  addressLine2: z
+    .string()
+    .max(200, 'Address Line 2 should not exceed 200 characters')
+    .optional(),
+
+  primaryPhone: z
+    .string()
+    .regex(
+      /^\+?[1-9]\d{1,14}$/,
+      'Enter a valid primary phone number with country code'
+    )
+    .min(1, 'Primary phone number is required'),
+
+  // Secondary Phone is optional, apply max before optional
+  secondaryPhone: z
+    .string()
+    .regex(
+      /^\+?[1-9]\d{1,14}$/,
+      'Enter a valid secondary phone number with country code'
+    )
+    .max(15, 'Phone number cannot exceed 15 digits') // max before optional
+    .optional(),
 
   email: z
-    .string({ required_error: 'Email is required' })
-    .email({ message: 'Invalid email address' }),
+    .string()
+    .email('Enter a valid email address')
+    .min(1, 'Email address is required')
+    .max(150, 'Email address should not exceed 150 characters'),
+
+  websiteLink: z
+    .string()
+    .url('Enter a valid website URL')
+    .max(255, 'Website URL cannot exceed 255 characters')
+    .optional(),
+
+  facebookPageLink: z
+    .string()
+    .url('Enter a valid Facebook page URL')
+    .max(255, 'Facebook page URL cannot exceed 255 characters')
+    .optional(),
+
+  instagramLink: z
+    .string()
+    .url('Enter a valid Instagram URL')
+    .max(255, 'Instagram URL cannot exceed 255 characters')
+    .optional(),
 });
 
 // Trainer Form Schema
 export const TrainerFormSchema = z.object({
-  email: z
-    .string({ required_error: 'Email is required' })
-    .email({ message: 'Invalid email address' }),
+  trainers: z
+    .array(
+      z.object({
+        email: z.string().email('Enter a valid email'),
+      })
+    )
+    .optional(),
 });

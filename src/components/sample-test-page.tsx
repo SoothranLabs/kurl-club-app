@@ -15,7 +15,7 @@ import { ThemeModeToggle } from '@/components/theme-toggler';
 
 import { RegisterSchema } from '@/schemas';
 import FileUploader from '@/components/file-uploader';
-import MultiStepFormExample from '@/components/verify/stepper-modal';
+import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
 
 import {
   Dialog,
@@ -62,7 +62,7 @@ const SampleTestPage = () => {
           </DialogTrigger>
           <DialogContent>
             <DialogTitle></DialogTitle>
-            <MultiStepFormExample />
+            <OnboardingStepForm />
           </DialogContent>
         </Dialog>
       </div>
