@@ -1,52 +1,36 @@
-import * as React from 'react';
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+'use client';
 
-type Step<T> = {
+import { useState } from 'react';
+
+export type Step = {
   id: string;
-  name: string;
-  fields: Path<T>[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  component: React.ComponentType<any>;
 };
 
-interface UseMultiStepFormProps<T extends FieldValues> {
-  steps: Step<T>[];
-  form: UseFormReturn<T>;
-}
+export const useMultiStepForm = (steps: Step[]) => {
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
-export function useMultiStepForm<T extends FieldValues>({
-  steps,
-  form,
-}: UseMultiStepFormProps<T>) {
-  const [currentStep, setCurrentStep] = React.useState(0);
-
-  const nextStep = async () => {
-    const fields = steps[currentStep].fields;
-    const isValid = await form.trigger(fields);
-
-    if (!isValid) return;
-
-    if (currentStep < steps.length - 1) {
-      setCurrentStep((prev) => prev + 1);
-    }
+  const next = () => {
+    setCurrentStepIndex((i) => (i < steps.length - 1 ? i + 1 : i));
   };
 
-  const previousStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep((prev) => prev - 1);
-    }
+  const back = () => {
+    setCurrentStepIndex((i) => (i > 0 ? i - 1 : i));
   };
 
-  const resetForm = () => {
-    setCurrentStep(0);
-    form.reset();
+  const goTo = (index: number) => {
+    setCurrentStepIndex(index);
   };
 
   return {
-    currentStep,
-    stepData: steps[currentStep],
-    isFirstStep: currentStep === 0,
-    isLastStep: currentStep === steps.length - 1,
-    nextStep,
-    previousStep,
-    resetForm,
+    currentStepIndex,
+    step: steps[currentStepIndex],
+    steps,
+    isFirstStep: currentStepIndex === 0,
+    isLastStep: currentStepIndex === steps.length - 1,
+    next,
+    back,
+    goTo,
   };
-}
+};

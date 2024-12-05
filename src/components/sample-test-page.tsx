@@ -19,6 +19,15 @@ import { useSheet } from '@/hooks/use-sheet';
 import { KSheet } from '@/components/form/k-sheet';
 import { Input } from './ui/input';
 
+import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+
 const IdentificationTypes = [
   'Birth Certificate',
   "Driver's License",
@@ -67,12 +76,25 @@ const SampleTestPage = () => {
     <div className="flex flex-col items-center gap-10">
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
+
+        {/* KSheet Button */}
         <div className="p-4">
           <Button onClick={openSheet}>Open Sheet</Button>
           <KSheet isOpen={isOpen} onClose={closeSheet} title="Example Sheet">
             <ExampleForm />
           </KSheet>
         </div>
+
+        {/* Dialog Button */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Share</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogTitle></DialogTitle>
+            <OnboardingStepForm />
+          </DialogContent>
+        </Dialog>
       </div>
       <div className="flex gap-10">
         <div className="flex flex-col gap-5">
