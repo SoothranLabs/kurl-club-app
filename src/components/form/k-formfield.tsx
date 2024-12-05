@@ -9,6 +9,7 @@ import {
 } from 'react-hook-form';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 
 import {
   FormControl,
@@ -17,9 +18,16 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { KSelect } from '@/components/form/k-select';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
 import { Checkbox } from '@/components/ui/checkbox';
-import { KFieldWrapper } from '@/components/form/k-field-wrapper';
+import { KSelect } from '@/components/form/k-select';
+import { KInput } from '@/components/form/k-input';
+import { KPassword } from '@/components/form/k-password';
+import { KTextarea } from '@/components/form/k-textarea';
 import { KDatePicker } from '@/components/form/k-datepicker';
 
 export enum KFormFieldType {
@@ -30,6 +38,7 @@ export enum KFormFieldType {
   CHECKBOX = 'checkbox',
   DATE_PICKER = 'datePicker',
   SELECT = 'select',
+  OTP = 'otp',
   SKELETON = 'skeleton',
 }
 
@@ -39,6 +48,7 @@ interface CustomProps<T extends FieldValues> {
   name: FieldPath<T>;
   label?: string;
   placeholder?: string;
+  iconSrc?: React.ReactNode;
   disabled?: boolean;
   dateFormat?: string;
   numberOfMonths?: number;
@@ -64,6 +74,7 @@ const RenderField = <T extends FieldValues>({
     children,
     name,
     label,
+    iconSrc,
     numberOfMonths,
     dateLabel,
     showPresets,
@@ -73,26 +84,33 @@ const RenderField = <T extends FieldValues>({
     case KFormFieldType.INPUT:
       return (
         <FormControl>
-          <KFieldWrapper
-            label={label}
-            id={name}
-            type="text"
-            value={field.value}
-            onChange={field.onChange}
-            disabled={props.disabled}
-          />
+          <div className="flex items-stretch">
+            {iconSrc && (
+              <div className="mr-2 bg-secondary-blue-500 p-[18px] rounded-md flex-shrink-0">
+                {iconSrc}
+              </div>
+            )}
+            <div className="flex-grow">
+              <KInput
+                label={label ?? 'Input'}
+                id={name}
+                placeholder=" "
+                {...field}
+                disabled={props.disabled}
+              />
+            </div>
+          </div>
         </FormControl>
       );
 
     case KFormFieldType.TEXTAREA:
       return (
         <FormControl>
-          <KFieldWrapper
-            label={label}
+          <KTextarea
+            label={label ?? 'Textarea'}
             id={name}
-            type="textarea"
-            value={field.value}
-            onChange={field.onChange}
+            placeholder=" "
+            {...field}
             disabled={props.disabled}
           />
         </FormControl>
@@ -101,12 +119,11 @@ const RenderField = <T extends FieldValues>({
     case KFormFieldType.PASSWORD:
       return (
         <FormControl>
-          <KFieldWrapper
-            label={label}
+          <KPassword
+            label={label ?? 'Textarea'}
             id={name}
-            type="password"
-            value={field.value}
-            onChange={field.onChange}
+            placeholder=" "
+            {...field}
             disabled={props.disabled}
           />
         </FormControl>
@@ -137,6 +154,28 @@ const RenderField = <T extends FieldValues>({
           >
             {children}
           </KSelect>
+        </FormControl>
+      );
+
+    case KFormFieldType.OTP:
+      return (
+        <FormControl>
+          <InputOTP
+            maxLength={6}
+            pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+            value={field.value}
+            onChange={field.onChange}
+          >
+            <InputOTPGroup className="shad-otp">
+              {[...Array(6)].map((_, index) => (
+                <InputOTPSlot
+                  key={index}
+                  index={index}
+                  className="shad-otp-slot"
+                />
+              ))}
+            </InputOTPGroup>
+          </InputOTP>
         </FormControl>
       );
 
