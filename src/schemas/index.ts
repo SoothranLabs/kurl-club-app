@@ -114,6 +114,7 @@ export const SamplePageSchema = z.object({
     message: 'You must agree to the terms and conditions',
   }),
   fullName: z.string().min(1, { message: 'Full Name is required' }),
+  websiteUrl: z.string().min(1, { message: 'Enter a valid Url' }),
   familyHistory: z.string().optional(),
   phoneNumber: z.string().min(10, { message: 'Phone number is invalid' }),
   identificationType: z

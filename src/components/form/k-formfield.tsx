@@ -48,6 +48,7 @@ interface CustomProps<T extends FieldValues> {
   name: FieldPath<T>;
   label?: string;
   placeholder?: string;
+  iconSrc?: React.ReactNode;
   disabled?: boolean;
   dateFormat?: string;
   numberOfMonths?: number;
@@ -73,6 +74,7 @@ const RenderField = <T extends FieldValues>({
     children,
     name,
     label,
+    iconSrc,
     numberOfMonths,
     dateLabel,
     showPresets,
@@ -82,13 +84,22 @@ const RenderField = <T extends FieldValues>({
     case KFormFieldType.INPUT:
       return (
         <FormControl>
-          <KInput
-            label={label ?? 'Input'}
-            id={name}
-            placeholder=" "
-            {...field}
-            disabled={props.disabled}
-          />
+          <div className="flex items-stretch">
+            {iconSrc && (
+              <div className="mr-2 bg-secondary-blue-500 p-[18px] rounded-md flex-shrink-0">
+                {iconSrc}
+              </div>
+            )}
+            <div className="flex-grow">
+              <KInput
+                label={label ?? 'Input'}
+                id={name}
+                placeholder=" "
+                {...field}
+                disabled={props.disabled}
+              />
+            </div>
+          </div>
         </FormControl>
       );
 

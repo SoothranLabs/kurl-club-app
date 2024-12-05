@@ -57,6 +57,7 @@ const SampleTestPage = () => {
       dateOfBirth: undefined,
       identificationDocument: '',
       otp: '',
+      websiteUrl: '',
     },
   });
 
@@ -96,6 +97,16 @@ const SampleTestPage = () => {
                 name="fullName"
                 label="Full Name"
                 placeholder="John Doe"
+              />
+
+              {/* INPUT WITH ICON */}
+              <KFormField
+                fieldType={KFormFieldType.INPUT}
+                control={form.control}
+                name="websiteUrl"
+                label="Website Link"
+                placeholder="https://www.google.com"
+                iconSrc={<KCalenderMonth />}
               />
 
               {/* PASSWORD */}
