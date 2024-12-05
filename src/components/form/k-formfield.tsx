@@ -9,6 +9,7 @@ import {
 } from 'react-hook-form';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 
 import {
   FormControl,
@@ -17,8 +18,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { KSelect } from '@/components/form/k-select';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
 import { Checkbox } from '@/components/ui/checkbox';
+import { KSelect } from '@/components/form/k-select';
 import { KInput } from '@/components/form/k-input';
 import { KPassword } from '@/components/form/k-password';
 import { KTextarea } from '@/components/form/k-textarea';
@@ -32,6 +38,7 @@ export enum KFormFieldType {
   CHECKBOX = 'checkbox',
   DATE_PICKER = 'datePicker',
   SELECT = 'select',
+  OTP = 'otp',
   SKELETON = 'skeleton',
 }
 
@@ -136,6 +143,28 @@ const RenderField = <T extends FieldValues>({
           >
             {children}
           </KSelect>
+        </FormControl>
+      );
+
+    case KFormFieldType.OTP:
+      return (
+        <FormControl>
+          <InputOTP
+            maxLength={6}
+            pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+            value={field.value}
+            onChange={field.onChange}
+          >
+            <InputOTPGroup className="shad-otp">
+              {[...Array(6)].map((_, index) => (
+                <InputOTPSlot
+                  key={index}
+                  index={index}
+                  className="shad-otp-slot"
+                />
+              ))}
+            </InputOTPGroup>
+          </InputOTP>
         </FormControl>
       );
 

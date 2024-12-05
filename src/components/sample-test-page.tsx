@@ -56,6 +56,7 @@ const SampleTestPage = () => {
       identificationType: '',
       dateOfBirth: undefined,
       identificationDocument: '',
+      otp: '',
     },
   });
 
@@ -122,6 +123,15 @@ const SampleTestPage = () => {
                 name="phoneNumber"
                 label="Phone number"
                 placeholder="(555) 123-4567"
+              />
+
+              {/* OTP INPUT */}
+              <KFormField
+                fieldType={KFormFieldType.OTP}
+                control={form.control}
+                name="otp"
+                label="Enter OTP"
+                placeholder="Enter 6-digit OTP"
               />
 
               {/* SELECT */}

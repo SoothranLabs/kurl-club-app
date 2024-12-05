@@ -121,4 +121,5 @@ export const SamplePageSchema = z.object({
     .min(1, { message: 'Please select an ID type' }),
   dateOfBirth: z.date({ invalid_type_error: 'Invalid date format' }),
   identificationDocument: z.string().optional(),
+  otp: z.string().length(6, 'OTP must be exactly 6 digits'),
 });
