@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { KCalenderMonth } from '@/components/icons';
 import { ThemeModeToggle } from '@/components/theme-toggler';
 
-import { RegisterSchema } from '@/schemas';
+import { SamplePageSchema } from '@/schemas';
 
 import FileUploader from '@/components/file-uploader';
 
@@ -31,13 +31,19 @@ const IdentificationTypes = [
 ];
 
 const SampleTestPage = () => {
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  const form = useForm<z.infer<typeof SamplePageSchema>>({
+    resolver: zodResolver(SamplePageSchema),
     defaultValues: {
       email: '',
       password: '',
       confirmPassword: '',
       privacyConsent: false,
+      fullName: '',
+      familyHistory: '',
+      phoneNumber: '',
+      identificationType: '',
+      dateOfBirth: undefined,
+      identificationDocument: '',
     },
   });
 
@@ -66,7 +72,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.INPUT}
                 control={form.control}
-                name="password"
+                name="fullName"
                 label="Full Name"
                 placeholder="John Doe"
               />
@@ -75,8 +81,8 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.PASSWORD}
                 control={form.control}
-                name="email"
-                label="confirmPassword"
+                name="password"
+                label="Password"
                 placeholder="Enter your password"
               />
 
@@ -84,7 +90,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.TEXTAREA}
                 control={form.control}
-                name="password"
+                name="familyHistory"
                 label=" Family medical history (if relevant)"
                 placeholder="Mother had brain cancer, Father has hypertension"
               />
@@ -93,7 +99,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.PHONE_INPUT}
                 control={form.control}
-                name="password"
+                name="phoneNumber"
                 label="Phone number"
                 placeholder="(555) 123-4567"
               />
@@ -102,7 +108,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.SELECT}
                 control={form.control}
-                name="confirmPassword"
+                name="identificationType"
                 label="Identification Type"
                 placeholder="Select identification type"
               >
@@ -126,7 +132,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.DATE_PICKER}
                 control={form.control}
-                name="password"
+                name="dateOfBirth"
                 label="Date of birth"
                 numberOfMonths={2}
                 dateLabel="Pick a date range"
@@ -138,7 +144,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.SKELETON}
                 control={form.control}
-                name="password"
+                name="identificationDocument"
                 label="Scanned Copy of Identification Document"
                 renderSkeleton={() => (
                   <FormControl>

@@ -59,11 +59,14 @@ svg {
 
   /* =====  REACT PHONE NUMBER INPUT OVERRIDES */
   .input-phone {
-    @apply w-full rounded-md py-[17px] px-4 text-base text-white bg-secondary-blue-500 border-0 appearance-none focus:outline-none focus:ring-0 !important;
+    @apply w-full rounded-md h-14 py-[17px] px-4 text-base text-white bg-secondary-blue-500 border-0 appearance-none focus:outline-none focus:ring-0 !important;
   }
 
   .k-input {
-    @apply block w-full rounded-md px-4 pb-2.5 pt-6 text-sm font-semibold text-white bg-secondary-blue-500 border-0 appearance-none hover:outline-secondary-blue-400 hover:outline hover:outline-1 focus:outline focus:outline-primary-green-700 focus:ring-0 transition-colors k-transition ease-in-out !important;
+    @apply w-full h-14 rounded-md text-sm font-semibold text-white bg-secondary-blue-500 border-0 appearance-none 
+           hover:outline-secondary-blue-400 hover:outline hover:outline-1 
+           focus:outline focus:outline-primary-green-700 focus:ring-0 
+           transition-colors ease-in-out disabled:cursor-not-allowed disabled:opacity-50 resize-none overflow-hidden !important;
   }
 
   .k-transition {

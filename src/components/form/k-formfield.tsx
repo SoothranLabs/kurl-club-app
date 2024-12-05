@@ -19,7 +19,9 @@ import {
 } from '@/components/ui/form';
 import { KSelect } from '@/components/form/k-select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { KFieldWrapper } from '@/components/form/k-field-wrapper';
+import { KInput } from '@/components/form/k-input';
+import { KPassword } from '@/components/form/k-password';
+import { KTextarea } from '@/components/form/k-textarea';
 import { KDatePicker } from '@/components/form/k-datepicker';
 
 export enum KFormFieldType {
@@ -73,12 +75,11 @@ const RenderField = <T extends FieldValues>({
     case KFormFieldType.INPUT:
       return (
         <FormControl>
-          <KFieldWrapper
-            label={label}
+          <KInput
+            label={label ?? 'Input'}
             id={name}
-            type="text"
-            value={field.value}
-            onChange={field.onChange}
+            placeholder=" "
+            {...field}
             disabled={props.disabled}
           />
         </FormControl>
@@ -87,12 +88,11 @@ const RenderField = <T extends FieldValues>({
     case KFormFieldType.TEXTAREA:
       return (
         <FormControl>
-          <KFieldWrapper
-            label={label}
+          <KTextarea
+            label={label ?? 'Textarea'}
             id={name}
-            type="textarea"
-            value={field.value}
-            onChange={field.onChange}
+            placeholder=" "
+            {...field}
             disabled={props.disabled}
           />
         </FormControl>
@@ -101,12 +101,11 @@ const RenderField = <T extends FieldValues>({
     case KFormFieldType.PASSWORD:
       return (
         <FormControl>
-          <KFieldWrapper
-            label={label}
+          <KPassword
+            label={label ?? 'Textarea'}
             id={name}
-            type="password"
-            value={field.value}
-            onChange={field.onChange}
+            placeholder=" "
+            {...field}
             disabled={props.disabled}
           />
         </FormControl>

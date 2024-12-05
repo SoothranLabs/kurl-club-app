@@ -101,3 +101,24 @@ export const UpdatePasswordSchema = z
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   });
+
+export const SamplePageSchema = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z
+    .string()
+    .min(8, { message: 'Password must be at least 8 characters' }),
+  confirmPassword: z
+    .string()
+    .min(1, { message: 'Confirm password is required' }),
+  privacyConsent: z.boolean().refine((val) => val === true, {
+    message: 'You must agree to the terms and conditions',
+  }),
+  fullName: z.string().min(1, { message: 'Full Name is required' }),
+  familyHistory: z.string().optional(),
+  phoneNumber: z.string().min(10, { message: 'Phone number is invalid' }),
+  identificationType: z
+    .string()
+    .min(1, { message: 'Please select an ID type' }),
+  dateOfBirth: z.date({ invalid_type_error: 'Invalid date format' }),
+  identificationDocument: z.string().optional(),
+});
