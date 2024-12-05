@@ -15,6 +15,9 @@ import { ThemeModeToggle } from '@/components/theme-toggler';
 import { SamplePageSchema } from '@/schemas';
 
 import FileUploader from '@/components/file-uploader';
+import { useSheet } from '@/hooks/use-sheet';
+import { KSheet } from '@/components/form/k-sheet';
+import { Input } from './ui/input';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -30,6 +33,15 @@ const IdentificationTypes = [
   'Voter ID Card',
 ];
 
+const ExampleForm = () => {
+  return (
+    <form className="space-y-4">
+      <Input placeholder="Name" />
+      <Input placeholder="Email" type="email" />
+      <Button type="submit">Submit</Button>
+    </form>
+  );
+};
 const SampleTestPage = () => {
   const form = useForm<z.infer<typeof SamplePageSchema>>({
     resolver: zodResolver(SamplePageSchema),
@@ -47,10 +59,18 @@ const SampleTestPage = () => {
     },
   });
 
+  const { isOpen, openSheet, closeSheet } = useSheet();
+
   return (
     <div className="flex flex-col items-center gap-10">
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
+        <div className="p-4">
+          <Button onClick={openSheet}>Open Sheet</Button>
+          <KSheet isOpen={isOpen} onClose={closeSheet} title="Example Sheet">
+            <ExampleForm />
+          </KSheet>
+        </div>
       </div>
       <div className="flex gap-10">
         <div className="flex flex-col gap-5">
