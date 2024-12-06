@@ -16,6 +16,9 @@ import { RegisterSchema } from '@/schemas';
 
 import FileUploader from '@/components/file-uploader';
 
+import { MemberDetailsSidebar } from '@/components/sidebar/MemberDetailsSidebar.tsx';
+import { MemberDetailsProvider } from '@/components/sidebar/MemberDetailsContext';
+
 const IdentificationTypes = [
   'Birth Certificate',
   "Driver's License",
@@ -43,6 +46,10 @@ const SampleTestPage = () => {
 
   return (
     <div className="flex flex-col items-center gap-10">
+      <MemberDetailsProvider>
+        <MemberDetailsSidebar />
+      </MemberDetailsProvider>
+
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
       </div>
