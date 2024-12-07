@@ -57,3 +57,46 @@ export const formatDayWithLeadingZero = (day: Date): string => {
   const dayNumber = day.getDate();
   return dayNumber.toString().padStart(2, '0');
 };
+
+export const formatFieldName = (field: string): string => {
+  return field
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/([a-z])([0-9])/g, '$1 $2')
+    .replace(/^[a-z]/, (char) => char.toUpperCase());
+};
+
+/**
+ * Utility to generate pagination pages for table.
+ *
+ * @param pageIndex - The current zero-based page index.
+ * @param pageCount - The total number of pages.
+ * @param maxPagesToShow - The maximum number of pages to show in the pagination UI.
+ * @returns An array of page numbers or ellipses ("...").
+ */
+export const generatePaginationPages = (
+  pageIndex: number,
+  pageCount: number,
+  maxPagesToShow: number = 5
+): (number | string)[] => {
+  const pages: (number | string)[] = [];
+
+  if (pageCount <= maxPagesToShow + 2) {
+    for (let i = 0; i < pageCount; i++) {
+      pages.push(i + 1);
+    }
+  } else {
+    if (pageIndex > 1) pages.push(1); // First page
+    if (pageIndex > 2) pages.push('...'); // Ellipsis before
+
+    const start = Math.max(1, pageIndex - 1);
+    const end = Math.min(pageCount, pageIndex + 2);
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (pageIndex + 2 < pageCount - 1) pages.push('...'); // Ellipsis after
+    if (pageIndex + 1 < pageCount) pages.push(pageCount); // Last page
+  }
+
+  return pages;
+};
