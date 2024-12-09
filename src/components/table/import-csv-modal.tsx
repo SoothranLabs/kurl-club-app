@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { Upload } from 'lucide-react';
+
+import { useCSVImport } from '@/hooks/use-csv-import';
+
+import { FieldMapper } from '@/components/table/field-mapper';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -7,32 +13,26 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Member } from '@/types';
-import { useCSVImport } from '@/hooks/use-csv-import';
-import { FieldMapper } from '@/components/members/field-mapper';
-import { Upload } from 'lucide-react';
 
-interface ImportCSVModalProps {
+interface ImportCSVModalProps<T> {
   isOpen: boolean;
   onClose: () => void;
-  onImport: (data: Member[]) => void;
+  onImport: (data: T[]) => void;
+  requiredFields: string[];
+  transformations?: (row: Partial<T>, rowIndex: number) => Partial<T>;
+  defaults?: Partial<T>;
 }
 
-const requiredFields = [
-  'gymNo',
-  'name',
-  'package',
-  'feeStatus',
-  'email',
-  'phone',
-];
-
-export const ImportCSVModal = ({
+export const ImportCSVModal = <T,>({
   isOpen,
   onClose,
   onImport,
-}: ImportCSVModalProps) => {
+  requiredFields,
+  transformations,
+  defaults,
+}: ImportCSVModalProps<T>) => {
+  const [importCompleted, setImportCompleted] = useState(false);
+
   const {
     csvData,
     headers,
@@ -43,9 +43,7 @@ export const ImportCSVModal = ({
     updateMapping,
     validateAndImport,
     resetImport,
-  } = useCSVImport(requiredFields);
-
-  const [importCompleted, setImportCompleted] = useState(false);
+  } = useCSVImport<T>(requiredFields, transformations, defaults);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -67,9 +65,7 @@ export const ImportCSVModal = ({
     <Dialog
       open={isOpen}
       onOpenChange={(open) => {
-        if (!open) {
-          handleClose();
-        }
+        if (!open) handleClose();
       }}
     >
       <DialogContent className="sm:max-w-[600px] bg-secondary-blue-700 border-primary-blue-400">
