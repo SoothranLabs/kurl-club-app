@@ -88,12 +88,13 @@ const SampleTestPage = () => {
         {/* Dialog Button */}
         <Dialog>
           <DialogTrigger asChild>
-            <Button>Share</Button>
+            <Button>Finish setting up</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="bg-secondary-blue-700 border-primary-blue-400">
             <DialogTitle></DialogTitle>
             <OnboardingStepForm />
           </DialogContent>
+
         </Dialog>
       </div>
 
