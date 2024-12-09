@@ -6,7 +6,7 @@ import { TrainerFormSchema } from '@/schemas';
 
 import { Button } from '@/components/ui/button';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-import { KTrash } from "@/components/icons";
+import { KTrash } from '@/components/icons';
 
 type InviteTrainerStepData = z.infer<typeof TrainerFormSchema>;
 
@@ -34,7 +34,7 @@ export const InviteTrainerStep = ({ onSubmit }: InviteTrainerStepProps) => {
     <div>
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-2">Add Trainers</h2>
-        <p className="text-large text-gray-400" >
+        <p className="text-large text-gray-400">
           Add your buddies that make your gym awesome!
         </p>
       </div>
@@ -46,7 +46,7 @@ export const InviteTrainerStep = ({ onSubmit }: InviteTrainerStepProps) => {
         >
           {fields.map((field, index) => (
             <div key={field.id} className="flex items-center space-x-2">
-              <div className='w-[25rem]'>
+              <div className="w-[25rem]">
                 <KFormField
                   fieldType={KFormFieldType.INPUT}
                   control={form.control}

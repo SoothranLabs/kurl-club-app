@@ -26,9 +26,11 @@ export const PhoneVerifyStep = ({ onSubmit }: PhoneVerifyStepProps) => {
 
   return (
     <div>
-      <div className="mb-6"> 
+      <div className="mb-6">
         <h1 className="text-xl font-semibold mb-2">Verify Phone</h1>
-        <span  className="text-large text-gray-400">A verification code will be sent to your phone</span>
+        <span className="text-large text-gray-400">
+          A verification code will be sent to your phone
+        </span>
       </div>
       <FormProvider {...form}>
         <form
@@ -48,6 +50,5 @@ export const PhoneVerifyStep = ({ onSubmit }: PhoneVerifyStepProps) => {
         </form>
       </FormProvider>
     </div>
-
   );
 };

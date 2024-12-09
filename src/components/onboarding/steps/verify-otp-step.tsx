@@ -28,7 +28,9 @@ export const VerifyOTPStep = ({ onSubmit }: VerifyOTPStepProps) => {
     <div>
       <div className="mb-6">
         <h1 className="text-xl font-semibold mb-2">Enter OTP</h1>
-        <span className="text-large text-gray-400">Enter the OTP sent to your phone</span>
+        <span className="text-large text-gray-400">
+          Enter the OTP sent to your phone
+        </span>
       </div>
       <FormProvider {...form}>
         <form

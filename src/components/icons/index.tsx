@@ -250,5 +250,3 @@ export const KTrash: React.FC<SVGProps<SVGSVGElement>> = (props) => (
     <line x1="14" x2="14" y1="11" y2="17" />
   </svg>
 );
-
-

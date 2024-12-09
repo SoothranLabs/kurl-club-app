@@ -10,9 +10,6 @@ import { KGlobe } from '@/components/icons';
 import { KInstagramIcon } from '@/components/icons';
 import { KFacebookIcon } from '@/components/icons';
 
-
-
-
 type CreateGymStepData = z.infer<typeof GymDetailsSchema>;
 
 type CreateGymStepProps = {

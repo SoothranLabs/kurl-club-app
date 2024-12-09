@@ -94,7 +94,6 @@ const SampleTestPage = () => {
             <DialogTitle></DialogTitle>
             <OnboardingStepForm />
           </DialogContent>
-
         </Dialog>
       </div>
 
