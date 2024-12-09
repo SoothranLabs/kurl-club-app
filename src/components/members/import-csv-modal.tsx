@@ -11,8 +11,9 @@ import { Button } from '@/components/ui/button';
 import { Member } from '@/types';
 import { useCSVImport } from '@/hooks/use-csv-import';
 import { FieldMapper } from '@/components/members/field-mapper';
+import { Upload } from 'lucide-react';
 
-interface ImportModalProps {
+interface ImportCSVModalProps {
   isOpen: boolean;
   onClose: () => void;
   onImport: (data: Member[]) => void;
@@ -27,11 +28,11 @@ const requiredFields = [
   'phone',
 ];
 
-export const ImportModal = ({
+export const ImportCSVModal = ({
   isOpen,
   onClose,
   onImport,
-}: ImportModalProps) => {
+}: ImportCSVModalProps) => {
   const {
     csvData,
     headers,
@@ -46,7 +47,7 @@ export const ImportModal = ({
 
   const [importCompleted, setImportCompleted] = useState(false);
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const handleImport = () => {
     if (validateAndImport(onImport)) {
@@ -71,17 +72,29 @@ export const ImportModal = ({
         }
       }}
     >
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[600px] bg-secondary-blue-700 border-primary-blue-400">
         <DialogHeader>
           <DialogTitle>Import CSV</DialogTitle>
         </DialogHeader>
         {csvData.length === 0 || importCompleted ? (
           <div
             {...getRootProps()}
-            className="border-2 border-dashed border-gray-300 p-6 text-center"
+            className={`border-2 border-dashed rounded-lg p-10 text-center cursor-pointer transition-colors ${
+              isDragActive
+                ? 'border-primary-green-800 bg-primary-green-700/10'
+                : 'border-secondary-blue-500'
+            }`}
           >
             <input {...getInputProps()} />
-            <p>Drag and drop a CSV file here, or click to select one</p>
+            <Upload className="w-12 h-12 mx-auto mb-4 text-secondary-blue-300" />
+            <p className="text-lg font-medium mb-2">
+              {isDragActive
+                ? 'Drop the file here'
+                : 'Drag and drop a CSV file here'}
+            </p>
+            <p className="text-sm text-secondary-blue-300">
+              or click to select a file
+            </p>
           </div>
         ) : isMappingRequired ? (
           <FieldMapper

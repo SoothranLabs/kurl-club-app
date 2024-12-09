@@ -14,10 +14,10 @@ export function Search({ onSearch, ...props }: SearchProps) {
 
   return (
     <div className="relative flex-1">
-      <SearchIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+      <SearchIcon className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
       <Input
         placeholder="Search"
-        className="pl-8"
+        className="pl-10 bg-secondary-blue-500 rounded-md text-white border-0 appearance-none hover:outline-secondary-blue-400  hover:outline-1 hover:outline transition-colors ease-in-out"
         onChange={handleSearch}
         {...props}
       />

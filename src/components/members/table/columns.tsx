@@ -1,19 +1,21 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { Check, Minus, AlertCircle, MoreVertical } from 'lucide-react';
+import { MoreVertical } from 'lucide-react';
 
 import { Member } from '@/types';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
 
 export const columns: ColumnDef<Member>[] = [
   {
     accessorKey: 'gymNo',
     header: 'Gym no',
     cell: ({ row }) => <div className="w-[100px]">{row.getValue('gymNo')}</div>,
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: 'name',
@@ -23,13 +25,17 @@ export const columns: ColumnDef<Member>[] = [
       return (
         <div className="flex items-center gap-2 w-[200px]">
           <Avatar className="h-8 w-8">
-            <AvatarFallback>{name.slice(0, 2)}</AvatarFallback>
+            <AvatarFallback className="bg-primary-blue-400/70">
+              {name.slice(0, 2)}
+            </AvatarFallback>
             <AvatarImage src={row.original.avatar} alt={name} />
           </Avatar>
           <span>{name}</span>
         </div>
       );
     },
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: 'package',
@@ -37,39 +43,26 @@ export const columns: ColumnDef<Member>[] = [
     cell: ({ row }) => (
       <div className="min-w-[100px]">{row.getValue('package')}</div>
     ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
     accessorKey: 'feeStatus',
     header: 'Fee status',
     cell: ({ row }) => {
-      const status = row.getValue('feeStatus') as string;
+      const status = row.getValue('feeStatus') as
+        | 'paid'
+        | 'partially_paid'
+        | 'unpaid';
       return (
         <div className="min-w-[120px]">
-          <Badge
-            variant="outline"
-            className={
-              status === 'paid'
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                : status === 'partially_paid'
-                  ? 'bg-amber-50 text-amber-700 border-amber-200'
-                  : 'bg-red-50 text-red-700 border-red-200'
-            }
-          >
-            {status === 'paid' ? (
-              <Check className="mr-1 h-3 w-3" />
-            ) : status === 'partially_paid' ? (
-              <Minus className="mr-1 h-3 w-3" />
-            ) : (
-              <AlertCircle className="mr-1 h-3 w-3" />
-            )}
-            {status === 'paid'
-              ? 'Paid'
-              : status === 'partially_paid'
-                ? 'Partially paid'
-                : 'Unpaid'}
-          </Badge>
+          <FeeStatusBadge status={status} />
         </div>
       );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
     },
   },
   {
@@ -92,6 +85,9 @@ export const columns: ColumnDef<Member>[] = [
     cell: ({ row }) => (
       <div className="min-w-[100px]">{row.getValue('bloodGroup')}</div>
     ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
     accessorKey: 'gender',

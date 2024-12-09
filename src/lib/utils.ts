@@ -66,37 +66,30 @@ export const formatFieldName = (field: string): string => {
 };
 
 /**
- * Utility to generate pagination pages for table.
+ * Filters an array of objects based on a search term.
+ * Searches through all string properties by default.
  *
- * @param pageIndex - The current zero-based page index.
- * @param pageCount - The total number of pages.
- * @param maxPagesToShow - The maximum number of pages to show in the pagination UI.
- * @returns An array of page numbers or ellipses ("...").
+ * @param items - The array of objects to search.
+ * @param term - The search term.
+ * @param getSearchableValues - Optional function to extract searchable values from an item.
+ * @returns Filtered array of items matching the search term.
  */
-export const generatePaginationPages = (
-  pageIndex: number,
-  pageCount: number,
-  maxPagesToShow: number = 5
-): (number | string)[] => {
-  const pages: (number | string)[] = [];
+export function searchItems<T extends Record<string, unknown>>(
+  items: T[],
+  term: string,
+  getSearchableValues?: (item: T) => string[]
+): T[] {
+  if (!term.trim()) return items;
 
-  if (pageCount <= maxPagesToShow + 2) {
-    for (let i = 0; i < pageCount; i++) {
-      pages.push(i + 1);
-    }
-  } else {
-    if (pageIndex > 1) pages.push(1); // First page
-    if (pageIndex > 2) pages.push('...'); // Ellipsis before
+  return items.filter((item) => {
+    const searchableValues = getSearchableValues
+      ? getSearchableValues(item)
+      : (Object.values(item).filter(
+          (value) => typeof value === 'string'
+        ) as string[]);
 
-    const start = Math.max(1, pageIndex - 1);
-    const end = Math.min(pageCount, pageIndex + 2);
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-
-    if (pageIndex + 2 < pageCount - 1) pages.push('...'); // Ellipsis after
-    if (pageIndex + 1 < pageCount) pages.push(pageCount); // Last page
-  }
-
-  return pages;
-};
+    return searchableValues.some((value) =>
+      value.toLowerCase().includes(term.toLowerCase())
+    );
+  });
+}

@@ -8,11 +8,6 @@ body {
   color: var(--primary-text);
 }
 
-svg {
-  width: auto !important;
-  height: auto !important;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
