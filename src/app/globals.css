@@ -8,11 +8,6 @@ body {
   color: var(--primary-text);
 }
 
-svg {
-  width: auto !important;
-  height: auto !important;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -46,7 +41,7 @@ svg {
 @layer utilities {
   /* =====  SHADCN OVERRIDES */
   .shad-select-trigger {
-    @apply bg-secondary-blue-500 text-white placeholder:text-white h-14 border-0 appearance-none focus:ring-0 hover:outline hover:outline-secondary-blue-400 focus:outline focus:outline-primary-green-700 transition-colors duration-300 ease-in-out !important;
+    @apply bg-secondary-blue-500 text-white placeholder:text-white border-0 appearance-none focus:ring-0 hover:outline hover:outline-secondary-blue-400 focus:outline focus:outline-primary-green-700 transition-colors duration-300 ease-in-out !important;
   }
 
   .shad-select-content {

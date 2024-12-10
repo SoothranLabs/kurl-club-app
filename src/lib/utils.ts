@@ -57,3 +57,39 @@ export const formatDayWithLeadingZero = (day: Date): string => {
   const dayNumber = day.getDate();
   return dayNumber.toString().padStart(2, '0');
 };
+
+export const formatFieldName = (field: string): string => {
+  return field
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/([a-z])([0-9])/g, '$1 $2')
+    .replace(/^[a-z]/, (char) => char.toUpperCase());
+};
+
+/**
+ * Filters an array of objects based on a search term.
+ * Searches through all string properties by default.
+ *
+ * @param items - The array of objects to search.
+ * @param term - The search term.
+ * @param getSearchableValues - Optional function to extract searchable values from an item.
+ * @returns Filtered array of items matching the search term.
+ */
+export function searchItems<T extends Record<string, unknown>>(
+  items: T[],
+  term: string,
+  getSearchableValues?: (item: T) => string[]
+): T[] {
+  if (!term.trim()) return items;
+
+  return items.filter((item) => {
+    const searchableValues = getSearchableValues
+      ? getSearchableValues(item)
+      : (Object.values(item).filter(
+          (value) => typeof value === 'string'
+        ) as string[]);
+
+    return searchableValues.some((value) =>
+      value.toLowerCase().includes(term.toLowerCase())
+    );
+  });
+}
