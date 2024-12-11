@@ -1,3 +1,4 @@
+
 'use client';
 
 import { z } from 'zod';
@@ -51,6 +52,7 @@ const ExampleForm = () => {
     </form>
   );
 };
+
 const SampleTestPage = () => {
   const form = useForm<z.infer<typeof SamplePageSchema>>({
     resolver: zodResolver(SamplePageSchema),
@@ -76,9 +78,8 @@ const SampleTestPage = () => {
     <div className="flex flex-col items-center gap-10">
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
-
-        {/* KSheet Button */}
         <div className="p-4">
+          {/* KSheet Button */}
           <Button onClick={openSheet}>Open Sheet</Button>
           <KSheet isOpen={isOpen} onClose={closeSheet} title="Example Sheet">
             <ExampleForm />
@@ -88,14 +89,15 @@ const SampleTestPage = () => {
         {/* Dialog Button */}
         <Dialog>
           <DialogTrigger asChild>
-            <Button>Share</Button>
+            <Button>Finish setting up</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="bg-secondary-blue-700 border-primary-blue-400">
             <DialogTitle></DialogTitle>
             <OnboardingStepForm />
           </DialogContent>
         </Dialog>
       </div>
+
       <div className="flex gap-10">
         <div className="flex flex-col gap-5">
           <Button>KurlClub Button</Button>

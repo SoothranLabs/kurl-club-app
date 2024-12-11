@@ -1,5 +1,3 @@
-'use client';
-
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
@@ -8,6 +6,7 @@ import { TrainerFormSchema } from '@/schemas';
 
 import { Button } from '@/components/ui/button';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { KTrash } from '@/components/icons';
 
 type InviteTrainerStepData = z.infer<typeof TrainerFormSchema>;
 
@@ -33,9 +32,9 @@ export const InviteTrainerStep = ({ onSubmit }: InviteTrainerStepProps) => {
 
   return (
     <div>
-      <div>
-        <h2 className="text-xl font-semibold mb-2">Add your Trainers</h2>
-        <p className="text-sm text-gray-400">
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Add Trainers</h2>
+        <p className="text-large text-gray-400">
           Add your buddies that make your gym awesome!
         </p>
       </div>
@@ -47,33 +46,38 @@ export const InviteTrainerStep = ({ onSubmit }: InviteTrainerStepProps) => {
         >
           {fields.map((field, index) => (
             <div key={field.id} className="flex items-center space-x-2">
-              <KFormField
-                fieldType={KFormFieldType.INPUT}
-                control={form.control}
-                name={`trainers.${index}.email`}
-                label={`Trainer Email ${index + 1}`}
-                placeholder="trainer@example.com"
-              />
+              <div className="w-[25rem]">
+                <KFormField
+                  fieldType={KFormFieldType.INPUT}
+                  control={form.control}
+                  name={`trainers.${index}.email`}
+                  label={`Enter Trainer Email ${index + 1}`}
+                  placeholder="trainer@example.com"
+                />
+              </div>
+
               <Button
                 type="button"
                 onClick={() => remove(index)}
                 className="h-[42px]"
-                variant="destructive"
+                variant="secondary"
               >
-                Remove
+                <KTrash />
               </Button>
             </div>
           ))}
-          <Button
-            type="button"
-            onClick={() => append({ email: '' })}
-            className="w-full"
-          >
-            + Add Another Trainer
-          </Button>
-          <Button type="submit" className="w-full mt-4">
-            Invite Trainers
-          </Button>
+          <div className="flex justify-between space-x-4">
+            <Button
+              type="button"
+              onClick={() => append({ email: '' })}
+              className="w-1/2"
+            >
+              + Add More
+            </Button>
+            <Button type="submit" className="w-1/2">
+              Invite Trainers
+            </Button>
+          </div>
         </form>
       </FormProvider>
     </div>

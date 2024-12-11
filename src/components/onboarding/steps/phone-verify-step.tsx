@@ -1,5 +1,3 @@
-'use client';
-
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -28,9 +26,11 @@ export const PhoneVerifyStep = ({ onSubmit }: PhoneVerifyStepProps) => {
 
   return (
     <div>
-      <div>
-        <h2>Verify Phone</h2>
-        <span>A verification code will be sent to your phone</span>
+      <div className="mb-6">
+        <h1 className="text-xl font-semibold mb-2">Verify Phone</h1>
+        <span className="text-large text-gray-400">
+          A verification code will be sent to your phone
+        </span>
       </div>
       <FormProvider {...form}>
         <form

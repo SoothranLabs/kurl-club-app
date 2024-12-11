@@ -1,5 +1,3 @@
-'use client';
-
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -28,9 +26,11 @@ export const VerifyOTPStep = ({ onSubmit }: VerifyOTPStepProps) => {
 
   return (
     <div>
-      <div>
-        <h2>Enter OTP</h2>
-        <span>Enter the OTP sent to your phone</span>
+      <div className="mb-6">
+        <h1 className="text-xl font-semibold mb-2">Enter OTP</h1>
+        <span className="text-large text-gray-400">
+          Enter the OTP sent to your phone
+        </span>
       </div>
       <FormProvider {...form}>
         <form
@@ -38,14 +38,14 @@ export const VerifyOTPStep = ({ onSubmit }: VerifyOTPStepProps) => {
           className="flex flex-col"
         >
           <KFormField
-            fieldType={KFormFieldType.INPUT}
+            fieldType={KFormFieldType.OTP}
             control={form.control}
             name="otp"
-            label="OTP"
-            placeholder="XXXXXX"
+            label="Enter OTP"
+            placeholder="Enter 6-digit OTP"
           />
           <Button type="submit" className="w-full mt-4">
-            Submit OTP
+            Verify
           </Button>
         </form>
       </FormProvider>

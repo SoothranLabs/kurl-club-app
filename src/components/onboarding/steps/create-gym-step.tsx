@@ -1,5 +1,3 @@
-'use client';
-
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -8,6 +6,9 @@ import { GymDetailsSchema } from '@/schemas';
 
 import { Button } from '@/components/ui/button';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { KGlobe } from '@/components/icons';
+import { KInstagramIcon } from '@/components/icons';
+import { KFacebookIcon } from '@/components/icons';
 
 type CreateGymStepData = z.infer<typeof GymDetailsSchema>;
 
@@ -38,9 +39,9 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
 
   return (
     <div>
-      <div>
+      <div className="mb-6">
         <h2 className="text-xl font-semibold mb-2">Add your Gym</h2>
-        <p className="text-sm text-gray-400">Fill in your gym details</p>
+        <p className="text-large text-gray-400">Fill in your gym details</p>
       </div>
 
       <FormProvider {...form}>
@@ -48,12 +49,12 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="flex flex-col"
         >
-          <div className="space-y-1">
+          <div className="space-y-2">
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
               name="gymName"
-              label="Gym Name"
+              label="Enter gym Name"
             />
             <KFormField
               fieldType={KFormFieldType.TEXTAREA}
@@ -85,29 +86,35 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
               fieldType={KFormFieldType.INPUT}
               control={form.control}
               name="email"
-              label="Email"
+              label=" Enter Email"
             />
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
               name="websiteLink"
-              label="Website URL"
+              label=" Enter Website URL"
+              placeholder="https://www.google.com"
+              iconSrc={<KGlobe />}
             />
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
               name="facebookPageLink"
-              label="Facebook URL"
+              label="Enter Facebook URL"
+              placeholder="https://www.google.com"
+              iconSrc={<KFacebookIcon />}
             />
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
               name="instagramLink"
-              label="Instagram URL"
+              label="Enter  Instagram URL"
+              placeholder="https://www.google.com"
+              iconSrc={<KInstagramIcon />}
             />
           </div>
           <Button type="submit" className="w-full mt-4">
-            Save Gym Details
+            Continue
           </Button>
         </form>
       </FormProvider>
