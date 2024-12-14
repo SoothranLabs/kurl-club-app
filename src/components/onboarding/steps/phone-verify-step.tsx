@@ -27,8 +27,8 @@ export const PhoneVerifyStep = ({ onSubmit }: PhoneVerifyStepProps) => {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold mb-2">Verify Phone</h1>
-        <span className="text-large text-gray-400">
+        <h1 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">Verify Phone</h1>
+        <span className="text-[14px] text-[#F8F8F8]">
           A verification code will be sent to your phone
         </span>
       </div>

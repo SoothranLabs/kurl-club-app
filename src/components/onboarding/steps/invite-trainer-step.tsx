@@ -33,8 +33,8 @@ export const InviteTrainerStep = ({ onSubmit }: InviteTrainerStepProps) => {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Add Trainers</h2>
-        <p className="text-large text-gray-400">
+        <h2 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">Add Trainers</h2>
+        <p className="text-[14px] text-[#F8F8F8]">
           Add your buddies that make your gym awesome!
         </p>
       </div>
@@ -42,7 +42,7 @@ export const InviteTrainerStep = ({ onSubmit }: InviteTrainerStepProps) => {
       <FormProvider {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col space-y-4"
+          className="flex flex-col space-y-6"
         >
           {fields.map((field, index) => (
             <div key={field.id} className="flex items-center space-x-2">

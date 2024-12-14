@@ -40,8 +40,8 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Add your Gym</h2>
-        <p className="text-large text-gray-400">Fill in your gym details</p>
+        <h2 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">Add your Gym</h2>
+        <p className="text-[14px] text-[#F8F8F8]">Fill in your gym details</p>
       </div>
 
       <FormProvider {...form}>
@@ -49,7 +49,7 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="flex flex-col"
         >
-          <div className="space-y-2">
+          <div className="space-y-6">
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
