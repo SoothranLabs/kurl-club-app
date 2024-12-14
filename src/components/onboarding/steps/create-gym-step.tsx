@@ -40,7 +40,9 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">Add your Gym</h2>
+        <h2 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">
+          Add your Gym
+        </h2>
         <p className="text-[14px] text-[#F8F8F8]">Fill in your gym details</p>
       </div>
 

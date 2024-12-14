@@ -33,7 +33,9 @@ export const InviteTrainerStep = ({ onSubmit }: InviteTrainerStepProps) => {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">Add Trainers</h2>
+        <h2 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">
+          Add Trainers
+        </h2>
         <p className="text-[14px] text-[#F8F8F8]">
           Add your buddies that make your gym awesome!
         </p>

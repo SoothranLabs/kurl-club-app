@@ -27,7 +27,9 @@ export const VerifyOTPStep = ({ onSubmit }: VerifyOTPStepProps) => {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">Enter OTP</h1>
+        <h1 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">
+          Enter OTP
+        </h1>
         <span className="text-[14px] text-[#F8F8F8]">
           Enter the OTP sent to your phone
         </span>
