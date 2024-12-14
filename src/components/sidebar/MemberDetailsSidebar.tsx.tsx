@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useMemberDetails } from '@/components/sidebar/MemberDetailsContext';
 import { CollapsibleSection } from '@/components/Collapsible';
 import { EditableField } from '@/components/Editable';
+import { Badge } from '@/components/ui/badge';
 
 export function MemberDetailsSidebar() {
   const { memberDetails, setMemberDetails, isEditing, setIsEditing } =
@@ -22,35 +23,51 @@ export function MemberDetailsSidebar() {
   };
 
   return (
-    <div className="w-80 h-screen bg-gray-900 text-white p-6 overflow-y-auto">
+    <div className="w-[336] h-screen bg-primary-blue-500 text-white p-8 overflow-y-auto border-r-[1px]">
       {/* Breadcrumb */}
       <div className="text-sm text-gray-400 mb-2">
-        Members &gt; Member details
+        <a
+          href="/members"
+          className="hover:underline cursor-pointer text-gray-400"
+        >
+          Members
+        </a>
+        &gt;
+        <a
+          href="/members-details"
+          className="hover:underline cursor-pointer text-gray-400"
+        >
+          Member details
+        </a>
       </div>
 
       {/* Header */}
-      <h1 className="text-2xl font-bold mb-6">Member details</h1>
+      <h2 className="text-2xl font-[400] font-figtree leading-[26.16px] mb-6">
+        Member details
+      </h2>
 
       {/* Profile Summary */}
-      <div className="flex items-center mb-4">
-        <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center text-2xl font-bold mr-4">
+      <div className="items-center mb-6">
+        <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center text-2xl font-[400] font-figtree text-neutral-green-300  mr-4 mb-2">
           {memberDetails.name
             .split(' ')
             .map((part) => part[0])
             .join('')}
         </div>
         <div>
-          <h2 className="text-xl font-bold">{memberDetails.name}</h2>
-          <p className="text-sm text-gray-400">
+          <h2 className="text-xl font-[500] font-figtree text-Primary-White">
+            {memberDetails.name}
+          </h2>
+          <p className="text-sm text-primary-blue-02-50 font-[400] font-figtree">
             Member since {memberDetails.memberSince}
           </p>
         </div>
       </div>
 
       {/* Gym Number */}
-      <div className="bg-gray-800 rounded-full py-1 px-4 inline-block mb-6">
+      <Badge className="bg-neutral-ochre-900 text-white rounded-full py-1 px-4  mb-6 inline-block border border-neutral-ochre-600">
         Gym no: #{memberDetails.gymNo}
-      </div>
+      </Badge>
 
       {/* Edit Button */}
       <Button
@@ -62,7 +79,7 @@ export function MemberDetailsSidebar() {
       </Button>
 
       {/* Sections */}
-      <div className="space-y-6">
+      <div className="space-y-2">
         <CollapsibleSection
           title="Basic details"
           isOpen={isBasicDetailsOpen}
