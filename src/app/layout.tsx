@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/providers/theme-provider';
 import { QueryProvider } from '@/providers/query-provider';
 import { Toaster } from 'sonner';
 import './globals.css';
+import AppLayout from '@/components/layout/app-layout';
 
 const figtree = localFont({
   src: [
@@ -60,7 +61,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Toaster richColors position="top-right" />
-            {children}
+            <AppLayout>{children}</AppLayout>
           </ThemeProvider>
         </QueryProvider>
       </body>
