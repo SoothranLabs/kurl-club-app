@@ -180,7 +180,6 @@ const SampleTestPage = () => {
                 showPresets
               />
             </section>
-
             <section className="space-y-6">
               <KFormField
                 fieldType={KFormFieldType.SKELETON}
@@ -193,7 +192,6 @@ const SampleTestPage = () => {
                   </FormControl>
                 )}
               />
-
               <KFormField
                 fieldType={KFormFieldType.CHECKBOX}
                 control={form.control}

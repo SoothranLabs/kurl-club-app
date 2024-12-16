@@ -13,7 +13,7 @@ function Navbar() {
     {
       id: 1,
       title: 'Dashboard',
-      url: '/',
+      url: '/dashboard',
     },
     {
       id: 1,
