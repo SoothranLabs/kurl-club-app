@@ -77,6 +77,10 @@ body {
     @apply transition-all duration-400;
   }
 
+  .container {
+    @apply max-w-[1440px] mx-auto px-8;
+  }
+
   .checkbox-label {
     @apply cursor-pointer text-sm font-normal text-white peer-disabled:cursor-not-allowed peer-disabled:opacity-70 md:leading-none;
   }

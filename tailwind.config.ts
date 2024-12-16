@@ -91,6 +91,7 @@ const config: Config = {
           yellow: {
             50: '#fffae6',
             100: '#ffeeb0',
+            150: '#F9FF54',
             200: '#ffe68a',
             300: '#ffdb54',
             400: '#ffd433',
@@ -105,6 +106,7 @@ const config: Config = {
           blue: {
             50: '#f4f6fd',
             100: '#dde4f9',
+            150: '#151821',
             200: '#ccd7f7',
             300: '#b5c5f3',
             400: '#a6b9f1',
