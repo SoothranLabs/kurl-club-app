@@ -1,4 +1,5 @@
 import { AuthFooter, AuthHeader } from '@/components/auth/auth-wrapper-helpers';
+import { AuthVerify } from '@/components/auth/auth-verify';
 import { Social } from '@/components/auth/social';
 
 interface AuthWrapperProps {
@@ -51,15 +52,7 @@ export const AuthWrapper = ({
         </>
       ) : (
         // verification
-        <div className="flex flex-col gap-7">
-          <h4 className="text-white font-semibold text-[32px] leading-normal">
-            Verify email ✅
-          </h4>
-          <p className="text-xl font-medium leading-normal text-white">
-            KurlClub has sent a mail to your account, login to by following the
-            link there !
-          </p>
-        </div>
+        <AuthVerify />
       )}
     </div>
   );
