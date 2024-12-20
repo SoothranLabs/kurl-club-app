@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const authToken = request.cookies.get('auth_token')?.value;
+  const authToken = request.cookies.get('refresh_token')?.value;
 
   // List of public paths that don't require authentication
   const publicPaths = [
@@ -10,6 +10,7 @@ export function middleware(request: NextRequest) {
     '/auth/login',
     '/auth/reset',
     '/auth/verify',
+    '/auth/update-password',
   ];
 
   const isPublicPath = publicPaths.includes(request.nextUrl.pathname);

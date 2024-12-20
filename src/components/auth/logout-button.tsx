@@ -3,7 +3,7 @@
 import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { logout } from '@/services/actions/auth';
+import { logout } from '@/services/auth/actions';
 import { Button } from '@/components/ui/button';
 
 export const LogoutButton = () => {

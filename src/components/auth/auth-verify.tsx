@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { verifyEmail } from '@/services/actions/verify-email';
+import { verifyEmail } from '@/services/auth/actions';
 
 export const AuthVerify = () => {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>(

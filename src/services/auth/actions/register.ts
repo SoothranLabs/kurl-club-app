@@ -1,5 +1,6 @@
 import * as z from 'zod';
 import { RegisterSchema } from '@/schemas';
+import { API_BASE_URL } from '@/lib/utils';
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   // 1. Validate form fields
@@ -22,16 +23,13 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
 
   try {
     // 3. Send a POST request using fetch
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/Auth/register`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      }
-    );
+    const response = await fetch(`${API_BASE_URL}/Auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
 
     // 4. Parse the response data
     const responseData = await response.json();

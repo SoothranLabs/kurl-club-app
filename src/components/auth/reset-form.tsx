@@ -1,12 +1,12 @@
 'use client';
 
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import * as z from 'zod';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { resetPassword } from '@/services/actions/reset';
+import { resetPassword } from '@/services/auth/actions';
 import { ResetSchema } from '@/schemas';
 
 import { Form } from '@/components/ui/form';
@@ -14,8 +14,23 @@ import { Button } from '@/components/ui/button';
 import { AuthWrapper } from '@/components/auth/auth-wrapper';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 
+const ResetSuccess = () => (
+  <AuthWrapper>
+    <div className="flex flex-col gap-7 text-center">
+      <h4 className="text-white font-semibold text-[32px] leading-normal">
+        Update your password 🔐
+      </h4>
+      <p className="text-xl font-medium leading-normal text-white">
+        KurlClub has sent a password reset link has been sent to your email.
+        Please check your inbox to reset your password.
+      </p>
+    </div>
+  </AuthWrapper>
+);
+
 export const ResetForm = () => {
   const [isPending, startTransition] = useTransition();
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm<z.infer<typeof ResetSchema>>({
     resolver: zodResolver(ResetSchema),
@@ -31,10 +46,13 @@ export const ResetForm = () => {
           toast.error(data.error);
         } else if (data.success) {
           toast.success(data.success);
+          setIsSuccess(true);
         }
       });
     });
   };
+
+  if (isSuccess) return <ResetSuccess />;
 
   return (
     <AuthWrapper

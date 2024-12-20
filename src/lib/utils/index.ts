@@ -12,6 +12,8 @@ import {
 } from 'date-fns';
 import { DateRange } from 'react-day-picker';
 
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL!;
+
 /**
  * Merges multiple class names conditionally and removes duplicates.
  *

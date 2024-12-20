@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { AuthWrapper } from '@/components/auth/auth-wrapper';
 
 function VerifyPage() {

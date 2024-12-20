@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { register } from '@/services/actions/auth';
+import { register } from '@/services/auth/actions';
 import { RegisterSchema } from '@/schemas';
 
 import { Form } from '@/components/ui/form';
