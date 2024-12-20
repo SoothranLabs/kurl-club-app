@@ -36,7 +36,7 @@ export const LoginForm = () => {
         if (data.error) {
           toast.error(data.error);
         } else if (data.success) {
-          setAccessToken(data.token);
+          setAccessToken(data.token!);
           router.push('/dashboard');
           toast.success('Logged in successfully!');
         }

@@ -3,7 +3,17 @@
 import * as z from 'zod';
 import { LoginSchema } from '@/schemas';
 import { createSession, deleteSession } from '@/services/auth/session';
-import { API_BASE_URL } from '@/lib/utils';
+import { api } from '@/lib/api';
+
+type LoginResponse = {
+  token: string;
+  refreshToken: string;
+  userDetails: {
+    id: string;
+    name: string;
+    email: string;
+  };
+};
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -13,25 +23,13 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   }
 
   try {
-    const response = await fetch(`${API_BASE_URL}/Auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: values.email,
-        password: values.password,
-        loginType: 'Standard',
-      }),
+    const data = await api.post<LoginResponse>('/Auth/login', {
+      email: values.email,
+      password: values.password,
+      loginType: 'Standard',
     });
 
-    if (!response.ok) {
-      throw new Error('Login failed');
-    }
-
-    const data = await response.json();
-
-    // Save the refresh token in an HTTP-only cookie
+    // Save refresh token in a secure HTTP-only cookie
     await createSession(data.refreshToken);
 
     return { success: true, token: data.token, userDetails: data.userDetails };

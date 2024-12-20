@@ -2,11 +2,17 @@
 
 import * as z from 'zod';
 import { UpdatePasswordSchema } from '@/schemas';
-import { API_BASE_URL } from '@/lib/utils';
+import { api } from '@/lib/api';
+
+type UpdatePasswordResponse = {
+  status: string;
+  message: string;
+};
 
 export const updatePassword = async (
   values: z.infer<typeof UpdatePasswordSchema> & { token: string }
 ) => {
+  // 1. Validate the input fields
   const validatedFields = UpdatePasswordSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -14,25 +20,29 @@ export const updatePassword = async (
   }
 
   try {
-    const response = await fetch(`${API_BASE_URL}/Auth/update-password`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    // 2. Use `api.post` to make the request
+    const response = await api.post<UpdatePasswordResponse>(
+      '/Auth/update-password',
+      {
         token: values.token,
         newPassword: values.newPassword,
         confirmPassword: values.confirmPassword,
-      }),
-    });
+      }
+    );
 
-    if (!response.ok) {
-      throw new Error('Failed to update password');
+    // 3. Handle response status
+    if (response.status !== 'Success') {
+      return { error: response.message || 'Failed to update password' };
     }
 
-    return { success: 'Password updated successfully!' };
-  } catch (error) {
+    return { success: response.message || 'Password updated successfully!' };
+  } catch (error: unknown) {
     console.error('Error during password update:', error);
-    return { error: 'Failed to update password' };
+    return {
+      error:
+        error instanceof Error
+          ? error.message
+          : 'An unexpected error occurred!',
+    };
   }
 };

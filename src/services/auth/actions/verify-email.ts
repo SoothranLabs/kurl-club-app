@@ -1,3 +1,10 @@
+import { api } from '@/lib/api';
+
+type VerifyEmailResponse = {
+  status: string;
+  message: string;
+};
+
 export const verifyEmail = async (
   token: string
 ): Promise<{ success?: string; error?: string }> => {
@@ -6,26 +13,15 @@ export const verifyEmail = async (
   }
 
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/verify-email?token=${token}`,
-      {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    const response = await api.get<VerifyEmailResponse>('/auth/verify-email', {
+      params: { token },
+    });
 
-    if (!response.ok) {
-      const { message } = await response.json();
-      console.log(message);
-
-      return { error: 'The verification link is invalid or has expired.' };
-    }
-
-    const { status } = await response.json();
-    return status === 'Success'
+    return response.status === 'Success'
       ? { success: 'Your email has been successfully verified!' }
       : { error: 'Email verification failed!' };
   } catch (error: unknown) {
+    console.error('Email verification error:', error);
     return {
       error:
         error instanceof Error

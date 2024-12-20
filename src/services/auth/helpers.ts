@@ -1,38 +1,33 @@
 'use server';
 
-import { API_BASE_URL } from '@/lib/utils';
+import { api } from '@/lib/api';
 import {
   getRefreshToken,
   createSession,
   deleteSession,
 } from '@/services/auth/session';
 
+type RefreshTokenResponse = {
+  token: string;
+  refreshToken: string;
+};
+
 export async function refreshAccessToken(): Promise<string | null> {
   const refreshToken = await getRefreshToken();
   if (!refreshToken) return null;
 
   try {
-    const response = await fetch(`${API_BASE_URL}/Auth/refresh-token`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ refreshToken }),
+    const data = await api.post<RefreshTokenResponse>('/Auth/refresh-token', {
+      refreshToken,
     });
-
-    if (!response.ok) {
-      if (response.status === 401) {
-        console.error('Refresh token expired or invalid. Logging out...');
-        await deleteSession();
-      }
-      throw new Error('Failed to refresh token');
-    }
-
-    const data = await response.json();
-    await createSession(data.refreshToken); // Update refreshToken if needed
-    return data.token; // Return new accessToken
-  } catch (error) {
+    await createSession(data.refreshToken);
+    return data.token;
+  } catch (error: unknown) {
     console.error('Error refreshing token:', error);
+    if (error instanceof Error && error.message.includes('401')) {
+      console.error('Refresh token expired or invalid. Logging out...');
+      await deleteSession();
+    }
     return null;
   }
 }

@@ -12,3 +12,8 @@ export type Member = {
   doj?: string;
   dob?: string;
 };
+
+export type ApiResponse<T = void> = {
+  success?: T;
+  error?: string;
+};
