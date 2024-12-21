@@ -40,6 +40,7 @@ export const RegisterForm = () => {
   };
 
   return (
+    // TODO: Scroll is presenting when warning text appears
     <AuthWrapper
       header={{
         title: 'Create an Account',

@@ -12,12 +12,15 @@ import { Button } from '@/components/ui/button';
 import { KCalenderMonth } from '@/components/icons';
 import { ThemeModeToggle } from '@/components/theme-toggler';
 
-import { RegisterSchema } from '@/schemas';
+import { SamplePageSchema } from '@/schemas';
 
 import FileUploader from '@/components/file-uploader';
+import { useSheet } from '@/hooks/use-sheet';
+import { KSheet } from '@/components/form/k-sheet';
+import { Input } from './ui/input';
 
-import { MemberDetailsSidebar } from '@/components/sidebar/MemberDetailsSidebar.tsx';
-import { MemberDetailsProvider } from '@/components/sidebar/MemberDetailsContext';
+import { Sidebar } from '@/components/members/sidebar/sidebar';
+import { MemberDetailsProvider } from '@/components/members/sidebar/sidebar-context';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -33,25 +36,50 @@ const IdentificationTypes = [
   'Voter ID Card',
 ];
 
+const ExampleForm = () => {
+  return (
+    <form className="space-y-4">
+      <Input placeholder="Name" />
+      <Input placeholder="Email" type="email" />
+      <Button type="submit">Submit</Button>
+    </form>
+  );
+};
 const SampleTestPage = () => {
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  const form = useForm<z.infer<typeof SamplePageSchema>>({
+    resolver: zodResolver(SamplePageSchema),
     defaultValues: {
       email: '',
       password: '',
       confirmPassword: '',
       privacyConsent: false,
+      fullName: '',
+      familyHistory: '',
+      phoneNumber: '',
+      identificationType: '',
+      dateOfBirth: undefined,
+      identificationDocument: '',
+      otp: '',
+      websiteUrl: '',
     },
   });
+
+  const { isOpen, openSheet, closeSheet } = useSheet();
 
   return (
     <div className="flex flex-col items-center gap-10">
       <MemberDetailsProvider>
-        <MemberDetailsSidebar />
+        <Sidebar />
       </MemberDetailsProvider>
 
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
+        <div className="p-4">
+          <Button onClick={openSheet}>Open Sheet</Button>
+          <KSheet isOpen={isOpen} onClose={closeSheet} title="Example Sheet">
+            <ExampleForm />
+          </KSheet>
+        </div>
       </div>
       <div className="flex gap-10">
         <div className="flex flex-col gap-5">
@@ -73,17 +101,27 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.INPUT}
                 control={form.control}
-                name="password"
+                name="fullName"
                 label="Full Name"
                 placeholder="John Doe"
+              />
+
+              {/* INPUT WITH ICON */}
+              <KFormField
+                fieldType={KFormFieldType.INPUT}
+                control={form.control}
+                name="websiteUrl"
+                label="Website Link"
+                placeholder="https://www.google.com"
+                iconSrc={<KCalenderMonth />}
               />
 
               {/* PASSWORD */}
               <KFormField
                 fieldType={KFormFieldType.PASSWORD}
                 control={form.control}
-                name="email"
-                label="confirmPassword"
+                name="password"
+                label="Password"
                 placeholder="Enter your password"
               />
 
@@ -91,7 +129,7 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.TEXTAREA}
                 control={form.control}
-                name="password"
+                name="familyHistory"
                 label=" Family medical history (if relevant)"
                 placeholder="Mother had brain cancer, Father has hypertension"
               />
@@ -100,16 +138,25 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.PHONE_INPUT}
                 control={form.control}
-                name="password"
+                name="phoneNumber"
                 label="Phone number"
                 placeholder="(555) 123-4567"
+              />
+
+              {/* OTP INPUT */}
+              <KFormField
+                fieldType={KFormFieldType.OTP}
+                control={form.control}
+                name="otp"
+                label="Enter OTP"
+                placeholder="Enter 6-digit OTP"
               />
 
               {/* SELECT */}
               <KFormField
                 fieldType={KFormFieldType.SELECT}
                 control={form.control}
-                name="confirmPassword"
+                name="identificationType"
                 label="Identification Type"
                 placeholder="Select identification type"
               >
@@ -133,19 +180,18 @@ const SampleTestPage = () => {
               <KFormField
                 fieldType={KFormFieldType.DATE_PICKER}
                 control={form.control}
-                name="password"
+                name="dateOfBirth"
                 label="Date of birth"
                 numberOfMonths={2}
                 dateLabel="Pick a date range"
                 showPresets
               />
             </section>
-
             <section className="space-y-6">
               <KFormField
                 fieldType={KFormFieldType.SKELETON}
                 control={form.control}
-                name="password"
+                name="identificationDocument"
                 label="Scanned Copy of Identification Document"
                 renderSkeleton={() => (
                   <FormControl>
@@ -153,7 +199,6 @@ const SampleTestPage = () => {
                   </FormControl>
                 )}
               />
-
               <KFormField
                 fieldType={KFormFieldType.CHECKBOX}
                 control={form.control}

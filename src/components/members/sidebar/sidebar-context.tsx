@@ -7,24 +7,25 @@ interface MemberDetails {
   email: string;
   mobile: string;
   dob: string;
-  amountPaid: number;
-  package: string;
+  height: string;
+  weight: string;
+  workOutPlan: string;
+  assignedTo: string;
   bloodGroup: string;
-  doj: string;
   address: string;
   pin: string;
 }
 
-interface MemberDetailsContextProps {
+interface SidebarContextProps {
   memberDetails: MemberDetails;
   isEditing: boolean;
   setMemberDetails: React.Dispatch<React.SetStateAction<MemberDetails>>;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MemberDetailsContext = createContext<
-  MemberDetailsContextProps | undefined
->(undefined);
+const SidebarContext = createContext<SidebarContextProps | undefined>(
+  undefined
+);
 
 export const MemberDetailsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -32,30 +33,31 @@ export const MemberDetailsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [memberDetails, setMemberDetails] = useState<MemberDetails>({
     name: 'Prasoon Mohan',
-    memberSince: '13/03/2024',
+    memberSince: '14/03/2024',
     gymNo: '290897',
     email: 'magikmike@gmail.com',
-    mobile: '+91 1234 5678 90',
+    mobile: '+91 1234567891',
     dob: '13/03/2000',
-    amountPaid: 3500,
-    package: 'Quarterly',
-    bloodGroup: 'O+ve',
-    doj: '13/03/2025',
+    height: '157',
+    weight: '80',
+    workOutPlan: 'Weight loss',
+    assignedTo: 'Hafiz',
+    bloodGroup: 'O+',
     address: '221B , Trump towers Broadway, New Jersey Newyork',
     pin: '673612',
   });
 
   return (
-    <MemberDetailsContext.Provider
+    <SidebarContext.Provider
       value={{ memberDetails, setMemberDetails, isEditing, setIsEditing }}
     >
       {children}
-    </MemberDetailsContext.Provider>
+    </SidebarContext.Provider>
   );
 };
 
 export const useMemberDetails = () => {
-  const context = useContext(MemberDetailsContext);
+  const context = useContext(SidebarContext);
   if (!context) {
     throw new Error(
       'useMemberDetails must be used within a MemberDetailsProvider'
