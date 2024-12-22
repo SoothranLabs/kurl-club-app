@@ -16,17 +16,17 @@ function Navbar() {
       url: '/dashboard',
     },
     {
-      id: 1,
+      id: 2,
       title: 'members',
       url: '/members',
     },
     {
-      id: 1,
+      id: 3,
       title: 'Payments & attendance',
       url: '#',
     },
     {
-      id: 1,
+      id: 4,
       title: 'Chats',
       url: '#',
     },

@@ -33,9 +33,11 @@ const KInput = forwardRef<HTMLInputElement, KInputProps>(
           onChange={handleChange}
           placeholder=" "
           aria-labelledby={`floating-label-${label.replace(/\s+/g, '-').toLowerCase()}`}
+          autoComplete={props.autoComplete || 'off'}
         />
         <label
           id={`floating-label-${label.replace(/\s+/g, '-').toLowerCase()}`}
+          htmlFor={props.id}
           className={cn(
             'text-sm text-primary-blue-100 absolute left-4 transition-all duration-200 pointer-events-none',
             isFocused || hasContent ? 'top-2 text-xs' : 'top-4 text-sm'

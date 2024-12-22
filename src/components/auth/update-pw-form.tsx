@@ -1,13 +1,13 @@
 'use client';
 
 import { useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import * as z from 'zod';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { updatePassword } from '@/services/actions/update-user';
+import { updatePassword } from '@/services/user/actions/update-user';
 import { UpdatePasswordSchema } from '@/schemas';
 
 import { Form } from '@/components/ui/form';
@@ -17,6 +17,8 @@ import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 
 export const UpdatePasswordForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof UpdatePasswordSchema>>({
@@ -28,13 +30,18 @@ export const UpdatePasswordForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof UpdatePasswordSchema>) => {
+    if (!token) {
+      toast.error('Invalid or expired token');
+      return;
+    }
+
     startTransition(() => {
-      updatePassword(values).then((data) => {
+      updatePassword({ ...values, token }).then((data) => {
         if (data.error) {
           toast.error(data.error);
         } else if (data.success) {
           toast.success(data.success);
-          router.push('/auth/verify');
+          router.push('/auth/login');
         }
       });
     });

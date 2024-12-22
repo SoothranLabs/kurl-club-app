@@ -17,10 +17,11 @@ import { SamplePageSchema } from '@/schemas';
 import FileUploader from '@/components/file-uploader';
 import { useSheet } from '@/hooks/use-sheet';
 import { KSheet } from '@/components/form/k-sheet';
-import { Input } from './ui/input';
 
 import { Sidebar } from '@/components/members/sidebar/sidebar';
 import { MemberDetailsProvider } from '@/components/members/sidebar/sidebar-context';
+import { Input } from '@/components/ui/input';
+import { LogoutButton } from '@/components/auth/logout-button';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -80,6 +81,7 @@ const SampleTestPage = () => {
             <ExampleForm />
           </KSheet>
         </div>
+        <LogoutButton />
       </div>
       <div className="flex gap-10">
         <div className="flex flex-col gap-5">
