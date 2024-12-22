@@ -15,7 +15,6 @@ export function Sidebar() {
   const [isAddressDetailsOpen, setIsAddressDetailsOpen] = useState(true);
 
   const fields = [
-    // Basic Details
     { section: 'Basic details', label: 'Email', name: 'email', type: 'text' },
     {
       section: 'Basic details',
@@ -29,35 +28,52 @@ export function Sidebar() {
       label: 'Height',
       name: 'height',
       type: 'text',
+      suffix: 'CM',
     },
     {
       section: 'Basic details',
       label: 'Weight',
       name: 'weight',
       type: 'text',
+      suffix: 'KG',
     },
     {
       section: 'Basic details',
       label: 'Workout plan',
       name: 'workOutPlan',
       type: 'dropdown',
-      options: ['Weight loss', 'Weight gain'],
+      options: [
+        { id: 1, label: 'Weight loss' },
+        { id: 2, label: 'Weight gain' },
+      ],
     },
     {
       section: 'Basic details',
       label: 'Assigned to',
       name: 'assignedTo',
       type: 'dropdown',
-      options: ['Hafiz', 'Prasoon', 'Vicky'],
+      options: [
+        { id: 1, src: '/assets/svg/Trainer-pic.svg', label: 'Hafiz' },
+        { id: 2, src: '/assets/svg/Trainer-pic.svg', label: 'Prasoon' },
+        { id: 3, src: '/assets/svg/Trainer-pic.svg', label: 'Vicky' },
+      ],
     },
     {
       section: 'Basic details',
       label: 'Blood Group',
       name: 'bloodGroup',
       type: 'dropdown',
-      options: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+      options: [
+        { id: 1, label: 'A+' },
+        { id: 2, label: 'A-' },
+        { id: 3, label: 'B+' },
+        { id: 4, label: 'B-' },
+        { id: 5, label: 'AB+' },
+        { id: 6, label: 'AB-' },
+        { id: 7, label: 'O+' },
+        { id: 8, label: 'O-' },
+      ],
     },
-
     // Address Details
     {
       section: 'Address details',
@@ -88,11 +104,9 @@ export function Sidebar() {
     setMemberDetails((prev) => ({ ...prev, [name]: value }));
   };
 
-  console.log(fields);
-
   return (
-    <div className="w-[336px] h-screen py-8 bg-primary-blue-500 text-white overflow-y-auto border-r-[1px] border-secondary-blue-500">
-      <div className="px-8">
+    <div className="w-[336px] h-screen pb-8 bg-primary-blue-500 text-white overflow-y-auto border-r-[1px] border-secondary-blue-500">
+      <div className="px-8 sticky top-0 bg-primary-blue-500 pt-8">
         <Breadcrumb
           items={[
             { label: 'Members', href: '/members' },
@@ -170,6 +184,7 @@ export function Sidebar() {
               className="py-3 flex flex-col gap-2"
               type={field.type}
               options={field.options}
+              suffix={field.suffix}
             />
           ))}
         </CollapsibleSection>

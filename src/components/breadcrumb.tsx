@@ -62,7 +62,7 @@ export function Breadcrumb({
 }
 
 const BreadcrumbItem = ({ children }: { children: React.ReactNode }) => (
-  <li className="inline-flex items-center !ml-1">{children}</li>
+  <li className="inline-flex items-center !ml-0">{children}</li>
 );
 
 const BreadcrumbLink = ({
@@ -81,7 +81,7 @@ const BreadcrumbLink = ({
 );
 
 const BreadcrumbPage = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-primary-blue-200 font-normal text-sm leading-normal">
+  <span className="text-primary-blue-200 font-normal text-sm leading-normal ml-1">
     {children}
   </span>
 );

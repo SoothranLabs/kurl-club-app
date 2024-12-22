@@ -16,7 +16,13 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { SamplePageSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
 
+interface Option {
+  id: number;
+  label: string;
+  src?: string;
+}
 interface EditableFieldProps {
   label: string;
   name: string;
@@ -28,8 +34,9 @@ interface EditableFieldProps {
   ) => void;
   isEditing: boolean;
   type?: 'text' | 'dropdown' | 'textArea' | 'phone' | 'datePicker' | string;
-  options?: string[];
+  options?: Option[];
   className?: string;
+  suffix?: string;
 }
 
 export const EditableField: React.FC<EditableFieldProps> = ({
@@ -41,6 +48,7 @@ export const EditableField: React.FC<EditableFieldProps> = ({
   type = 'text',
   options = [],
   className,
+  suffix,
 }) => {
   const form = useForm<z.infer<typeof SamplePageSchema>>({
     resolver: zodResolver(SamplePageSchema),
@@ -84,10 +92,23 @@ export const EditableField: React.FC<EditableFieldProps> = ({
                   {options.map((option) => (
                     <SelectItem
                       className="shad-select-item"
-                      key={option}
-                      value={option}
+                      key={option.id}
+                      value={option.label}
                     >
-                      {option}
+                      <div className="flex items-center gap-2">
+                        {option.src && (
+                          <span className="w-6 h-6 flex items-center justify-center">
+                            <Image
+                              height={24}
+                              width={24}
+                              src={option.src}
+                              alt={option.label}
+                              className="rounded-full object-cover"
+                            />
+                          </span>
+                        )}
+                        {option.label}
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -121,19 +142,29 @@ export const EditableField: React.FC<EditableFieldProps> = ({
                 showPresets
               />
             ) : (
-              <Input
-                // iconSrc={<IndianRupee />}
-                id={name}
-                name={name}
-                value={value}
-                onChange={onChange}
-                className="border-0 rounded-none h-auto p-0 pb-1.5 !text-[15px] border-b-[1px] border-primary-blue-300 focus:border-b-whit focus-visible:outline-0 hover:border-white focus-visible:border-b-white focus-visible:ring-0"
-              />
+              <div className="flex items-center pb-1.5 border-b-[1px] gap-2 border-primary-blue-300 group focus-within:border-white hover:border-white k-transition">
+                <Input
+                  maxLength={suffix ? 6 : undefined}
+                  id={name}
+                  name={name}
+                  value={value}
+                  onChange={onChange}
+                  className="border-0 rounded-none h-auto p-0 !text-[15px] focus-visible:outline-0 focus-visible:ring-0"
+                />
+                {suffix && <span id={name}>{suffix}</span>}
+              </div>
             )
           ) : (
-            <p className="text-white text-[15px] leading-[140%] font-normal">
-              {value}
-            </p>
+            <div className="flex items-center gap-1">
+              <p className="text-white text-[15px] leading-[140%] font-normal">
+                {value}
+              </p>
+              {suffix && (
+                <span className="block text-white text-[15px] leading-[140%] font-normal">
+                  {suffix}
+                </span>
+              )}
+            </div>
           )}
         </div>
       </form>
