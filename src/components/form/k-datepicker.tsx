@@ -24,6 +24,8 @@ interface KDatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
   presets?: string[];
   startYear?: number;
   endYear?: number;
+  mode?: 'range' | 'single';
+  className?: string;
 }
 
 export function KDatePicker({
@@ -46,12 +48,12 @@ export function KDatePicker({
   ],
   startYear = getYear(new Date()) - 100,
   endYear = getYear(new Date()) + 100,
+  mode = 'range',
 }: KDatePickerProps) {
   const [date, setDate] = React.useState<DateRange | undefined>(value);
   const [tempDate, setTempDate] = React.useState<DateRange | undefined>(date);
   const [activePreset, setActivePreset] = React.useState<string | null>(null);
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-
   const [viewDate, setViewDate] = React.useState<Date>(
     date?.from || new Date()
   );
@@ -94,8 +96,78 @@ export function KDatePicker({
     setViewDate(newViewDate);
   };
 
+  const renderLabel = () => {
+    if (mode === 'range') {
+      return date?.from ? (
+        date.to ? (
+          `${format(date.from, 'LLL dd, y')} - ${format(date.to, 'LLL dd, y')}`
+        ) : (
+          format(date.from, 'LLL dd, y')
+        )
+      ) : (
+        <span>{label}</span>
+      );
+    } else {
+      return date?.from ? format(date.from, 'LLL dd, y') : <span>{label}</span>;
+    }
+  };
+
+  const renderCalendar = () => {
+    const commonProps = {
+      initialFocus: true,
+      classNames: { day_selected: 'selected-date' },
+      className: 'p-0',
+      ariaLabel:
+        mode === 'range' ? 'Date range calendar' : 'Single date calendar',
+      month: viewDate,
+      onMonthChange: setViewDate,
+      formatDay: formatDayWithLeadingZero,
+    };
+
+    if (mode === 'range') {
+      return (
+        <>
+          <Calendar
+            {...commonProps}
+            mode="range"
+            defaultMonth={viewDate}
+            selected={tempDate}
+            onSelect={setTempDate}
+            numberOfMonths={numberOfMonths}
+          />
+          <div className="flex justify-end gap-2">
+            <Button variant="secondary" onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button
+              onClick={handleApply}
+              disabled={!tempDate?.from || !tempDate?.to}
+            >
+              Apply
+            </Button>
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <Calendar
+          {...commonProps}
+          mode="single"
+          selected={date?.from}
+          onSelect={(selectedDate) => {
+            if (selectedDate) {
+              setDate({ from: selectedDate, to: selectedDate });
+              setIsPopoverOpen(false);
+            }
+          }}
+          numberOfMonths={numberOfMonths}
+        />
+      );
+    }
+  };
+
   return (
-    <div className={cn('grid gap-2', className)}>
+    <div className={cn('grid gap-2')}>
       <Popover
         open={isPopoverOpen}
         onOpenChange={(open) => {
@@ -108,26 +180,18 @@ export function KDatePicker({
             id="date"
             variant="outline"
             aria-label="Open date picker"
-            className="justify-start text-left px-3 py-2 font-semibold text-sm w-fit"
+            className={`justify-start text-left px-3 py-2 font-semibold text-sm w-fit ${className ? className : ''}`}
             onClick={() => setIsPopoverOpen(true)}
           >
             <KCalenderMonth className="text-primary-green-500" />
-            {date?.from ? (
-              date.to ? (
-                `${format(date.from, 'LLL dd, y')} - ${format(date.to, 'LLL dd, y')}`
-              ) : (
-                format(date.from, 'LLL dd, y')
-              )
-            ) : (
-              <span>{label}</span>
-            )}
+            {renderLabel()}
           </Button>
         </PopoverTrigger>
         <PopoverContent
           className="flex w-auto overflow-hidden rounded-xl border border-primary-blue-400 bg-secondary-blue-800 p-0"
           align="start"
         >
-          {showPresets && (
+          {showPresets && mode === 'range' && (
             <PresetSidebar
               presets={presets}
               activePreset={activePreset}
@@ -137,33 +201,8 @@ export function KDatePicker({
               onYearChange={handleYearChange}
             />
           )}
-
           <div className="flex flex-col justify-between gap-4 p-4">
-            <Calendar
-              initialFocus
-              mode="range"
-              defaultMonth={viewDate}
-              selected={tempDate}
-              onSelect={setTempDate}
-              numberOfMonths={numberOfMonths}
-              classNames={{ day_selected: 'selected-date' }}
-              className="p-0"
-              aria-label="Date range calendar"
-              month={viewDate}
-              onMonthChange={setViewDate}
-              formatDay={formatDayWithLeadingZero}
-            />
-            <div className="flex justify-end gap-2">
-              <Button variant="secondary" onClick={handleCancel}>
-                Cancel
-              </Button>
-              <Button
-                onClick={handleApply}
-                disabled={!tempDate?.from || !tempDate?.to}
-              >
-                Apply
-              </Button>
-            </div>
+            {renderCalendar()}
           </div>
         </PopoverContent>
       </Popover>

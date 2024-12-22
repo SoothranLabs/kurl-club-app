@@ -17,6 +17,9 @@ import { SamplePageSchema } from '@/schemas';
 import FileUploader from '@/components/file-uploader';
 import { useSheet } from '@/hooks/use-sheet';
 import { KSheet } from '@/components/form/k-sheet';
+
+import { Sidebar } from '@/components/members/sidebar/sidebar';
+import { MemberDetailsProvider } from '@/components/members/sidebar/sidebar-context';
 import { Input } from '@/components/ui/input';
 import { LogoutButton } from '@/components/auth/logout-button';
 
@@ -66,6 +69,10 @@ const SampleTestPage = () => {
 
   return (
     <div className="flex flex-col items-center gap-10">
+      <MemberDetailsProvider>
+        <Sidebar />
+      </MemberDetailsProvider>
+
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
         <div className="p-4">
@@ -180,6 +187,15 @@ const SampleTestPage = () => {
                 numberOfMonths={2}
                 dateLabel="Pick a date range"
                 showPresets
+              />
+
+              <KFormField
+                fieldType={KFormFieldType.DATE_PICKER}
+                control={form.control}
+                name="identificationType"
+                label="Date of birth"
+                dateLabel="Pick a date"
+                mode="single"
               />
             </section>
             <section className="space-y-6">

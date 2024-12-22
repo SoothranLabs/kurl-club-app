@@ -180,7 +180,7 @@ export const KSkipper: React.FC<SVGProps<SVGSVGElement>> = (props) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <g clipPath="url(#clip0_1602_2158)">
+    <g clip-path="url(#clip0_1602_2158)">
       <path
         d="M15.6019 15.5075L12.0082 11.9137C11.8679 11.7733 11.684 11.7031 11.5 11.7031C11.316 11.7031 11.132 11.7733 10.9918 11.9137L1.4375 21.468L2.45403 22.4844L11.5 13.4383L14.0772 16.0156L10.0625 20.0305L11.079 21.0469L12.7264 19.3995L15.6019 16.5238C15.7423 16.3834 15.8125 16.1995 15.8125 16.0156C15.8125 15.8318 15.7423 15.6478 15.6019 15.5075Z"
         fill="#151821"
@@ -222,5 +222,43 @@ export const KDumbbell: React.FC<SVGProps<SVGSVGElement>> = (props) => (
         fill="#1C1B1F"
       />
     </g>
+  </svg>
+);
+
+export const KAccordionOpen: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    width="32"
+    height="32"
+    viewBox="0 0 32 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path d="M8 20L16 12L24 20L8 20Z" fill="#BCBDBF" />
+  </svg>
+);
+
+export const KAccordionClose: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    width="32"
+    height="32"
+    viewBox="0 0 32 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <g clip-path="url(#clip0_1689_3441)">
+      <path d="M24 12.0015L16 20.0015L8 12.0015H24Z" fill="#BCBDBF" />
+    </g>
+    <defs>
+      <clipPath id="clip0_1689_3441">
+        <rect
+          width="32"
+          height="32"
+          fill="white"
+          transform="translate(0 0.00146484)"
+        />
+      </clipPath>
+    </defs>
   </svg>
 );
