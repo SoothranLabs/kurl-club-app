@@ -52,6 +52,7 @@ interface CustomProps<T extends FieldValues> {
   disabled?: boolean;
   dateFormat?: string;
   numberOfMonths?: number;
+  mode?: 'range' | 'single';
   dateLabel?: string;
   showPresets?: boolean;
   children?: React.ReactNode;
@@ -78,6 +79,7 @@ const RenderField = <T extends FieldValues>({
     iconSrc,
     numberOfMonths,
     dateLabel,
+    mode,
     showPresets,
     className,
   } = props;
@@ -189,8 +191,10 @@ const RenderField = <T extends FieldValues>({
             numberOfMonths={numberOfMonths}
             label={dateLabel}
             showPresets={showPresets}
-            onChange={field.onChange}
+            onDateChange={field.onChange}
             value={field.value}
+            mode={mode ?? 'range'}
+            className={className}
           />
         </FormControl>
       );

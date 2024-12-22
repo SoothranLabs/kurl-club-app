@@ -186,6 +186,15 @@ const SampleTestPage = () => {
                 dateLabel="Pick a date range"
                 showPresets
               />
+
+              <KFormField
+                fieldType={KFormFieldType.DATE_PICKER}
+                control={form.control}
+                name="identificationType"
+                label="Date of birth"
+                dateLabel="Pick a date"
+                mode="single"
+              />
             </section>
             <section className="space-y-6">
               <KFormField
