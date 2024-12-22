@@ -7,15 +7,20 @@ interface ApiError {
   status: string;
 }
 
-const baseFetch: typeof fetch = async (url, options) => {
+const baseFetch: typeof fetch = async (url, options = {}) => {
+  const { next, ...restOptions } = options as RequestInit & {
+    next?: { revalidate?: number; cache?: string };
+  };
+
   const response = await fetch(`${API_BASE_URL}${url}`, {
     headers: {
       'Content-Type': 'application/json',
+      ...(restOptions.headers || {}),
     },
-    ...options,
+    ...restOptions,
     next: {
-      revalidate: 3600, // revalidate at most every hour
-      ...options?.next,
+      cache: next?.cache || 'no-store',
+      ...next,
     },
   });
 

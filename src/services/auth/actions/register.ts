@@ -26,16 +26,18 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const payload = { email, password, privacyConsent, role: 'ADMIN' };
 
   try {
-    const response = await api.post<RegisterResponse>(
+    const response = await api.post<{ value: RegisterResponse }>(
       '/Auth/register',
       payload
     );
 
-    if (response.status !== 'Success') {
-      return { error: response.message || 'Failed to register user.' };
+    const { value } = response;
+
+    if (value.status !== 'Success') {
+      return { error: value.message || 'Failed to register user.' };
     }
 
-    return { success: response.message || 'Registration successful!' };
+    return { success: value.message || 'Registration successful!' };
   } catch (error: unknown) {
     console.error('Error during registration:', error);
     return {
