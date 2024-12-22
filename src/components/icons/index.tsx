@@ -171,6 +171,86 @@ export const KBackArrow: React.FC<SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 );
 
+export const KInstagramIcon: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="lucide lucide-instagram"
+    {...props}
+  >
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+  </svg>
+);
+
+export const KFacebookIcon: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="lucide lucide-facebook"
+    {...props}
+  >
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  </svg>
+);
+
+export const KGlobe: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="lucide lucide-globe"
+    {...props}
+  >
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+    <path d="M2 12h20" />
+  </svg>
+);
+
+export const KTrash: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="lucide lucide-trash-2"
+    {...props}
+  >
+    <path d="M3 6h18" />
+    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+    <line x1="10" x2="10" y1="11" y2="17" />
+    <line x1="14" x2="14" y1="11" y2="17" />
+  </svg>
+);
+
 export const KSkipper: React.FC<SVGProps<SVGSVGElement>> = (props) => (
   <svg
     width="23"
@@ -180,7 +260,7 @@ export const KSkipper: React.FC<SVGProps<SVGSVGElement>> = (props) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <g clip-path="url(#clip0_1602_2158)">
+    <g clipPath="url(#clip0_1602_2158)">
       <path
         d="M15.6019 15.5075L12.0082 11.9137C11.8679 11.7733 11.684 11.7031 11.5 11.7031C11.316 11.7031 11.132 11.7733 10.9918 11.9137L1.4375 21.468L2.45403 22.4844L11.5 13.4383L14.0772 16.0156L10.0625 20.0305L11.079 21.0469L12.7264 19.3995L15.6019 16.5238C15.7423 16.3834 15.8125 16.1995 15.8125 16.0156C15.8125 15.8318 15.7423 15.6478 15.6019 15.5075Z"
         fill="#151821"
@@ -247,7 +327,7 @@ export const KAccordionClose: React.FC<SVGProps<SVGSVGElement>> = (props) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <g clip-path="url(#clip0_1689_3441)">
+    <g clipPath="url(#clip0_1689_3441)">
       <path d="M24 12.0015L16 20.0015L8 12.0015H24Z" fill="#BCBDBF" />
     </g>
     <defs>

@@ -23,6 +23,15 @@ import { MemberDetailsProvider } from '@/components/members/sidebar/sidebar-cont
 import { Input } from '@/components/ui/input';
 import { LogoutButton } from '@/components/auth/logout-button';
 
+import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+
 const IdentificationTypes = [
   'Birth Certificate',
   "Driver's License",
@@ -46,6 +55,7 @@ const ExampleForm = () => {
     </form>
   );
 };
+
 const SampleTestPage = () => {
   const form = useForm<z.infer<typeof SamplePageSchema>>({
     resolver: zodResolver(SamplePageSchema),
@@ -76,13 +86,27 @@ const SampleTestPage = () => {
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
         <div className="p-4">
+          {/* KSheet Button */}
           <Button onClick={openSheet}>Open Sheet</Button>
           <KSheet isOpen={isOpen} onClose={closeSheet} title="Example Sheet">
             <ExampleForm />
           </KSheet>
         </div>
+
+        {/* Dialog Button */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Finish setting up</Button>
+          </DialogTrigger>
+          <DialogContent className="bg-secondary-blue-700 border-primary-blue-400">
+            <DialogTitle></DialogTitle>
+            <OnboardingStepForm />
+          </DialogContent>
+        </Dialog>
+
         <LogoutButton />
       </div>
+
       <div className="flex gap-10">
         <div className="flex flex-col gap-5">
           <Button>KurlClub Button</Button>

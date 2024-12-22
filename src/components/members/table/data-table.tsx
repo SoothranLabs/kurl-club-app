@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/table';
 import { TableFooter } from '@/components/table/table-footer';
 
-interface DataTableProps<TData extends object, TValue> {
+interface DataTableProps<TData extends object, TValue = string> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   toolbar?: (table: ReturnType<typeof useReactTable<TData>>) => React.ReactNode;
