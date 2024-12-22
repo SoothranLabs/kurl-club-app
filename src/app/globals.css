@@ -8,11 +8,6 @@ body {
   color: var(--primary-text);
 }
 
-svg {
-  width: auto !important;
-  height: auto !important;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -46,7 +41,7 @@ svg {
 @layer utilities {
   /* =====  SHADCN OVERRIDES */
   .shad-select-trigger {
-    @apply bg-secondary-blue-500 text-white placeholder:text-white h-14 border-0 appearance-none focus:ring-0 hover:outline hover:outline-secondary-blue-400 focus:outline focus:outline-primary-green-700 transition-colors duration-300 ease-in-out !important;
+    @apply bg-secondary-blue-500 text-white placeholder:text-white border-0 appearance-none focus:ring-0 hover:outline hover:outline-secondary-blue-400 focus:outline focus:outline-primary-green-700 transition-colors duration-300 ease-in-out !important;
   }
 
   .shad-select-content {
@@ -82,9 +77,29 @@ svg {
     @apply transition-all duration-400;
   }
 
+  .container {
+    @apply max-w-[1440px] mx-auto px-8;
+  }
+
   .checkbox-label {
     @apply cursor-pointer text-sm font-normal text-white peer-disabled:cursor-not-allowed peer-disabled:opacity-70 md:leading-none;
   }
+}
+
+/* slider style */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #606267;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: white;
+  border-radius: 10px;
 }
 
 /* =====  REACT PHONE NUMBER INPUT OVERRIDES */

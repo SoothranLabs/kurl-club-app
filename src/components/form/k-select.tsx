@@ -4,14 +4,22 @@ import {
   SelectTrigger,
   SelectValue,
   SelectContent,
+  SelectItem,
 } from '@/components/ui/select';
+
+interface Option {
+  label: string;
+  value: string;
+}
 
 export const KSelect = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof Select> & {
     label?: string;
+    options?: Option[];
+    className?: string;
   }
->(({ label, children, value, onValueChange, ...props }, ref) => {
+>(({ label, value, onValueChange, options = [], className, ...props }, ref) => {
   const [hasValue, setHasValue] = React.useState(false);
 
   React.useEffect(() => {
@@ -29,13 +37,21 @@ export const KSelect = React.forwardRef<
         }}
       >
         <SelectTrigger
-          className={`peer shad-select-trigger px-4
-            ${hasValue ? 'pt-5' : 'pt-2'}`}
+          className={`peer shad-select-trigger h-14 px-4
+            ${hasValue ? 'pt-5' : 'pt-2'} ${className ? className : ''}`}
         >
-          <SelectValue placeholder=" " />
+          <SelectValue placeholder="" />
         </SelectTrigger>
         <SelectContent className="shad-select-content">
-          {children}
+          {options.map((option) => (
+            <SelectItem
+              className="shad-select-item"
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
       {label && (
@@ -51,3 +67,17 @@ export const KSelect = React.forwardRef<
   );
 });
 KSelect.displayName = 'KSelect';
+
+{
+  /* <KSelect
+  label="Select Country"
+  value={selectedCountry}
+  onValueChange={(value) => onChange({ target: { name, value } })}
+  options={[
+    { label: 'India', value: 'IN' },
+    { label: 'United States', value: 'US' },
+    { label: 'Australia', value: 'AU' },
+  ]}
+  className="!border-white !rounded-lg"
+/> */
+}

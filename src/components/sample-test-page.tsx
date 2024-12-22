@@ -17,7 +17,11 @@ import { SamplePageSchema } from '@/schemas';
 import FileUploader from '@/components/file-uploader';
 import { useSheet } from '@/hooks/use-sheet';
 import { KSheet } from '@/components/form/k-sheet';
-import { Input } from './ui/input';
+
+import { Sidebar } from '@/components/members/sidebar/sidebar';
+import { MemberDetailsProvider } from '@/components/members/sidebar/sidebar-context';
+import { Input } from '@/components/ui/input';
+import { LogoutButton } from '@/components/auth/logout-button';
 
 import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
 
@@ -75,6 +79,10 @@ const SampleTestPage = () => {
 
   return (
     <div className="flex flex-col items-center gap-10">
+      <MemberDetailsProvider>
+        <Sidebar />
+      </MemberDetailsProvider>
+
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
         <div className="p-4">
@@ -95,6 +103,8 @@ const SampleTestPage = () => {
             <OnboardingStepForm />
           </DialogContent>
         </Dialog>
+
+        <LogoutButton />
       </div>
 
       <div className="flex gap-10">
@@ -202,8 +212,16 @@ const SampleTestPage = () => {
                 dateLabel="Pick a date range"
                 showPresets
               />
-            </section>
 
+              <KFormField
+                fieldType={KFormFieldType.DATE_PICKER}
+                control={form.control}
+                name="identificationType"
+                label="Date of birth"
+                dateLabel="Pick a date"
+                mode="single"
+              />
+            </section>
             <section className="space-y-6">
               <KFormField
                 fieldType={KFormFieldType.SKELETON}
@@ -216,7 +234,6 @@ const SampleTestPage = () => {
                   </FormControl>
                 )}
               />
-
               <KFormField
                 fieldType={KFormFieldType.CHECKBOX}
                 control={form.control}

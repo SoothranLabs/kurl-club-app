@@ -1,0 +1,148 @@
+'use client';
+
+import * as React from 'react';
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { TableFooter } from '@/components/table/table-footer';
+
+interface DataTableProps<TData extends object, TValue = string> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  toolbar?: (table: ReturnType<typeof useReactTable<TData>>) => React.ReactNode;
+}
+
+export function DataTable<TData extends object, TValue>({
+  columns,
+  data,
+  toolbar,
+}: DataTableProps<TData, TValue>) {
+  const table = useReactTable<TData>({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+  });
+
+  return (
+    <div className="space-y-4">
+      {toolbar && toolbar(table)}
+
+      <div className="rounded-md border overflow-hidden border-primary-blue-300 bg-card">
+        <div className="relative">
+          <div className="overflow-x-auto">
+            <Table className="border-collapse [&_td]:border-0 [&_th]:border-0 bg-secondary-blue-500">
+              <TableHeader className="bg-primary-blue-400 [&_tr]:border-b-0">
+                <TableRow>
+                  {/* Fixed Columns */}
+                  <TableHead className="sticky left-0 z-20 bg-primary-blue-400">
+                    {flexRender(
+                      columns[0].header,
+                      table.getHeaderGroups()[0].headers[0].getContext()
+                    )}
+                  </TableHead>
+                  <TableHead className="sticky left-[100px] z-20 bg-primary-blue-400">
+                    {flexRender(
+                      columns[1].header,
+                      table.getHeaderGroups()[0].headers[1].getContext()
+                    )}
+                  </TableHead>
+                  {/* Scrollable Columns */}
+                  {table
+                    .getHeaderGroups()[0]
+                    .headers.slice(2, -1)
+                    .map((header) => (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    ))}
+                  {/* Action Column */}
+                  <TableHead className="sticky right-0 z-20 bg-primary-blue-400">
+                    Actions
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="[&_tr]:border-b [&_tr]:border-primary-blue-400">
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow key={row.id} className="relative">
+                      {/* Fixed Columns */}
+                      <TableCell className="sticky left-0 z-10 bg-secondary-blue-500">
+                        {flexRender(
+                          row.getVisibleCells()[0].column.columnDef.cell,
+                          row.getVisibleCells()[0].getContext()
+                        )}
+                      </TableCell>
+                      <TableCell className="sticky left-[100px] z-10 bg-secondary-blue-500">
+                        {flexRender(
+                          row.getVisibleCells()[1].column.columnDef.cell,
+                          row.getVisibleCells()[1].getContext()
+                        )}
+                      </TableCell>
+                      {/* Scrollable Columns */}
+                      {row
+                        .getVisibleCells()
+                        .slice(2, -1)
+                        .map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </TableCell>
+                        ))}
+                      {/* Action Column */}
+                      <TableCell className="sticky right-0 z-10 bg-secondary-blue-500 p-0">
+                        <div className="flex h-full items-center justify-center">
+                          {flexRender(
+                            row.getVisibleCells().slice(-1)[0].column.columnDef
+                              .cell,
+                            row.getVisibleCells().slice(-1)[0].getContext()
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      </div>
+
+      {/* Table Footers */}
+      <TableFooter table={table} />
+    </div>
+  );
+}

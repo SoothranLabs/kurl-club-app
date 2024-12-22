@@ -2,8 +2,10 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { QueryProvider } from '@/providers/query-provider';
+import { AuthProvider } from '@/providers/auth-provider';
 import { Toaster } from 'sonner';
 import './globals.css';
+import AppLayout from '@/components/layout/app-layout';
 
 const figtree = localFont({
   src: [
@@ -53,15 +55,17 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${figtree.className} bg-background-dark antialiased`}>
         <QueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Toaster richColors position="top-right" />
-            {children}
-          </ThemeProvider>
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Toaster richColors position="top-right" />
+              <AppLayout>{children}</AppLayout>
+            </ThemeProvider>
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

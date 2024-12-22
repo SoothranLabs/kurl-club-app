@@ -1,13 +1,15 @@
 'use client';
 
 import { useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import * as z from 'zod';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { login } from '@/services/actions/login';
+import { useAuth } from '@/providers/auth-provider';
+import { login } from '@/services/auth/actions';
 import { LoginSchema } from '@/schemas';
 
 import { Form } from '@/components/ui/form';
@@ -16,6 +18,8 @@ import { AuthWrapper } from '@/components/auth/auth-wrapper';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 
 export const LoginForm = () => {
+  const router = useRouter();
+  const { setAccessToken } = useAuth();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -32,7 +36,9 @@ export const LoginForm = () => {
         if (data.error) {
           toast.error(data.error);
         } else if (data.success) {
-          toast.success(data.success);
+          setAccessToken(data.token!);
+          router.push('/dashboard');
+          toast.success('Logged in successfully!');
         }
       });
     });
@@ -82,7 +88,7 @@ export const LoginForm = () => {
             disabled={isPending}
             className="px-3 py-4 h-[46px]"
           >
-            Login
+            {isPending ? 'Logging in...' : 'Login'}
           </Button>
         </form>
       </Form>

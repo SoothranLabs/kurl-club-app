@@ -52,9 +52,11 @@ interface CustomProps<T extends FieldValues> {
   disabled?: boolean;
   dateFormat?: string;
   numberOfMonths?: number;
+  mode?: 'range' | 'single';
   dateLabel?: string;
   showPresets?: boolean;
   children?: React.ReactNode;
+  className?: string;
   renderSkeleton?: (
     field: ControllerRenderProps<T, FieldPath<T>>
   ) => React.ReactNode;
@@ -77,7 +79,9 @@ const RenderField = <T extends FieldValues>({
     iconSrc,
     numberOfMonths,
     dateLabel,
+    mode,
     showPresets,
+    className,
   } = props;
 
   switch (fieldType) {
@@ -135,11 +139,12 @@ const RenderField = <T extends FieldValues>({
           <PhoneInput
             defaultCountry="IN"
             placeholder={placeholder}
+            // value="+919876543210"
             international
             withCountryCallingCode
             value={field.value as E164Number | undefined}
             onChange={field.onChange}
-            className="peer input-phone"
+            className={`peer ${className ? className : 'input-phone'}`}
           />
         </FormControl>
       );
@@ -186,8 +191,10 @@ const RenderField = <T extends FieldValues>({
             numberOfMonths={numberOfMonths}
             label={dateLabel}
             showPresets={showPresets}
-            onChange={field.onChange}
+            onDateChange={field.onChange}
             value={field.value}
+            mode={mode ?? 'range'}
+            className={className}
           />
         </FormControl>
       );
