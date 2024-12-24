@@ -17,7 +17,6 @@ import FileUploader from '@/components/file-uploader';
 import { useSheet } from '@/hooks/use-sheet';
 import { KSheet } from '@/components/form/k-sheet';
 import { LogoutButton } from '@/components/auth/logout-button';
-import { AddFrom } from '@/components/members/add-form/add-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
@@ -30,6 +29,7 @@ import {
 } from '@/components/ui/dialog';
 import { MemberDetailsProvider } from './members/sidebar/sidebar-context';
 import { Sidebar } from './members/sidebar/sidebar';
+import AddFrom from './members/add-form';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -99,7 +99,12 @@ const SampleTestPage = () => {
           {/* KSheet Button */}
           <Button onClick={openSheet}>Open Sheet</Button>
           <FormProvider {...form}>
-            <KSheet isOpen={isOpen} onClose={closeSheet} title="Add Member">
+            <KSheet
+              width={582}
+              isOpen={isOpen}
+              onClose={closeSheet}
+              title="Add Member"
+            >
               <AddFrom onSubmit={handleSubmit} />
               <div className="flex justify-end gap-4 sticky bottom-0 bg-secondary-blue-700 mt-4">
                 <div className="flex justify-end gap-2">

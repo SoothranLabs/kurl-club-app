@@ -71,7 +71,7 @@ export const AddFrom: React.FC<CreateMemberDetailsProps> = ({ onSubmit }) => {
   return (
     <div>
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="items-center mb-4 flex gap-28 ">
+        <div className="items-center mb-4 flex justify-between ">
           <div className="w-16 h-16 bg-secondary-blue-300 rounded-full flex items-center justify-center text-xl font-normal text-neutral-green-300 mr-4 mb-3">
             {memberDetails.name
               .split(' ')
