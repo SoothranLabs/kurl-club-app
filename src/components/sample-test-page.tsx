@@ -2,7 +2,6 @@
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 
 import { Form, FormControl } from '@/components/ui/form';
 import { SelectGroup, SelectItem, SelectLabel } from '@/components/ui/select';
@@ -17,11 +16,9 @@ import { SamplePageSchema } from '@/schemas';
 import FileUploader from '@/components/file-uploader';
 import { useSheet } from '@/hooks/use-sheet';
 import { KSheet } from '@/components/form/k-sheet';
-
-import { Sidebar } from '@/components/members/sidebar/sidebar';
-import { MemberDetailsProvider } from '@/components/members/sidebar/sidebar-context';
-import { Input } from '@/components/ui/input';
 import { LogoutButton } from '@/components/auth/logout-button';
+import { AddFrom } from '@/components/members/add-form/add-form';
+import { useForm, FormProvider } from 'react-hook-form';
 
 import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
 
@@ -31,6 +28,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { MemberDetailsProvider } from './members/sidebar/sidebar-context';
+import { Sidebar } from './members/sidebar/sidebar';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -45,16 +44,6 @@ const IdentificationTypes = [
   'Student ID Card',
   'Voter ID Card',
 ];
-
-const ExampleForm = () => {
-  return (
-    <form className="space-y-4">
-      <Input placeholder="Name" />
-      <Input placeholder="Email" type="email" />
-      <Button type="submit">Submit</Button>
-    </form>
-  );
-};
 
 const SampleTestPage = () => {
   const form = useForm<z.infer<typeof SamplePageSchema>>({
@@ -75,6 +64,27 @@ const SampleTestPage = () => {
     },
   });
 
+  const handleSubmit = (data: {
+    email: string;
+    height: string;
+    memberName: string;
+    primaryPhone: string;
+    dob: string;
+    gender: string;
+    package: string;
+    weight: string;
+    feeStatus: string;
+    amountPaid: string;
+    doj: string;
+    workoutPlan: string;
+    personalTrainer: string;
+    bloodgroup: string;
+    addressLine1: string;
+    addressLine2?: string;
+  }) => {
+    console.log(data);
+  };
+
   const { isOpen, openSheet, closeSheet } = useSheet();
 
   return (
@@ -88,9 +98,19 @@ const SampleTestPage = () => {
         <div className="p-4">
           {/* KSheet Button */}
           <Button onClick={openSheet}>Open Sheet</Button>
-          <KSheet isOpen={isOpen} onClose={closeSheet} title="Example Sheet">
-            <ExampleForm />
-          </KSheet>
+          <FormProvider {...form}>
+            <KSheet isOpen={isOpen} onClose={closeSheet} title="Add Member">
+              <AddFrom onSubmit={handleSubmit} />
+              <div className="flex justify-end gap-4 sticky bottom-0 bg-secondary-blue-700 mt-4">
+                <div className="flex justify-end gap-2">
+                  <Button type="button" variant="outline">
+                    Cancel
+                  </Button>
+                  <Button type="submit">Add</Button>
+                </div>
+              </div>
+            </KSheet>
+          </FormProvider>
         </div>
 
         {/* Dialog Button */}
