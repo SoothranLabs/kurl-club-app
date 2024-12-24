@@ -8,7 +8,7 @@ export interface SheetProps {
   onClose: () => void;
   position?: 'top' | 'right' | 'bottom' | 'left';
   onOpenChange?: (open: boolean) => void;
-  width?: number;
+  className?: string;
 }
 
 export interface UseSheetProps {
