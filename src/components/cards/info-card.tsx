@@ -10,9 +10,10 @@ interface InfoCardItem {
 
 interface InfoCardProps {
   item: InfoCardItem;
+  className?: string;
 }
 
-const InfoCard: React.FC<InfoCardProps> = ({ item }) => {
+const InfoCard: React.FC<InfoCardProps> = ({ item, className }) => {
   const colorClasses: { [key: string]: string } = {
     'primary-green-500': 'bg-primary-green-500',
     'secondary-pink-500': 'bg-secondary-pink-500',
@@ -21,7 +22,9 @@ const InfoCard: React.FC<InfoCardProps> = ({ item }) => {
   };
 
   return (
-    <div className="w-full h-full bg-secondary-blue-500 rounded-lg flex gap-4 items-center py-[13px] px-3">
+    <div
+      className={`w-full h-full bg-secondary-blue-500 rounded-lg flex gap-4 items-center py-[13px] px-3 ${className}`}
+    >
       <span
         className={`rounded-[18px] w-[48px] h-[48px] flex items-center justify-center ${
           colorClasses[item.color || 'primary-green-500']

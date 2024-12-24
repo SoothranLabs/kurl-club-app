@@ -30,6 +30,7 @@ import {
 import { MemberDetailsProvider } from './members/sidebar/sidebar-context';
 import { Sidebar } from './members/sidebar/sidebar';
 import AddFrom from './members/add-form';
+import InfoCard from './cards/info-card';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -89,6 +90,17 @@ const SampleTestPage = () => {
 
   return (
     <div className="flex flex-col items-center gap-10">
+      <InfoCard
+        item={{
+          id: 1,
+          icon: <KCalenderMonth />,
+          color: 'secondary-pink-500',
+          title: 'Total Members',
+          count: 100,
+        }}
+        className="w-[332px]"
+      />
+
       <MemberDetailsProvider>
         <Sidebar />
       </MemberDetailsProvider>
@@ -100,7 +112,7 @@ const SampleTestPage = () => {
           <Button onClick={openSheet}>Open Sheet</Button>
           <FormProvider {...form}>
             <KSheet
-              width={582}
+              className="w-[582px]"
               isOpen={isOpen}
               onClose={closeSheet}
               title="Add Member"

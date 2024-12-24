@@ -16,13 +16,13 @@ export const KSheet = ({
   isOpen,
   onClose,
   position = 'right',
-  width = 400,
+  className,
 }: SheetProps) => {
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent
         side={position}
-        className={`overflow-y-auto bg-secondary-blue-700 border-primary-blue-400 border p-0 min-w-[${width}px]`}
+        className={`overflow-y-auto bg-secondary-blue-700 border-primary-blue-400 border p-0 !max-w-full ${className}`}
       >
         <SheetHeader className="border-b border-primary-blue-400 px-5 py-6">
           {title && <SheetTitle>{title}</SheetTitle>}
