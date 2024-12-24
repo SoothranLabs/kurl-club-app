@@ -225,3 +225,43 @@ export const SamplePageSchema = z.object({
   identificationDocument: z.string().optional(),
   otp: z.string().length(6, 'OTP must be exactly 6 digits'),
 });
+
+export const AddForm = z.object({
+  memberName: z
+    .string()
+    .min(1, 'Member name is required')
+    .max(100, 'Member name should not exceed 50 characters')
+    .trim(),
+  email: z
+    .string()
+    .email('Enter a valid email address')
+    .min(1, 'Email address is required')
+    .max(150, 'Email address should not exceed 150 characters'),
+  primaryPhone: z
+    .string()
+    .regex(
+      /^\+?[1-9]\d{1,14}$/,
+      'Enter a valid primary phone number with country code'
+    )
+    .min(1, 'Primary phone number is required'),
+  dob: z.string().min(1, 'DOB is required'),
+  gender: z.string().min(1, 'Gender is required'),
+  package: z.string().min(1, 'Package is required'),
+  height: z.string().min(1, 'Height is required'),
+  weight: z.string().min(1, 'Weight is required'),
+  feeStatus: z.string().min(1, 'FeeStatus is required'),
+  amountPaid: z.string().min(1, 'AmountPaid is required'),
+  doj: z.string().min(1, 'DOJ is required'),
+  workoutPlan: z.string().min(1, 'WorkoutPlan is required'),
+  personalTrainer: z.string().min(1, 'peronalTrainer is required'),
+  bloodgroup: z.string().min(1, 'BloodGroup is required'),
+  addressLine1: z
+    .string()
+    .min(1, 'Address Line 1 is required')
+    .max(200, 'Address Line 1 should not exceed 200 characters')
+    .trim(),
+  addressLine2: z
+    .string()
+    .max(200, 'Address Line 2 should not exceed 200 characters')
+    .optional(),
+});
