@@ -2,25 +2,18 @@
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { Form, FormControl } from '@/components/ui/form';
 import { SelectGroup, SelectItem, SelectLabel } from '@/components/ui/select';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 import { Button } from '@/components/ui/button';
-
 import { KCalenderMonth } from '@/components/icons';
 import { ThemeModeToggle } from '@/components/theme-toggler';
-
 import { SamplePageSchema } from '@/schemas';
-
 import FileUploader from '@/components/file-uploader';
 import { useSheet } from '@/hooks/use-sheet';
-import { KSheet } from '@/components/form/k-sheet';
 import { LogoutButton } from '@/components/auth/logout-button';
-import { useForm, FormProvider } from 'react-hook-form';
-
+import { useForm } from 'react-hook-form';
 import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
-
 import {
   Dialog,
   DialogContent,
@@ -29,7 +22,7 @@ import {
 } from '@/components/ui/dialog';
 import { MemberDetailsProvider } from './members/sidebar/sidebar-context';
 import { Sidebar } from './members/sidebar/sidebar';
-import AddFrom from './members/add-form';
+import AddFrom from './members/add-member';
 import InfoCard from './cards/info-card';
 
 const IdentificationTypes = [
@@ -98,7 +91,7 @@ const SampleTestPage = () => {
           title: 'Total Members',
           count: 100,
         }}
-        className="w-[332px]"
+        className="!w-[332px]"
       />
 
       <MemberDetailsProvider>
@@ -110,24 +103,11 @@ const SampleTestPage = () => {
         <div className="p-4">
           {/* KSheet Button */}
           <Button onClick={openSheet}>Open Sheet</Button>
-          <FormProvider {...form}>
-            <KSheet
-              className="w-[582px]"
-              isOpen={isOpen}
-              onClose={closeSheet}
-              title="Add Member"
-            >
-              <AddFrom onSubmit={handleSubmit} />
-              <div className="flex justify-end gap-4 sticky bottom-0 bg-secondary-blue-700 mt-4">
-                <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline">
-                    Cancel
-                  </Button>
-                  <Button type="submit">Add</Button>
-                </div>
-              </div>
-            </KSheet>
-          </FormProvider>
+          <AddFrom
+            isOpen={isOpen}
+            closeSheet={closeSheet}
+            onSubmit={handleSubmit}
+          />
         </div>
 
         {/* Dialog Button */}

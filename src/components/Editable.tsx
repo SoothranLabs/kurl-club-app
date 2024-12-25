@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import { SamplePageSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
+import { Calendar } from 'lucide-react';
 
 interface Option {
   id: number;
@@ -139,6 +140,9 @@ export const EditableField: React.FC<EditableFieldProps> = ({
                 label="Date of birth"
                 dateLabel="Pick a date"
                 mode="single"
+                iconSrc={
+                  <Calendar className="text-white !w-[18px] !h-[18px]" />
+                }
                 className="bg-transparent border-0 border-b-[1px] border-primary-blue-300 rounded-none hover:bg-transparent hover:border-white k-transition p-0 h-auto w-full pb-1.5 text-white text-[15px] leading-[140%] font-normal gap-1 flex-row-reverse justify-between"
               />
             ) : (

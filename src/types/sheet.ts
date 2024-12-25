@@ -4,6 +4,7 @@ export interface SheetProps {
   title?: string;
   description?: string;
   children: ReactNode;
+  footer?: ReactNode;
   isOpen: boolean;
   onClose: () => void;
   position?: 'top' | 'right' | 'bottom' | 'left';

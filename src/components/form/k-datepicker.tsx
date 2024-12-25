@@ -26,6 +26,7 @@ interface KDatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
   endYear?: number;
   mode?: 'range' | 'single';
   className?: string;
+  icon?: React.ReactNode;
 }
 
 export function KDatePicker({
@@ -49,6 +50,7 @@ export function KDatePicker({
   startYear = getYear(new Date()) - 100,
   endYear = getYear(new Date()) + 100,
   mode = 'range',
+  icon = <KCalenderMonth className="text-primary-green-500" />,
 }: KDatePickerProps) {
   const [date, setDate] = React.useState<DateRange | undefined>(value);
   const [tempDate, setTempDate] = React.useState<DateRange | undefined>(date);
@@ -183,7 +185,7 @@ export function KDatePicker({
             className={`justify-start text-left px-3 py-2 font-semibold text-sm w-fit ${className ? className : ''}`}
             onClick={() => setIsPopoverOpen(true)}
           >
-            <KCalenderMonth className="text-primary-green-500" />
+            {icon}
             {renderLabel()}
           </Button>
         </PopoverTrigger>

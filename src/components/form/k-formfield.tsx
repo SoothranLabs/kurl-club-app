@@ -57,6 +57,8 @@ interface CustomProps<T extends FieldValues> {
   showPresets?: boolean;
   children?: React.ReactNode;
   className?: string;
+  suffix?: string;
+  maxLength?: number;
   renderSkeleton?: (
     field: ControllerRenderProps<T, FieldPath<T>>
   ) => React.ReactNode;
@@ -82,6 +84,8 @@ const RenderField = <T extends FieldValues>({
     mode,
     showPresets,
     className,
+    suffix,
+    maxLength,
   } = props;
 
   switch (fieldType) {
@@ -101,6 +105,9 @@ const RenderField = <T extends FieldValues>({
                 placeholder=" "
                 {...field}
                 disabled={props.disabled}
+                className={className}
+                suffix={suffix}
+                maxLength={maxLength}
               />
             </div>
           </div>
@@ -195,6 +202,7 @@ const RenderField = <T extends FieldValues>({
             value={field.value}
             mode={mode ?? 'range'}
             className={className}
+            icon={iconSrc}
           />
         </FormControl>
       );
