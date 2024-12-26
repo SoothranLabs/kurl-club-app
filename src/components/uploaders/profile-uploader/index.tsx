@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CropModal from './crop-modal';
@@ -8,17 +8,33 @@ import PreviewModal from './preview-modal';
 import { Upload, User } from 'lucide-react';
 
 interface ProfilePictureUploaderProps {
-  onImageChange: (byteArray: Uint8Array) => void;
+  files: Uint8Array | null;
+  onChange: (byteArray: Uint8Array | null) => void;
 }
 
 export default function ProfilePictureUploader({
-  onImageChange,
+  files,
+  onChange,
 }: ProfilePictureUploaderProps) {
   const [image, setImage] = useState<string | null>(null);
   const [cropModalOpen, setCropModalOpen] = useState(false);
   const [previewModalOpen, setPreviewModalOpen] = useState(false);
   const [tempImage, setTempImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Convert Uint8Array back to a base64 image string if `files` is updated externally
+  useEffect(() => {
+    if (files && files.length > 0) {
+      const blob = new Blob([files]);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) setImage(e.target.result as string);
+      };
+      reader.readAsDataURL(blob);
+    } else {
+      setImage(null);
+    }
+  }, [files]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -46,7 +62,7 @@ export default function ProfilePictureUploader({
           if (e.target?.result) {
             const arrayBuffer = e.target.result as ArrayBuffer;
             const byteArray = new Uint8Array(arrayBuffer);
-            onImageChange(byteArray); // Pass Uint8Array to the parent
+            onChange(byteArray); // Pass Uint8Array to the parent
           }
         };
         reader.readAsArrayBuffer(blob);
@@ -59,7 +75,7 @@ export default function ProfilePictureUploader({
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-    onImageChange(new Uint8Array());
+    onChange(null); // Pass null to indicate no file
   };
 
   const handleReupload = () => {

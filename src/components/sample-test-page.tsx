@@ -51,7 +51,7 @@ const SampleTestPage = () => {
   const form = useForm<z.infer<typeof SamplePageSchema>>({
     resolver: zodResolver(SamplePageSchema),
     defaultValues: {
-      profilepicture: undefined,
+      profilepicture: null,
       email: '',
       password: '',
       confirmPassword: '',
@@ -187,10 +187,10 @@ const SampleTestPage = () => {
                 renderSkeleton={(field) => (
                   <FormControl>
                     <ProfilePictureUploader
-                      onImageChange={(byteArray) => {
-                        form.setValue(field.name, Array.from(byteArray));
-                        field.onChange(Array.from(byteArray));
-                      }}
+                      files={
+                        field.value instanceof Uint8Array ? field.value : null
+                      }
+                      onChange={field.onChange}
                     />
                   </FormControl>
                 )}
