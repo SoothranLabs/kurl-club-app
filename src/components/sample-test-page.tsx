@@ -31,6 +31,7 @@ import { MemberDetailsProvider } from './members/sidebar/sidebar-context';
 import { Sidebar } from './members/sidebar/sidebar';
 import AddFrom from './members/add-form';
 import InfoCard from './cards/info-card';
+import ProfilePictureUploader from './uploaders/profile-uploader';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -50,6 +51,7 @@ const SampleTestPage = () => {
   const form = useForm<z.infer<typeof SamplePageSchema>>({
     resolver: zodResolver(SamplePageSchema),
     defaultValues: {
+      profilepicture: undefined,
       email: '',
       password: '',
       confirmPassword: '',
@@ -85,6 +87,20 @@ const SampleTestPage = () => {
   }) => {
     console.log(data);
   };
+
+  async function onSubmit(values: z.infer<typeof SamplePageSchema>) {
+    if (!values.profilepicture) {
+      console.error('No image selected');
+      return;
+    }
+
+    const payload = {
+      ...values,
+      profilepicture: Array.from(values.profilepicture),
+    };
+
+    console.log(`Subitted data = ${JSON.stringify(payload)}`);
+  }
 
   const { isOpen, openSheet, closeSheet } = useSheet();
 
@@ -158,8 +174,28 @@ const SampleTestPage = () => {
           <Button className="w-fit">With w-fit</Button>
         </div>
         <Form {...form}>
-          <form className="space-y-12 flex-1">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-12 flex-1"
+          >
             <section className="space-y-6">
+              {/* PROFILE UPLOADER */}
+              <KFormField
+                fieldType={KFormFieldType.SKELETON}
+                control={form.control}
+                name="profilepicture"
+                renderSkeleton={(field) => (
+                  <FormControl>
+                    <ProfilePictureUploader
+                      onImageChange={(byteArray) => {
+                        form.setValue(field.name, Array.from(byteArray));
+                        field.onChange(Array.from(byteArray));
+                      }}
+                    />
+                  </FormControl>
+                )}
+              />
+
               {/* INPUT */}
               <KFormField
                 fieldType={KFormFieldType.INPUT}
@@ -279,6 +315,7 @@ const SampleTestPage = () => {
             privacy policy"
               />
             </section>
+            <Button type="submit">Submit</Button>
           </form>
         </Form>
       </div>

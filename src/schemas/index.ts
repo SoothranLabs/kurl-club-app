@@ -224,6 +224,12 @@ export const SamplePageSchema = z.object({
   dateOfBirth: z.date({ invalid_type_error: 'Invalid date format' }),
   identificationDocument: z.string().optional(),
   otp: z.string().length(6, 'OTP must be exactly 6 digits'),
+  profilepicture: z
+    .array(z.number())
+    .refine((array) => (array ?? []).length > 0, {
+      message: 'Image is required',
+    })
+    .optional(),
 });
 
 export const AddForm = z.object({
