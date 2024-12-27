@@ -32,6 +32,7 @@ import { Sidebar } from './members/sidebar/sidebar';
 import AddFrom from './members/add-form';
 import InfoCard from './cards/info-card';
 import ProfilePictureUploader from './uploaders/profile-uploader';
+import { MemberDetails } from './members/newsidebar/member-details';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -117,9 +118,13 @@ const SampleTestPage = () => {
         className="w-[332px]"
       />
 
-      <MemberDetailsProvider>
-        <Sidebar />
-      </MemberDetailsProvider>
+      <div className="flex gap-8">
+        <MemberDetailsProvider>
+          <Sidebar />
+        </MemberDetailsProvider>
+
+        <MemberDetails />
+      </div>
 
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
