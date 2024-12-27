@@ -39,11 +39,13 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
 
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">
+      <div className="mb-3">
+        <h4 className="text-[28px] leading-normal font-medium  mb-4 text-White ">
           Add your Gym
-        </h2>
-        <p className="text-[14px] text-[#F8F8F8]">Fill in your gym details</p>
+        </h4>
+        <p className="text-[15px] leading-normal font-normal text-white">
+          Fill in your gym details
+        </p>
       </div>
 
       <FormProvider {...form}>
@@ -51,7 +53,7 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="flex flex-col"
         >
-          <div className="space-y-6">
+          <div className="space-y-6 overflow-y-auto max-h-[300px] mt-5">
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
@@ -115,7 +117,12 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
               iconSrc={<KInstagramIcon />}
             />
           </div>
-          <Button type="submit" className="w-full mt-4">
+          {/* Add button disabled true if there is no data in input phone number */}
+          <Button
+            disabled={false}
+            type="submit"
+            className="w-full mt-5 h-[48px]"
+          >
             Continue
           </Button>
         </form>

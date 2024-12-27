@@ -14,16 +14,11 @@ import { useSheet } from '@/hooks/use-sheet';
 import { LogoutButton } from '@/components/auth/logout-button';
 import { useForm } from 'react-hook-form';
 import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import { MemberDetailsProvider } from './members/sidebar/sidebar-context';
 import { Sidebar } from './members/sidebar/sidebar';
 import AddFrom from './members/add-member';
 import InfoCard from './cards/info-card';
+import KDialog from './k-dialog';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -111,15 +106,9 @@ const SampleTestPage = () => {
         </div>
 
         {/* Dialog Button */}
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Finish setting up</Button>
-          </DialogTrigger>
-          <DialogContent className="bg-secondary-blue-700 border-primary-blue-400">
-            <DialogTitle></DialogTitle>
-            <OnboardingStepForm />
-          </DialogContent>
-        </Dialog>
+        <KDialog title="title" trigger={<Button>Finish setting up</Button>}>
+          <OnboardingStepForm />
+        </KDialog>
 
         <LogoutButton />
       </div>

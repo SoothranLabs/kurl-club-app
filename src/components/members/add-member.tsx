@@ -242,7 +242,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 dateLabel="Date of joining"
                 mode="single"
                 className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-                iconSrc={<Calendar className="!w-6 !h-6 text-white" />}
+                iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
               />
             </div>
             <div className="w-1/2">
@@ -253,7 +253,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 dateLabel="Date of birth"
                 mode="single"
                 className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-                iconSrc={<Calendar className="!w-6 !h-6 text-white" />}
+                iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
               />
             </div>
           </div>

@@ -1,7 +1,6 @@
 'use client';
 
 import { useMultiStepForm, Step } from '@/hooks/use-multistep-form';
-
 import { Button } from '@/components/ui/button';
 import {
   CreateGymStep,
@@ -33,6 +32,7 @@ export const OnboardingStepForm = () => {
 
   return (
     <div>
+      {/* <span className="">arrow</span> */}
       <StepperIndicator
         steps={steps}
         currentStep={steps.findIndex((s) => s.id === step.id)}

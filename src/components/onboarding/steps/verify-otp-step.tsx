@@ -26,13 +26,13 @@ export const VerifyOTPStep = ({ onSubmit }: VerifyOTPStepProps) => {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">
+      <div className="mb-8">
+        <h4 className="text-[28px] leading-normal font-medium  mb-4 text-White ">
           Enter OTP
-        </h1>
-        <span className="text-[14px] text-[#F8F8F8]">
+        </h4>
+        <p className="text-[15px] leading-normal font-normal text-white">
           Enter the OTP sent to your phone
-        </span>
+        </p>
       </div>
       <FormProvider {...form}>
         <form
@@ -46,7 +46,12 @@ export const VerifyOTPStep = ({ onSubmit }: VerifyOTPStepProps) => {
             label="Enter OTP"
             placeholder="Enter 6-digit OTP"
           />
-          <Button type="submit" className="w-full mt-4">
+          {/* Add button disabled true if there is no data in otp */}
+          <Button
+            disabled={false}
+            type="submit"
+            className="w-full mt-5 h-[48px]"
+          >
             Verify
           </Button>
         </form>
