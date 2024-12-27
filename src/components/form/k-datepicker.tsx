@@ -19,8 +19,8 @@ interface KDatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
   numberOfMonths?: number;
   showPresets?: boolean;
   label?: string;
-  value?: DateRange | undefined;
-  onDateChange?: (range: DateRange | undefined) => void;
+  value?: DateRange | Date | undefined;
+  onDateChange?: (range: DateRange | Date | undefined) => void;
   presets?: string[];
   startYear?: number;
   endYear?: number;
@@ -50,27 +50,34 @@ export function KDatePicker({
   endYear = getYear(new Date()) + 100,
   mode = 'range',
 }: KDatePickerProps) {
-  const [date, setDate] = React.useState<DateRange | undefined>(value);
-  const [tempDate, setTempDate] = React.useState<DateRange | undefined>(date);
+  const [rangeDate, setRangeDate] = React.useState<DateRange | undefined>(
+    mode === 'range' ? (value as DateRange) : undefined
+  );
+  const [singleDate, setSingleDate] = React.useState<Date | undefined>(
+    mode === 'single' ? (value as Date) : undefined
+  );
+
+  const [tempDate, setTempDate] = React.useState<DateRange | undefined>(
+    rangeDate
+  );
   const [activePreset, setActivePreset] = React.useState<string | null>(null);
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
   const [viewDate, setViewDate] = React.useState<Date>(
-    date?.from || new Date()
-  );
-
-  const years = React.useMemo(
-    () =>
-      Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i),
-    [startYear, endYear]
+    rangeDate?.from || singleDate || new Date()
   );
 
   React.useEffect(() => {
     if (value) {
-      setDate(value);
-      setTempDate(value);
-      setViewDate(value.from || new Date());
+      if (mode === 'range') {
+        setRangeDate(value as DateRange);
+        setTempDate(value as DateRange);
+        setViewDate((value as DateRange).from || new Date());
+      } else if (mode === 'single') {
+        setSingleDate(value as Date);
+        setViewDate(value as Date);
+      }
     }
-  }, [value]);
+  }, [value, mode]);
 
   const handlePresetSelection = (preset: string) => {
     const newDateRange = calculateDateRange(preset);
@@ -80,35 +87,50 @@ export function KDatePicker({
   };
 
   const handleApply = () => {
-    setDate(tempDate);
+    if (mode === 'range') {
+      setRangeDate(tempDate);
+      if (onDateChange) onDateChange(tempDate);
+    }
     setIsPopoverOpen(false);
-    if (onDateChange) onDateChange(tempDate);
   };
 
   const handleCancel = () => {
-    setTempDate(date);
+    if (mode === 'range') {
+      setTempDate(rangeDate);
+    }
     setActivePreset(null);
     setIsPopoverOpen(false);
   };
 
-  const handleYearChange = (year: string) => {
-    const newViewDate = setYear(viewDate, parseInt(year));
-    setViewDate(newViewDate);
+  const handleSingleDateSelect = (selectedDate: Date | undefined) => {
+    if (selectedDate) {
+      setSingleDate(selectedDate);
+      setViewDate(selectedDate);
+      setIsPopoverOpen(false);
+      if (onDateChange) onDateChange(selectedDate);
+    }
   };
 
   const renderLabel = () => {
     if (mode === 'range') {
-      return date?.from ? (
-        date.to ? (
-          `${format(date.from, 'LLL dd, y')} - ${format(date.to, 'LLL dd, y')}`
+      return rangeDate?.from ? (
+        rangeDate.to ? (
+          `${format(rangeDate.from, 'LLL dd, y')} - ${format(
+            rangeDate.to,
+            'LLL dd, y'
+          )}`
         ) : (
-          format(date.from, 'LLL dd, y')
+          format(rangeDate.from, 'LLL dd, y')
         )
       ) : (
         <span>{label}</span>
       );
     } else {
-      return date?.from ? format(date.from, 'LLL dd, y') : <span>{label}</span>;
+      return singleDate ? (
+        format(singleDate, 'LLL dd, y')
+      ) : (
+        <span>{label}</span>
+      );
     }
   };
 
@@ -153,13 +175,8 @@ export function KDatePicker({
         <Calendar
           {...commonProps}
           mode="single"
-          selected={date?.from}
-          onSelect={(selectedDate) => {
-            if (selectedDate) {
-              setDate({ from: selectedDate, to: selectedDate });
-              setIsPopoverOpen(false);
-            }
-          }}
+          selected={singleDate}
+          onSelect={handleSingleDateSelect}
           numberOfMonths={numberOfMonths}
         />
       );
@@ -196,9 +213,14 @@ export function KDatePicker({
               presets={presets}
               activePreset={activePreset}
               onSelectPreset={handlePresetSelection}
-              years={years}
+              years={Array.from(
+                { length: endYear - startYear + 1 },
+                (_, i) => startYear + i
+              )}
               currentYear={getYear(viewDate).toString()}
-              onYearChange={handleYearChange}
+              onYearChange={(year) =>
+                setViewDate(setYear(viewDate, parseInt(year)))
+              }
             />
           )}
           <div className="flex flex-col justify-between gap-4 p-4">
