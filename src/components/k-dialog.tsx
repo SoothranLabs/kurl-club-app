@@ -28,7 +28,7 @@ const KDialog: React.FC<KDialogProps> = ({
         closable={closable}
         className={`bg-primary-blue-500 border-secondary-blue-500 !rounded-lg max-w-full ${className}`}
       >
-        <DialogTitle>{title}</DialogTitle>
+        {title && <DialogTitle>{title}</DialogTitle>}
         {children}
       </DialogContent>
     </Dialog>

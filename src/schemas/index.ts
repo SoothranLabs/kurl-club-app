@@ -137,6 +137,18 @@ export const GymDetailsSchema = z.object({
     .max(100, 'Gym name should not exceed 100 characters')
     .trim(),
 
+  profilepicture: z
+    .custom<File>((file) => file instanceof File, 'Profile picture is required')
+    .refine((file) => file.size <= 5 * 1024 * 1024, {
+      message: 'File size should not exceed 5MB',
+    })
+    .refine(
+      (file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type),
+      {
+        message: 'Only JPEG, PNG, or WEBP formats are allowed',
+      }
+    ),
+
   addressLine1: z
     .string()
     .min(1, 'Address Line 1 is required')

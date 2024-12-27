@@ -1,7 +1,6 @@
 'use client';
 
 import { useMultiStepForm, Step } from '@/hooks/use-multistep-form';
-import { Button } from '@/components/ui/button';
 import {
   CreateGymStep,
   InviteTrainerStep,
@@ -9,6 +8,7 @@ import {
   VerifyOTPStep,
 } from '@/components/onboarding/steps';
 import { StepperIndicator } from '@/components/onboarding/stepper-indicator';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const steps: Step[] = [
   { id: 'mobileNumber', component: PhoneVerifyStep },
@@ -32,17 +32,33 @@ export const OnboardingStepForm = () => {
 
   return (
     <div>
-      {/* <span className="">arrow</span> */}
+      <div className="flex items-center gap-3 mb-5">
+        <ArrowButton direction="left" onClick={back} />
+        <ArrowButton direction="right" onClick={next} disabled={isFirstStep} />
+      </div>
       <StepperIndicator
         steps={steps}
         currentStep={steps.findIndex((s) => s.id === step.id)}
       />
       <StepComponent onSubmit={handleStepSubmit} />
-      {!isFirstStep && (
-        <Button onClick={back} className="mt-4 mr-2">
-          Back
-        </Button>
-      )}
     </div>
   );
 };
+
+const ArrowButton = ({
+  direction,
+  onClick,
+  disabled,
+}: {
+  direction: 'left' | 'right';
+  onClick: () => void;
+  disabled?: boolean;
+}) => (
+  <button
+    onClick={onClick}
+    disabled={disabled}
+    className="flex justify-center items-center h-9 w-9 p-1 rounded-[30px] border border-primary-blue-300 hover:bg-primary-blue-300 k-transition disabled:opacity-20 disabled:bg-transparent"
+  >
+    {direction === 'left' ? <ArrowLeft /> : <ArrowRight />}
+  </button>
+);

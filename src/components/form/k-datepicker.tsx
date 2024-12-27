@@ -2,9 +2,7 @@
 
 import * as React from 'react';
 import { format, getYear, setYear } from 'date-fns';
-import { KCalenderMonth } from '@/components/icons';
 import { DateRange } from 'react-day-picker';
-
 import { calculateDateRange, cn, formatDayWithLeadingZero } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -14,6 +12,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import PresetSidebar from './preset-sidebar';
+import { CalendarDays } from 'lucide-react';
 
 interface KDatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
   numberOfMonths?: number;
@@ -50,7 +49,7 @@ export function KDatePicker({
   startYear = getYear(new Date()) - 100,
   endYear = getYear(new Date()) + 100,
   mode = 'range',
-  icon = <KCalenderMonth className="text-primary-green-500" />,
+  icon = <CalendarDays className="text-primary-green-500" />,
 }: KDatePickerProps) {
   const [rangeDate, setRangeDate] = React.useState<DateRange | undefined>(
     mode === 'range' ? (value as DateRange) : undefined

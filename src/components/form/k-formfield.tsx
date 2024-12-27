@@ -59,6 +59,7 @@ interface CustomProps<T extends FieldValues> {
   className?: string;
   suffix?: string;
   maxLength?: number;
+  mandetory?: boolean;
   renderSkeleton?: (
     field: ControllerRenderProps<T, FieldPath<T>>
   ) => React.ReactNode;
@@ -86,6 +87,7 @@ const RenderField = <T extends FieldValues>({
     className,
     suffix,
     maxLength,
+    mandetory,
   } = props;
 
   switch (fieldType) {
@@ -94,7 +96,7 @@ const RenderField = <T extends FieldValues>({
         <FormControl>
           <div className="flex items-stretch">
             {iconSrc && (
-              <div className="mr-2 bg-secondary-blue-500 p-[18px] rounded-md flex-shrink-0">
+              <div className="mr-2 bg-secondary-blue-600 h-[52px] w-[52px] p-2 rounded-md flex items-center justify-center">
                 {iconSrc}
               </div>
             )}
@@ -108,6 +110,7 @@ const RenderField = <T extends FieldValues>({
                 className={className}
                 suffix={suffix}
                 maxLength={maxLength}
+                mandetory={mandetory}
               />
             </div>
           </div>

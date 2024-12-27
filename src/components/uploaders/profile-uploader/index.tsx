@@ -89,7 +89,7 @@ export default function ProfilePictureUploader({
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4">
+    <div className="flex flex-col">
       {image ? (
         <Avatar
           className="w-32 h-32 cursor-pointer"

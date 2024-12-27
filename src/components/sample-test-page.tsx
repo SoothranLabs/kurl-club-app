@@ -6,7 +6,6 @@ import { Form, FormControl } from '@/components/ui/form';
 import { SelectGroup, SelectItem, SelectLabel } from '@/components/ui/select';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 import { Button } from '@/components/ui/button';
-import { KCalenderMonth } from '@/components/icons';
 import { ThemeModeToggle } from '@/components/theme-toggler';
 import { SamplePageSchema } from '@/schemas';
 import FileUploader from '@/components/file-uploader';
@@ -20,6 +19,7 @@ import InfoCard from './cards/info-card';
 import KDialog from './k-dialog';
 import ProfilePictureUploader from './uploaders/profile-uploader';
 import { Sidebar } from './members/sidebar';
+import { CalendarDays } from 'lucide-react';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -97,7 +97,7 @@ const SampleTestPage = () => {
       <InfoCard
         item={{
           id: 1,
-          icon: <KCalenderMonth />,
+          icon: <CalendarDays />,
           color: 'secondary-pink-500',
           title: 'Total Members',
           count: 100,
@@ -132,10 +132,10 @@ const SampleTestPage = () => {
           <Button>KurlClub Button</Button>
           <Button variant="secondary">KurlClub Secondary</Button>
           <Button>
-            <KCalenderMonth className="text-black" /> KurlClub with icon
+            <CalendarDays className="text-black" /> KurlClub with icon
           </Button>
           <Button variant="outline" size="icon">
-            <KCalenderMonth />
+            <CalendarDays />
           </Button>
           <Button className="rounded-2xl">With style</Button>
           <Button className="w-fit">With w-fit</Button>
@@ -179,7 +179,7 @@ const SampleTestPage = () => {
                 name="websiteUrl"
                 label="Website Link"
                 placeholder="https://www.google.com"
-                iconSrc={<KCalenderMonth />}
+                iconSrc={<CalendarDays />}
               />
 
               {/* PASSWORD */}
