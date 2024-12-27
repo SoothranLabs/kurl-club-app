@@ -9,12 +9,12 @@ interface BreadcrumbItem {
 interface BreadcrumbProps {
   items: BreadcrumbItem[];
   separator?: React.ReactNode;
-  maxItems?: number; // Optional max items before truncation
+  maxItems?: number;
 }
 
 export function Breadcrumb({
   items,
-  separator = <ChevronRightIcon className="w-3 h-3" />, // Using Lucide Icon
+  separator = <ChevronRightIcon className="w-3 h-3" />,
   maxItems = 5,
 }: BreadcrumbProps) {
   const renderItems = () => {
@@ -91,14 +91,3 @@ const BreadcrumbSeparator = ({ children }: { children: React.ReactNode }) => (
 );
 
 const BreadcrumbEllipsis = () => <li className="text-gray-400">...</li>;
-
-// Example Usage
-// <Breadcrumb
-//   items=[
-//     { label: 'Home', href: '/' },
-//     { label: 'Shop', href: '/shop' },
-//     { label: 'Clothing', href: '/shop/clothing' },
-//     { label: 'Men', href: '/shop/clothing/men' },
-//     { label: 'T-Shirts' }
-//   ]
-// />

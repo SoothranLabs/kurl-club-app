@@ -14,11 +14,12 @@ import { useSheet } from '@/hooks/use-sheet';
 import { LogoutButton } from '@/components/auth/logout-button';
 import { useForm } from 'react-hook-form';
 import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
-import { MemberDetailsProvider } from './members/sidebar/sidebar-context';
-import { Sidebar } from './members/sidebar/sidebar';
+
 import AddFrom from './members/add-member';
 import InfoCard from './cards/info-card';
 import KDialog from './k-dialog';
+import ProfilePictureUploader from './uploaders/profile-uploader';
+import { Sidebar } from './members/sidebar';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -38,6 +39,7 @@ const SampleTestPage = () => {
   const form = useForm<z.infer<typeof SamplePageSchema>>({
     resolver: zodResolver(SamplePageSchema),
     defaultValues: {
+      profilepicture: null,
       email: '',
       password: '',
       confirmPassword: '',
@@ -74,6 +76,20 @@ const SampleTestPage = () => {
     console.log(data);
   };
 
+  async function onSubmit(values: z.infer<typeof SamplePageSchema>) {
+    if (!values.profilepicture) {
+      console.error('No image selected');
+      return;
+    }
+
+    const payload = {
+      ...values,
+      profilepicture: Array.from(values.profilepicture),
+    };
+
+    console.log(`Subitted data = ${JSON.stringify(payload)}`);
+  }
+
   const { isOpen, openSheet, closeSheet } = useSheet();
 
   return (
@@ -89,9 +105,7 @@ const SampleTestPage = () => {
         className="!w-[332px]"
       />
 
-      <MemberDetailsProvider>
-        <Sidebar />
-      </MemberDetailsProvider>
+      <Sidebar />
 
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
@@ -127,8 +141,28 @@ const SampleTestPage = () => {
           <Button className="w-fit">With w-fit</Button>
         </div>
         <Form {...form}>
-          <form className="space-y-12 flex-1">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-12 flex-1"
+          >
             <section className="space-y-6">
+              {/* PROFILE UPLOADER */}
+              <KFormField
+                fieldType={KFormFieldType.SKELETON}
+                control={form.control}
+                name="profilepicture"
+                renderSkeleton={(field) => (
+                  <FormControl>
+                    <ProfilePictureUploader
+                      files={
+                        field.value instanceof Uint8Array ? field.value : null
+                      }
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                )}
+              />
+
               {/* INPUT */}
               <KFormField
                 fieldType={KFormFieldType.INPUT}
@@ -248,6 +282,7 @@ const SampleTestPage = () => {
             privacy policy"
               />
             </section>
+            <Button type="submit">Submit</Button>
           </form>
         </Form>
       </div>
