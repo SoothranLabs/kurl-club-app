@@ -27,12 +27,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { MemberDetailsProvider } from './members/sidebar/sidebar-context';
-import { Sidebar } from './members/sidebar/sidebar';
 import AddFrom from './members/add-form';
 import InfoCard from './cards/info-card';
 import ProfilePictureUploader from './uploaders/profile-uploader';
-import { MemberDetails } from './members/newsidebar/member-details';
+import { Sidebar } from './members/sidebar';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -118,13 +116,7 @@ const SampleTestPage = () => {
         className="w-[332px]"
       />
 
-      <div className="flex gap-8">
-        <MemberDetailsProvider>
-          <Sidebar />
-        </MemberDetailsProvider>
-
-        <MemberDetails />
-      </div>
+      <Sidebar />
 
       <div className="flex items-center gap-6">
         <ThemeModeToggle />

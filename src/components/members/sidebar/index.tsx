@@ -5,13 +5,13 @@ import { MemberHeader } from './member-header';
 import { BasicDetailsSection } from './basic-details-section';
 import { AddressDetailsSection } from './address-details-section';
 import { useMemberDetails } from '@/hooks/use-member-details';
-import { Breadcrumb } from '@/components/breadcrumb';
+import { Breadcrumb } from '@/components/breadcrumbs';
 import { CollapsibleSection } from '@/components/layout/collapsible-section';
 import { useState } from 'react';
 
 type SectionKey = 'basicDetails' | 'addressDetails';
 
-export function MemberDetails() {
+export function Sidebar() {
   const { details, isEditing, updateMemberDetail, handleSave, toggleEdit } =
     useMemberDetails();
 

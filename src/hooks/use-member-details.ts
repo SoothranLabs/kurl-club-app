@@ -6,7 +6,7 @@ import type { Member } from '@/types/members';
 const initialMemberState: Member = {
   name: 'Prasoon Mohan',
   memberSince: '14/03/2024',
-  gymNo: '#290897',
+  gymNo: '290897',
   email: 'magikmike@gmail.com',
   mobile: '+919656746975',
   dob: '2001-12-11T18:30:00.000Z',
