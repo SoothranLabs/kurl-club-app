@@ -11,6 +11,7 @@ export function MemberHeader({ name, memberSince, gymNo }: MemberHeaderProps) {
   return (
     <>
       <div className="items-center mb-4">
+        {/* TODO: Profile uploader */}
         <div className="w-16 h-16 bg-secondary-blue-500 rounded-full flex items-center justify-center text-xl font-normal text-neutral-green-300 mr-4 mb-3">
           {getInitials(name)}
         </div>

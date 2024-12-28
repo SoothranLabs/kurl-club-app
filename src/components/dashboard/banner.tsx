@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button } from '../ui/button';
+import KDialog from '../k-dialog';
+import { OnboardingStepForm } from '../onboarding/onboarding-step-form';
 
 function Banner() {
   return (
@@ -14,7 +16,15 @@ function Banner() {
           Complete your profile to access full length access to all Kurlclub
           features
         </p>
-        <Button className="py-[13px] px-6 h-10">Finish setting up</Button>
+        <KDialog
+          closable={false}
+          className="p-[48px] w-[638px]"
+          trigger={
+            <Button className="py-[13px] px-6 h-10">Finish setting up</Button>
+          }
+        >
+          <OnboardingStepForm />
+        </KDialog>
       </div>
     </div>
   );

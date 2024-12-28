@@ -1,12 +1,6 @@
 import Image from 'next/image';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import KDialog from '@/components/k-dialog';
 
 interface PreviewModalProps {
   isOpen: boolean;
@@ -24,29 +18,31 @@ export default function PreviewModal({
   onReupload,
 }: PreviewModalProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Profile Picture Preview</DialogTitle>
-        </DialogHeader>
-        {src && (
-          <div className="flex justify-center">
-            <Image
-              src={src}
-              alt="Profile picture"
-              width={200}
-              height={200}
-              className="rounded-full"
-            />
-          </div>
-        )}
-        <DialogFooter className="flex justify-between">
-          <Button variant="destructive" onClick={onDelete}>
+    <KDialog
+      footer={
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={onDelete}>
             Delete
           </Button>
           <Button onClick={onReupload}>Re-upload</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </div>
+      }
+      open={isOpen}
+      onOpenChange={onClose}
+      title="Profile Picture Preview"
+      className="max-w-[500px]"
+    >
+      {src && (
+        <div className="flex justify-center">
+          <Image
+            src={src}
+            alt="Profile picture"
+            width={250}
+            height={250}
+            className="rounded-full"
+          />
+        </div>
+      )}
+    </KDialog>
   );
 }

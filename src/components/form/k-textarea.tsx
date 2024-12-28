@@ -50,7 +50,7 @@ const KTextarea = forwardRef<HTMLTextAreaElement, KTextareaProps>(
       <div className="relative">
         <textarea
           className={cn(
-            'k-input pt-6 pb-2 px-4 min-h-[80px]',
+            'k-input pt-6 pb-2 px-4 min-h-[80px] overflow-auto max-h-[80px]:',
             isFocused || hasContent ? 'pt-6' : 'pt-3',
             className
           )}

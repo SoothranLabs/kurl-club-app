@@ -26,13 +26,13 @@ export const PhoneVerifyStep = ({ onSubmit }: PhoneVerifyStepProps) => {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">
-          Verify Phone
-        </h1>
-        <span className="text-[14px] text-[#F8F8F8]">
-          A verification code will be sent to your phone
-        </span>
+      <div className="mb-8">
+        <h4 className="text-[28px] leading-normal font-medium  mb-4 text-White ">
+          Verify phone
+        </h4>
+        <p className="text-[15px] leading-normal font-normal text-white">
+          A verification code shall be sent to your phone
+        </p>
       </div>
       <FormProvider {...form}>
         <form
@@ -46,8 +46,13 @@ export const PhoneVerifyStep = ({ onSubmit }: PhoneVerifyStepProps) => {
             label="Phone number"
             placeholder="(555) 123-4567"
           />
-          <Button type="submit" className="w-full mt-4">
-            Send Verification
+          {/* Add button disabled true if there is no data in input phone number */}
+          <Button
+            disabled={false}
+            type="submit"
+            className="w-full mt-5 h-[48px]"
+          >
+            Send verification code
           </Button>
         </form>
       </FormProvider>

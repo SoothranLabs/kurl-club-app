@@ -6,10 +6,26 @@ import { Input } from '@/components/ui/input';
 
 interface KInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
+  className?: string;
+  suffix?: string;
+  maxLength?: number;
+  mandetory?: boolean;
 }
 
 const KInput = forwardRef<HTMLInputElement, KInputProps>(
-  ({ className, label, type, onChange, ...props }, ref) => {
+  (
+    {
+      className,
+      label,
+      mandetory,
+      type,
+      suffix,
+      maxLength,
+      onChange,
+      ...props
+    },
+    ref
+  ) => {
     const [isFocused, setIsFocused] = useState(false);
     const [hasContent, setHasContent] = useState(false);
 
@@ -34,16 +50,27 @@ const KInput = forwardRef<HTMLInputElement, KInputProps>(
           placeholder=" "
           aria-labelledby={`floating-label-${label.replace(/\s+/g, '-').toLowerCase()}`}
           autoComplete={props.autoComplete || 'off'}
+          maxLength={maxLength}
         />
+        {suffix && (
+          <span className="absolute right-3 top-[42%] p-1 text-primary-blue-100 text-sm font-normal leading-normal bg-secondary-blue-500">
+            {suffix}
+          </span>
+        )}
         <label
           id={`floating-label-${label.replace(/\s+/g, '-').toLowerCase()}`}
           htmlFor={props.id}
           className={cn(
             'text-sm text-primary-blue-100 absolute left-4 transition-all duration-200 pointer-events-none',
-            isFocused || hasContent ? 'top-2 text-xs' : 'top-4 text-sm'
+            isFocused || hasContent ? 'top-1.5 text-xs' : 'top-3.5 text-sm'
           )}
         >
           {label}
+          {mandetory && (
+            <span className="text-alert-red-500 text-sm font-normal leading-normal ml-[1px]">
+              *
+            </span>
+          )}
         </label>
       </div>
     );

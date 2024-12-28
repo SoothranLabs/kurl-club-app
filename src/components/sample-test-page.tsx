@@ -2,35 +2,24 @@
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { Form, FormControl } from '@/components/ui/form';
 import { SelectGroup, SelectItem, SelectLabel } from '@/components/ui/select';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 import { Button } from '@/components/ui/button';
-
-import { KCalenderMonth } from '@/components/icons';
 import { ThemeModeToggle } from '@/components/theme-toggler';
-
 import { SamplePageSchema } from '@/schemas';
-
 import FileUploader from '@/components/file-uploader';
 import { useSheet } from '@/hooks/use-sheet';
-import { KSheet } from '@/components/form/k-sheet';
 import { LogoutButton } from '@/components/auth/logout-button';
-import { useForm, FormProvider } from 'react-hook-form';
-
+import { useForm } from 'react-hook-form';
 import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import AddFrom from './members/add-form';
+import AddFrom from './members/add-member';
 import InfoCard from './cards/info-card';
+import KDialog from './k-dialog';
 import ProfilePictureUploader from './uploaders/profile-uploader';
 import { Sidebar } from './members/sidebar';
+import { CalendarDays } from 'lucide-react';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -108,51 +97,29 @@ const SampleTestPage = () => {
       <InfoCard
         item={{
           id: 1,
-          icon: <KCalenderMonth />,
+          icon: <CalendarDays />,
           color: 'secondary-pink-500',
           title: 'Total Members',
           count: 100,
         }}
-        className="w-[332px]"
+        className="!w-[332px]"
       />
-
-      <Sidebar />
-
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
         <div className="p-4">
           {/* KSheet Button */}
           <Button onClick={openSheet}>Open Sheet</Button>
-          <FormProvider {...form}>
-            <KSheet
-              className="w-[582px]"
-              isOpen={isOpen}
-              onClose={closeSheet}
-              title="Add Member"
-            >
-              <AddFrom onSubmit={handleSubmit} />
-              <div className="flex justify-end gap-4 sticky bottom-0 bg-secondary-blue-700 mt-4">
-                <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline">
-                    Cancel
-                  </Button>
-                  <Button type="submit">Add</Button>
-                </div>
-              </div>
-            </KSheet>
-          </FormProvider>
+          <AddFrom
+            isOpen={isOpen}
+            closeSheet={closeSheet}
+            onSubmit={handleSubmit}
+          />
         </div>
 
         {/* Dialog Button */}
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Finish setting up</Button>
-          </DialogTrigger>
-          <DialogContent className="bg-secondary-blue-700 border-primary-blue-400">
-            <DialogTitle></DialogTitle>
-            <OnboardingStepForm />
-          </DialogContent>
-        </Dialog>
+        <KDialog title="title" trigger={<Button>Finish setting up</Button>}>
+          <OnboardingStepForm />
+        </KDialog>
 
         <LogoutButton />
       </div>
@@ -162,14 +129,15 @@ const SampleTestPage = () => {
           <Button>KurlClub Button</Button>
           <Button variant="secondary">KurlClub Secondary</Button>
           <Button>
-            <KCalenderMonth className="text-black" /> KurlClub with icon
+            <CalendarDays className="text-black" /> KurlClub with icon
           </Button>
           <Button variant="outline" size="icon">
-            <KCalenderMonth />
+            <CalendarDays />
           </Button>
           <Button className="rounded-2xl">With style</Button>
           <Button className="w-fit">With w-fit</Button>
         </div>
+        <Sidebar />
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -209,7 +177,7 @@ const SampleTestPage = () => {
                 name="websiteUrl"
                 label="Website Link"
                 placeholder="https://www.google.com"
-                iconSrc={<KCalenderMonth />}
+                iconSrc={<CalendarDays />}
               />
 
               {/* PASSWORD */}

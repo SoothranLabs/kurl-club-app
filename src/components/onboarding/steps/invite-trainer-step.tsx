@@ -1,12 +1,10 @@
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
-
 import { TrainerFormSchema } from '@/schemas';
-
 import { Button } from '@/components/ui/button';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-import { KTrash } from '@/components/icons';
+import { Trash2 } from 'lucide-react';
 
 type InviteTrainerStepData = z.infer<typeof TrainerFormSchema>;
 
@@ -32,11 +30,11 @@ export const InviteTrainerStep = ({ onSubmit }: InviteTrainerStepProps) => {
 
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-[28px] font-medium  font-figtree mb-2 text-Primary-White">
+      <div className="mb-8">
+        <h4 className="text-[28px] leading-normal font-medium  mb-4 text-White ">
           Add Trainers
-        </h2>
-        <p className="text-[14px] text-[#F8F8F8]">
+        </h4>
+        <p className="text-[15px] leading-normal font-normal text-white">
           Add your buddies that make your gym awesome!
         </p>
       </div>
@@ -44,40 +42,42 @@ export const InviteTrainerStep = ({ onSubmit }: InviteTrainerStepProps) => {
       <FormProvider {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col space-y-6"
+          className="flex flex-col gap-5"
         >
-          {fields.map((field, index) => (
-            <div key={field.id} className="flex items-center space-x-2">
-              <div className="w-[25rem]">
-                <KFormField
-                  fieldType={KFormFieldType.INPUT}
-                  control={form.control}
-                  name={`trainers.${index}.email`}
-                  label={`Enter Trainer Email ${index + 1}`}
-                  placeholder="trainer@example.com"
-                />
+          <div className="space-y-5 overflow-y-auto max-h-[300px] p-1">
+            {fields.map((field, index) => (
+              <div key={field.id} className="flex items-center gap-3">
+                <div className="w-full">
+                  <KFormField
+                    fieldType={KFormFieldType.INPUT}
+                    control={form.control}
+                    name={`trainers.${index}.email`}
+                    label={`Enter Trainer Email ${index + 1}`}
+                    placeholder="trainer@example.com"
+                  />
+                </div>
+                <Button
+                  type="button"
+                  onClick={() => remove(index)}
+                  className="h-[52px] w-[52px]"
+                  variant="secondary"
+                >
+                  <Trash2 />
+                </Button>
               </div>
-
-              <Button
-                type="button"
-                onClick={() => remove(index)}
-                className="h-[42px]"
-                variant="secondary"
-              >
-                <KTrash />
-              </Button>
-            </div>
-          ))}
+            ))}
+          </div>
           <div className="flex justify-between space-x-4">
             <Button
+              variant="outlinePrimary"
               type="button"
               onClick={() => append({ email: '' })}
-              className="w-1/2"
+              className="w-1/2 h-[46px]"
             >
               + Add More
             </Button>
-            <Button type="submit" className="w-1/2">
-              Invite Trainers
+            <Button type="submit" className="w-1/2 h-[46px]">
+              Invite all
             </Button>
           </div>
         </form>

@@ -6,7 +6,7 @@ import { DayPicker } from 'react-day-picker';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
-import { KChevronLeftIcon, KChevronRightIcon } from '@/components/icons';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   formatDay?: (date: Date) => string;
@@ -67,8 +67,8 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        IconLeft: ({ ...props }) => <KChevronLeftIcon />,
-        IconRight: ({ ...props }) => <KChevronRightIcon />,
+        IconLeft: ({ ...props }) => <ChevronLeft />,
+        IconRight: ({ ...props }) => <ChevronRight />,
       }}
       formatters={{
         formatDay: formatDay,

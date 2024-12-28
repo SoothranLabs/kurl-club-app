@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, forwardRef } from 'react';
-import { KView, KViewOff } from '@/components/icons';
 import { cn } from '@/lib/utils';
+import { Eye, EyeOff } from 'lucide-react';
 
 interface KPasswordProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -50,9 +50,9 @@ const KPassword = forwardRef<HTMLInputElement, KPasswordProps>(
             aria-label={ariaLabel}
           >
             {showPassword ? (
-              <KViewOff className="h-5 w-5 text-primary-blue-100" />
+              <EyeOff className="h-5 w-5 text-primary-blue-100" />
             ) : (
-              <KView className="h-5 w-5 text-primary-blue-100" />
+              <Eye className="h-5 w-5 text-primary-blue-100" />
             )}
           </button>
           <label
