@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CropModal from './crop-modal';
 import PreviewModal from './preview-modal';
-import { Upload, User } from 'lucide-react';
+import { CircleUser, Plus, User } from 'lucide-react';
 
 interface ProfilePictureUploaderProps {
   files: Uint8Array | null;
@@ -92,7 +92,7 @@ export default function ProfilePictureUploader({
     <div className="flex flex-col">
       {image ? (
         <Avatar
-          className="w-32 h-32 cursor-pointer"
+          className="w-[92px] h-[92px] cursor-pointer"
           onClick={() => setPreviewModalOpen(true)}
         >
           <AvatarImage src={image} alt="Profile picture" />
@@ -104,10 +104,13 @@ export default function ProfilePictureUploader({
         <Button
           variant="outline"
           size="icon"
-          className="w-32 h-32"
+          className="w-[92px] h-[92px] bg-secondary-blue-400 rounded-[60px] hover:bg-secondary-blue-500 relative"
           onClick={() => fileInputRef.current?.click()}
         >
-          <Upload className="w-16 h-16" />
+          <CircleUser className="!w-11 !h-44 text-secondary-blue-100" />
+          <span className="absolute bottom-0 right-0 w-6 h-6 p-1 bg-primary-green-500 flex justify-center items-center rounded-[60px]">
+            <Plus className="!w-3 !h-3 text-secondary-blue-500" />
+          </span>
         </Button>
       )}
       <input

@@ -69,7 +69,7 @@ export const InviteTrainerStep = ({ onSubmit }: InviteTrainerStepProps) => {
           </div>
           <div className="flex justify-between space-x-4">
             <Button
-              variant="outline"
+              variant="outlinePrimary"
               type="button"
               onClick={() => append({ email: '' })}
               className="w-1/2 h-[46px]"

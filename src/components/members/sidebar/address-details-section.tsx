@@ -33,11 +33,13 @@ export function AddressDetailsSection({
           PIN
         </Label>
         {isEditing ? (
-          <Input
-            value={details.pin}
-            onChange={(e) => onUpdate('pin', e.target.value)}
-            className="border-0 rounded-none h-auto p-0 !text-[15px] focus-visible:outline-0 focus-visible:ring-0"
-          />
+          <div className="flex items-center pb-1.5 border-b-[1px] gap-2 border-primary-blue-300 group focus-within:border-white hover:border-white k-transition">
+            <Input
+              value={details.pin}
+              onChange={(e) => onUpdate('pin', e.target.value)}
+              className="border-0 rounded-none h-auto p-0 !text-[15px] focus-visible:outline-0 focus-visible:ring-0"
+            />
+          </div>
         ) : (
           <p className="text-white text-[15px] leading-[140%] font-normal">
             {details.pin}

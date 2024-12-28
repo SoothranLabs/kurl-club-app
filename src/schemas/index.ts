@@ -251,6 +251,13 @@ export const AddForm = z.object({
     .min(1, 'Member name is required')
     .max(100, 'Member name should not exceed 50 characters')
     .trim(),
+  profilepicture: z
+    .instanceof(Uint8Array)
+    .or(z.null())
+    .refine((value) => value !== null && value.length > 0, {
+      message: 'Image is required',
+    })
+    .optional(),
   email: z
     .string()
     .email('Enter a valid email address')

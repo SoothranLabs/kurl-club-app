@@ -2,16 +2,20 @@ import React from 'react';
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 
 interface KDialogProps {
   title?: string;
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   children: React.ReactNode;
+  footer?: React.ReactNode;
   className?: string;
   closable?: boolean;
+  open?: boolean;
+  onOpenChange?: () => void;
 }
 
 const KDialog: React.FC<KDialogProps> = ({
@@ -20,9 +24,12 @@ const KDialog: React.FC<KDialogProps> = ({
   trigger,
   children,
   className,
+  onOpenChange,
+  open,
+  footer,
 }) => {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent
         closable={closable}
@@ -30,6 +37,7 @@ const KDialog: React.FC<KDialogProps> = ({
       >
         {title && <DialogTitle>{title}</DialogTitle>}
         {children}
+        {footer && <DialogFooter>{footer}</DialogFooter>}
       </DialogContent>
     </Dialog>
   );

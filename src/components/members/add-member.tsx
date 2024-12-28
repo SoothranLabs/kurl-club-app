@@ -10,6 +10,8 @@ import { useState } from 'react';
 import { KSheet } from '../form/k-sheet';
 import { Button } from '../ui/button';
 import { Calendar } from 'lucide-react';
+import { FormControl } from '../ui/form';
+import ProfilePictureUploader from '../uploaders/profile-uploader';
 
 type CreateMemberDetailsData = z.infer<typeof AddForm>;
 
@@ -41,6 +43,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
     resolver: zodResolver(AddForm),
     defaultValues: {
       memberName: '',
+      profilepicture: undefined,
       email: '',
       primaryPhone: '',
       dob: '',
@@ -125,12 +128,21 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
       <FormProvider {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(handleSubmit)}>
           <div className="items-start gap-2 mb-6 flex justify-between ">
-            <div className="w-[92px] h-[92px] bg-secondary-blue-300 rounded-full flex items-center justify-center text-2xl font-normal text-neutral-green-300 mr-4 mb-3">
-              {memberDetails.name
-                .split(' ')
-                .map((part) => part[0])
-                .join('')}
-            </div>
+            <KFormField
+              fieldType={KFormFieldType.SKELETON}
+              control={form.control}
+              name="profilepicture"
+              renderSkeleton={(field) => (
+                <FormControl>
+                  <ProfilePictureUploader
+                    files={
+                      field.value instanceof Uint8Array ? field.value : null
+                    }
+                    onChange={field.onChange}
+                  />
+                </FormControl>
+              )}
+            />
             <Badge className="bg-secondary-blue-400 flex items-center w-fit justify-center text-sm text-white rounded-full h-[30px] py-2 px-2 border border-secondary-blue-300 bg-opacity-100">
               Gym no: #{memberDetails.gymNo}
             </Badge>

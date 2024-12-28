@@ -19,6 +19,7 @@ import type {
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
 import { KDatePicker } from '@/components/form/k-datepicker';
+import { Calendar } from 'lucide-react';
 
 export function BasicDetailsSection({
   isEditing,
@@ -61,6 +62,7 @@ export function BasicDetailsSection({
         </Label>
         {isEditing ? (
           <KDatePicker
+            icon={<Calendar />}
             mode="single"
             value={details.dob ? new Date(details.dob) : undefined}
             onDateChange={(date) =>

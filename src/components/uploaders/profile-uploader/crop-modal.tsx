@@ -9,14 +9,8 @@ import ReactCrop, {
   makeAspectCrop,
 } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import KDialog from '@/components/k-dialog';
 
 interface CropModalProps {
   isOpen: boolean;
@@ -119,32 +113,30 @@ export default function CropModal({
   }, [completedCrop, getCroppedImg, imageRef, onCrop, onUpload, onClose]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Crop Image</DialogTitle>
-        </DialogHeader>
-        {src && (
-          <ReactCrop
-            crop={crop}
-            onChange={(c) => setCrop(c)}
-            onComplete={(c) => setCompletedCrop(c)}
-            aspect={ASPECT_RATIO}
-          >
-            <Image
-              src={src}
-              onLoad={(e) => onImageLoad(e.currentTarget)}
-              alt="Crop me"
-              layout="responsive"
-              width={100}
-              height={100}
-            />
-          </ReactCrop>
-        )}
-        <DialogFooter>
-          <Button onClick={handleCropComplete}>Crop & Upload</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <KDialog
+      footer={<Button onClick={handleCropComplete}>Crop & Upload</Button>}
+      className="w-[500px]"
+      open={isOpen}
+      onOpenChange={onClose}
+      title="Crop Image"
+    >
+      {src && (
+        <ReactCrop
+          crop={crop}
+          onChange={(c) => setCrop(c)}
+          onComplete={(c) => setCompletedCrop(c)}
+          aspect={ASPECT_RATIO}
+        >
+          <Image
+            src={src}
+            onLoad={(e) => onImageLoad(e.currentTarget)}
+            alt="Crop me"
+            layout="responsive"
+            width={100}
+            height={100}
+          />
+        </ReactCrop>
+      )}
+    </KDialog>
   );
 }

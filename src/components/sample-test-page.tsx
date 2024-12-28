@@ -104,9 +104,6 @@ const SampleTestPage = () => {
         }}
         className="!w-[332px]"
       />
-
-      <Sidebar />
-
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
         <div className="p-4">
@@ -140,6 +137,7 @@ const SampleTestPage = () => {
           <Button className="rounded-2xl">With style</Button>
           <Button className="w-fit">With w-fit</Button>
         </div>
+        <Sidebar />
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
