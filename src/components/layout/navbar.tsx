@@ -1,10 +1,11 @@
 'use client';
 
-import { Bell, Search } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import React from 'react';
+import { Bell, Search } from 'lucide-react';
+
+import { UserNav } from './user-nav';
 
 function Navbar() {
   const pathname = usePathname();
@@ -71,15 +72,7 @@ function Navbar() {
               <Bell size={20} />
             </span>
           </div>
-          <span className="cursor-pointer w-[40px] h-[40px]">
-            <Image
-              width={40}
-              height={40}
-              className="w-full h-full object-cover"
-              src="/assets/svg/gym-dp.svg"
-              alt="dp"
-            />
-          </span>
+          <UserNav />
         </div>
       </div>
     </div>

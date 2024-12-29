@@ -52,6 +52,10 @@ body {
     @apply hover:bg-secondary-blue-600 k-transition py-2 cursor-pointer data-[state=checked]:bg-secondary-blue-600 data-[state=checked]:text-primary-green-500 !important;
   }
 
+  .shad-drop-item {
+    @apply hover:bg-secondary-blue-400/50 hover:backdrop-blur-md rounded-md k-transition py-2 cursor-pointer data-[state=checked]:bg-secondary-blue-600 data-[state=checked]:text-primary-green-500 !important;
+  }
+
   .shad-otp {
     @apply w-full flex gap-3 justify-between !important;
   }
