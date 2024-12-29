@@ -2,23 +2,17 @@
 
 import * as React from 'react';
 import { Users, Settings, IndianRupee, Map } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import {
   GeneralSettings,
   Packages,
   UserManagement,
   WorkoutPlans,
 } from './(tabs)';
+import { KTabs, TabItem } from '@/components/form/k-tabs';
 
 type Tab = 'users' | 'packages' | 'workouts' | 'settings';
 
-interface NavItem {
-  id: Tab;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-}
-
-const navItems: NavItem[] = [
+const navItems: TabItem[] = [
   {
     id: 'users',
     label: 'User Management',
@@ -41,6 +35,17 @@ const navItems: NavItem[] = [
   },
 ];
 
+const TabContent = ({ activeTab }: { activeTab: Tab }) => {
+  const components: Record<Tab, React.ReactNode> = {
+    users: <UserManagement />,
+    packages: <Packages />,
+    workouts: <WorkoutPlans />,
+    settings: <GeneralSettings />,
+  };
+
+  return components[activeTab];
+};
+
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = React.useState<Tab>('users');
 
@@ -50,40 +55,15 @@ const SettingsPage = () => {
         <div className="p-8">
           <h1 className="text-2xl">Settings</h1>
         </div>
-        <nav className="flex flex-col gap-1.5">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={cn(
-                  'relative flex items-center gap-2.5 px-8 py-2.5 text-[15px] transition-colors',
-                  'hover:bg-secondary-blue-500',
-                  activeTab === item.id
-                    ? 'bg-secondary-blue-500 text-white before:absolute before:left-0 before:top-0 before:h-full before:w-[2px] before:bg-primary-green-100'
-                    : 'text-white'
-                )}
-              >
-                <Icon
-                  className={cn(
-                    'h-5 w-5 transition-colors',
-                    activeTab === item.id
-                      ? 'text-primary-green-200'
-                      : 'text-white'
-                  )}
-                />
-                {item.label}
-              </button>
-            );
-          })}
-        </nav>
+        <KTabs
+          items={navItems}
+          variant="vertical"
+          value={activeTab}
+          onChange={(value) => setActiveTab(value as Tab)}
+        />
       </aside>
       <main>
-        {activeTab === 'users' && <UserManagement />}
-        {activeTab === 'packages' && <Packages />}
-        {activeTab === 'workouts' && <WorkoutPlans />}
-        {activeTab === 'settings' && <GeneralSettings />}
+        <TabContent activeTab={activeTab} />
       </main>
     </div>
   );
