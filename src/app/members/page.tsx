@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { useMember } from '@/hooks/use-member';
+import { useFilterableList } from '@/hooks/use-filterable-list';
 import { useSheet } from '@/hooks/use-sheet';
 
 import { MembersHeader } from '@/components/members/members-header';
@@ -13,13 +13,18 @@ import { DataTableToolbar } from '@/components/table/data-table-toolbar';
 
 import { initialData } from '@/lib/dummy/data';
 import { filters } from '@/lib/dummy/fiters';
+import { searchItems } from '@/lib/utils';
 
 import { Member } from '@/types';
 
 export default function MembersPage() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
 
-  const { members, addMembers, search } = useMember(initialData);
+  const {
+    items: members,
+    addItems: addMembers,
+    search,
+  } = useFilterableList<Member>(initialData, searchItems);
   const { isOpen, openSheet, closeSheet } = useSheet();
 
   // Required fields for the members table

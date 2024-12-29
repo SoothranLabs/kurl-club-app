@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl } from '@/components/ui/form';
@@ -19,7 +20,8 @@ import InfoCard from './cards/info-card';
 import KDialog from './k-dialog';
 import ProfilePictureUploader from './uploaders/profile-uploader';
 import { Sidebar } from './members/sidebar';
-import { CalendarDays } from 'lucide-react';
+import { CalendarDays, IndianRupee, Map, Settings, Users } from 'lucide-react';
+import { KTabs, TabItem } from './form/k-tabs';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -36,6 +38,20 @@ const IdentificationTypes = [
 ];
 
 const SampleTestPage = () => {
+  const [selectedTab, setSelectedTab] = React.useState<string>('users');
+
+  const items: TabItem[] = [
+    { id: 'users', label: 'Users', icon: Users },
+    { id: 'packages', label: 'Packages', icon: IndianRupee },
+    { id: 'workouts', label: 'Workouts', icon: Map },
+    { id: 'settings', label: 'Settings', icon: Settings },
+  ];
+
+  const handleTabChange = (tabId: string) => {
+    setSelectedTab(tabId);
+    console.log(`Active tab: ${tabId}`);
+  };
+
   const form = useForm<z.infer<typeof SamplePageSchema>>({
     resolver: zodResolver(SamplePageSchema),
     defaultValues: {
@@ -94,6 +110,51 @@ const SampleTestPage = () => {
 
   return (
     <div className="flex flex-col items-center gap-10">
+      <div className="p-6 space-y-8">
+        {/* Pills Variant */}
+        <div>
+          <h2 className="mb-4 text-lg font-semibold text-white">
+            Pills Variant
+          </h2>
+          <KTabs
+            items={items}
+            variant="pills"
+            value={selectedTab}
+            onChange={handleTabChange}
+            className="bg-secondary-blue-700 p-4 rounded-lg"
+          />
+        </div>
+
+        {/* Underline Variant */}
+        <div>
+          <h2 className="mb-4 text-lg font-semibold text-white">
+            Underline Variant
+          </h2>
+          <KTabs
+            items={items}
+            variant="underline"
+            value={selectedTab}
+            onChange={handleTabChange}
+            className="bg-secondary-blue-700 p-4 rounded-lg"
+          />
+        </div>
+
+        {/* Vertical Variant */}
+        <div>
+          <h2 className="mb-4 text-lg font-semibold text-white">
+            Vertical Variant
+          </h2>
+          <div className="flex">
+            <KTabs
+              items={items}
+              variant="vertical"
+              value={selectedTab}
+              onChange={handleTabChange}
+              className="bg-secondary-blue-700 rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
       <InfoCard
         item={{
           id: 1,

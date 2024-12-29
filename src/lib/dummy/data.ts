@@ -1,4 +1,4 @@
-import { Member } from '@/types';
+import { Member, Trainer } from '@/types';
 
 // Sample data
 export const initialData: Member[] = [
@@ -281,5 +281,98 @@ export const initialData: Member[] = [
     gender: 'Female',
     dob: '1997-07-18',
     doj: '2023-02-10',
+  },
+];
+
+export const initialTrainers: Trainer[] = [
+  {
+    id: '1',
+    trainerId: '#00001',
+    name: 'Tony Stank',
+    avatar: '/placeholder.svg?height=32&width=32',
+    designation: 'Admin',
+    email: 'irumbman@gmail.com',
+    phone: '+91 8138 964 895',
+  },
+  {
+    id: '2',
+    trainerId: '#00002',
+    name: 'Arjun Menon',
+    avatar: '/placeholder.svg?height=32&width=32',
+    designation: 'Regular_User',
+    email: 'irumbman@gmail.com',
+    phone: '+91 8138 964 895',
+  },
+  {
+    id: '3',
+    trainerId: '#00003',
+    name: 'Vikram Nair',
+    avatar: '/placeholder.svg?height=32&width=32',
+    designation: 'Trainer',
+    email: 'irumbman@gmail.com',
+    phone: '+91 8138 964 895',
+  },
+  {
+    id: '4',
+    trainerId: '#00004',
+    name: 'Suresh Pillai',
+    avatar: '/placeholder.svg?height=32&width=32',
+    designation: 'Trainer',
+    email: 'irumbman@gmail.com',
+    phone: '+91 8138 964 895',
+  },
+  {
+    id: '5',
+    trainerId: '#00005',
+    name: 'Ravi Kumar',
+    avatar: '/placeholder.svg?height=32&width=32',
+    designation: 'Trainer',
+    email: 'irumbman@gmail.com',
+    phone: '+91 8138 964 895',
+  },
+  {
+    id: '6',
+    trainerId: '#00006',
+    name: 'Ajith Rajan',
+    avatar: '/placeholder.svg?height=32&width=32',
+    designation: 'Trainer',
+    email: 'irumbman@gmail.com',
+    phone: '+91 8138 964 895',
+  },
+  {
+    id: '7',
+    trainerId: '#00007',
+    name: 'Deepak Varma',
+    avatar: '/placeholder.svg?height=32&width=32',
+    designation: 'Trainer',
+    email: 'irumbman@gmail.com',
+    phone: '+91 8138 964 895',
+  },
+  {
+    id: '8',
+    trainerId: '#00008',
+    name: 'Nikhil Thomas',
+    avatar: '/placeholder.svg?height=32&width=32',
+    designation: 'Trainer',
+    email: 'irumbman@gmail.com',
+    phone: '+91 8138 964 895',
+  },
+  {
+    id: '9',
+    trainerId: '#00009',
+    name: 'Sanjay Menon',
+    avatar: '/placeholder.svg?height=32&width=32',
+    designation: 'Trainer',
+    email: 'irumbman@gmail.com',
+    phone: '+91 8138 964 895',
+  },
+  {
+    id: '10',
+    trainerId: '#00010',
+    name: 'Vishnu Iyer',
+    avatar: '/placeholder.svg?height=32&width=32',
+    designation: 'Trainer',
+    email: 'irumbman@gmail.com',
+    phone: '+91 8138 964 895',
   },
 ];

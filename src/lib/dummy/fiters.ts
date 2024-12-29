@@ -1,4 +1,13 @@
-import { Calendar, Check, Minus, AlertCircle, Gift } from 'lucide-react';
+import {
+  Calendar,
+  Check,
+  Minus,
+  AlertCircle,
+  Gift,
+  PersonStanding,
+  CircleUserRound,
+  User,
+} from 'lucide-react';
 
 export const filters = [
   {
@@ -34,6 +43,18 @@ export const filters = [
       { label: 'AB-', value: 'AB-' },
       { label: 'O+', value: 'O+' },
       { label: 'O-', value: 'O-' },
+    ],
+  },
+];
+
+export const trainerFilters = [
+  {
+    columnId: 'designation',
+    title: 'Designation',
+    options: [
+      { label: 'Trainer', value: 'Trainer', icon: PersonStanding },
+      { label: 'Admin', value: 'Admin', icon: CircleUserRound },
+      { label: 'Regular User', value: 'Regular_User', icon: User },
     ],
   },
 ];
