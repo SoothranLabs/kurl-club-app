@@ -50,10 +50,12 @@ const SettingsPage = () => {
   const [activeTab, setActiveTab] = React.useState<Tab>('users');
 
   return (
-    <div className="grid h-[calc(100vh-80px)] container grid-cols-[250px_1fr]">
-      <aside className="flex flex-col border-r border-[#21262D]">
+    <div className="min-h-[calc(100vh-80px)] flex">
+      <aside className="flex flex-col border-r border-secondary-blue-600 h-full fixed top-[80px] left-0 w-[336px]">
         <div className="p-8">
-          <h1 className="text-2xl">Settings</h1>
+          <h3 className="text-2xl leading-normal font-medium text-white">
+            Settings
+          </h3>
         </div>
         <KTabs
           items={navItems}
@@ -62,7 +64,7 @@ const SettingsPage = () => {
           onChange={(value) => setActiveTab(value as Tab)}
         />
       </aside>
-      <main>
+      <main className="w-full pl-[336px]">
         <TabContent activeTab={activeTab} />
       </main>
     </div>

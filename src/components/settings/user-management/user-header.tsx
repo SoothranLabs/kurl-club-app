@@ -15,7 +15,9 @@ export const UsersHeader = ({
 }: UsersHeaderProps) => {
   return (
     <div className="flex items-center justify-between">
-      <h2 className="text-2xl font-bold tracking-tight">User Management</h2>
+      <h4 className="text-[20px] leading-normal tracking-tight font-medium text-white">
+        User Management
+      </h4>
       <div className="flex items-center space-x-2">
         <Button className="h-10" onClick={onAddNewClick}>
           <Plus className="h-4 w-4" />

@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Bell, Search } from 'lucide-react';
-
 import { UserNav } from './user-nav';
 
 function Navbar() {
