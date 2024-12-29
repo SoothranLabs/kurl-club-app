@@ -17,7 +17,7 @@ export const UserManagement = () => {
   );
 
   return (
-    <div className="h-full flex-col gap-4 px-[46px] my-8 flex w-full">
+    <div className="flex-col gap-4 px-[46px] my-8 flex w-full">
       <UsersHeader
         onAddNewClick={() => openSheet()}
         isOpen={isOpen}
