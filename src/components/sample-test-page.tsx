@@ -117,7 +117,11 @@ const SampleTestPage = () => {
         </div>
 
         {/* Dialog Button */}
-        <KDialog title="title" trigger={<Button>Finish setting up</Button>}>
+        <KDialog
+          closable={false}
+          className="p-[48px] w-[638px]"
+          trigger={<Button>Finish setting up</Button>}
+        >
           <OnboardingStepForm />
         </KDialog>
 

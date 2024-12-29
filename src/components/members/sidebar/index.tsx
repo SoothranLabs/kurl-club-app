@@ -66,9 +66,11 @@ export function Sidebar() {
         </h5>
 
         <MemberHeader
-          name={details.name}
           memberSince={details.memberSince}
           gymNo={details.gymNo}
+          isEditing={isEditing}
+          details={details}
+          onUpdate={updateMemberDetail}
         />
 
         <Button

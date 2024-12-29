@@ -149,14 +149,14 @@ export const GymDetailsSchema = z.object({
       }
     ),
 
-  addressLine1: z
+  buildingName: z
     .string()
     .min(1, 'Address Line 1 is required')
     .max(200, 'Address Line 1 should not exceed 200 characters')
     .trim(),
 
   // Address Line 2 is optional, apply max before optional
-  addressLine2: z
+  city: z
     .string()
     .max(200, 'Address Line 2 should not exceed 200 characters')
     .optional(),
@@ -168,16 +168,6 @@ export const GymDetailsSchema = z.object({
       'Enter a valid primary phone number with country code'
     )
     .min(1, 'Primary phone number is required'),
-
-  // Secondary Phone is optional, apply max before optional
-  secondaryPhone: z
-    .string()
-    .regex(
-      /^\+?[1-9]\d{1,14}$/,
-      'Enter a valid secondary phone number with country code'
-    )
-    .max(15, 'Phone number cannot exceed 15 digits') // max before optional
-    .optional(),
 
   email: z
     .string()
