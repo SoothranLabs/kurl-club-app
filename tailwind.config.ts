@@ -152,6 +152,7 @@ const config: Config = {
           },
         },
         alert: {
+          positive: {},
           red: {
             '50': '#fbeaed',
             '100': '#f3bfc8',

@@ -20,6 +20,7 @@ import KDialog from './k-dialog';
 import ProfilePictureUploader from './uploaders/profile-uploader';
 import { Sidebar } from './members/sidebar';
 import { CalendarDays } from 'lucide-react';
+import PaymentCard from './members/details/payment-card';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -94,6 +95,16 @@ const SampleTestPage = () => {
 
   return (
     <div className="flex flex-col items-center gap-10">
+      <PaymentCard
+        info={{
+          status: 'unpaid',
+          delay: 1,
+          outstanding: 10000,
+          paid_amount: 0,
+          package: 'Quarterly',
+          due_data: '12/12/2024',
+        }}
+      />
       <InfoCard
         item={{
           id: 1,
