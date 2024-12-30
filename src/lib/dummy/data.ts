@@ -286,7 +286,7 @@ export const initialData: Member[] = [
 
 export const initialTrainers: Trainer[] = [
   {
-    id: '1',
+    id: '1a2b3c4d-5e6f-7g8h-9i0j-1234567890ab',
     trainerId: '#00001',
     name: 'Tony Stank',
     avatar: '/placeholder.svg?height=32&width=32',
@@ -295,7 +295,7 @@ export const initialTrainers: Trainer[] = [
     phone: '+91 8138 964 895',
   },
   {
-    id: '2',
+    id: '2b3c4d5e-6f7g-8h9i-0j1k-223344556677',
     trainerId: '#00002',
     name: 'Arjun Menon',
     avatar: '/placeholder.svg?height=32&width=32',
@@ -304,7 +304,7 @@ export const initialTrainers: Trainer[] = [
     phone: '+91 8138 964 895',
   },
   {
-    id: '3',
+    id: '3c4d5e6f-7g8h-9i0j-1k2l-334455667788',
     trainerId: '#00003',
     name: 'Vikram Nair',
     avatar: '/placeholder.svg?height=32&width=32',
@@ -313,7 +313,7 @@ export const initialTrainers: Trainer[] = [
     phone: '+91 8138 964 895',
   },
   {
-    id: '4',
+    id: '4d5e6f7g-8h9i-0j1k-2l3m-445566778899',
     trainerId: '#00004',
     name: 'Suresh Pillai',
     avatar: '/placeholder.svg?height=32&width=32',
@@ -322,7 +322,7 @@ export const initialTrainers: Trainer[] = [
     phone: '+91 8138 964 895',
   },
   {
-    id: '5',
+    id: '5e6f7g8h-9i0j-1k2l-3m4n-556677889900',
     trainerId: '#00005',
     name: 'Ravi Kumar',
     avatar: '/placeholder.svg?height=32&width=32',
@@ -331,7 +331,7 @@ export const initialTrainers: Trainer[] = [
     phone: '+91 8138 964 895',
   },
   {
-    id: '6',
+    id: '6f7g8h9i-0j1k-2l3m-4n5o-667788990011',
     trainerId: '#00006',
     name: 'Ajith Rajan',
     avatar: '/placeholder.svg?height=32&width=32',
@@ -340,7 +340,7 @@ export const initialTrainers: Trainer[] = [
     phone: '+91 8138 964 895',
   },
   {
-    id: '7',
+    id: '7g8h9i0j-1k2l-3m4n-5o6p-778899001122',
     trainerId: '#00007',
     name: 'Deepak Varma',
     avatar: '/placeholder.svg?height=32&width=32',
@@ -349,7 +349,7 @@ export const initialTrainers: Trainer[] = [
     phone: '+91 8138 964 895',
   },
   {
-    id: '8',
+    id: '8h9i0j1k-2l3m-4n5o-6p7q-889900112233',
     trainerId: '#00008',
     name: 'Nikhil Thomas',
     avatar: '/placeholder.svg?height=32&width=32',
@@ -358,7 +358,7 @@ export const initialTrainers: Trainer[] = [
     phone: '+91 8138 964 895',
   },
   {
-    id: '9',
+    id: '9i0j1k2l-3m4n-5o6p-7q8r-990011223344',
     trainerId: '#00009',
     name: 'Sanjay Menon',
     avatar: '/placeholder.svg?height=32&width=32',
@@ -367,7 +367,7 @@ export const initialTrainers: Trainer[] = [
     phone: '+91 8138 964 895',
   },
   {
-    id: '10',
+    id: '0j1k2l3m-4n5o-6p7q-8r9s-001122334455',
     trainerId: '#00010',
     name: 'Vishnu Iyer',
     avatar: '/placeholder.svg?height=32&width=32',

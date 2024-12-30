@@ -1,3 +1,5 @@
+'use client';
+
 import { columns } from '@/components/settings/user-management/columns';
 import { DataTable } from '@/components/table/data-table';
 import { DataTableToolbar } from '@/components/table/data-table-toolbar';
@@ -9,7 +11,7 @@ import { initialTrainers } from '@/lib/dummy/data';
 import { trainerFilters } from '@/lib/dummy/fiters';
 import { searchItems } from '@/lib/utils';
 
-export const UserManagement = () => {
+export default function UserManagement() {
   const { isOpen, openSheet, closeSheet } = useSheet();
   const { items: trainers, search } = useFilterableList<Trainer>(
     initialTrainers,
@@ -36,4 +38,4 @@ export const UserManagement = () => {
       />
     </div>
   );
-};
+}

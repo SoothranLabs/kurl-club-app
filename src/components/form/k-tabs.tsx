@@ -1,6 +1,3 @@
-'use client';
-
-import * as React from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -16,7 +13,7 @@ export interface KTabsProps {
   items: TabItem[];
   variant?: TabVariant;
   value?: string;
-  onChange?: (value: string) => void;
+  onTabChange?: (value: string) => void;
   className?: string;
 }
 
@@ -24,16 +21,9 @@ export function KTabs({
   items,
   variant = 'pills',
   value,
-  onChange,
+  onTabChange,
   className,
 }: KTabsProps) {
-  const [activeTab, setActiveTab] = React.useState(value || items[0]?.id);
-
-  const handleTabChange = (tabId: string) => {
-    setActiveTab(tabId);
-    onChange?.(tabId);
-  };
-
   return (
     <div
       className={cn(
@@ -51,11 +41,11 @@ export function KTabs({
         <nav className="flex flex-col gap-1.5">
           {items.map((item) => {
             const Icon = item.icon;
-            const isActive = activeTab === item.id;
+            const isActive = value === item.id;
             return (
               <button
                 key={item.id}
-                onClick={() => handleTabChange(item.id)}
+                onClick={() => onTabChange?.(item.id)}
                 className={cn(
                   'relative flex items-center gap-2.5 px-8 py-2.5 h-10 text-[15px] leading-normal transition-colors hover:bg-secondary-blue-500',
                   {
@@ -85,11 +75,11 @@ export function KTabs({
         // Underline Variant
         <nav className="flex w-full">
           {items.map((item) => {
-            const isActive = activeTab === item.id;
+            const isActive = value === item.id;
             return (
               <button
                 key={item.id}
-                onClick={() => handleTabChange(item.id)}
+                onClick={() => onTabChange?.(item.id)}
                 className={cn(
                   'flex-1 border-b-2 px-4 py-2 text-center text-sm font-medium transition-all',
                   {
@@ -108,11 +98,11 @@ export function KTabs({
         // Pills Variant (Default)
         <nav className="flex bg-gray-50/50 p-1 rounded-xl">
           {items.map((item) => {
-            const isActive = activeTab === item.id;
+            const isActive = value === item.id;
             return (
               <button
                 key={item.id}
-                onClick={() => handleTabChange(item.id)}
+                onClick={() => onTabChange?.(item.id)}
                 className={cn('rounded-lg px-6 py-3 text-base transition-all', {
                   'bg-white text-black shadow-[0_2px_8px_rgba(0,0,0,0.1)]':
                     isActive,
