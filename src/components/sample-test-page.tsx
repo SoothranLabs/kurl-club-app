@@ -120,7 +120,7 @@ const SampleTestPage = () => {
             items={items}
             variant="pills"
             value={selectedTab}
-            onChange={handleTabChange}
+            onTabChange={handleTabChange}
             className="bg-secondary-blue-700 p-4 rounded-lg"
           />
         </div>
@@ -134,7 +134,7 @@ const SampleTestPage = () => {
             items={items}
             variant="underline"
             value={selectedTab}
-            onChange={handleTabChange}
+            onTabChange={handleTabChange}
             className="bg-secondary-blue-700 p-4 rounded-lg"
           />
         </div>
@@ -149,7 +149,7 @@ const SampleTestPage = () => {
               items={items}
               variant="vertical"
               value={selectedTab}
-              onChange={handleTabChange}
+              onTabChange={handleTabChange}
               className="bg-secondary-blue-700 rounded-lg"
             />
           </div>
