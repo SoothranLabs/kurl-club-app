@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl } from '@/components/ui/form';
@@ -13,14 +14,15 @@ import { useSheet } from '@/hooks/use-sheet';
 import { LogoutButton } from '@/components/auth/logout-button';
 import { useForm } from 'react-hook-form';
 import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
-
 import AddFrom from './members/add-member';
 import InfoCard from './cards/info-card';
 import KDialog from './k-dialog';
 import ProfilePictureUploader from './uploaders/profile-uploader';
 import { Sidebar } from './members/sidebar';
-import { CalendarDays } from 'lucide-react';
 import PaymentCard from './members/details/payment-card';
+import { CalendarDays, IndianRupee, Map, Settings, Users } from 'lucide-react';
+import { KTabs, TabItem } from './form/k-tabs';
+import { UserForm } from './settings/user-management/add-user-form';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -37,6 +39,20 @@ const IdentificationTypes = [
 ];
 
 const SampleTestPage = () => {
+  const [selectedTab, setSelectedTab] = React.useState<string>('users');
+
+  const items: TabItem[] = [
+    { id: 'users', label: 'Users', icon: Users },
+    { id: 'packages', label: 'Packages', icon: IndianRupee },
+    { id: 'workouts', label: 'Workouts', icon: Map },
+    { id: 'settings', label: 'Settings', icon: Settings },
+  ];
+
+  const handleTabChange = (tabId: string) => {
+    setSelectedTab(tabId);
+    console.log(`Active tab: ${tabId}`);
+  };
+
   const form = useForm<z.infer<typeof SamplePageSchema>>({
     resolver: zodResolver(SamplePageSchema),
     defaultValues: {
@@ -77,6 +93,22 @@ const SampleTestPage = () => {
     console.log(data);
   };
 
+  const addUserSubmit = (data: {
+    memberName: string;
+    email: string;
+    primaryPhone: string;
+    designation: string;
+    dob: string;
+    gender: string;
+    doj: string;
+    feeStatus: string;
+    amountPaid: string;
+    addressLine1: string;
+    addressLine2?: string;
+  }) => {
+    console.log(data);
+  };
+
   async function onSubmit(values: z.infer<typeof SamplePageSchema>) {
     if (!values.profilepicture) {
       console.error('No image selected');
@@ -92,6 +124,11 @@ const SampleTestPage = () => {
   }
 
   const { isOpen, openSheet, closeSheet } = useSheet();
+  const {
+    isOpen: isAddUserOpen,
+    openSheet: openAddUserSheet,
+    closeSheet: closeAddUserSheet,
+  } = useSheet();
 
   return (
     <div className="flex flex-col items-center gap-10">
@@ -105,6 +142,51 @@ const SampleTestPage = () => {
           due_data: '12/12/2024',
         }}
       />
+      <div className="p-6 space-y-8">
+        {/* Pills Variant */}
+        <div>
+          <h2 className="mb-4 text-lg font-semibold text-white">
+            Pills Variant
+          </h2>
+          <KTabs
+            items={items}
+            variant="pills"
+            value={selectedTab}
+            onTabChange={handleTabChange}
+            className="bg-secondary-blue-700 p-4 rounded-lg"
+          />
+        </div>
+
+        {/* Underline Variant */}
+        <div>
+          <h2 className="mb-4 text-lg font-semibold text-white">
+            Underline Variant
+          </h2>
+          <KTabs
+            items={items}
+            variant="underline"
+            value={selectedTab}
+            onTabChange={handleTabChange}
+            className="bg-secondary-blue-700 p-4 rounded-lg"
+          />
+        </div>
+
+        {/* Vertical Variant */}
+        <div>
+          <h2 className="mb-4 text-lg font-semibold text-white">
+            Vertical Variant
+          </h2>
+          <div className="flex">
+            <KTabs
+              items={items}
+              variant="vertical"
+              value={selectedTab}
+              onTabChange={handleTabChange}
+              className="bg-secondary-blue-700 rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
       <InfoCard
         item={{
           id: 1,
@@ -117,6 +199,14 @@ const SampleTestPage = () => {
       />
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
+        <div className="p-4">
+          <Button onClick={openAddUserSheet}>Add User</Button>
+          <UserForm
+            isOpen={isAddUserOpen}
+            closeSheet={closeAddUserSheet}
+            onSubmit={addUserSubmit}
+          />
+        </div>
         <div className="p-4">
           {/* KSheet Button */}
           <Button onClick={openSheet}>Open Sheet</Button>

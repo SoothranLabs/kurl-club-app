@@ -281,3 +281,45 @@ export const AddForm = z.object({
     .max(200, 'Address Line 2 should not exceed 200 characters')
     .optional(),
 });
+
+export const AddUserForm = z.object({
+  memberName: z
+    .string()
+    .min(1, 'Member name is required')
+    .max(100, 'Member name should not exceed 50 characters')
+    .trim(),
+  profilepicture: z
+    .instanceof(Uint8Array)
+    .or(z.null())
+    .refine((value) => value !== null && value.length > 0, {
+      message: 'Image is required',
+    })
+    .optional(),
+  email: z
+    .string()
+    .email('Enter a valid email address')
+    .min(1, 'Email address is required')
+    .max(150, 'Email address should not exceed 150 characters'),
+  primaryPhone: z
+    .string()
+    .regex(
+      /^\+?[1-9]\d{1,14}$/,
+      'Enter a valid primary phone number with country code'
+    )
+    .min(1, 'Primary phone number is required'),
+  designation: z.string().min(1, 'Designation is required'),
+  dob: z.string().min(1, 'DOB is required'),
+  gender: z.string().min(1, 'Gender is required'),
+  doj: z.string().min(1, 'DOJ is required'),
+  feeStatus: z.string().min(1, 'FeeStatus is required'),
+  amountPaid: z.string().min(1, 'AmountPaid is required'),
+  addressLine1: z
+    .string()
+    .min(1, 'Address Line 1 is required')
+    .max(200, 'Address Line 1 should not exceed 200 characters')
+    .trim(),
+  addressLine2: z
+    .string()
+    .max(200, 'Address Line 2 should not exceed 200 characters')
+    .optional(),
+});

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 export interface SheetProps {
-  title?: string;
+  title?: string | React.ReactNode;
   description?: string;
   children: ReactNode;
   footer?: ReactNode;
