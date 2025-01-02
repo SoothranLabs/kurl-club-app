@@ -1,5 +1,6 @@
 import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
 import React from 'react';
+import EditDetails from './edit-details';
 
 interface PaymentCardProps {
   info: {
@@ -31,7 +32,7 @@ function PaymentCard({ info }: PaymentCardProps) {
             )}
           </div>
         </div>
-        <div className="">Edit details</div>
+        <EditDetails />
       </div>
 
       <div className="p-2 mt-7 flex gap-[68px] bg-primary-blue-400 rounded-[4px]">

@@ -323,3 +323,8 @@ export const AddUserForm = z.object({
     .max(200, 'Address Line 2 should not exceed 200 characters')
     .optional(),
 });
+
+export const EditDetailsForm = z.object({
+  packageType: z.string().min(1, 'PackageType is required'),
+  paidAmount: z.string().min(1, 'AmountPaid is required'),
+});
