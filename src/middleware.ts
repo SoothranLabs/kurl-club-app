@@ -3,6 +3,12 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const authToken = request.cookies.get('refresh_token')?.value;
+  const isDevelopment = process.env.NODE_ENV === 'development';
+
+  if (isDevelopment) {
+    // Skip middleware logic in development
+    return NextResponse.next();
+  }
 
   // List of public paths that don't require authentication
   const publicPaths = [
