@@ -205,3 +205,76 @@ export const KAccordionClose: React.FC<SVGProps<SVGSVGElement>> = (props) => (
     </defs>
   </svg>
 );
+export const KChat: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <g clip-path="url(#clip0_1894_652)">
+      <path
+        d="M11.0875 18.75L10 18.125L12.5 13.75H16.25C16.5815 13.75 16.8995 13.6183 17.1339 13.3839C17.3683 13.1495 17.5 12.8315 17.5 12.5V5C17.5 4.66848 17.3683 4.35054 17.1339 4.11612C16.8995 3.8817 16.5815 3.75 16.25 3.75H3.75C3.41848 3.75 3.10054 3.8817 2.86612 4.11612C2.6317 4.35054 2.5 4.66848 2.5 5V12.5C2.5 12.8315 2.6317 13.1495 2.86612 13.3839C3.10054 13.6183 3.41848 13.75 3.75 13.75H9.375V15H3.75C3.08696 15 2.45107 14.7366 1.98223 14.2678C1.51339 13.7989 1.25 13.163 1.25 12.5V5C1.25 4.33696 1.51339 3.70107 1.98223 3.23223C2.45107 2.76339 3.08696 2.5 3.75 2.5H16.25C16.913 2.5 17.5489 2.76339 18.0178 3.23223C18.4866 3.70107 18.75 4.33696 18.75 5V12.5C18.75 13.163 18.4866 13.7989 18.0178 14.2678C17.5489 14.7366 16.913 15 16.25 15H13.225L11.0875 18.75Z"
+        fill="#D3F702"
+      />
+      <path d="M15 6.25H5V7.5H15V6.25Z" fill="#D3F702" />
+      <path d="M11.25 10H5V11.25H11.25V10Z" fill="#D3F702" />
+    </g>
+    <defs>
+      <clipPath id="clip0_1894_652">
+        <rect width="20" height="20" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+);
+
+export const KEdit: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 18 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <g clip-path="url(#clip0_1894_1783)">
+      <path d="M16.875 14.625H1.125V15.75H16.875V14.625Z" fill="#D3F702" />
+      <path
+        d="M14.2875 5.0625C14.7375 4.6125 14.7375 3.9375 14.2875 3.4875L12.2625 1.4625C11.8125 1.0125 11.1375 1.0125 10.6875 1.4625L2.25 9.9V13.5H5.85L14.2875 5.0625ZM11.475 2.25L13.5 4.275L11.8125 5.9625L9.7875 3.9375L11.475 2.25ZM3.375 12.375V10.35L9 4.725L11.025 6.75L5.4 12.375H3.375Z"
+        fill="#D3F702"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_1894_1783">
+        <rect width="18" height="18" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+);
+export const KTrash: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    width="19"
+    height="18"
+    viewBox="0 0 19 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <g clip-path="url(#clip0_1288_8730)">
+      <path d="M8.1875 6.9375H7.25V12.5625H8.1875V6.9375Z" fill="#D3F702" />
+      <path d="M11 6.9375H10.0625V12.5625H11V6.9375Z" fill="#D3F702" />
+      <path
+        d="M3.5 4.125V5.0625H4.4375V14.4375C4.4375 14.6861 4.53627 14.9246 4.71209 15.1004C4.8879 15.2762 5.12636 15.375 5.375 15.375H12.875C13.1236 15.375 13.3621 15.2762 13.5379 15.1004C13.7137 14.9246 13.8125 14.6861 13.8125 14.4375V5.0625H14.75V4.125H3.5ZM5.375 14.4375V5.0625H12.875V14.4375H5.375Z"
+        fill="#D3F702"
+      />
+      <path d="M11 2.25H7.25V3.1875H11V2.25Z" fill="#D3F702" />
+    </g>
+    <defs>
+      <clipPath id="clip0_1288_8730">
+        <rect width="18" height="18" fill="white" transform="translate(0.5)" />
+      </clipPath>
+    </defs>
+  </svg>
+);
