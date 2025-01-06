@@ -1,21 +1,22 @@
-import 'server-only';
+'use server';
+
 import { cookies } from 'next/headers';
 
 /**
- * Creates a session by storing the refresh token in an HTTP-only cookie.
+ * Creates a session by storing the idToken in an HTTP-only cookie.
  *
- * @param refreshToken - The refresh token to be stored in the cookie.
+ * @param idToken - The idToken to be stored in the cookie.
  *
  * Notes:
  * - The cookie is set with security options such as `httpOnly` and `sameSite`
  *   to protect it from client-side access and cross-site attacks.
  * - The cookie will expire in 30 days.
  */
-export async function createSession(refreshToken: string) {
+export async function createSession(idToken: string) {
   const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
   const cookieStore = await cookies();
 
-  cookieStore.set('refresh_token', refreshToken, {
+  cookieStore.set('idToken', idToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
@@ -25,32 +26,32 @@ export async function createSession(refreshToken: string) {
 }
 
 /**
- * Retrieves the refresh token stored in cookies.
+ * Retrieves the idToken stored in cookies.
  *
- * @returns The refresh token if it exists, or `null` if not found.
+ * @returns The idToken if it exists, or `null` if not found.
  *
  */
-export async function getRefreshToken(): Promise<string | null> {
+export async function getSession(): Promise<string | null> {
   const cookieStore = await cookies();
-  const refreshToken = cookieStore.get('refresh_token')?.value;
+  const token = cookieStore.get('idToken')?.value;
 
-  if (!refreshToken) {
-    console.error('Failed to decrypt refresh token.');
+  if (!token) {
+    console.error('Failed to get idToken.');
     return null;
   }
 
-  return refreshToken || null;
+  return token || null;
 }
 
 /**
- * Deletes the session by removing the refresh token cookie.
+ * Deletes the session by removing the idToken cookie.
  *
  * Notes:
  * - This function effectively logs the user out by clearing the token
  *   that is required for authentication.
- * - Ensures the `refresh_token` cookie is completely removed from the client.
+ * - Ensures the `idToken` cookie is completely removed from the client.
  */
 export async function deleteSession() {
   const cookieStore = await cookies();
-  cookieStore.delete('refresh_token');
+  cookieStore.delete('idToken');
 }

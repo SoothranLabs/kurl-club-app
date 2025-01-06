@@ -2,9 +2,9 @@
 
 import { api } from '@/lib/api';
 import {
-  getRefreshToken,
   createSession,
   deleteSession,
+  getSession,
 } from '@/services/auth/session';
 
 type RefreshTokenResponse = {
@@ -13,7 +13,7 @@ type RefreshTokenResponse = {
 };
 
 export async function refreshAccessToken(): Promise<string | null> {
-  const refreshToken = await getRefreshToken();
+  const refreshToken = await getSession();
   if (!refreshToken) return null;
 
   try {
@@ -45,7 +45,7 @@ export async function isTokenExpired(token: string): Promise<boolean> {
 }
 
 export async function getAccessToken(): Promise<string | null> {
-  const refreshToken = await getRefreshToken();
+  const refreshToken = await getSession();
   if (!refreshToken) return null;
 
   try {

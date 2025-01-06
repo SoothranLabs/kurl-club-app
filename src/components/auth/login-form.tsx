@@ -9,7 +9,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useAuth } from '@/providers/auth-provider';
-import { login } from '@/services/auth/actions';
+import { createSession } from '@/services/auth/session';
+import { auth } from '@/lib/firebase';
 import { LoginSchema } from '@/schemas';
 
 import { Form } from '@/components/ui/form';
@@ -19,7 +20,7 @@ import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 
 export const LoginForm = () => {
   const router = useRouter();
-  const { setAccessToken } = useAuth();
+  const { signIn } = useAuth();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -31,16 +32,27 @@ export const LoginForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    startTransition(() => {
-      login(values).then((data) => {
-        if (data.error) {
-          toast.error(data.error);
-        } else if (data.success) {
-          setAccessToken(data.token!);
-          router.push('/dashboard');
-          toast.success('Logged in successfully!');
-        }
-      });
+    startTransition(async () => {
+      try {
+        await signIn({
+          method: 'login',
+          email: values.email,
+          password: values.password,
+        });
+
+        const user = auth.currentUser;
+        if (!user) throw new Error('User not found after sign-in.');
+
+        const token = await user.getIdToken();
+
+        await createSession(token);
+
+        router.push('/dashboard');
+        toast.success('Logged in successfully!');
+      } catch (error) {
+        toast.error('Failed to log in. Please check your credentials.');
+        console.error('Login error:', error);
+      }
     });
   };
 

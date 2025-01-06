@@ -3,6 +3,8 @@
 import * as z from 'zod';
 import { RegisterSchema } from '@/schemas';
 import { api } from '@/lib/api';
+import { auth } from '@/lib/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 type RegisterResponse = {
   status: string;
@@ -23,9 +25,17 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   }
 
   const { email, password, privacyConsent } = validatedFields.data;
-  const payload = { email, password, privacyConsent, role: 'ADMIN' };
 
   try {
+    // Firebase authentication
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+    const payload = { user, privacyConsent, role: 'ADMIN' };
+
     const response = await api.post<{ value: RegisterResponse }>(
       '/Auth/register',
       payload
@@ -37,7 +47,10 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
       return { error: value.message || 'Failed to register user.' };
     }
 
-    return { success: value.message || 'Registration successful!' };
+    return {
+      success:
+        'Registration successful! Please check your email for verification.',
+    };
   } catch (error: unknown) {
     console.error('Error during registration:', error);
     return {
