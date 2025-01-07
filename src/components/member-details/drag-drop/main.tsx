@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { MoreVertical, Plus, GripVertical } from 'lucide-react';
+import { MoreVertical, Plus } from 'lucide-react';
 import {
   DragDropContext,
   Droppable,
@@ -150,13 +150,12 @@ export default function WorkoutTracker() {
       exercises: [
         { id: 'e20', name: 'Rest Day', duration: 'All day' },
         { id: 'e21', name: 'Light Stretching', duration: '15 mins' },
-        { id: 'e22', name: 'Bench Press', duration: '20 Mins' }
+        { id: 'e22', name: 'Bench Press', duration: '20 Mins' },
       ],
       meals: [
         { id: 'm19', name: 'Brunch', duration: '45 mins' },
         { id: 'm21', name: 'Lunch', duration: '48 mins' },
         { id: 'm20', name: 'Dinner', duration: '50 mins' },
-
       ],
     },
   ]);
@@ -223,7 +222,6 @@ export default function WorkoutTracker() {
     }
     setDays(newDays);
   };
-
 
   const handleAddItem = (dayId: string, type: 'exercise' | 'meal') => {
     setModalType(type);
@@ -322,7 +320,7 @@ export default function WorkoutTracker() {
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}  >
+    <DragDropContext onDragEnd={onDragEnd}>
       <div className="min-h-screen  p-6 space-y-8 ">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
@@ -378,8 +376,7 @@ export default function WorkoutTracker() {
                                   }}
                                 >
                                   <div className="flex items-center space-x-2">
-                                    <div {...provided.dragHandleProps}>
-                                    </div>
+                                    <div {...provided.dragHandleProps}></div>
                                     <div>
                                       <p
                                         className={`font-medium ${exercise.completed ? 'line-through' : ''}`}
@@ -498,8 +495,7 @@ export default function WorkoutTracker() {
                                   }}
                                 >
                                   <div className="flex items-center space-x-2">
-                                    <div {...provided.dragHandleProps}>
-                                    </div>
+                                    <div {...provided.dragHandleProps}></div>
                                     <div>
                                       <p className="font-medium">{meal.name}</p>
                                       <p className="text-sm text-muted-foreground">
@@ -581,11 +577,11 @@ export default function WorkoutTracker() {
             editingItem
               ? modalType === 'exercise'
                 ? days
-                  .find((d) => d.id === editingItem.dayId)
-                  ?.exercises.find((e) => e.id === editingItem.itemId)
+                    .find((d) => d.id === editingItem.dayId)
+                    ?.exercises.find((e) => e.id === editingItem.itemId)
                 : days
-                  .find((d) => d.id === editingItem.dayId)
-                  ?.meals.find((m) => m.id === editingItem.itemId)
+                    .find((d) => d.id === editingItem.dayId)
+                    ?.meals.find((m) => m.id === editingItem.itemId)
               : undefined
           }
         />
