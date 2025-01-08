@@ -9,7 +9,7 @@ import { auth } from '@/lib/firebase';
 import { createUser, extractUserDetails } from '@/services/auth/helpers';
 import { RegisterSchema } from '@/schemas';
 
-export const register = async (values: z.infer<typeof RegisterSchema>) => {
+export const registerUser = async (values: z.infer<typeof RegisterSchema>) => {
   // Validate input fields
   const validationResult = RegisterSchema.safeParse(values);
   if (!validationResult.success) {

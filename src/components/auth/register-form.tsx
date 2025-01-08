@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { register } from '@/services/auth/actions';
+import { registerUser } from '@/services/auth';
 import { RegisterSchema } from '@/schemas';
 
 import { Form } from '@/components/ui/form';
@@ -35,7 +35,7 @@ export const RegisterForm = () => {
 
       startTransition(async () => {
         try {
-          const result = await register(values);
+          const result = await registerUser(values);
 
           if (result.error) {
             toast.error(result.error);

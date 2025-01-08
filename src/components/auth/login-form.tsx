@@ -69,9 +69,8 @@ export const LoginForm = () => {
 
         router.push('/dashboard');
         toast.success('Welcome back!');
-      } catch (error) {
+      } catch {
         toast.error('Login failed. Check your credentials.');
-        console.error('Error:', error);
       }
     });
   };

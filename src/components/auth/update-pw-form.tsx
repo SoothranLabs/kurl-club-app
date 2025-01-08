@@ -6,8 +6,8 @@ import * as z from 'zod';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { getAuth, confirmPasswordReset } from 'firebase/auth';
 
-import { updatePassword } from '@/services/user/actions/update-user';
 import { UpdatePasswordSchema } from '@/schemas';
 
 import { Form } from '@/components/ui/form';
@@ -18,7 +18,7 @@ import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 export const UpdatePasswordForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get('token');
+  const oobCode = searchParams.get('oobCode');
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof UpdatePasswordSchema>>({
@@ -30,20 +30,26 @@ export const UpdatePasswordForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof UpdatePasswordSchema>) => {
-    if (!token) {
-      toast.error('Invalid or expired token');
+    if (!oobCode) {
+      toast.error('Invalid or expired reset code');
       return;
     }
 
     startTransition(() => {
-      updatePassword({ ...values, token }).then((data) => {
-        if (data.error) {
-          toast.error(data.error);
-        } else if (data.success) {
-          toast.success(data.success);
+      const auth = getAuth();
+
+      confirmPasswordReset(auth, oobCode, values.newPassword)
+        .then(() => {
+          toast.success('Password updated successfully');
           router.push('/auth/login');
-        }
-      });
+        })
+        .catch((error) => {
+          if (error.code === 'auth/invalid-action-code') {
+            toast.error('Invalid or expired reset link');
+          } else {
+            toast.error('An error occurred while updating the password');
+          }
+        });
     });
   };
 

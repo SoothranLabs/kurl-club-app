@@ -9,8 +9,7 @@ export function middleware(request: NextRequest) {
     '/auth/register',
     '/auth/login',
     '/auth/reset',
-    '/auth/verify',
-    '/auth/update-password',
+    '/auth/activate',
   ];
 
   const isPublicPath = publicPaths.includes(request.nextUrl.pathname);
