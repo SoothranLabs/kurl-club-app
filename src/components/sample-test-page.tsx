@@ -11,7 +11,6 @@ import { ThemeModeToggle } from '@/components/theme-toggler';
 import { SamplePageSchema } from '@/schemas';
 import FileUploader from '@/components/file-uploader';
 import { useSheet } from '@/hooks/use-sheet';
-import { LogoutButton } from '@/components/auth/logout-button';
 import { useForm } from 'react-hook-form';
 import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
 
@@ -211,8 +210,6 @@ const SampleTestPage = () => {
         <KDialog title="title" trigger={<Button>Finish setting up</Button>}>
           <OnboardingStepForm />
         </KDialog>
-
-        <LogoutButton />
       </div>
 
       <div className="flex gap-10">
