@@ -19,7 +19,7 @@ export default function UserManagement() {
   );
 
   return (
-    <div className="flex-col gap-4 px-[46px] my-8 flex w-full">
+    <div className="flex-col gap-4 px-8 my-8 flex w-full">
       <UsersHeader
         onAddNewClick={() => openSheet()}
         isOpen={isOpen}

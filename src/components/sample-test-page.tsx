@@ -142,21 +142,7 @@ const SampleTestPage = () => {
           due_data: '12/12/2024',
         }}
       />
-      <div className="p-6 space-y-8">
-        {/* Pills Variant */}
-        <div>
-          <h2 className="mb-4 text-lg font-semibold text-white">
-            Pills Variant
-          </h2>
-          <KTabs
-            items={items}
-            variant="pills"
-            value={selectedTab}
-            onTabChange={handleTabChange}
-            className="bg-secondary-blue-700 p-4 rounded-lg"
-          />
-        </div>
-
+      <div className="p-6 space-y-8 w-full">
         {/* Underline Variant */}
         <div>
           <h2 className="mb-4 text-lg font-semibold text-white">

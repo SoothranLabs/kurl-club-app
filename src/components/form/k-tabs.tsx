@@ -1,7 +1,7 @@
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export type TabVariant = 'vertical' | 'underline' | 'pills';
+export type TabVariant = 'vertical' | 'underline';
 
 export interface TabItem {
   id: string;
@@ -19,7 +19,7 @@ export interface KTabsProps {
 
 export function KTabs({
   items,
-  variant = 'pills',
+  variant = 'vertical',
   value,
   onTabChange,
   className,
@@ -30,7 +30,6 @@ export function KTabs({
         'w-full',
         {
           'flex flex-col': variant === 'vertical',
-          'flex space-x-2': variant === 'pills',
           'border-b': variant === 'underline',
         },
         className
@@ -71,7 +70,7 @@ export function KTabs({
             );
           })}
         </nav>
-      ) : variant === 'underline' ? (
+      ) : (
         // Underline Variant
         <nav className="flex w-full">
           {items.map((item) => {
@@ -88,26 +87,6 @@ export function KTabs({
                       !isActive,
                   }
                 )}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </nav>
-      ) : (
-        // Pills Variant (Default)
-        <nav className="flex bg-gray-50/50 p-1 rounded-xl">
-          {items.map((item) => {
-            const isActive = value === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => onTabChange?.(item.id)}
-                className={cn('rounded-lg px-6 py-3 text-base transition-all', {
-                  'bg-white text-black shadow-[0_2px_8px_rgba(0,0,0,0.1)]':
-                    isActive,
-                  'text-gray-500 hover:text-gray-900': !isActive,
-                })}
               >
                 {item.label}
               </button>
