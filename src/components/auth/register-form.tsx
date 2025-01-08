@@ -6,27 +6,14 @@ import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { register } from '@/services/auth/actions';
+import { registerUser } from '@/services/auth';
 import { RegisterSchema } from '@/schemas';
 
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { AuthWrapper } from '@/components/auth/auth-wrapper';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-
-const RegistrationSuccess = () => (
-  <AuthWrapper>
-    <div className="flex flex-col gap-7 text-center">
-      <h4 className="text-white font-semibold text-[32px] leading-normal">
-        Verify Email ✅
-      </h4>
-      <p className="text-xl font-medium leading-normal text-white">
-        KurlClub has sent a mail to your account. Login by following the link
-        there!
-      </p>
-    </div>
-  </AuthWrapper>
-);
+import { EmailSendSuccess } from '@/components/auth/email-send-success';
 
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -43,29 +30,35 @@ export const RegisterForm = () => {
   });
 
   const handleFormSubmit = useCallback(
-    (values: z.infer<typeof RegisterSchema>) => {
-      startTransition(async () => {
-        const result = await register(values);
+    async (values: z.infer<typeof RegisterSchema>) => {
+      if (isPending) return;
 
-        if (result.error) {
-          toast.error(result.error);
-        } else if (result.success) {
-          toast.success(result.success);
-          setIsSuccess(true);
+      startTransition(async () => {
+        try {
+          const result = await registerUser(values);
+
+          if (result.error) {
+            toast.error(result.error);
+          } else {
+            toast.success(result.success || 'Registration successful!');
+            setIsSuccess(true);
+          }
+        } catch (error) {
+          toast.error('An unexpected error occurred.');
+          console.error('Registration error:', error);
         }
       });
     },
-    []
+    [isPending]
   );
 
-  if (isSuccess) return <RegistrationSuccess />;
+  if (isSuccess) return <EmailSendSuccess />;
 
   return (
-    // TODO: Scroll is presenting when warning text appears
     <AuthWrapper
       header={{
         title: 'Create an Account',
-        description: 'Sign up to get started with our platform',
+        description: 'Sign up to get started with our platform.',
       }}
       footer={{
         linkUrl: '/auth/login',

@@ -1,41 +1,115 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getAccessToken, isTokenExpired } from '@/services/auth/helpers';
+import React, { createContext, useEffect, useState, useContext } from 'react';
+import {
+  onAuthStateChanged,
+  getIdToken,
+  User,
+  signOut,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { createSession, deleteSession } from '@/services/auth/session';
 
-interface AuthContextType {
-  accessToken: string | null;
-  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
-}
+const AuthContext = createContext<
+  | {
+      user: User | null;
+      signIn: (options: SignInOptions) => Promise<void>;
+      logout: () => Promise<void>;
+    }
+  | undefined
+>(undefined);
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+type SignInOptions =
+  | { method: 'register'; email: string; password: string }
+  | { method: 'login'; email: string; password: string }
+  | { method: 'oauth'; provider: 'google' };
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const refreshToken = async () => {
-      if (!accessToken || (await isTokenExpired(accessToken))) {
-        const newToken = await getAccessToken();
-        if (newToken) setAccessToken(newToken);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setUser(user);
+
+      if (user) {
+        try {
+          const idToken = await getIdToken(user);
+          await createSession(idToken);
+        } catch (error) {
+          console.error('Failed to create session:', error);
+        }
       }
-    };
+    });
 
-    refreshToken(); // Initial token refresh
-    const interval = setInterval(refreshToken, 15 * 60 * 1000); // Refresh every 15 minutes
+    return () => unsubscribe();
+  }, []);
 
-    return () => clearInterval(interval);
-  }, [accessToken]);
+  const signIn = async (options: SignInOptions) => {
+    try {
+      switch (options.method) {
+        case 'register': {
+          const { email, password } = options;
+          const { user } = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          const idToken = await getIdToken(user);
+          await createSession(idToken);
+          break;
+        }
+        case 'login': {
+          const { email, password } = options;
+          const { user } = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          const idToken = await getIdToken(user);
+          await createSession(idToken);
+          break;
+        }
+        case 'oauth': {
+          if (options.provider === 'google') {
+            const provider = new GoogleAuthProvider();
+            const { user } = await signInWithPopup(auth, provider);
+            const idToken = await getIdToken(user);
+            await createSession(idToken);
+          }
+          break;
+        }
+        default:
+          throw new Error('Unsupported sign-in method');
+      }
+    } catch (error) {
+      console.error('Failed to sign in:', error);
+      throw error;
+    }
+  };
+
+  const logout = async () => {
+    await signOut(auth);
+    await deleteSession();
+  };
 
   return (
-    <AuthContext.Provider value={{ accessToken, setAccessToken }}>
+    <AuthContext.Provider value={{ user, signIn, logout }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
+// Custom hook to use the AuthContext
+export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth must be used within AuthProvider');
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
   return context;
-}
+};

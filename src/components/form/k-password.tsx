@@ -48,6 +48,7 @@ const KPassword = forwardRef<HTMLInputElement, KPasswordProps>(
             onClick={togglePasswordVisibility}
             className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
             aria-label={ariaLabel}
+            tabIndex={-1}
           >
             {showPassword ? (
               <EyeOff className="h-5 w-5 text-primary-blue-100" />

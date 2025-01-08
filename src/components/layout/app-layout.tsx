@@ -14,8 +14,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     '/auth/login',
     '/auth/register',
     '/auth/reset',
-    '/auth/update-password',
-    '/auth/verify',
+    '/auth/activate',
   ];
 
   return (

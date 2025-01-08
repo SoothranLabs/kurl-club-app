@@ -1,60 +1,77 @@
-'use server';
-
 import { api } from '@/lib/api';
-import {
-  getRefreshToken,
-  createSession,
-  deleteSession,
-} from '@/services/auth/session';
+import { FirebaseResponse, UserRequest } from '@/types/user';
+import { applyActionCode, getAuth } from 'firebase/auth';
 
-type RefreshTokenResponse = {
-  token: string;
-  refreshToken: string;
+export const extractUserDetails = (response: FirebaseResponse): UserRequest => {
+  const { uid, email, emailVerified, providerData } = response;
+
+  if (!uid || !email) {
+    throw new Error('Invalid Firebase response: UID and Email are required.');
+  }
+
+  const { phoneNumber = null, photoURL = null } = providerData?.[0] || {};
+
+  return {
+    uid,
+    email,
+    emailVerified,
+    role: 'Admin',
+    phoneNumber,
+    photoURL,
+  };
 };
 
-export async function refreshAccessToken(): Promise<string | null> {
-  const refreshToken = await getRefreshToken();
-  if (!refreshToken) return null;
+// CreateUser function
+export const createUser = async (userData: UserRequest): Promise<void> => {
+  try {
+    await api.post<void>('/Auth/CreateUser', userData);
+  } catch (error) {
+    console.error('Error creating user:', error);
+    throw error;
+  }
+};
+
+// UpdateUser utility function
+export const updateUser = async (
+  userData: Partial<UserRequest>
+): Promise<void> => {
+  if (!userData.uid) {
+    throw new Error('UID is required to update user');
+  }
 
   try {
-    const data = await api.post<RefreshTokenResponse>('/Auth/refresh-token', {
-      refreshToken,
-    });
-    await createSession(data.refreshToken);
-    return data.token;
-  } catch (error: unknown) {
-    console.error('Error refreshing token:', error);
-    if (error instanceof Error && error.message.includes('401')) {
-      console.error('Refresh token expired or invalid. Logging out...');
-      await deleteSession();
+    await api.put<void>('/Auth/UpdateUser', userData);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
+};
+
+export const confirmEmailVerification = async (
+  oobCode: string
+): Promise<{ success?: string; error?: string; uid?: string }> => {
+  const auth = getAuth();
+
+  try {
+    await applyActionCode(auth, oobCode);
+
+    // Reload the user state to get updated details
+    await auth.currentUser?.reload();
+
+    const user = auth.currentUser;
+
+    if (!user) {
+      return { error: 'Failed to retrieve the authenticated user.' };
     }
-    return null;
-  }
-}
 
-export async function isTokenExpired(token: string): Promise<boolean> {
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const expirationTime = payload.exp * 1000;
-
-    return Date.now() >= expirationTime;
+    return {
+      success: 'Email verified successfully.',
+      uid: user.uid,
+    };
   } catch (error) {
-    console.error('Error checking token expiration:', error);
-    return true; // Treat as expired if token is invalid
+    console.error('Error verifying email:', error);
+    return {
+      error: 'Invalid or expired verification link.',
+    };
   }
-}
-
-export async function getAccessToken(): Promise<string | null> {
-  const refreshToken = await getRefreshToken();
-  if (!refreshToken) return null;
-
-  try {
-    const token = await refreshAccessToken();
-    if (token) return token;
-    console.error('Failed to fetch a new access token.');
-    return null;
-  } catch (error) {
-    console.error('Error in getAccessToken:', error);
-    return null;
-  }
-}
+};
