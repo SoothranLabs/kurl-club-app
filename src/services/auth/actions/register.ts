@@ -1,63 +1,60 @@
 'use server';
 
 import * as z from 'zod';
-import { RegisterSchema } from '@/schemas';
-import { api } from '@/lib/api';
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-
-type RegisterResponse = {
-  status: string;
-  message: string;
-  data: {
-    userId: number;
-    userEmail: string;
-  };
-};
+import { createUser, extractUserDetails } from '@/services/auth/helpers';
+import { RegisterSchema } from '@/schemas';
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
-  const validatedFields = RegisterSchema.safeParse(values);
-
-  if (!validatedFields.success) {
-    return {
-      error: validatedFields.error.errors.map((err) => err.message).join(', '),
-    };
+  // Validate input fields
+  const validationResult = RegisterSchema.safeParse(values);
+  if (!validationResult.success) {
+    const errorMessages = validationResult.error.errors
+      .map((err) => err.message)
+      .join(', ');
+    return { error: errorMessages };
   }
 
-  const { email, password, privacyConsent } = validatedFields.data;
+  const { email, password } = validationResult.data;
 
   try {
-    // Firebase authentication
+    // Firebase authentication: create user
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
     const user = userCredential.user;
-    const payload = { user, privacyConsent, role: 'ADMIN' };
 
-    const response = await api.post<{ value: RegisterResponse }>(
-      '/Auth/register',
-      payload
-    );
+    // Extract user details and add custom application roles
+    const userDetails = extractUserDetails({
+      ...user,
+      email: user.email as string,
+    });
+    userDetails.role = 'Admin';
 
-    const { value } = response;
+    // Create user in your application system
+    await createUser(userDetails);
 
-    if (value.status !== 'Success') {
-      return { error: value.message || 'Failed to register user.' };
-    }
+    // Send email verification
+    await sendEmailVerification(user);
 
     return {
       success:
         'Registration successful! Please check your email for verification.',
     };
-  } catch (error: unknown) {
+  } catch (error) {
     console.error('Error during registration:', error);
-    return {
-      error:
-        error instanceof Error
-          ? error.message
-          : 'An unexpected error occurred.',
-    };
+
+    // Handle Firebase errors or unexpected exceptions
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : 'An unexpected error occurred during registration.';
+    return { error: errorMessage };
   }
 };
