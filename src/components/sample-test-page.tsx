@@ -132,20 +132,6 @@ const SampleTestPage = () => {
   return (
     <div className="flex flex-col items-center gap-10">
       <div className="p-6 space-y-8">
-        {/* Pills Variant */}
-        <div>
-          <h2 className="mb-4 text-lg font-semibold text-white">
-            Pills Variant
-          </h2>
-          <KTabs
-            items={items}
-            variant="pills"
-            value={selectedTab}
-            onTabChange={handleTabChange}
-            className="bg-secondary-blue-700 p-4 rounded-lg"
-          />
-        </div>
-
         {/* Underline Variant */}
         <div>
           <h2 className="mb-4 text-lg font-semibold text-white">

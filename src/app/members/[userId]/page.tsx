@@ -1,5 +1,6 @@
-import WorkoutTracker from '@/components/member-details/drag-drop/main';
+// import WorkoutTracker from '@/components/member-details/drag-drop/main';
 import { Chart } from '@/components/members/details/chart';
+import WorkoutPlanner from '@/components/members/details/planner-section';
 
 interface MemberDetailsPageProps {
   params: Promise<{ userId: string }>;
@@ -14,7 +15,8 @@ export default async function MemberDetailsPage({
     <div>
       UserId = {userId}
       <Chart />
-      <WorkoutTracker />
+      {/* <WorkoutTracker /> */}
+      <WorkoutPlanner />
     </div>
   );
 }
