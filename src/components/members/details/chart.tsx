@@ -79,55 +79,74 @@ export function Chart() {
   };
 
   return (
-    <div className="h-[343px] w-[512px]">
-      <Card className="border-none bg-secondary-blue-500">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Attendance stats (Days v/s Hours)</CardTitle>
-          <KDatePicker
-            numberOfMonths={2}
-            label="Pick Date"
-            showPresets
-            onDateChange={handleDateChange}
-            value={selectedDateRange}
-            mode="range"
-          />
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig}>
-            <BarChart accessibilityLayer data={chartData}>
-              <CartesianGrid stroke="hsl(225, 6%, 27%)" vertical={false} />
-              <XAxis
-                dataKey="day"
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-                tickFormatter={(value) => value.slice(0, 3)}
-                tick={{
-                  fill: 'hsl(225, 3%, 72%)',
-                }}
-              />
-              <YAxis
-                tickLine={false}
-                axisLine={false}
-                tickMargin={10}
-                ticks={[0, 0.5, 1, 1.5, 2, 2.5]}
-                domain={[0, 2.5]}
-                tickFormatter={(value) =>
-                  `${value}${value === 2.5 ? '+' : 'h'}`
-                }
-                tick={{
-                  fill: 'hsl(225, 3%, 72%)',
-                }}
-              />
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <Bar dataKey="hours" fill="hsl(69, 93%, 76%)" radius={8} />
-            </BarChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
-    </div>
+    <Card className="border-none bg-secondary-blue-500 rounded-lg">
+      <CardHeader className="flex flex-row items-center justify-between p-5 pb-7">
+        <CardTitle className="text-white text-base font-normal leading-normal">
+          Attendance stats (Days v/s Hours)
+        </CardTitle>
+        <KDatePicker
+          numberOfMonths={2}
+          label="Pick Date"
+          showPresets
+          onDateChange={handleDateChange}
+          value={selectedDateRange}
+          mode="range"
+        />
+      </CardHeader>
+      <CardContent className="p-0 pr-5 pb-5">
+        <ChartContainer config={chartConfig}>
+          <BarChart accessibilityLayer data={chartData}>
+            <CartesianGrid stroke="hsl(225, 6%, 27%)" vertical={false} />
+            <XAxis
+              dataKey="day"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => value.slice(0, 3)}
+              tick={(props) => {
+                const { x, y, payload } = props;
+                return (
+                  <text x={x} y={y} dy={10} textAnchor="middle" fill="#ffff">
+                    {payload.value.slice(0, 3)}
+                  </text>
+                );
+              }}
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={10}
+              ticks={[0, 0.5, 1, 1.5, 2, 2.5]}
+              domain={[0, 2.5]}
+              tickFormatter={(value) => `${value}${value === 2.5 ? '+' : 'h'}`}
+              tick={(props) => {
+                const { x, y, payload } = props;
+                return (
+                  <text
+                    x={x}
+                    y={y}
+                    dx={-5}
+                    dy={3}
+                    textAnchor="end"
+                    fill="#b5b6b9"
+                  >
+                    {`${payload.value}${payload.value === 2.5 ? '+' : 'h'}`}
+                  </text>
+                );
+              }}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Bar
+              dataKey="hours"
+              fill="hsl(69, 93%, 76%)"
+              radius={[6, 6, 0, 0]}
+            />
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
   );
 }

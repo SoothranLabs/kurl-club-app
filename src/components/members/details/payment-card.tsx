@@ -19,7 +19,7 @@ function PaymentCard({ info }: PaymentCardProps) {
   const amountColor = isPaid ? 'text-neutral-green-400' : 'text-white';
 
   return (
-    <div className="rounded-lg bg-secondary-blue-500 py-7 px-5 w-full">
+    <div className="rounded-lg h-full bg-secondary-blue-500 p-5 pb-7 w-full">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <h6 className="text-white font-normal text-base">Payments</h6>
@@ -63,7 +63,7 @@ function PaymentCard({ info }: PaymentCardProps) {
         { label: 'Package', value: info.package },
         { label: 'Due date', value: info.due_data, color: statusColor },
       ].map((item, index) => (
-        <div key={index} className="mt-6">
+        <div key={index} className="mt-6 flex flex-col gap-3">
           <h6 className="text-primary-blue-100 font-normal text-base">
             {item.label}
           </h6>
