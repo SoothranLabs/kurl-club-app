@@ -30,7 +30,7 @@ export function KTabs({
         'w-full',
         {
           'flex flex-col': variant === 'vertical',
-          'border-b': variant === 'underline',
+          'border-b border-secondary-blue-400': variant === 'underline',
         },
         className
       )}
@@ -72,7 +72,7 @@ export function KTabs({
         </nav>
       ) : (
         // Underline Variant
-        <nav className="flex w-full">
+        <nav className="px-6 flex w-fit gap-6">
           {items.map((item) => {
             const isActive = value === item.id;
             return (
@@ -80,10 +80,10 @@ export function KTabs({
                 key={item.id}
                 onClick={() => onTabChange?.(item.id)}
                 className={cn(
-                  'flex-1 border-b-2 px-4 py-2 text-center text-sm font-medium transition-all',
+                  'flex-1 border-b-2 text-nowrap leading-normal h-7 pb-3 k-transition text-center text-[15px] font-normal transition-all',
                   {
-                    'border-primary text-primary': isActive,
-                    'border-transparent text-muted-foreground hover:text-primary':
+                    'border-primary-green-200 text-primary-green-200': isActive,
+                    'border-transparent text-white hover:text-primary-green-200':
                       !isActive,
                   }
                 )}

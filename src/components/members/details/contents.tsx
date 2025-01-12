@@ -6,10 +6,11 @@ import InfoCard from '@/components/cards/info-card';
 import { Clock4 } from 'lucide-react';
 import { Chart } from './chart';
 import PaymentCard from './payment-card';
+import WorkoutPlanner from './planner-section';
 
 function Contents() {
   return (
-    <div className="p-8 pt-[26px] w-full">
+    <div className="p-8 pt-[26px] w-full max-w-[calc(100%-336px)]">
       <Header />
       <InfoCard
         item={{
@@ -34,6 +35,7 @@ function Contents() {
           }}
         />
       </div>
+      <WorkoutPlanner />
     </div>
   );
 }
