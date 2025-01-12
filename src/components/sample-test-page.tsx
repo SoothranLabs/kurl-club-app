@@ -13,12 +13,12 @@ import FileUploader from '@/components/file-uploader';
 import { useSheet } from '@/hooks/use-sheet';
 import { useForm } from 'react-hook-form';
 import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
-
 import AddFrom from './members/add-member';
 import InfoCard from './cards/info-card';
 import KDialog from './k-dialog';
 import ProfilePictureUploader from './uploaders/profile-uploader';
 import { Sidebar } from './members/sidebar';
+import PaymentCard from './members/details/payment-card';
 import { CalendarDays, IndianRupee, Map, Settings, Users } from 'lucide-react';
 import { KTabs, TabItem } from './form/k-tabs';
 import { UserForm } from './settings/user-management/add-user-form';
@@ -131,7 +131,17 @@ const SampleTestPage = () => {
 
   return (
     <div className="flex flex-col items-center gap-10">
-      <div className="p-6 space-y-8">
+      <PaymentCard
+        info={{
+          status: 'unpaid',
+          delay: 1,
+          outstanding: 10000,
+          paid_amount: 0,
+          package: 'Quarterly',
+          due_data: '12/12/2024',
+        }}
+      />
+      <div className="p-6 space-y-8 w-full">
         {/* Underline Variant */}
         <div>
           <h2 className="mb-4 text-lg font-semibold text-white">
@@ -193,7 +203,11 @@ const SampleTestPage = () => {
         </div>
 
         {/* Dialog Button */}
-        <KDialog title="title" trigger={<Button>Finish setting up</Button>}>
+        <KDialog
+          closable={false}
+          className="p-[48px] w-[638px]"
+          trigger={<Button>Finish setting up</Button>}
+        >
           <OnboardingStepForm />
         </KDialog>
       </div>

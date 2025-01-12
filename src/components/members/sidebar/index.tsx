@@ -52,7 +52,7 @@ export function Sidebar() {
   ];
 
   return (
-    <div className="w-[336px] h-screen pb-8 bg-primary-blue-500 text-white overflow-y-auto border-r-[1px] border-secondary-blue-500">
+    <div className="min-w-[336px] max-w-[336px] h-screen pb-8 bg-primary-blue-500 text-white overflow-y-auto border-r-[1px] border-secondary-blue-500">
       <div className="px-8 sticky top-0 bg-primary-blue-500 pt-8 z-20">
         <Breadcrumb
           items={[
@@ -66,9 +66,11 @@ export function Sidebar() {
         </h5>
 
         <MemberHeader
-          name={details.name}
           memberSince={details.memberSince}
           gymNo={details.gymNo}
+          isEditing={isEditing}
+          details={details}
+          onUpdate={updateMemberDetail}
         />
 
         <Button

@@ -143,7 +143,7 @@ export const AddUser: React.FC<CreateUserDetailsProps> = ({
                 </FormControl>
               )}
             />
-            <Badge className="bg-secondary-blue-400 flex items-center w-fit justify-center text-sm text-white rounded-full h-[30px] py-2 px-2 border border-secondary-blue-300 bg-opacity-100">
+            <Badge className="bg-secondary-blue-400 flex items-center w-fit justify-center text-sm text-white rounded-full h-[30px] py-2 px-2 border border-secondary-blue-300 bg-opacity-100 ">
               Gym no: #{userDetails.gymNo}
             </Badge>
           </div>

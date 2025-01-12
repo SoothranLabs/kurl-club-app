@@ -8,13 +8,15 @@ import PreviewModal from './preview-modal';
 import { CircleUser, Plus, User } from 'lucide-react';
 
 interface ProfilePictureUploaderProps {
-  files: Uint8Array | null;
-  onChange: (byteArray: Uint8Array | null) => void;
+  files?: Uint8Array | null;
+  onChange?: (byteArray: Uint8Array | null) => void;
+  isSmall?: boolean;
 }
 
 export default function ProfilePictureUploader({
   files,
-  onChange,
+  onChange = () => {},
+  isSmall,
 }: ProfilePictureUploaderProps) {
   const [image, setImage] = useState<string | null>(null);
   const [cropModalOpen, setCropModalOpen] = useState(false);
@@ -62,7 +64,7 @@ export default function ProfilePictureUploader({
           if (e.target?.result) {
             const arrayBuffer = e.target.result as ArrayBuffer;
             const byteArray = new Uint8Array(arrayBuffer);
-            onChange(byteArray); // Pass Uint8Array to the parent
+            onChange(byteArray);
           }
         };
         reader.readAsArrayBuffer(blob);
@@ -75,7 +77,7 @@ export default function ProfilePictureUploader({
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-    onChange(null); // Pass null to indicate no file
+    onChange(null);
   };
 
   const handleReupload = () => {
@@ -92,7 +94,7 @@ export default function ProfilePictureUploader({
     <div className="flex flex-col">
       {image ? (
         <Avatar
-          className="w-[92px] h-[92px] cursor-pointer"
+          className={`${isSmall ? 'size-[64px]' : 'size-[92px]'} cursor-pointer`}
           onClick={() => setPreviewModalOpen(true)}
         >
           <AvatarImage src={image} alt="Profile picture" />
@@ -104,12 +106,18 @@ export default function ProfilePictureUploader({
         <Button
           variant="outline"
           size="icon"
-          className="w-[92px] h-[92px] bg-secondary-blue-400 rounded-[60px] hover:bg-secondary-blue-500 relative"
+          className={`${isSmall ? 'size-[64px]' : 'size-[92px]'} bg-secondary-blue-400 rounded-[60px] hover:bg-secondary-blue-500 relative`}
           onClick={() => fileInputRef.current?.click()}
         >
-          <CircleUser className="!w-11 !h-44 text-secondary-blue-100" />
-          <span className="absolute bottom-0 right-0 w-6 h-6 p-1 bg-primary-green-500 flex justify-center items-center rounded-[60px]">
-            <Plus className="!w-3 !h-3 text-secondary-blue-500" />
+          <CircleUser
+            className={`${isSmall ? '!size-8' : '!size-11'} text-secondary-blue-100`}
+          />
+          <span
+            className={`absolute bottom-0 right-0 ${isSmall ? 'size-5' : 'size-6'} p-1 bg-primary-green-500 flex justify-center items-center rounded-[60px]`}
+          >
+            <Plus
+              className={` ${isSmall ? '!size-2' : '!size-3'} text-secondary-blue-500`}
+            />
           </span>
         </Button>
       )}

@@ -19,7 +19,7 @@ export interface KTabsProps {
 
 export function KTabs({
   items,
-  variant = 'underline',
+  variant = 'vertical',
   value,
   onTabChange,
   className,
@@ -30,7 +30,7 @@ export function KTabs({
         'w-full',
         {
           'flex flex-col': variant === 'vertical',
-          'border-b border-secondary-blue-400 mb-6': variant === 'underline',
+          'border-b': variant === 'underline',
         },
         className
       )}
@@ -72,22 +72,23 @@ export function KTabs({
         </nav>
       ) : (
         // Underline Variant
-        <nav className="flex gap-6">
+        <nav className="flex w-full">
           {items.map((item) => {
             const isActive = value === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => onTabChange?.(item.id)}
-                className={cn('relative pb-3 transition-colors', {
-                  'text-primary-green-200': isActive,
-                  'text-white hover:text-zinc-200': !isActive,
-                })}
+                className={cn(
+                  'flex-1 border-b-2 px-4 py-2 text-center text-sm font-medium transition-all',
+                  {
+                    'border-primary text-primary': isActive,
+                    'border-transparent text-muted-foreground hover:text-primary':
+                      !isActive,
+                  }
+                )}
               >
                 {item.label}
-                {isActive && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-green-200" />
-                )}
               </button>
             );
           })}

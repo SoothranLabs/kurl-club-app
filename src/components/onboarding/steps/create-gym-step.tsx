@@ -23,10 +23,9 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
     defaultValues: {
       gymName: '',
       profilepicture: undefined,
-      addressLine1: '',
-      addressLine2: '',
+      buildingName: '',
+      city: '',
       primaryPhone: '',
-      secondaryPhone: '',
       email: '',
       websiteLink: '',
       facebookPageLink: '',
@@ -81,15 +80,15 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
-              name="addressLine1"
-              label="Address line 01"
+              name="buildingName"
+              label="Building name"
               mandetory
             />
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
-              name="addressLine2"
-              label="Address line 02"
+              name="city"
+              label="City"
               mandetory
             />
             <KFormField
@@ -99,13 +98,6 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
               label="Primary Phone number"
               placeholder="(555) 123-4567"
               // mandetory
-            />
-            <KFormField
-              fieldType={KFormFieldType.PHONE_INPUT}
-              control={form.control}
-              name="secondaryPhone"
-              label="Secondary Phone number"
-              placeholder="(555) 123-4567"
             />
             <KFormField
               fieldType={KFormFieldType.INPUT}
