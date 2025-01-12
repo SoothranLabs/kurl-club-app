@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Check, LogOut, Plus, Settings, User } from 'lucide-react';
 
-import { logout } from '@/services/auth/actions';
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,19 +17,27 @@ import {
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/providers/auth-provider';
 
 export function UserNav() {
   const router = useRouter();
+  const { logout } = useAuth();
   const [isPending, startTransition] = useTransition();
 
   const handleLogout = () => {
     startTransition(() => {
-      logout().then(() => {
-        router.push('/auth/login');
-        toast.success('Logged out successfully!');
-      });
+      logout()
+        .then(() => {
+          router.push('/auth/login');
+          toast.success('Logged out successfully!');
+        })
+        .catch((error) => {
+          toast.error('Failed to log out. Please try again.');
+          console.error('Logout error:', error);
+        });
     });
   };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

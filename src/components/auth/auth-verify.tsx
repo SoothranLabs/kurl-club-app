@@ -2,58 +2,47 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { applyActionCode } from 'firebase/auth';
 import { toast } from 'sonner';
-
-import { verifyEmail } from '@/services/auth/actions';
+import { auth } from '@/lib/firebase';
 
 export const AuthVerify = () => {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>(
     'loading'
   );
-  const [message, setMessage] = useState<string>('');
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // Memoized email verification handler
   const handleVerification = useCallback(async () => {
-    const token = searchParams.get('token');
+    const mode = searchParams.get('mode');
+    const oobCode = searchParams.get('oobCode');
 
-    if (!token) {
-      const errorMessage = 'Missing token!';
+    if (mode !== 'verifyEmail' || !oobCode) {
+      const errorMessage = 'Invalid or missing verification code!';
       setStatus('error');
-      setMessage(errorMessage);
       toast.error(errorMessage);
       return;
     }
 
     try {
-      const result = await verifyEmail(token);
-
-      if (result.error) {
-        setStatus('error');
-        setMessage(result.error);
-        toast.error(result.error);
-      } else if (result.success) {
-        setStatus('success');
-        setMessage(result.success);
-        toast.success(result.success);
-
-        setTimeout(() => router.push('/auth/login'), 3000);
-      }
-    } catch {
-      const errorMessage = 'Something went wrong!';
+      await applyActionCode(auth, oobCode);
+      setStatus('success');
+      toast.success('Email verified successfully! Redirecting to login...');
+      setTimeout(() => router.push('/auth/login'), 3000);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'An error occurred during email verification!';
       setStatus('error');
-      setMessage(errorMessage);
       toast.error(errorMessage);
     }
   }, [searchParams, router]);
 
-  // Trigger email verification on component mount
   useEffect(() => {
     handleVerification();
   }, [handleVerification]);
 
-  // Render based on verification status
   return (
     <div className="flex flex-col gap-7 text-center">
       <h4 className="text-white font-semibold text-[32px] leading-normal">
@@ -63,7 +52,7 @@ export const AuthVerify = () => {
         {status === 'success'
           ? 'Your email has been successfully verified. Redirecting to login...'
           : status === 'error'
-            ? message
+            ? 'Failed to verify your email. Please try again or contact support.'
             : 'KurlClub is verifying your email. Please wait...'}
       </p>
     </div>

@@ -1,26 +1,37 @@
 'use client';
 
-import { useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, useTransition } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import * as z from 'zod';
 import { toast } from 'sonner';
+import { sendEmailVerification } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useAuth } from '@/providers/auth-provider';
-import { login } from '@/services/auth/actions';
+import { createSession, deleteSession } from '@/services/auth/session';
+import { auth } from '@/lib/firebase';
 import { LoginSchema } from '@/schemas';
 
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { AuthWrapper } from '@/components/auth/auth-wrapper';
+import { EmailSendSuccess } from '@/components/auth/email-send-success';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { extractUserDetails, updateUser } from '@/services/auth/helpers';
 
 export const LoginForm = () => {
   const router = useRouter();
-  const { setAccessToken } = useAuth();
+  const searchParams = useSearchParams();
+  const { signIn } = useAuth();
   const [isPending, startTransition] = useTransition();
+  const [isEmailSend, setIsEmailSend] = useState(false);
+
+  useEffect(() => {
+    const emailSend = searchParams.get('emailSend') === 'true';
+    setIsEmailSend(emailSend);
+  }, [searchParams]);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -30,29 +41,51 @@ export const LoginForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    startTransition(() => {
-      login(values).then((data) => {
-        if (data.error) {
-          toast.error(data.error);
-        } else if (data.success) {
-          setAccessToken(data.token!);
-          router.push('/dashboard');
-          toast.success('Logged in successfully!');
+  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
+    startTransition(async () => {
+      try {
+        await signIn({
+          method: 'login',
+          email: values.email,
+          password: values.password,
+        });
+
+        const user = auth.currentUser;
+        if (!user) throw new Error('User not found.');
+
+        if (!user.emailVerified) {
+          await sendEmailVerification(user);
+          toast.success('Verification email sent. Check your inbox.');
+          await auth.signOut();
+          await deleteSession();
+          router.push('/auth/login?emailSend=true');
+          return;
         }
-      });
+
+        const userDetails = extractUserDetails(user);
+        await updateUser(userDetails);
+        const token = await user.getIdToken();
+        await createSession(token);
+
+        router.push('/dashboard');
+        toast.success('Welcome back!');
+      } catch {
+        toast.error('Login failed. Check your credentials.');
+      }
     });
   };
+
+  if (isEmailSend) return <EmailSendSuccess />;
 
   return (
     <AuthWrapper
       header={{
         title: 'Login',
-        description: 'Welcome, let’s get you started!',
+        description: 'Welcome back! Let’s get started.',
       }}
       footer={{
         linkUrl: '/auth/register',
-        linkText: 'Don’t have an account',
+        linkText: 'Don’t have an account?',
         isLogin: true,
       }}
       socials
@@ -72,7 +105,7 @@ export const LoginForm = () => {
               control={form.control}
               disabled={isPending}
               name="password"
-              label="Enter password"
+              label="Password"
             />
           </div>
           <Button

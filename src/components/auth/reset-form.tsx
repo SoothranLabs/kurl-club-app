@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { resetPassword } from '@/services/auth/actions';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { ResetSchema } from '@/schemas';
 
 import { Form } from '@/components/ui/form';
@@ -21,8 +21,8 @@ const ResetSuccess = () => (
         Update your password 🔐
       </h4>
       <p className="text-xl font-medium leading-normal text-white">
-        KurlClub has sent a password reset link has been sent to your email.
-        Please check your inbox to reset your password.
+        A password reset link has been sent to your email. Please check your
+        inbox to reset your password.
       </p>
     </div>
   </AuthWrapper>
@@ -41,14 +41,22 @@ export const ResetForm = () => {
 
   const onSubmit = (values: z.infer<typeof ResetSchema>) => {
     startTransition(() => {
-      resetPassword(values).then((data) => {
-        if (data.error) {
-          toast.error(data.error);
-        } else if (data.success) {
-          toast.success(data.success);
+      const auth = getAuth();
+
+      sendPasswordResetEmail(auth, values.email)
+        .then(() => {
+          toast.success('A password reset link has been sent to your email.');
           setIsSuccess(true);
-        }
-      });
+        })
+        .catch((error) => {
+          if (error.code === 'auth/user-not-found') {
+            toast.error('No user found with this email address.');
+          } else {
+            toast.error(
+              'An error occurred while sending the reset email. Please try again.'
+            );
+          }
+        });
     });
   };
 
