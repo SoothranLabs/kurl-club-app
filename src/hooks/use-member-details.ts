@@ -49,5 +49,6 @@ export function useMemberDetails() {
     updateMemberDetail,
     handleSave,
     toggleEdit,
+    setIsEditing,
   };
 }

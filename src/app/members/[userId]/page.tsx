@@ -1,18 +1,11 @@
-import { Chart } from '@/components/members/details/chart';
+import Contents from '@/components/members/details/contents';
+import { Sidebar } from '@/components/members/sidebar';
 
-interface MemberDetailsPageProps {
-  params: Promise<{ userId: string }>;
-}
-
-export default async function MemberDetailsPage({
-  params,
-}: MemberDetailsPageProps) {
-  const userId = (await params).userId;
-
+export default async function MemberDetailsPage() {
   return (
-    <div>
-      UserId = {userId}
-      <Chart />
-    </div>
+    <main className="flex flex-auto">
+      <Sidebar />
+      <Contents />
+    </main>
   );
 }

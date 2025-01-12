@@ -30,4 +30,6 @@ export interface EditableSectionProps {
   isEditing: boolean;
   details: Member;
   onUpdate: <K extends keyof Member>(key: K, value: Member[K]) => void;
+  memberSince?: string;
+  gymNo?: string;
 }
