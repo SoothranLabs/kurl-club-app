@@ -10,7 +10,7 @@ import WorkoutPlanner from './planner-section';
 
 function Contents() {
   return (
-    <div className="p-8 pt-[26px] w-full">
+    <div className="p-8 pt-[26px] w-full max-w-[calc(100%-336px)]">
       <Header />
       <InfoCard
         item={{

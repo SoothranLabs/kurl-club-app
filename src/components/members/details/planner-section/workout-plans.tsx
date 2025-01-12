@@ -54,14 +54,19 @@ const WorkoutCard = memo(({ workout }: { workout: WorkoutItem }) => {
       style={style}
       {...attributes}
       {...listeners}
-      className="p-4 rounded bg-primary-blue-300 text-white shadow-md"
+      className="p-[14px] rounded-[4px] bg-primary-blue-300 text-white shadow-md"
       role="button"
       aria-label={`Workout: ${workout.name}`}
     >
-      <div className={cn('mb-1', workout.completed && 'line-through')}>
+      <div
+        className={cn(
+          'mb-1 text-white text-base font-normal leading-normal',
+          workout.completed && 'line-through'
+        )}
+      >
         {workout.name}
       </div>
-      <div className="text-sm">
+      <div className="text-primary-blue-50 text-sm font-normal leading-normal">
         {workout.duration}
         {workout.reps && `, ${workout.reps} reps`}
       </div>
@@ -197,6 +202,123 @@ export function WorkoutPlans() {
           duration: '10 mins',
           reps: 3,
         },
+        { id: 'workout-17', name: 'Warm - Up', duration: '10 mins' },
+        { id: 'workout-18', name: 'Cardio 01', duration: '10 mins', reps: 3 },
+        { id: 'workout-19', name: 'Cardio 02', duration: '10 mins', reps: 3 },
+        {
+          id: 'workout-20',
+          name: 'Chest workouts',
+          duration: '10 mins',
+          reps: 3,
+        },
+      ],
+    },
+    {
+      id: 'day-5',
+      day: 'Friday',
+      date: '02/11/2024',
+      status: 'completed',
+      isPresent: false,
+      workouts: [
+        {
+          id: 'workout-9',
+          name: 'Warm - Up',
+          duration: '10 mins',
+          completed: false,
+        },
+        {
+          id: 'workout-10',
+          name: 'Cardio 01',
+          duration: '10 mins',
+          reps: 3,
+          completed: false,
+        },
+        {
+          id: 'workout-11',
+          name: 'Cardio 02',
+          duration: '10 mins',
+          reps: 3,
+          completed: false,
+        },
+        {
+          id: 'workout-12',
+          name: 'Chest workouts',
+          duration: '10 mins',
+          reps: 3,
+          completed: false,
+        },
+      ],
+    },
+    {
+      id: 'day-6',
+      day: 'Saturday',
+      date: '02/11/2024',
+      status: 'completed',
+      isPresent: false,
+      workouts: [
+        {
+          id: 'workout-9',
+          name: 'Warm - Up',
+          duration: '10 mins',
+          completed: false,
+        },
+        {
+          id: 'workout-10',
+          name: 'Cardio 01',
+          duration: '10 mins',
+          reps: 3,
+          completed: false,
+        },
+        {
+          id: 'workout-11',
+          name: 'Cardio 02',
+          duration: '10 mins',
+          reps: 3,
+          completed: false,
+        },
+        {
+          id: 'workout-12',
+          name: 'Chest workouts',
+          duration: '10 mins',
+          reps: 3,
+          completed: false,
+        },
+      ],
+    },
+    {
+      id: 'day-7',
+      day: 'Sunday',
+      date: '02/11/2024',
+      status: 'completed',
+      isPresent: false,
+      workouts: [
+        {
+          id: 'workout-9',
+          name: 'Warm - Up',
+          duration: '10 mins',
+          completed: false,
+        },
+        {
+          id: 'workout-10',
+          name: 'Cardio 01',
+          duration: '10 mins',
+          reps: 3,
+          completed: false,
+        },
+        {
+          id: 'workout-11',
+          name: 'Cardio 02',
+          duration: '10 mins',
+          reps: 3,
+          completed: false,
+        },
+        {
+          id: 'workout-12',
+          name: 'Chest workouts',
+          duration: '10 mins',
+          reps: 3,
+          completed: false,
+        },
       ],
     },
   ];
@@ -236,21 +358,21 @@ export function WorkoutPlans() {
   }
 
   return (
-    <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-700">
+    <div className="overflow-x-auto no-scrollbar p-6">
       <div className="flex gap-4">
         {workoutSchedule.map((day) => (
           <div
             key={day.id}
             className={cn(
-              'min-w-[227px] rounded-lg p-4 space-y-4',
+              'min-w-[227px] rounded-lg p-4 pt-5 space-y-4',
               day.date === new Date().toLocaleDateString('en-GB')
                 ? 'bg-primary-blue-500'
                 : 'bg-primary-blue-500 opacity-50',
               day.isPresent === true &&
                 day.date !== new Date().toLocaleDateString('en-GB')
-                ? 'border border-neutral-green-500/45'
+                ? 'border border-neutral-green-500/50'
                 : day.isPresent === false
-                  ? 'border border-alert-red-400/45'
+                  ? 'border border-alert-red-400/50'
                   : ''
             )}
             aria-label={`Day: ${day.day}, Status: ${day.status || 'upcoming'}`}
@@ -259,17 +381,21 @@ export function WorkoutPlans() {
               <div className="flex items-center gap-2">
                 <div
                   className={cn(
-                    'w-2 h-2 rounded-full',
+                    'w-[7px] h-[7px] rounded-full',
                     day.isPresent === false
-                      ? 'bg-red-500'
+                      ? 'bg-alert-red-500'
                       : day.isPresent === true
-                        ? 'bg-green-500'
+                        ? 'bg-neutral-green-500'
                         : 'bg-zinc-500'
                   )}
                 />
-                <span className="text-zinc-100">{day.day}</span>
+                <span className="text-white text-base font-normal leading-normal">
+                  {day.day}
+                </span>
               </div>
-              <span className="text-zinc-500 text-sm">{day.date}</span>
+              <span className="text-primary-blue-50 text-sm font-normal leading-normal">
+                {day.date}
+              </span>
             </div>
 
             <div className="space-y-3 max-h-[343px] overflow-y-auto no-scrollbar">
