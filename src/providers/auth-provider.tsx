@@ -12,11 +12,19 @@ import {
   GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+
+type GymUser = {
+  id: string;
+  name: string;
+};
+
 import { createSession, deleteSession } from '@/services/auth/session';
+import { api } from '@/lib/api';
 
 const AuthContext = createContext<
   | {
-      user: User | null;
+      authUser: User | null;
+      gymUser: GymUser[];
       signIn: (options: SignInOptions) => Promise<void>;
       logout: () => Promise<void>;
     }
@@ -31,15 +39,16 @@ type SignInOptions =
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [authUser, setAuthUser] = useState<User | null>(null);
+  const [gymUser, setGymUser] = useState<GymUser[]>([]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setUser(user);
+    const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+      setAuthUser(authUser);
 
-      if (user) {
+      if (authUser) {
         try {
-          const idToken = await getIdToken(user);
+          const idToken = await getIdToken(authUser);
           await createSession(idToken);
         } catch (error) {
           console.error('Failed to create session:', error);
@@ -49,6 +58,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     return () => unsubscribe();
   }, []);
+
+  const fetchGymUser = async (user: User) => {
+    console.log('Fetching gym user for UID:', user.uid);
+    console.log('Full API URL:', `/User/GetUserById/${user.uid}`);
+    try {
+      const response = (await api.get(
+        `/User/GetUserById/${user.uid}`
+      )) as Response;
+      if (!response.ok) {
+        throw new Error('Failed to fetch gym user!');
+      }
+      const data = await response.json();
+      setGymUser(data.gymUser || []);
+    } catch (error) {
+      console.error('Error fetching gym user:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (authUser) {
+      fetchGymUser(authUser);
+    }
+  }, [authUser]);
 
   const signIn = async (options: SignInOptions) => {
     try {
@@ -99,7 +131,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ user, signIn, logout }}>
+    <AuthContext.Provider value={{ gymUser, authUser, signIn, logout }}>
       {children}
     </AuthContext.Provider>
   );

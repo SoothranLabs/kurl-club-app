@@ -7,9 +7,11 @@ import { z } from 'zod';
 import { SamplePageSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '../ui/form';
+import { useAuth } from '@/providers/auth-provider';
 
 function Header() {
   const [greeting, setGreeting] = useState('Good morning');
+  const { authUser } = useAuth();
 
   useEffect(() => {
     const currentHour = new Date().getHours();
@@ -29,11 +31,13 @@ function Header() {
     },
   });
 
+  const userName = authUser?.displayName || authUser?.email || 'User';
+
   return (
     <div className="flex justify-between items-start gap-2">
       <div className="flex flex-col">
         <h6 className="text-2xl font-medium leading-normal text-[#747578] capitalize">
-          Hello Vickie
+          Hello, {userName}
         </h6>
         <h4 className="text-white font-semibold text-[32px] leading-normal">
           {greeting}
