@@ -36,7 +36,7 @@ export const UserForm: React.FC<AddUserProps> = ({ isOpen, closeSheet }) => {
   const form = useForm<UserFormData>({
     resolver: zodResolver(AddUserForm),
     defaultValues: {
-      profilepicture: undefined,
+      profilePicture: null,
       memberName: '',
       email: '',
       primaryPhone: '',
@@ -111,14 +111,12 @@ export const UserForm: React.FC<AddUserProps> = ({ isOpen, closeSheet }) => {
             <KFormField
               fieldType={KFormFieldType.SKELETON}
               control={form.control}
-              name="profilepicture"
+              name="profilePicture"
               renderSkeleton={(field) => (
                 <FormControl>
                   <ProfilePictureUploader
-                    files={
-                      field.value instanceof Uint8Array ? field.value : null
-                    }
-                    onChange={field.onChange}
+                    files={field.value as File | null}
+                    onChange={(file) => field.onChange(file)}
                   />
                 </FormControl>
               )}
