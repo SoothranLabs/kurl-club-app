@@ -8,31 +8,27 @@ import PreviewModal from './preview-modal';
 import { CircleUser, Plus, User } from 'lucide-react';
 
 interface ProfilePictureUploaderProps {
-  files?: Uint8Array | null;
-  onChange?: (byteArray: Uint8Array | null) => void;
+  files: File | null;
+  onChange: (file: File | null) => void;
   isSmall?: boolean;
 }
 
 export default function ProfilePictureUploader({
   files,
-  onChange = () => {},
+  onChange,
   isSmall,
 }: ProfilePictureUploaderProps) {
   const [image, setImage] = useState<string | null>(null);
   const [cropModalOpen, setCropModalOpen] = useState(false);
   const [previewModalOpen, setPreviewModalOpen] = useState(false);
   const [tempImage, setTempImage] = useState<string | null>(null);
+  const [currentFile, setCurrentFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Convert Uint8Array back to a base64 image string if `files` is updated externally
+  // Update the image state when `files` changes
   useEffect(() => {
-    if (files && files.length > 0) {
-      const blob = new Blob([files]);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) setImage(e.target.result as string);
-      };
-      reader.readAsDataURL(blob);
+    if (files) {
+      setImage(URL.createObjectURL(files));
     } else {
       setImage(null);
     }
@@ -41,6 +37,7 @@ export default function ProfilePictureUploader({
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setCurrentFile(file);
       const reader = new FileReader();
       reader.onload = (e) => {
         setTempImage(e.target?.result as string);
@@ -52,28 +49,20 @@ export default function ProfilePictureUploader({
   };
 
   const handleCrop = (croppedImage: string) => {
-    setImage(croppedImage);
-    setCropModalOpen(false);
-
-    // Convert base64 to Blob and then to Uint8Array
-    fetch(croppedImage)
-      .then((res) => res.blob())
-      .then((blob) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          if (e.target?.result) {
-            const arrayBuffer = e.target.result as ArrayBuffer;
-            const byteArray = new Uint8Array(arrayBuffer);
-            onChange(byteArray);
-          }
-        };
-        reader.readAsArrayBuffer(blob);
+    if (currentFile) {
+      const croppedFile = new File([currentFile], currentFile.name, {
+        type: currentFile.type,
       });
+      setImage(croppedImage);
+      setCropModalOpen(false);
+      onChange(croppedFile); // Pass the binary file to the parent
+    }
   };
 
   const handleDelete = () => {
     setImage(null);
     setPreviewModalOpen(false);
+    setCurrentFile(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -84,6 +73,7 @@ export default function ProfilePictureUploader({
     setPreviewModalOpen(false);
     setImage(null);
     setTempImage(null);
+    setCurrentFile(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }

@@ -17,7 +17,7 @@ export function MemberHeader({
       <div className="items-center mb-4">
         <div className="mb-3">
           {isEditing ? (
-            <ProfilePictureUploader isSmall />
+            <ProfilePictureUploader files={null} onChange={() => {}} isSmall />
           ) : (
             <Avatar
               className={`flex justify-center items-center size-[64px] cursor-default rounded-full bg-secondary-blue-500`}

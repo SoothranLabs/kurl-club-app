@@ -16,7 +16,7 @@ import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form
 import AddFrom from './members/add-member';
 import InfoCard from './cards/info-card';
 import KDialog from './form/k-dialog';
-import ProfilePictureUploader from './uploaders/profile-uploader';
+// import ProfilePictureUploader from './uploaders/profile-uploader';
 import { Sidebar } from './members/sidebar';
 import PaymentCard from './members/details/payment-card';
 import { CalendarDays, IndianRupee, Map, Settings, Users } from 'lucide-react';
@@ -55,7 +55,7 @@ const SampleTestPage = () => {
   const form = useForm<z.infer<typeof SamplePageSchema>>({
     resolver: zodResolver(SamplePageSchema),
     defaultValues: {
-      profilepicture: null,
+      profilePicture: undefined,
       email: '',
       password: '',
       confirmPassword: '',
@@ -109,17 +109,7 @@ const SampleTestPage = () => {
   };
 
   async function onSubmit(values: z.infer<typeof SamplePageSchema>) {
-    if (!values.profilepicture) {
-      console.error('No image selected');
-      return;
-    }
-
-    const payload = {
-      ...values,
-      profilepicture: Array.from(values.profilepicture),
-    };
-
-    console.log(`Subitted data = ${JSON.stringify(payload)}`);
+    console.log(`Subitted data = ${JSON.stringify(values)}`);
   }
 
   const { isOpen, openSheet, closeSheet } = useSheet();
@@ -233,21 +223,19 @@ const SampleTestPage = () => {
           >
             <section className="space-y-6">
               {/* PROFILE UPLOADER */}
-              <KFormField
+              {/* <KFormField
                 fieldType={KFormFieldType.SKELETON}
                 control={form.control}
-                name="profilepicture"
+                name="profilePicture"
                 renderSkeleton={(field) => (
                   <FormControl>
                     <ProfilePictureUploader
-                      files={
-                        field.value instanceof Uint8Array ? field.value : null
-                      }
+                      files={field.value || null}
                       onChange={field.onChange}
                     />
                   </FormControl>
                 )}
-              />
+              /> */}
 
               {/* INPUT */}
               <KFormField

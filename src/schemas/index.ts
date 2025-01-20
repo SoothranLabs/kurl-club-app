@@ -137,17 +137,11 @@ export const GymDetailsSchema = z.object({
     .max(100, 'Gym name should not exceed 100 characters')
     .trim(),
 
-  profilepicture: z
-    .custom<File>((file) => file instanceof File, 'Profile picture is required')
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
-      message: 'File size should not exceed 5MB',
+  profilePicture: z
+    .custom<File | null>((value) => value instanceof File || value === null, {
+      message: 'Profile picture must be a file.',
     })
-    .refine(
-      (file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type),
-      {
-        message: 'Only JPEG, PNG, or WEBP formats are allowed',
-      }
-    ),
+    .optional(),
 
   buildingName: z
     .string()
@@ -194,6 +188,36 @@ export const GymDetailsSchema = z.object({
     .optional(),
 });
 
+// Create GYM Schema
+export const CreateGymSchema = z.object({
+  GymName: z
+    .string()
+    .min(1, 'Gym name is required.')
+    .max(100, 'Gym name must not exceed 100 characters.'),
+  Location: z
+    .string()
+    .min(1, 'Address is required.')
+    .max(250, 'Address must not exceed 250 characters.'),
+  ContactNumber1: z
+    .string()
+    .regex(
+      /^\+?[1-9]\d{1,14}$/,
+      'Gym phone number must be a valid phone number.'
+    ),
+  Email: z.string().email('Gym email must be a valid email address.'),
+  ProfilePicture: z
+    .custom<File | null>((value) => value instanceof File || value === null, {
+      message: 'Profile picture must be a file.',
+    })
+    .refine((file) => file === null || file.size <= 5 * 1024 * 1024, {
+      message: 'File size must be less than 5MB',
+    })
+    .optional(),
+  SocialLink1: z.string().optional(),
+  SocialLink2: z.string().optional(),
+  SocialLink3: z.string().optional(),
+});
+
 // Trainer Form Schema
 export const TrainerFormSchema = z.object({
   trainers: z
@@ -226,11 +250,9 @@ export const SamplePageSchema = z.object({
   dateOfBirth: z.date({ invalid_type_error: 'Invalid date format' }),
   identificationDocument: z.string().optional(),
   otp: z.string().length(6, 'OTP must be exactly 6 digits'),
-  profilepicture: z
-    .instanceof(Uint8Array)
-    .or(z.null())
-    .refine((value) => value !== null && value.length > 0, {
-      message: 'Image is required',
+  profilePicture: z
+    .custom<File | null>((value) => value instanceof File || value === null, {
+      message: 'Profile picture must be a file.',
     })
     .optional(),
 });
@@ -241,11 +263,9 @@ export const AddForm = z.object({
     .min(1, 'Member name is required')
     .max(100, 'Member name should not exceed 50 characters')
     .trim(),
-  profilepicture: z
-    .instanceof(Uint8Array)
-    .or(z.null())
-    .refine((value) => value !== null && value.length > 0, {
-      message: 'Image is required',
+  profilePicture: z
+    .custom<File | null>((value) => value instanceof File || value === null, {
+      message: 'Profile picture must be a file.',
     })
     .optional(),
   email: z
@@ -288,11 +308,9 @@ export const AddUserForm = z.object({
     .min(1, 'Member name is required')
     .max(100, 'Member name should not exceed 50 characters')
     .trim(),
-  profilepicture: z
-    .instanceof(Uint8Array)
-    .or(z.null())
-    .refine((value) => value !== null && value.length > 0, {
-      message: 'Image is required',
+  profilePicture: z
+    .custom<File | null>((value) => value instanceof File || value === null, {
+      message: 'Profile picture must be a file.',
     })
     .optional(),
   email: z
