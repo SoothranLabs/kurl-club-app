@@ -1,7 +1,6 @@
-import React from 'react';
-import { Button } from '../ui/button';
-import KDialog from '../k-dialog';
-import { OnboardingStepForm } from '../onboarding/onboarding-step-form';
+import { Button } from '@/components/ui/button';
+import KDialog from '@/components/form/k-dialog';
+import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
 
 function Banner() {
   return (

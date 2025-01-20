@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form';
 import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
 import AddFrom from './members/add-member';
 import InfoCard from './cards/info-card';
-import KDialog from './k-dialog';
+import KDialog from './form/k-dialog';
 import ProfilePictureUploader from './uploaders/profile-uploader';
 import { Sidebar } from './members/sidebar';
 import PaymentCard from './members/details/payment-card';
