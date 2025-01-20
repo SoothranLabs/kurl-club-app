@@ -7,16 +7,13 @@ import Header from '@/components/dashboard/header';
 import { useAuth } from '@/providers/auth-provider';
 
 function Dashboard() {
-  const { authUser, gymUser } = useAuth();
-
-  console.log('Firebase User:', authUser);
-  console.log('Gym Data:', gymUser);
+  const { appUser } = useAuth();
 
   return (
     <div className="container py-8">
       <Header />
       <CardList />
-      {gymUser.length === 0 && <Banner />}
+      {appUser?.gyms.length === 0 && <Banner />}
     </div>
   );
 }

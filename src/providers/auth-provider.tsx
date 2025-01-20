@@ -4,7 +4,7 @@ import React, { createContext, useEffect, useState, useContext } from 'react';
 import {
   onAuthStateChanged,
   getIdToken,
-  User,
+  User as FirebaseUser,
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -12,19 +12,13 @@ import {
   GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-
-type GymUser = {
-  id: string;
-  name: string;
-};
-
 import { createSession, deleteSession } from '@/services/auth/session';
 import { api } from '@/lib/api';
 
 const AuthContext = createContext<
   | {
-      authUser: User | null;
-      gymUser: GymUser[];
+      firebaseUser: FirebaseUser | null;
+      appUser: AppUser | null;
       signIn: (options: SignInOptions) => Promise<void>;
       logout: () => Promise<void>;
     }
@@ -36,51 +30,59 @@ type SignInOptions =
   | { method: 'login'; email: string; password: string }
   | { method: 'oauth'; provider: 'google' };
 
+interface AppUser {
+  userId: number;
+  userName: string;
+  userEmail: string;
+  userRole: string;
+  gyms: {
+    gymId: number;
+    gymName: string;
+    gymLocation: string;
+  }[];
+}
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [authUser, setAuthUser] = useState<User | null>(null);
-  const [gymUser, setGymUser] = useState<GymUser[]>([]);
+  const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
+  const [appUser, setAppUser] = useState<AppUser | null>(null);
 
+  // Fetch the appUser from the backend
+  const fetchAppUser = async (uid: string) => {
+    try {
+      const response = await api.get<{
+        status: string;
+        message: string;
+        data: AppUser;
+      }>(`/User/GetUserById/${uid}`);
+      setAppUser(response.data);
+    } catch (error) {
+      console.error('Failed to fetch app user:', error);
+      setAppUser(null);
+    }
+  };
+
+  // Watch Firebase user changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
-      setAuthUser(authUser);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      setFirebaseUser(firebaseUser);
 
-      if (authUser) {
+      if (firebaseUser) {
         try {
-          const idToken = await getIdToken(authUser);
+          const idToken = await getIdToken(firebaseUser);
           await createSession(idToken);
+          await fetchAppUser(firebaseUser.uid);
         } catch (error) {
-          console.error('Failed to create session:', error);
+          console.error('Failed to handle Firebase user change:', error);
         }
+      } else {
+        setAppUser(null);
       }
     });
 
     return () => unsubscribe();
   }, []);
-
-  const fetchGymUser = async (user: User) => {
-    console.log('Fetching gym user for UID:', user.uid);
-    console.log('Full API URL:', `/User/GetUserById/${user.uid}`);
-    try {
-      const response = (await api.get(
-        `/User/GetUserById/${user.uid}`
-      )) as Response;
-      if (!response.ok) {
-        throw new Error('Failed to fetch gym user!');
-      }
-      const data = await response.json();
-      setGymUser(data.gymUser || []);
-    } catch (error) {
-      console.error('Error fetching gym user:', error);
-    }
-  };
-
-  useEffect(() => {
-    if (authUser) {
-      fetchGymUser(authUser);
-    }
-  }, [authUser]);
 
   const signIn = async (options: SignInOptions) => {
     try {
@@ -94,6 +96,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           );
           const idToken = await getIdToken(user);
           await createSession(idToken);
+          await fetchAppUser(user.uid);
           break;
         }
         case 'login': {
@@ -105,6 +108,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           );
           const idToken = await getIdToken(user);
           await createSession(idToken);
+          await fetchAppUser(user.uid);
           break;
         }
         case 'oauth': {
@@ -113,6 +117,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             const { user } = await signInWithPopup(auth, provider);
             const idToken = await getIdToken(user);
             await createSession(idToken);
+            await fetchAppUser(user.uid);
           }
           break;
         }
@@ -128,10 +133,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const logout = async () => {
     await signOut(auth);
     await deleteSession();
+    setAppUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ gymUser, authUser, signIn, logout }}>
+    <AuthContext.Provider value={{ firebaseUser, appUser, signIn, logout }}>
       {children}
     </AuthContext.Provider>
   );

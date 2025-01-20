@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import KDialog from '@/components/k-dialog';
+import KDialog from '@/components/form/k-dialog';
 
 interface PreviewModalProps {
   isOpen: boolean;
