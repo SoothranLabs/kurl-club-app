@@ -1,4 +1,4 @@
-import React from 'react';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import {
   Dialog,
   DialogContent,
@@ -35,7 +35,13 @@ const KDialog: React.FC<KDialogProps> = ({
         closable={closable}
         className={`bg-primary-blue-500 border-secondary-blue-500 !rounded-lg max-w-full ${className}`}
       >
-        {title && <DialogTitle>{title}</DialogTitle>}
+        {title ? (
+          <DialogTitle>{title}</DialogTitle>
+        ) : (
+          <VisuallyHidden>
+            <DialogTitle>Dialog</DialogTitle>
+          </VisuallyHidden>
+        )}
         {children}
         {footer && <DialogFooter>{footer}</DialogFooter>}
       </DialogContent>

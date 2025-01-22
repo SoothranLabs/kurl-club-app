@@ -1,41 +1,71 @@
+'use client';
+
+import { useTransition } from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { Globe } from 'lucide-react';
 
-import { GymDetailsSchema } from '@/schemas';
+import { useAuth } from '@/providers/auth-provider';
+import { CreateGymSchema } from '@/schemas';
+import { createGym } from '@/services/gym';
 
 import { Button } from '@/components/ui/button';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 import { KFacebookFillIcon, KInstagramIcon } from '@/components/icons';
-import { Globe } from 'lucide-react';
 import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
 import { FormControl } from '@/components/ui/form';
 
-type CreateGymStepData = z.infer<typeof GymDetailsSchema>;
+type CreateGymStepData = z.infer<typeof CreateGymSchema>;
 
 type CreateGymStepProps = {
   onSubmit: (data: CreateGymStepData) => void;
 };
 
 export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
+  const [isPending, startTransition] = useTransition();
+  const { firebaseUser } = useAuth();
+
   const form = useForm<CreateGymStepData>({
-    resolver: zodResolver(GymDetailsSchema),
+    resolver: zodResolver(CreateGymSchema),
     defaultValues: {
-      gymName: '',
-      profilepicture: undefined,
-      buildingName: '',
-      city: '',
-      primaryPhone: '',
-      email: '',
-      websiteLink: '',
-      facebookPageLink: '',
-      instagramLink: '',
+      GymName: '',
+      Location: '',
+      ContactNumber1: '',
+      Email: '',
+      ProfilePicture: null,
+      SocialLink1: '',
+      SocialLink2: '',
+      SocialLink3: '',
     },
   });
 
-  const handleSubmit = (data: CreateGymStepData) => {
-    console.log('Gym details submitted:', data);
-    onSubmit(data);
+  const handleSubmit = async (data: CreateGymStepData) => {
+    if (!firebaseUser?.uid) {
+      toast.error('User is not authenticated.');
+      return;
+    }
+
+    const payload = {
+      ...data,
+      gymAdminId: firebaseUser.uid,
+    };
+
+    startTransition(async () => {
+      try {
+        const response = await createGym(payload);
+
+        if (response.success) {
+          toast.success(response.success);
+          onSubmit(data);
+        } else {
+          console.error(response.error);
+        }
+      } catch (error) {
+        toast.error(`Error creating gym, please try again!, ${error}`);
+      }
+    });
   };
 
   return (
@@ -54,18 +84,17 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="flex flex-col"
         >
-          <div className="space-y-4 overflow-y-auto max-h-[300px] mt-4 p-1">
+          <div className="space-y-4 overflow-y-auto max-h-[46vh] mt-4 p-1 no-scrollbar">
             <KFormField
               fieldType={KFormFieldType.SKELETON}
               control={form.control}
-              name="profilepicture"
+              name="ProfilePicture"
+              disabled={isPending}
               renderSkeleton={(field) => (
                 <FormControl>
                   <ProfilePictureUploader
-                    files={
-                      field.value instanceof Uint8Array ? field.value : null
-                    }
-                    onChange={field.onChange}
+                    files={field.value as File | null}
+                    onChange={(file) => field.onChange(file)}
                   />
                 </FormControl>
               )}
@@ -73,71 +102,69 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
-              name="gymName"
+              name="GymName"
               label="Enter gym name"
+              disabled={isPending}
               mandetory
             />
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
-              name="buildingName"
-              label="Building name"
-              mandetory
-            />
-            <KFormField
-              fieldType={KFormFieldType.INPUT}
-              control={form.control}
-              name="city"
-              label="City"
+              name="Location"
+              label="Address line 01"
+              disabled={isPending}
               mandetory
             />
             <KFormField
               fieldType={KFormFieldType.PHONE_INPUT}
               control={form.control}
-              name="primaryPhone"
+              name="ContactNumber1"
               label="Primary Phone number"
+              disabled={isPending}
               placeholder="(555) 123-4567"
-              // mandetory
             />
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
-              name="email"
+              name="Email"
               label="Enter email"
+              disabled={isPending}
               mandetory
             />
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
-              name="websiteLink"
+              name="SocialLink1"
               label="Enter website link"
               placeholder="https://www.google.com"
+              disabled={isPending}
               iconSrc={<Globe size={20} />}
             />
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
-              name="facebookPageLink"
+              name="SocialLink2"
               label="Enter Facebook page link"
               placeholder="https://www.google.com"
+              disabled={isPending}
               iconSrc={<KFacebookFillIcon />}
             />
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
-              name="instagramLink"
+              name="SocialLink3"
               label="Enter instagram link"
               placeholder="https://www.google.com"
+              disabled={isPending}
               iconSrc={<KInstagramIcon width={20} height={20} />}
             />
           </div>
-          {/* Add button disabled true if there is no data in input phone number */}
           <Button
-            disabled={false}
             type="submit"
             className="w-full mt-5 h-[48px]"
+            disabled={isPending}
           >
-            Continue
+            {isPending ? 'Creating...' : 'Create'}
           </Button>
         </form>
       </FormProvider>

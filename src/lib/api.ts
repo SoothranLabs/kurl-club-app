@@ -2,11 +2,6 @@ import { API_BASE_URL } from './utils/index';
 
 type Params = Record<string, string | number | boolean>;
 
-interface ApiError {
-  message?: string;
-  status: string;
-}
-
 const baseFetch: typeof fetch = async (url, options = {}) => {
   const { next, ...restOptions } = options as RequestInit & {
     next?: { revalidate?: number; cache?: string };
@@ -25,8 +20,18 @@ const baseFetch: typeof fetch = async (url, options = {}) => {
   });
 
   if (!response.ok) {
-    const error = (await response.json()) as ApiError;
-    throw new Error(error.message || 'Unknown API error');
+    let errorMessage = 'Unknown API error';
+
+    try {
+      const error = await response.json();
+      errorMessage = error.message || errorMessage;
+    } catch (e) {
+      console.error('Error parsing JSON response:', e);
+      const text = await response.text();
+      console.error('Response body:', text);
+    }
+
+    throw new Error(errorMessage);
   }
 
   // Handle no-content response (204)
@@ -48,13 +53,19 @@ export const api = {
   },
   post: async <TResponse>(
     url: string,
-    data?: Record<string, unknown>,
+    data?: Record<string, unknown> | FormData,
     options?: RequestInit
   ) => {
+    const isFormData = data instanceof FormData;
+
     return baseFetch(url, {
       ...options,
       method: 'POST',
-      body: JSON.stringify(data),
+      body: isFormData ? data : JSON.stringify(data),
+      headers: {
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+        ...(options?.headers || {}),
+      },
     }) as Promise<TResponse>;
   },
   put: async <TResponse>(

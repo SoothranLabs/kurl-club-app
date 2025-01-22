@@ -67,7 +67,7 @@ body {
 
   /* =====  REACT PHONE NUMBER INPUT OVERRIDES */
   .input-phone {
-    @apply w-full rounded-md h-14 py-[17px] px-4 text-base text-white bg-secondary-blue-500 border-0 appearance-none focus:outline-none focus:ring-0 !important;
+    @apply w-full rounded-md h-[52px] py-[17px] px-4 text-base text-white bg-secondary-blue-500 border-0 appearance-none focus:outline-none focus:ring-0 !important;
   }
 
   /* .PhoneInputCountrySelect{

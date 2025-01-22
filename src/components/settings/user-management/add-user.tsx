@@ -43,7 +43,7 @@ export const AddUser: React.FC<CreateUserDetailsProps> = ({
     resolver: zodResolver(AddForm),
     defaultValues: {
       memberName: '',
-      profilepicture: undefined,
+      profilePicture: null,
       email: '',
       primaryPhone: '',
       dob: '',
@@ -131,14 +131,12 @@ export const AddUser: React.FC<CreateUserDetailsProps> = ({
             <KFormField
               fieldType={KFormFieldType.SKELETON}
               control={form.control}
-              name="profilepicture"
+              name="profilePicture"
               renderSkeleton={(field) => (
                 <FormControl>
                   <ProfilePictureUploader
-                    files={
-                      field.value instanceof Uint8Array ? field.value : null
-                    }
-                    onChange={field.onChange}
+                    files={field.value as File | null}
+                    onChange={(file) => field.onChange(file)}
                   />
                 </FormControl>
               )}
