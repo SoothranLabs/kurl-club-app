@@ -94,7 +94,7 @@ export function Chart() {
         />
       </CardHeader>
       <CardContent className="p-0 pr-5 pb-5 k-chart">
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="w-full h-[235px]">
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid stroke="#414349" vertical={false} />
             <XAxis
