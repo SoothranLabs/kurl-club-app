@@ -85,7 +85,7 @@ body {
   .k-input {
     @apply w-full h-[52px] rounded-md text-sm font-semibold text-white bg-secondary-blue-500 border-0 transition-["outline"] appearance-none 
            hover:outline-secondary-blue-400 hover:outline-1 shadow-none !ring-0 hover:outline
-           focus:outline focus:outline-1 focus:outline-primary-green-700 
+           focus:outline focus:outline-1 focus:outline-primary-green-700 outline-transparent
            ease-in-out disabled:cursor-not-allowed disabled:opacity-50 resize-none overflow-hidden !important;
   }
 
