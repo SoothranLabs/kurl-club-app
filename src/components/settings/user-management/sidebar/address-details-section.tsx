@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import type { EditableSectionProps } from '@/types/members';
+import { EditableSectionProps } from '@/types/user';
 
 export function AddressDetailsSection({
   isEditing,

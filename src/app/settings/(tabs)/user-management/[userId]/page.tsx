@@ -1,15 +1,9 @@
-interface UserDetailsPageProps {
-  params: Promise<{ userId: string }>;
-}
+import { Sidebar } from '@/components/settings/user-management/sidebar';
 
-export default async function UserDetailsPage({
-  params,
-}: UserDetailsPageProps) {
-  const userId = (await params).userId;
+export default async function UserDetailsPage() {
   return (
     <main className="flex flex-auto">
-      userId: {userId}
-      {/* <Sidebar /> */}
+      <Sidebar />
       {/* <Contents /> */}
     </main>
   );

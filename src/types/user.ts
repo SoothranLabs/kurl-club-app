@@ -22,3 +22,37 @@ export interface UserRequest extends Record<string, unknown> {
   phoneNumber?: string | null;
   photoURL?: string | null;
 }
+
+export interface userDetail {
+  name: string;
+  role: Role;
+  trainerNo: string;
+  email: string;
+  mobile: string;
+  dob: string;
+  doj: string;
+  bloodGroup: BloodGroup;
+  address: string;
+  pin: string;
+  gender: Gender;
+}
+
+export type BloodGroup =
+  | 'A+'
+  | 'B+'
+  | 'O+'
+  | 'AB+'
+  | 'A-'
+  | 'B-'
+  | 'O-'
+  | 'AB-';
+export type Role = 'Trainer' | 'Owner' | 'Partner';
+export type Gender = 'Male' | 'Female' | 'Transgender';
+
+export interface EditableSectionProps {
+  isEditing: boolean;
+  details: userDetail;
+  onUpdate: <K extends keyof userDetail>(key: K, value: userDetail[K]) => void;
+  role?: string;
+  trainerNo?: string;
+}
