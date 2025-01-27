@@ -46,7 +46,7 @@ export type BloodGroup =
   | 'B-'
   | 'O-'
   | 'AB-';
-export type Role = 'Trainer' | 'Owner' | 'Partner';
+export type Role = 'Trainer' | 'Admin' | 'Staff';
 export type Gender = 'Male' | 'Female' | 'Transgender';
 
 export interface EditableSectionProps {

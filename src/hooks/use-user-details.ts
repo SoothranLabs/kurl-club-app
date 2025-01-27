@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 const initialMemberState: userDetail = {
   name: 'Vignesh M',
-  role: 'Trainer',
+  role: 'Admin',
   trainerNo: '290897',
   email: 'magikmike@gmail.com',
   mobile: '+919656746975',

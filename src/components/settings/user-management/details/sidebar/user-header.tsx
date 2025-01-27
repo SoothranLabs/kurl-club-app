@@ -1,10 +1,10 @@
-import { KDumbbell } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
 import { getInitials } from '@/lib/utils';
 import { EditableSectionProps } from '@/types/user';
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
+import Image from 'next/image';
 
 export function UserHeader({
   role,
@@ -45,7 +45,12 @@ export function UserHeader({
 
           <div className="flex items-center gap-2 mt-2">
             <span className="h-[18px] w-[18px]">
-              <KDumbbell className="text-semantic-blue-500 h-[18px] w-[18px]" />
+              <Image
+                alt=""
+                src={`/assets/svg/${role === 'Trainer' ? 'trainer-icon' : role === 'Admin' ? 'admin-icon' : 'staff-icon'}.svg`}
+                height={18}
+                width={18}
+              />
             </span>
             <p className="text-white text-sm leading-normal font-normal">
               {role}
