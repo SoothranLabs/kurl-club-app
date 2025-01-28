@@ -1,5 +1,5 @@
 import Contents from '@/components/members/details/contents';
-import { Sidebar } from '@/components/members/sidebar';
+import { Sidebar } from '@/components/members/details/sidebar';
 
 export default async function MemberDetailsPage() {
   return (

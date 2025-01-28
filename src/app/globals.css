@@ -85,7 +85,7 @@ body {
   .k-input {
     @apply w-full h-[52px] rounded-md text-sm font-semibold text-white bg-secondary-blue-500 border-0 transition-["outline"] appearance-none 
            hover:outline-secondary-blue-400 hover:outline-1 shadow-none !ring-0 hover:outline
-           focus:outline focus:outline-1 focus:outline-primary-green-700 
+           focus:outline focus:outline-1 focus:outline-primary-green-700 outline-transparent
            ease-in-out disabled:cursor-not-allowed disabled:opacity-50 resize-none overflow-hidden !important;
   }
 
@@ -101,19 +101,6 @@ body {
     @apply cursor-pointer text-sm font-normal text-white peer-disabled:cursor-not-allowed peer-disabled:opacity-70 md:leading-none;
   }
 
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: rgba(156, 163, 175, 0.3);
-    border-radius: 3px;
-  }
-
   .no-scrollbar::-webkit-scrollbar {
     display: none;
     -ms-overflow-style: none;
@@ -123,18 +110,18 @@ body {
 
 /* slider style */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #606267;
-  border-radius: 10px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: white;
+  background: transparent;
   border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.3);
+  border-radius: 3px;
 }
 
 /* =====  REACT PHONE NUMBER INPUT OVERRIDES */
@@ -163,3 +150,12 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+/* charts */
+/* .k-chart{
+  max-height: 235px !important;
+  .recharts-wrapper{
+    max-height: 235px !important;
+    max-width: 500px !important;
+  }
+}  */

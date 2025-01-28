@@ -358,13 +358,13 @@ export function WorkoutPlans() {
   }
 
   return (
-    <div className="overflow-x-auto no-scrollbar p-6">
+    <div className="overflow-x-auto p-6">
       <div className="flex gap-4">
         {workoutSchedule.map((day) => (
           <div
             key={day.id}
             className={cn(
-              'min-w-[227px] rounded-lg p-4 pt-5 space-y-4',
+              'min-w-[227px] rounded-lg px-3 py-4 pt-5 space-y-4',
               day.date === new Date().toLocaleDateString('en-GB')
                 ? 'bg-primary-blue-500'
                 : 'bg-primary-blue-500 opacity-50',
@@ -398,7 +398,7 @@ export function WorkoutPlans() {
               </span>
             </div>
 
-            <div className="space-y-3 max-h-[343px] overflow-y-auto no-scrollbar">
+            <div className="space-y-3 max-h-[343px] overflow-y-auto px-1">
               <DndContext
                 id={day.id}
                 sensors={sensors}
