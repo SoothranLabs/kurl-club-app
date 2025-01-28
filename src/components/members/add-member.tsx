@@ -12,6 +12,8 @@ import { Button } from '../ui/button';
 import { Calendar } from 'lucide-react';
 import { FormControl } from '../ui/form';
 import ProfilePictureUploader from '../uploaders/profile-uploader';
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import { useGymFormOptions } from '@/hooks/use-gymform-options';
 
 type CreateMemberDetailsData = z.infer<typeof AddForm>;
 
@@ -62,6 +64,12 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
     },
   });
 
+  const { gymBranch } = useGymBranch();
+  const gymId = gymBranch?.gymId;
+
+  // Fetch form options based on gymId
+  const { formOptions } = useGymFormOptions(gymId);
+
   const [selections, setSelections] = useState<Selections>({
     gender: '',
     package: '',
@@ -78,24 +86,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
     }));
   };
 
-  const handleSubmit = (data: {
-    email: string;
-    height: string;
-    memberName: string;
-    primaryPhone: string;
-    dob: string;
-    gender: string;
-    package: string;
-    weight: string;
-    feeStatus: string;
-    amountPaid: string;
-    doj: string;
-    workoutPlan: string;
-    personalTrainer: string;
-    bloodgroup: string;
-    addressLine1: string;
-    addressLine2?: string;
-  }) => {
+  const handleSubmit = (data: CreateMemberDetailsData) => {
     console.log(data);
   };
 
@@ -148,18 +139,23 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
           <h5 className="text-white text-base font-normal leading-normal !mt-0">
             Basic Details
           </h5>
+          {/* Member Name */}
           <KFormField
             fieldType={KFormFieldType.INPUT}
             control={form.control}
             name="memberName"
             label="Member Name"
           />
+
+          {/* Email */}
           <KFormField
             fieldType={KFormFieldType.INPUT}
             control={form.control}
             name="email"
             label="Email"
           />
+
+          {/* Phone */}
           <KFormField
             fieldType={KFormFieldType.PHONE_INPUT}
             control={form.control}
@@ -168,6 +164,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
             placeholder="(555) 123-4567"
           />
 
+          {/* Gender */}
           <div className="flex justify-between gap-3">
             <div className="w-1/2">
               <KSelect
@@ -176,14 +173,15 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 onValueChange={(value) =>
                   handleSelectionChange('gender', value)
                 }
-                options={[
-                  { label: 'Male', value: 'male' },
-                  { label: 'Female', value: 'female' },
-                  { label: 'Others', value: 'others' },
-                ]}
+                options={formOptions?.genderOptions.map((option) => ({
+                  label: option.name,
+                  value: String(option.id),
+                }))}
                 className="!border-white !rounded-lg"
               />
             </div>
+
+            {/* Package */}
             <div className="w-1/2">
               <KSelect
                 label="Package"
@@ -191,15 +189,15 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 onValueChange={(value) =>
                   handleSelectionChange('package', value)
                 }
-                options={[
-                  { label: 'Monthly', value: 'monthly' },
-                  { label: 'Qauterly', value: 'quaterly' },
-                  { label: 'Yearly', value: 'yearly' },
-                ]}
+                options={formOptions?.packageOptions.map((option) => ({
+                  label: option.name,
+                  value: String(option.id),
+                }))}
               />
             </div>
           </div>
           <div className="flex justify-between gap-3">
+            {/* height */}
             <div className="w-1/2">
               <KFormField
                 fieldType={KFormFieldType.INPUT}
@@ -208,6 +206,8 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 label="Height (In Centimeters)"
               />
             </div>
+
+            {/* weight */}
             <div className="w-1/2">
               <KFormField
                 fieldType={KFormFieldType.INPUT}
@@ -217,7 +217,9 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
               />
             </div>
           </div>
+
           <div className="flex justify-between gap-3">
+            {/* Fee Status */}
             <div className="w-1/2">
               <KSelect
                 label="Fee Status"
@@ -225,13 +227,14 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 onValueChange={(value) =>
                   handleSelectionChange('feeStatus', value)
                 }
-                options={[
-                  { label: 'Paid', value: 'paid' },
-                  { label: 'Partialy Paid', value: 'partialypaid' },
-                  { label: 'Unpaid', value: 'unpaid' },
-                ]}
+                options={formOptions?.feeStatusOptions.map((option) => ({
+                  label: option.value,
+                  value: String(option.id),
+                }))}
               />
             </div>
+
+            {/* Amount Paid */}
             <div className="w-1/2">
               <KFormField
                 suffix={'/10,000'}
@@ -243,7 +246,9 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
               />
             </div>
           </div>
+
           <div className="flex justify-between gap-3">
+            {/* Date of joining */}
             <div className="w-1/2">
               <KFormField
                 fieldType={KFormFieldType.DATE_PICKER}
@@ -255,6 +260,8 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
               />
             </div>
+
+            {/* Date of birth */}
             <div className="w-1/2">
               <KFormField
                 fieldType={KFormFieldType.DATE_PICKER}
@@ -267,7 +274,9 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
               />
             </div>
           </div>
+
           <div className="flex justify-between gap-3">
+            {/* Personal Trainer */}
             <div className="w-1/2">
               <KSelect
                 label="Personal Trainer"
@@ -275,13 +284,14 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 onValueChange={(value) =>
                   handleSelectionChange('personalTrainer', value)
                 }
-                options={[
-                  { label: 'Rahul', value: 'rahul' },
-                  { label: 'Jithu', value: 'jithu' },
-                  { label: 'Hari', value: 'hari' },
-                ]}
+                options={formOptions?.bloodGroupOptions.map((trainer) => ({
+                  label: trainer.name,
+                  value: String(trainer.id),
+                }))}
               />
             </div>
+
+            {/* Blood Group */}
             <div className="w-1/2">
               <KSelect
                 label="Blood Group"
@@ -289,31 +299,28 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 onValueChange={(value) =>
                   handleSelectionChange('bloodGroup', value)
                 }
-                options={[
-                  { label: 'A+', value: 'A+' },
-                  { label: 'A-', value: 'A-' },
-                  { label: 'B+', value: 'B+' },
-                  { label: 'B-', value: 'B-' },
-                  { label: 'AB+-', value: 'AB+' },
-                  { label: 'AB-', value: 'AB-' },
-                  { label: 'O+', value: 'O+' },
-                  { label: 'O-', value: 'O-' },
-                ]}
+                options={formOptions?.bloodGroupOptions.map((option) => ({
+                  label: option.name,
+                  value: String(option.id),
+                }))}
               />
             </div>
           </div>
+
+          {/* Workout Plan */}
           <KSelect
-            label=" Workout Plan"
+            label="Workout Plan"
             value={selections.workoutPlan}
             onValueChange={(value) =>
               handleSelectionChange('workoutPlan', value)
             }
-            options={[
-              { label: 'Bench Press', value: 'bench press' },
-              { label: 'Cardio', value: 'cardio' },
-              { label: 'Inclined Press', value: 'inclined press' },
-            ]}
+            options={formOptions?.workoutPlans.map((option) => ({
+              label: option.name,
+              value: String(option.id),
+            }))}
           />
+
+          {/* Address Details */}
           <h5 className="text-white text-base font-normal leading-normal !mt-8">
             Address Details
           </h5>
