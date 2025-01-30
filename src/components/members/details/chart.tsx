@@ -93,14 +93,14 @@ export function Chart() {
           mode="range"
         />
       </CardHeader>
-      <CardContent className="p-0 pr-5 pb-5">
-        <ChartContainer config={chartConfig}>
+      <CardContent className="p-0 pr-5 pb-5 k-chart">
+        <ChartContainer config={chartConfig} className="w-full h-[235px]">
           <BarChart accessibilityLayer data={chartData}>
-            <CartesianGrid stroke="hsl(225, 6%, 27%)" vertical={false} />
+            <CartesianGrid stroke="#414349" vertical={false} />
             <XAxis
               dataKey="day"
               tickLine={false}
-              tickMargin={10}
+              tickMargin={8}
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
               tick={(props) => {
@@ -115,22 +115,27 @@ export function Chart() {
             <YAxis
               tickLine={false}
               axisLine={false}
-              tickMargin={10}
+              tickMargin={8}
               ticks={[0, 0.5, 1, 1.5, 2, 2.5]}
               domain={[0, 2.5]}
-              tickFormatter={(value) => `${value}${value === 2.5 ? '+' : 'h'}`}
               tick={(props) => {
                 const { x, y, payload } = props;
                 return (
                   <text
                     x={x}
                     y={y}
-                    dx={-5}
+                    dx={0}
                     dy={3}
                     textAnchor="end"
                     fill="#b5b6b9"
                   >
-                    {`${payload.value}${payload.value === 2.5 ? '+' : 'h'}`}
+                    {`${
+                      payload.value > 0 &&
+                      payload.value < 10 &&
+                      Number.isInteger(payload.value)
+                        ? `0${payload.value}`
+                        : payload.value
+                    }${payload.value === 2.5 ? '+' : 'h'}`}
                   </text>
                 );
               }}
@@ -140,8 +145,9 @@ export function Chart() {
               content={<ChartTooltipContent hideLabel />}
             />
             <Bar
+              className="hello"
               dataKey="hours"
-              fill="hsl(69, 93%, 76%)"
+              fill="#EBFB8B"
               radius={[6, 6, 0, 0]}
             />
           </BarChart>

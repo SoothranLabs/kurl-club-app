@@ -84,7 +84,7 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="flex flex-col"
         >
-          <div className="space-y-4 overflow-y-auto max-h-[450px] mt-4 p-1 no-scrollbar">
+          <div className="space-y-4 overflow-y-auto max-h-[46vh] mt-4 p-1 no-scrollbar">
             <KFormField
               fieldType={KFormFieldType.SKELETON}
               control={form.control}

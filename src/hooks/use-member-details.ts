@@ -6,7 +6,7 @@ import type { Member } from '@/types/members';
 const initialMemberState: Member = {
   name: 'Prasoon Mohan',
   memberSince: '14/03/2024',
-  gymNo: '290897',
+  gymNo: 'kcpmd24',
   email: 'magikmike@gmail.com',
   mobile: '+919656746975',
   dob: '2001-12-11T18:30:00.000Z',
@@ -32,7 +32,6 @@ export function useMemberDetails() {
 
   const handleSave = async () => {
     try {
-      // Here you would typically make an API call to save the data
       setIsEditing(false);
       return true;
     } catch (error) {

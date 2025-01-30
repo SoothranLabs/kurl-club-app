@@ -10,7 +10,7 @@ import WorkoutPlanner from './planner-section';
 
 function Contents() {
   return (
-    <div className="p-8 pt-[26px] w-full max-w-[calc(100%-336px)]">
+    <div className="p-8 pt-0 w-full max-w-[calc(100%-336px)]">
       <Header />
       <InfoCard
         item={{
@@ -20,9 +20,9 @@ function Contents() {
           title: 'Total hours spent',
           count: 10,
         }}
-        className="!w-[332px] mt-7"
+        className="!w-[332px] mt-4"
       />
-      <div className="grid grid-cols-2 mt-4 gap-4">
+      <div className="grid grid-cols-2 mt-3 gap-4">
         <Chart />
         <PaymentCard
           info={{

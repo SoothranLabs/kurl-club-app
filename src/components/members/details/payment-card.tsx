@@ -49,10 +49,10 @@ function PaymentCard({ info }: PaymentCardProps) {
           },
         ].map((item, index) => (
           <div key={index} className="flex flex-col gap-3">
-            <h6 className="text-primary-blue-100 font-normal text-base">
+            <h6 className="text-primary-blue-100 font-normal leading-normal text-base">
               {item.label}
             </h6>
-            <h5 className={`text-2xl ${item.color} font-medium`}>
+            <h5 className={`text-2xl ${item.color} leading-normal font-medium`}>
               ₹{item.value}
             </h5>
           </div>
@@ -64,10 +64,12 @@ function PaymentCard({ info }: PaymentCardProps) {
         { label: 'Due date', value: info.due_data, color: statusColor },
       ].map((item, index) => (
         <div key={index} className="mt-6 flex flex-col gap-3">
-          <h6 className="text-primary-blue-100 font-normal text-base">
+          <h6 className="text-primary-blue-100 font-normal leading-normal text-base">
             {item.label}
           </h6>
-          <h5 className={`text-xl ${item.color || 'text-white'} font-medium`}>
+          <h5
+            className={`text-xl ${item.color || 'text-white'} leading-normal font-medium`}
+          >
             {item.value}
           </h5>
         </div>
