@@ -56,3 +56,11 @@ export interface EditableSectionProps {
   role?: string;
   trainerNo?: string;
 }
+
+export type User = {
+  name: string;
+  joined_date?: string;
+  user_id: string;
+  package?: 'Monthly' | 'Quarterly' | 'Yearly';
+  picture?: string | undefined;
+};

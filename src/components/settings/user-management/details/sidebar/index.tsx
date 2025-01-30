@@ -56,7 +56,7 @@ export function Sidebar() {
       <div className="px-8 sticky top-0 bg-primary-blue-500 py-8 z-20">
         <Breadcrumb
           items={[
-            { label: 'Settings', href: '/settings/user-management' },
+            { label: 'Settings', href: '/settings' },
             { label: 'User management' },
           ]}
         />

@@ -46,7 +46,7 @@ export function MemberHeader({
           </p>
         </div>
       </div>
-      <Badge className="bg-neutral-ochre-500 flex items-center w-fit justify-center text-sm rounded-full h-[30px] py-[8.5px] px-4 mb-8 border border-neutral-ochre-800 bg-opacity-10">
+      <Badge className="bg-neutral-ochre-600 flex items-center w-fit justify-center text-sm rounded-full h-[30px] py-[8.5px] px-4 mb-8 border border-neutral-ochre-600 bg-opacity-10">
         Gym no: #{gymNo}
       </Badge>
     </>

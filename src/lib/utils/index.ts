@@ -121,11 +121,15 @@ export function searchItems<T extends Record<string, unknown>>(
 }
 
 export const getInitials = (name: string): string => {
-  return name
-    .split(' ')
-    .map((word) => word[0])
-    .join('')
-    .toUpperCase();
+  const words = name.trim().split(/\s+/); // Split by spaces and remove extra spaces
+
+  if (words.length === 1) {
+    // If there's only one word, return the first two letters
+    return words[0].slice(0, 2).toUpperCase();
+  }
+
+  // Otherwise, return the first letter of the first word + first letter of the last word
+  return (words[0][0] + words[1][0]).toUpperCase();
 };
 
 /**

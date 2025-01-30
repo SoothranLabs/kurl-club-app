@@ -23,7 +23,9 @@ export default function SettingsLayout({
     navItems.find((item) => pathname.startsWith(`/settings/${item.id}`))?.id ||
     'user-management';
 
-  const isDynamicPath = pathname.match(/\/settings\/user-management\/[^/]+/);
+  const isDynamicPath = pathname.match(
+    /\/settings\/(user-management|workout-plans)\/[^/]+/
+  );
   const isSidebarVisible = !isDynamicPath;
 
   const handleTabChange = (tab: string) => {

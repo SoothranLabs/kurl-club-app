@@ -30,22 +30,25 @@ const ActionsCell: React.FC<{ user: Trainer }> = ({ user }) => {
             <MoreVertical className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="shad-select-content" align="end">
+        <DropdownMenuContent
+          className="shad-select-content p-4 rounded-[4px] border-primary-blue-400 flex flex-col gap-2"
+          align="end"
+        >
           <DropdownMenuItem
-            className="shad-select-item"
+            className="shad-select-item p-1 h-8 text-[15px] leading-normal font-normal text-white rounded-[4px]"
             onClick={() => setIsSheetOpen(true)}
           >
-            <MessageSquare className="mr-2 h-4 w-4" />
+            <MessageSquare className="mr-2 h-6 w-6" />
             Message
           </DropdownMenuItem>
           <Link href={`/settings/user-management/${user.id}`}>
-            <DropdownMenuItem className="shad-select-item">
-              <FileText className="mr-2 h-4 w-4" />
+            <DropdownMenuItem className="shad-select-item p-1 h-8 text-[15px] leading-normal font-normal text-white rounded-[4px]">
+              <FileText className="mr-2 h-6 w-6" />
               View details
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem className="text-red-600 shad-select-item">
-            <Trash2 className="mr-2 h-4 w-4" />
+          <DropdownMenuItem className="shad-select-item p-1 h-8 text-[15px] leading-normal font-normal text-white rounded-[4px]">
+            <Trash2 className="mr-2 h-6 w-6" />
             Delete trainer
           </DropdownMenuItem>
         </DropdownMenuContent>

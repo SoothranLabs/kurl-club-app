@@ -1,7 +1,11 @@
+import Contents from '@/components/settings/workout-plans/contents';
+import Header from '@/components/settings/workout-plans/header';
+
 export default function WorkoutPlans() {
   return (
     <div className="p-8">
-      <h1 className="text-2xl">Workout Plans</h1>
+      <Header />
+      <Contents />
     </div>
   );
 }
