@@ -16,3 +16,14 @@ export const createMember = async (data: FormData) => {
     return { error: errorMessage };
   }
 };
+
+export const getAllMembers = async (gymId: number) => {
+  try {
+    const members = await api.get(`/api/Member/gym/${gymId}`);
+
+    return members;
+  } catch (error) {
+    console.error('Error fetching gym members:', error);
+    return { error: 'Unable to fetch gym members' };
+  }
+};

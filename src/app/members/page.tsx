@@ -1,9 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useFilterableList } from '@/hooks/use-filterable-list';
 import { useSheet } from '@/hooks/use-sheet';
+
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import { filters } from '@/lib/dummy/fiters';
+import { searchItems } from '@/lib/utils';
+
+import { Member } from '@/types';
+import { getAllMembers } from '@/services/member';
 
 import { MembersHeader } from '@/components/members/members-header';
 import { DataTable } from '@/components/members/table/data-table';
@@ -11,21 +18,38 @@ import { columns } from '@/components/members/table/columns';
 import { ImportCSVModal } from '@/components/table/import-csv-modal';
 import { DataTableToolbar } from '@/components/table/data-table-toolbar';
 
-import { initialData } from '@/lib/dummy/data';
-import { filters } from '@/lib/dummy/fiters';
-import { searchItems } from '@/lib/utils';
-
-import { Member } from '@/types';
-
 export default function MembersPage() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [gymMembers, setGymMembers] = useState<Member[]>([]);
 
   const {
     items: members,
-    addItems: addMembers,
+    addItems,
     search,
-  } = useFilterableList<Member>(initialData, searchItems);
+  } = useFilterableList<Member>(gymMembers, searchItems);
   const { isOpen, openSheet, closeSheet } = useSheet();
+
+  const { gymBranch } = useGymBranch();
+
+  const gymId = gymBranch?.gymId;
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        if (gymId) {
+          const response = await getAllMembers(gymId);
+          setGymMembers(response as Member[]);
+        }
+      } catch (error) {
+        console.error('Error fetching members:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMembers();
+  }, [gymId]);
 
   // Required fields for the members table
   const requiredFields = [
@@ -81,20 +105,29 @@ export default function MembersPage() {
         onAddNewClick={() => openSheet()}
         isOpen={isOpen}
         closeSheet={closeSheet}
+        gymId={gymId}
       />
 
-      <DataTable
-        columns={columns}
-        data={members}
-        toolbar={(table) => (
-          <DataTableToolbar table={table} onSearch={search} filters={filters} />
-        )}
-      />
+      {loading ? (
+        <p className="text-center">Loading members...</p>
+      ) : (
+        <DataTable
+          columns={columns}
+          data={members}
+          toolbar={(table) => (
+            <DataTableToolbar
+              table={table}
+              onSearch={search}
+              filters={filters}
+            />
+          )}
+        />
+      )}
 
       <ImportCSVModal<Member>
         isOpen={isImportModalOpen}
         onClose={() => setIsImportModalOpen(false)}
-        onImport={addMembers}
+        onImport={addItems}
         requiredFields={requiredFields}
         transformations={memberTransformations}
       />

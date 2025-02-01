@@ -19,6 +19,8 @@ export const useGymFormOptions = (gymId?: number) => {
 
   useEffect(() => {
     const fetchFormOptions = async () => {
+      if (!gymId) return;
+
       try {
         setLoading(true);
         const response = await api.get<{

@@ -7,6 +7,7 @@ interface MembersHeaderProps {
   onAddNewClick: () => void;
   isOpen: boolean;
   closeSheet: () => void;
+  gymId?: number;
 }
 
 export const MembersHeader = ({
@@ -14,6 +15,7 @@ export const MembersHeader = ({
   onAddNewClick,
   isOpen,
   closeSheet,
+  gymId,
 }: MembersHeaderProps) => {
   return (
     <div className="flex items-center justify-between">
@@ -27,7 +29,7 @@ export const MembersHeader = ({
           <Plus className="h-4 w-4" />
           Add new
         </Button>
-        <AddFrom isOpen={isOpen} closeSheet={closeSheet} />
+        <AddFrom isOpen={isOpen} closeSheet={closeSheet} gymId={gymId} />
       </div>
     </div>
   );

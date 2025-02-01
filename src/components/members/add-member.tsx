@@ -7,7 +7,6 @@ import { Calendar } from 'lucide-react';
 
 import { createMember } from '@/services/member';
 import { createMemberSchema } from '@/schemas/index';
-import { useGymBranch } from '@/providers/gym-branch-provider';
 import { useGymFormOptions } from '@/hooks/use-gymform-options';
 
 import { FormControl } from '@/components/ui/form';
@@ -23,11 +22,13 @@ type CreateMemberDetailsProps = {
   onSubmit?: (data: CreateMemberDetailsData) => void;
   closeSheet: () => void;
   isOpen: boolean;
+  gymId?: number;
 };
 
 export const AddMember: React.FC<CreateMemberDetailsProps> = ({
   isOpen,
   closeSheet,
+  gymId,
 }) => {
   const router = useRouter();
 
@@ -53,9 +54,6 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
       workoutPlanId: undefined,
     },
   });
-
-  const { gymBranch } = useGymBranch();
-  const gymId = gymBranch?.gymId;
 
   // Fetch form options based on gymId
   const { formOptions } = useGymFormOptions(gymId);
