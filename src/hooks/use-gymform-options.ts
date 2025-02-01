@@ -7,7 +7,7 @@ export type FormOptionsResponse = {
   packageOptions: { id: number; name: string }[];
   feeStatusOptions: { id: number; value: string }[];
   bloodGroupOptions: { id: number; name: string }[];
-  trainerOptions: { id: number; name: string }[];
+  trainers: { id: number; trainerName: string }[];
 };
 
 export const useGymFormOptions = (gymId?: number) => {

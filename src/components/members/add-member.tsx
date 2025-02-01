@@ -1,21 +1,23 @@
+import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
-
-import { AddForm } from '@/schemas/index';
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-import { Badge } from '@/components/ui/badge';
-import { KSelect } from '@/components/form/k-select';
-import { useState } from 'react';
-import { KSheet } from '../form/k-sheet';
-import { Button } from '../ui/button';
+import { toast } from 'sonner';
 import { Calendar } from 'lucide-react';
-import { FormControl } from '../ui/form';
-import ProfilePictureUploader from '../uploaders/profile-uploader';
+
+import { createMember } from '@/services/member';
+import { createMemberSchema } from '@/schemas/index';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 import { useGymFormOptions } from '@/hooks/use-gymform-options';
 
-type CreateMemberDetailsData = z.infer<typeof AddForm>;
+import { FormControl } from '@/components/ui/form';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { KSheet } from '@/components/form/k-sheet';
+import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
+
+type CreateMemberDetailsData = z.infer<typeof createMemberSchema>;
 
 type CreateMemberDetailsProps = {
   onSubmit?: (data: CreateMemberDetailsData) => void;
@@ -23,44 +25,32 @@ type CreateMemberDetailsProps = {
   isOpen: boolean;
 };
 
-interface Selections {
-  gender: string;
-  package: string;
-  feeStatus: string;
-  workoutPlan: string;
-  personalTrainer: string;
-  bloodGroup: string;
-}
-
-interface MemberDetails {
-  name: string;
-  gymNo: string;
-}
-
 export const AddMember: React.FC<CreateMemberDetailsProps> = ({
   isOpen,
   closeSheet,
 }) => {
+  const router = useRouter();
+
   const form = useForm<CreateMemberDetailsData>({
-    resolver: zodResolver(AddForm),
+    resolver: zodResolver(createMemberSchema),
     defaultValues: {
-      memberName: '',
       profilePicture: null,
+      name: '',
       email: '',
-      primaryPhone: '',
+      phone: '',
+      amountPaid: '',
       dob: '',
-      gender: '',
-      package: '',
+      doj: '',
       height: '',
       weight: '',
-      feeStatus: '',
-      amountPaid: '',
-      doj: '',
-      workoutPlan: '',
-      personalTrainer: '',
-      bloodgroup: '',
-      addressLine1: '',
-      addressLine2: '',
+      address: '',
+      address2: '',
+      gender: undefined,
+      package: undefined,
+      feeStatus: undefined,
+      personalTrainer: undefined,
+      bloodGroup: undefined,
+      workoutPlanId: undefined,
     },
   });
 
@@ -70,39 +60,55 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
   // Fetch form options based on gymId
   const { formOptions } = useGymFormOptions(gymId);
 
-  const [selections, setSelections] = useState<Selections>({
-    gender: '',
-    package: '',
-    feeStatus: '',
-    workoutPlan: '',
-    personalTrainer: '',
-    bloodGroup: '',
-  });
+  const handleSubmit = async (data: CreateMemberDetailsData) => {
+    const formData = new FormData();
 
-  const handleSelectionChange = (name: string, value: string) => {
-    setSelections((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    Object.keys(data).forEach((key) => {
+      const value = data[key as keyof CreateMemberDetailsData];
+
+      if (key === 'profilePicture' && value instanceof File) {
+        formData.append(key, value); // Append file
+      } else {
+        formData.append(key, String(value));
+      }
+    });
+
+    if (gymId) {
+      formData.append('gymId', String(gymId));
+    }
+
+    const result = await createMember(formData);
+
+    if (result.success) {
+      toast.success(result.success);
+      closeSheet();
+      form.reset();
+      router.refresh();
+    } else {
+      toast.error(result.error);
+    }
   };
 
-  const handleSubmit = (data: CreateMemberDetailsData) => {
-    console.log(data);
-  };
-
-  const memberDetails: MemberDetails = { name: 'John Doe', gymNo: '38545' };
+  const memberDetails = { name: 'John Doe', gymNo: '38545' };
 
   const footer = (
     <div className="flex justify-end gap-3">
       <Button
-        onClick={closeSheet}
         type="button"
+        onClick={() => {
+          form.reset();
+          closeSheet();
+        }}
         variant="secondary"
         className="h-[46px] min-w-[90px]"
       >
         Cancel
       </Button>
-      <Button type="submit" className="h-[46px] min-w-[73px]">
+      <Button
+        type="submit"
+        form="add-member-form"
+        className="h-[46px] min-w-[73px]"
+      >
         Add
       </Button>
     </div>
@@ -117,7 +123,11 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
       footer={footer}
     >
       <FormProvider {...form}>
-        <form className="space-y-4" onSubmit={form.handleSubmit(handleSubmit)}>
+        <form
+          id="add-member-form"
+          className="space-y-4"
+          onSubmit={form.handleSubmit(handleSubmit)}
+        >
           <div className="items-start gap-2 mb-6 flex justify-between ">
             <KFormField
               fieldType={KFormFieldType.SKELETON}
@@ -143,7 +153,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
           <KFormField
             fieldType={KFormFieldType.INPUT}
             control={form.control}
-            name="memberName"
+            name="name"
             label="Member Name"
           />
 
@@ -159,7 +169,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
           <KFormField
             fieldType={KFormFieldType.PHONE_INPUT}
             control={form.control}
-            name="primaryPhone"
+            name="phone"
             label="Phone"
             placeholder="(555) 123-4567"
           />
@@ -167,28 +177,25 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
           {/* Gender */}
           <div className="flex justify-between gap-3">
             <div className="w-1/2">
-              <KSelect
+              <KFormField
+                fieldType={KFormFieldType.SELECT}
+                control={form.control}
+                name="gender"
                 label="Gender"
-                value={selections.gender}
-                onValueChange={(value) =>
-                  handleSelectionChange('gender', value)
-                }
                 options={formOptions?.genderOptions.map((option) => ({
                   label: option.name,
                   value: String(option.id),
                 }))}
-                className="!border-white !rounded-lg"
               />
             </div>
 
             {/* Package */}
             <div className="w-1/2">
-              <KSelect
+              <KFormField
+                fieldType={KFormFieldType.SELECT}
+                control={form.control}
+                name="package"
                 label="Package"
-                value={selections.package}
-                onValueChange={(value) =>
-                  handleSelectionChange('package', value)
-                }
                 options={formOptions?.packageOptions.map((option) => ({
                   label: option.name,
                   value: String(option.id),
@@ -221,12 +228,11 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
           <div className="flex justify-between gap-3">
             {/* Fee Status */}
             <div className="w-1/2">
-              <KSelect
+              <KFormField
+                fieldType={KFormFieldType.SELECT}
+                control={form.control}
+                name="feeStatus"
                 label="Fee Status"
-                value={selections.feeStatus}
-                onValueChange={(value) =>
-                  handleSelectionChange('feeStatus', value)
-                }
                 options={formOptions?.feeStatusOptions.map((option) => ({
                   label: option.value,
                   value: String(option.id),
@@ -265,6 +271,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
             <div className="w-1/2">
               <KFormField
                 fieldType={KFormFieldType.DATE_PICKER}
+                showPresets
                 control={form.control}
                 name="dob"
                 dateLabel="Date of birth"
@@ -278,27 +285,29 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
           <div className="flex justify-between gap-3">
             {/* Personal Trainer */}
             <div className="w-1/2">
-              <KSelect
+              <KFormField
+                fieldType={KFormFieldType.SELECT}
+                control={form.control}
+                name="personalTrainer"
                 label="Personal Trainer"
-                value={selections.personalTrainer}
-                onValueChange={(value) =>
-                  handleSelectionChange('personalTrainer', value)
+                options={
+                  formOptions?.trainers
+                    ? formOptions.trainers.map((option) => ({
+                        label: option.trainerName,
+                        value: String(option.id),
+                      }))
+                    : []
                 }
-                options={formOptions?.bloodGroupOptions.map((trainer) => ({
-                  label: trainer.name,
-                  value: String(trainer.id),
-                }))}
               />
             </div>
 
             {/* Blood Group */}
             <div className="w-1/2">
-              <KSelect
+              <KFormField
+                fieldType={KFormFieldType.SELECT}
+                control={form.control}
+                name="bloodGroup"
                 label="Blood Group"
-                value={selections.bloodGroup}
-                onValueChange={(value) =>
-                  handleSelectionChange('bloodGroup', value)
-                }
                 options={formOptions?.bloodGroupOptions.map((option) => ({
                   label: option.name,
                   value: String(option.id),
@@ -308,12 +317,11 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
           </div>
 
           {/* Workout Plan */}
-          <KSelect
+          <KFormField
+            fieldType={KFormFieldType.SELECT}
+            control={form.control}
+            name="workoutPlanId"
             label="Workout Plan"
-            value={selections.workoutPlan}
-            onValueChange={(value) =>
-              handleSelectionChange('workoutPlan', value)
-            }
             options={formOptions?.workoutPlans.map((option) => ({
               label: option.name,
               value: String(option.id),
@@ -327,13 +335,13 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
           <KFormField
             fieldType={KFormFieldType.INPUT}
             control={form.control}
-            name="addressLine1"
+            name="address"
             label="Address Line "
           />
           <KFormField
             fieldType={KFormFieldType.INPUT}
             control={form.control}
-            name="addressLine2"
+            name="address2"
             label="Address Line 2"
           />
         </form>

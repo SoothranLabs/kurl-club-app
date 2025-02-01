@@ -42,6 +42,11 @@ export enum KFormFieldType {
   SKELETON = 'skeleton',
 }
 
+interface Option {
+  label: string;
+  value: string;
+}
+
 interface CustomProps<T extends FieldValues> {
   control: Control<T>;
   fieldType: KFormFieldType;
@@ -60,6 +65,7 @@ interface CustomProps<T extends FieldValues> {
   suffix?: string;
   maxLength?: number;
   mandetory?: boolean;
+  options?: Option[];
   renderSkeleton?: (
     field: ControllerRenderProps<T, FieldPath<T>>
   ) => React.ReactNode;
@@ -165,6 +171,7 @@ const RenderField = <T extends FieldValues>({
             value={field.value}
             onValueChange={field.onChange}
             label={label}
+            options={props.options}
           >
             {children}
           </KSelect>

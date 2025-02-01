@@ -68,26 +68,26 @@ const SampleTestPage = () => {
     },
   });
 
-  const handleSubmit = (data: {
-    email: string;
-    height: string;
-    memberName: string;
-    primaryPhone: string;
-    dob: string;
-    gender: string;
-    package: string;
-    weight: string;
-    feeStatus: string;
-    amountPaid: string;
-    doj: string;
-    workoutPlan: string;
-    personalTrainer: string;
-    bloodgroup: string;
-    addressLine1: string;
-    addressLine2?: string;
-  }) => {
-    console.log(data);
-  };
+  // const handleSubmit = (data: {
+  //   email: string;
+  //   height: string;
+  //   memberName: string;
+  //   primaryPhone: string;
+  //   dob: string;
+  //   gender: string;
+  //   package: string;
+  //   weight: string;
+  //   feeStatus: string;
+  //   amountPaid: string;
+  //   doj: string;
+  //   workoutPlan: string;
+  //   personalTrainer: string;
+  //   bloodgroup: string;
+  //   addressLine1: string;
+  //   addressLine2?: string;
+  // }) => {
+  //   console.log(data);
+  // };
 
   const addUserSubmit = (data: {
     memberName: string;
@@ -175,7 +175,7 @@ const SampleTestPage = () => {
           <AddFrom
             isOpen={isOpen}
             closeSheet={closeSheet}
-            onSubmit={handleSubmit}
+            // onSubmit={handleSubmit}
           />
         </div>
 

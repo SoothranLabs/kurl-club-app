@@ -346,3 +346,44 @@ export const EditDetailsForm = z.object({
   packageType: z.string().min(1, 'PackageType is required'),
   paidAmount: z.string().min(1, 'AmountPaid is required'),
 });
+
+export const createMemberSchema = z.object({
+  profilePicture: z
+    .custom<File | null>((value) => value instanceof File || value === null, {
+      message: 'Profile picture must be a file.',
+    })
+    .refine((file) => file === null || file.size <= 5 * 1024 * 1024, {
+      message: 'File size must be less than 5MB',
+    })
+    .optional(),
+  name: z.string().min(1, 'Member name is required'),
+  dob: z.preprocess(
+    (val) => (val instanceof Date ? val.toISOString() : val),
+    z.string().min(1, 'Date of birth is required')
+  ),
+  bloodGroup: z.string().min(1, 'Blood group selection is required'),
+  gender: z.string().min(1, 'Gender selection is required'),
+  package: z.string().min(1, 'Package selection is required'),
+  feeStatus: z.string().min(1, 'Fee status is required'),
+  doj: z.preprocess(
+    (val) => (val instanceof Date ? val.toISOString() : val),
+    z.string().min(1, 'Date of joining is required')
+  ),
+  phone: z
+    .string()
+    .regex(/^\+?[1-9]\d{1,14}$/, 'Phone number must be at least 10 digits'),
+  email: z.string().email('Invalid email format'),
+  height: z.string().min(1, 'Height is required'),
+  weight: z.string().min(1, 'Weight is required'),
+  personalTrainer: z.string().min(1, 'Personal trainer selection is required'),
+  address: z
+    .string()
+    .min(1, 'Address is required.')
+    .max(250, 'Address must not exceed 250 characters.'),
+  address2: z
+    .string()
+    .min(1, 'Address is required.')
+    .max(250, 'Address must not exceed 250 characters.'),
+  amountPaid: z.string().min(0, 'Amount paid must be a positive number'),
+  workoutPlanId: z.string().min(1, 'Workout plan selection is required'),
+});
