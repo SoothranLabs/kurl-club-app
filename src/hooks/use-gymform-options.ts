@@ -3,10 +3,7 @@ import { api } from '@/lib/api';
 
 export type FormOptionsResponse = {
   workoutPlans: { id: number; name: string; isDefault?: boolean }[];
-  genderOptions: { id: number; name: string }[];
   packageOptions: { id: number; name: string }[];
-  feeStatusOptions: { id: number; value: string }[];
-  bloodGroupOptions: { id: number; name: string }[];
   trainers: { id: number; trainerName: string }[];
 };
 

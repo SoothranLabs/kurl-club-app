@@ -1,35 +1,40 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { MemberHeader } from './member-header';
-import { BasicDetailsSection } from './basic-details-section';
-import { AddressDetailsSection } from './address-details-section';
-import { useMemberDetails } from '@/hooks/use-member-details';
-import { Breadcrumb } from '@/components/breadcrumbs';
-import { CollapsibleSection } from '@/components/layout/collapsible-section';
 import { useState } from 'react';
 
-type SectionKey = 'basicDetails' | 'addressDetails';
+import { MemberDetails } from '@/types/members';
+import { Breadcrumb } from '@/components/breadcrumbs';
+import { CollapsibleSection } from '@/components/layout/collapsible-section';
+import { MemberHeader } from './member-header';
+import { BasicDetailsSection } from './basic-details-section';
+import { PersonalInfoSection } from './personal-info-section';
 
-export function Sidebar() {
-  const { details, isEditing, updateMemberDetail, handleSave, toggleEdit } =
-    useMemberDetails();
+type SectionKey = 'basicDetails' | 'personalInfo';
 
+export function Sidebar({
+  isEditing,
+  details,
+  updateMemberDetail,
+}: {
+  memberId: string;
+  isEditing: boolean;
+  details: MemberDetails | null;
+  updateMemberDetail: <K extends keyof MemberDetails>(
+    key: K,
+    value: MemberDetails[K]
+  ) => void;
+}) {
   const [sectionStates, setSectionStates] = useState<
     Record<SectionKey, boolean>
   >({
     basicDetails: true,
-    addressDetails: true,
+    personalInfo: true,
   });
 
-  const sections: {
-    title: string;
-    key: SectionKey;
-    content: React.ReactNode;
-  }[] = [
+  const sections = [
     {
-      title: 'Basic details',
-      key: 'basicDetails',
+      title: 'Membership & Fitness',
+      key: 'basicDetails' as SectionKey,
       content: (
         <BasicDetailsSection
           isEditing={isEditing}
@@ -39,10 +44,10 @@ export function Sidebar() {
       ),
     },
     {
-      title: 'Address details',
-      key: 'addressDetails',
+      title: 'Personal Info',
+      key: 'personalInfo' as SectionKey,
       content: (
-        <AddressDetailsSection
+        <PersonalInfoSection
           isEditing={isEditing}
           details={details}
           onUpdate={updateMemberDetail}
@@ -66,20 +71,10 @@ export function Sidebar() {
         </h5>
 
         <MemberHeader
-          memberSince={details.memberSince}
-          gymNo={details.gymNo}
           isEditing={isEditing}
           details={details}
           onUpdate={updateMemberDetail}
         />
-
-        <Button
-          className="w-full mt-6"
-          variant="outline"
-          onClick={isEditing ? handleSave : toggleEdit}
-        >
-          {isEditing ? 'Save' : 'Edit'}
-        </Button>
       </div>
 
       {sections.map(({ title, key, content }) => (

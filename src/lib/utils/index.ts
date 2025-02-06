@@ -120,12 +120,14 @@ export function searchItems<T extends Record<string, unknown>>(
   });
 }
 
-export const getInitials = (name: string): string => {
+export const getInitials = (name?: string): string => {
   return name
-    .split(' ')
-    .map((word) => word[0])
-    .join('')
-    .toUpperCase();
+    ? name
+        .split(' ')
+        .map((word) => word[0])
+        .join('')
+        .toUpperCase()
+    : '';
 };
 
 /**
@@ -154,3 +156,14 @@ export const getGreeting = (): string => {
     return 'Good night 💤';
   }
 };
+
+export function base64ToFile(base64String: string, fileName: string): File {
+  const byteCharacters = atob(base64String);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  const blob = new Blob([byteArray], { type: 'image/png' });
+  return new File([blob], fileName, { type: 'image/png' });
+}

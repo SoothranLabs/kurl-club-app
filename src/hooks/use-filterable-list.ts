@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearch } from '@/hooks/use-search';
 
 type SearchFunction<T> = (items: T[], term: string) => T[];
@@ -18,8 +18,18 @@ export function useFilterableList<T>(
   } = useSearch<T>(items, searchFunction);
 
   const addItems = (newItems: T[]) => {
-    setItems((prevItems) => [...prevItems, ...newItems]);
+    setItems((prevItems) => [...new Set([...prevItems, ...newItems])]);
   };
+
+  // Prevent unnecessary updates
+  useEffect(() => {
+    setItems((prevItems) =>
+      prevItems.length === initialData.length &&
+      prevItems.every((item, index) => item === initialData[index])
+        ? prevItems
+        : [...new Set([...prevItems, ...initialData])]
+    );
+  }, [initialData]);
 
   return {
     items: filteredItems,

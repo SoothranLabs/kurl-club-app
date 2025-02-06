@@ -5,6 +5,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { Calendar } from 'lucide-react';
 
+import {
+  bloodGroupOptions,
+  feeStatusOptions,
+  genderOptions,
+} from '@/lib/constants';
 import { createMember } from '@/services/member';
 import { createMemberSchema } from '@/schemas/index';
 import { useGymFormOptions } from '@/hooks/use-gymform-options';
@@ -45,7 +50,6 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
       height: '',
       weight: '',
       address: '',
-      address2: '',
       gender: undefined,
       package: undefined,
       feeStatus: undefined,
@@ -180,10 +184,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 control={form.control}
                 name="gender"
                 label="Gender"
-                options={formOptions?.genderOptions.map((option) => ({
-                  label: option.name,
-                  value: String(option.id),
-                }))}
+                options={genderOptions}
               />
             </div>
 
@@ -231,10 +232,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 control={form.control}
                 name="feeStatus"
                 label="Fee Status"
-                options={formOptions?.feeStatusOptions.map((option) => ({
-                  label: option.value,
-                  value: String(option.id),
-                }))}
+                options={feeStatusOptions}
               />
             </div>
 
@@ -306,10 +304,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 control={form.control}
                 name="bloodGroup"
                 label="Blood Group"
-                options={formOptions?.bloodGroupOptions.map((option) => ({
-                  label: option.name,
-                  value: String(option.id),
-                }))}
+                options={bloodGroupOptions}
               />
             </div>
           </div>
@@ -331,16 +326,10 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
             Address Details
           </h5>
           <KFormField
-            fieldType={KFormFieldType.INPUT}
+            fieldType={KFormFieldType.TEXTAREA}
             control={form.control}
             name="address"
-            label="Address Line "
-          />
-          <KFormField
-            fieldType={KFormFieldType.INPUT}
-            control={form.control}
-            name="address2"
-            label="Address Line 2"
+            label="Address Line"
           />
         </form>
       </FormProvider>

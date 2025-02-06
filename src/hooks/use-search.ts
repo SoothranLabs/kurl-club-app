@@ -18,14 +18,20 @@ export function useSearch<T>(
         setItems(initialItems);
       } else {
         const filteredItems = searchFunction(initialItems, term);
-        setItems(filteredItems);
+        setItems(filteredItems.length > 0 ? filteredItems : []);
       }
     },
     [initialItems, searchFunction]
   );
 
+  // Prevent unnecessary updates by checking if the items actually changed
   useEffect(() => {
-    setItems(initialItems);
+    setItems((prevItems) =>
+      prevItems.length === initialItems.length &&
+      prevItems.every((item, index) => item === initialItems[index])
+        ? prevItems
+        : initialItems
+    );
   }, [initialItems]);
 
   return { items, search, searchTerm };

@@ -380,10 +380,6 @@ export const createMemberSchema = z.object({
     .string()
     .min(1, 'Address is required.')
     .max(250, 'Address must not exceed 250 characters.'),
-  address2: z
-    .string()
-    .min(1, 'Address is required.')
-    .max(250, 'Address must not exceed 250 characters.'),
   amountPaid: z.string().min(0, 'Amount paid must be a positive number'),
   workoutPlanId: z.string().min(1, 'Workout plan selection is required'),
 });
