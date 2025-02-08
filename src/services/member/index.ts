@@ -61,3 +61,20 @@ export const updateMember = async (id: string | number, data: FormData) => {
     throw error;
   }
 };
+
+export const deleteMember = async (id: string | number) => {
+  try {
+    await api.delete(`/Member/${id}`);
+
+    return { success: 'Member deleted successfully!' };
+  } catch (error) {
+    console.error('Error deleting member:', error);
+
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : 'An unexpected error occurred while deleting the member.';
+
+    return { error: errorMessage };
+  }
+};

@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -35,8 +35,6 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
   closeSheet,
   gymId,
 }) => {
-  const router = useRouter();
-
   const form = useForm<CreateMemberDetailsData>({
     resolver: zodResolver(createMemberSchema),
     defaultValues: {
@@ -62,6 +60,8 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
   // Fetch form options based on gymId
   const { formOptions } = useGymFormOptions(gymId);
 
+  const queryClient = useQueryClient();
+
   const handleSubmit = async (data: CreateMemberDetailsData) => {
     const formData = new FormData();
 
@@ -69,7 +69,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
       const value = data[key as keyof CreateMemberDetailsData];
 
       if (key === 'profilePicture' && value instanceof File) {
-        formData.append(key, value); // Append file
+        formData.append(key, value);
       } else {
         formData.append(key, String(value));
       }
@@ -85,7 +85,9 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
       toast.success(result.success);
       closeSheet();
       form.reset();
-      router.refresh();
+
+      // **Invalidate the gymMembers query to refetch data**
+      queryClient.invalidateQueries({ queryKey: ['gymMembers', gymId] });
     } else {
       toast.error(result.error);
     }

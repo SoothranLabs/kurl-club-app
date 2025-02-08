@@ -52,7 +52,7 @@ function EditDetails() {
             <Button
               onClick={() => setOpen(true)}
               className="h-[46px] shadow-none text-primary-green-500"
-              variant="destructive"
+              variant="link"
             >
               Edit details
             </Button>

@@ -25,7 +25,7 @@ export const LoginForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { signIn } = useAuth();
-  const [isPending] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const [isEmailSend, setIsEmailSend] = useState(false);
 
   useEffect(() => {
@@ -42,45 +42,33 @@ export const LoginForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
-    try {
-      const authPromise = signIn({
-        method: 'login',
-        email: values.email,
-        password: values.password,
-      });
-
-      toast.loading('Logging in...');
-
-      await authPromise;
-
-      const user = auth.currentUser;
-      if (!user) throw new Error('User not found.');
-
-      if (!user.emailVerified) {
-        await sendEmailVerification(user);
-        toast.success('Verification email sent. Check your inbox.');
-
-        await Promise.all([auth.signOut(), deleteSession()]);
-        router.replace('/auth/login?emailSend=true');
-
-        return;
+    startTransition(async () => {
+      try {
+        await signIn({
+          method: 'login',
+          email: values.email,
+          password: values.password,
+        });
+        const user = auth.currentUser;
+        if (!user) throw new Error('User not found.');
+        if (!user.emailVerified) {
+          await sendEmailVerification(user);
+          toast.success('Verification email sent. Check your inbox.');
+          await auth.signOut();
+          await deleteSession();
+          router.push('/auth/login?emailSend=true');
+          return;
+        }
+        const userDetails = extractUserDetails(user);
+        await updateUser(userDetails);
+        const token = await user.getIdToken();
+        await createSession(token);
+        router.push('/dashboard');
+        toast.success('Welcome back!');
+      } catch {
+        toast.error('Login failed. Check your credentials.');
       }
-
-      // Fetch user details and session token in parallel
-      const [userDetails, token] = await Promise.all([
-        extractUserDetails(user),
-        user.getIdToken(),
-      ]);
-
-      router.replace('/dashboard'); // Early redirect
-
-      // Perform these operations in the background
-      await Promise.all([updateUser(userDetails), createSession(token)]);
-
-      toast.success('Welcome back!');
-    } catch {
-      toast.error('Login failed. Check your credentials.');
-    }
+    });
   };
 
   if (isEmailSend) return <EmailSendSuccess />;
