@@ -5,29 +5,34 @@ import { useState } from 'react';
 import { useFilterableList } from '@/hooks/use-filterable-list';
 import { useSheet } from '@/hooks/use-sheet';
 
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import { filters } from '@/lib/dummy/fiters';
+import { searchItems } from '@/lib/utils';
+
+import { useGymMembers } from '@/services/member';
+import { Member } from '@/types/members';
+
 import { MembersHeader } from '@/components/members/members-header';
-import { DataTable } from '@/components/members/table/data-table';
+import { DataTable } from '@/components/table/data-table';
 import { columns } from '@/components/members/table/columns';
 import { ImportCSVModal } from '@/components/table/import-csv-modal';
 import { DataTableToolbar } from '@/components/table/data-table-toolbar';
 
-import { initialData } from '@/lib/dummy/data';
-import { filters } from '@/lib/dummy/fiters';
-import { searchItems } from '@/lib/utils';
-
-import { Member } from '@/types';
-
 export default function MembersPage() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
 
-  const {
-    items: members,
-    addItems: addMembers,
-    search,
-  } = useFilterableList<Member>(initialData, searchItems);
   const { isOpen, openSheet, closeSheet } = useSheet();
 
-  // Required fields for the members table
+  const { gymBranch } = useGymBranch();
+  const gymId = gymBranch?.gymId;
+
+  const { data: gymMembers = [], isLoading } = useGymMembers(gymId!);
+
+  const { items: filteredMembers, search } = useFilterableList<Member>(
+    gymMembers,
+    searchItems
+  );
+
   const requiredFields = [
     'gymNo',
     'name',
@@ -37,64 +42,55 @@ export default function MembersPage() {
     'phone',
   ];
 
-  // Field transformations for the members table
   const memberTransformations = (
     row: Partial<Member>,
     index: number
-  ): Partial<Member> => {
-    // Normalize feeStatus
-    if (row.feeStatus) {
-      switch (row.feeStatus.toLowerCase()) {
-        case 'paid':
-          row.feeStatus = 'paid';
-          break;
-        case 'unpaid':
-          row.feeStatus = 'unpaid';
-          break;
-        case 'partially paid':
-        case 'partially_paid':
-          row.feeStatus = 'partially_paid';
-          break;
-        default:
-          row.feeStatus = 'unpaid';
-      }
-    }
-
-    // Auto-generate Gym No if missing
-    //TODO: Find a way to generate this based on the last gymid used
-    if (!row.gymNo) {
-      row.gymNo = `GYM-${(index + 1).toString().padStart(3, '0')}`;
-    }
-
-    // Set default values for missing fields
-    row.id = row.id || `imported-${index + 1}`;
-    row.avatar = row.avatar || '/placeholder.svg?height=32&width=32';
-    row.package = row.package || 'Monthly';
-
-    return row;
-  };
+  ): Partial<Member> => ({
+    ...row,
+    id: row.id || `imported-${index + 1}`,
+    avatar: row.avatar || '/placeholder.svg?height=32&width=32',
+    package: row.package || 'Monthly',
+    feeStatus: row.feeStatus
+      ? ((['paid', 'unpaid', 'partially_paid'].includes(
+          row.feeStatus.toLowerCase()
+        )
+          ? row.feeStatus.toLowerCase().replace(/\s/g, '_')
+          : 'unpaid') as 'paid' | 'partially_paid' | 'unpaid')
+      : 'unpaid',
+  });
 
   return (
     <div className="h-full flex-1 flex-col space-y-8 p-8 flex container">
       <MembersHeader
         onImportClick={() => setIsImportModalOpen(true)}
-        onAddNewClick={() => openSheet()}
+        onAddNewClick={openSheet}
         isOpen={isOpen}
         closeSheet={closeSheet}
+        gymId={gymId}
       />
 
-      <DataTable
-        columns={columns}
-        data={members}
-        toolbar={(table) => (
-          <DataTableToolbar table={table} onSearch={search} filters={filters} />
-        )}
-      />
+      {isLoading ? (
+        <p className="text-center">Loading members...</p>
+      ) : (
+        <DataTable
+          columns={columns}
+          data={filteredMembers}
+          toolbar={(table) => (
+            <DataTableToolbar
+              table={table}
+              onSearch={search}
+              filters={filters}
+            />
+          )}
+        />
+      )}
 
       <ImportCSVModal<Member>
         isOpen={isImportModalOpen}
         onClose={() => setIsImportModalOpen(false)}
-        onImport={addMembers}
+        onImport={(items) => {
+          searchItems([...gymMembers, ...items], '');
+        }}
         requiredFields={requiredFields}
         transformations={memberTransformations}
       />

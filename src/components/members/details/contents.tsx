@@ -8,10 +8,25 @@ import { Chart } from './chart';
 import PaymentCard from './payment-card';
 import WorkoutPlanner from './planner-section';
 
-function Contents() {
+function Contents({
+  memberId,
+  isEditing,
+  handleSave,
+  toggleEdit,
+}: {
+  memberId: string;
+  isEditing: boolean;
+  handleSave: () => Promise<boolean>;
+  toggleEdit: () => void;
+}) {
   return (
     <div className="p-8 pt-0 w-full max-w-[calc(100%-336px)]">
-      <Header />
+      <Header
+        memberId={memberId}
+        isEditing={isEditing}
+        handleSave={handleSave}
+        toggleEdit={toggleEdit}
+      />
       <InfoCard
         item={{
           id: 1,

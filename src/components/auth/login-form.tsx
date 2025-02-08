@@ -49,10 +49,8 @@ export const LoginForm = () => {
           email: values.email,
           password: values.password,
         });
-
         const user = auth.currentUser;
         if (!user) throw new Error('User not found.');
-
         if (!user.emailVerified) {
           await sendEmailVerification(user);
           toast.success('Verification email sent. Check your inbox.');
@@ -61,12 +59,10 @@ export const LoginForm = () => {
           router.push('/auth/login?emailSend=true');
           return;
         }
-
         const userDetails = extractUserDetails(user);
         await updateUser(userDetails);
         const token = await user.getIdToken();
         await createSession(token);
-
         router.push('/dashboard');
         toast.success('Welcome back!');
       } catch {

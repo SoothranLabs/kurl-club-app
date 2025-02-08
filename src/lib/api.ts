@@ -70,13 +70,19 @@ export const api = {
   },
   put: async <TResponse>(
     url: string,
-    data?: Record<string, unknown>,
+    data?: Record<string, unknown> | FormData,
     options?: RequestInit
   ) => {
+    const isFormData = data instanceof FormData;
+
     return baseFetch(url, {
       ...options,
       method: 'PUT',
-      body: JSON.stringify(data),
+      body: isFormData ? data : JSON.stringify(data),
+      headers: {
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+        ...(options?.headers || {}),
+      },
     }) as Promise<TResponse>;
   },
   patch: async <TResponse>(

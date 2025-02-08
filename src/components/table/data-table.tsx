@@ -8,6 +8,7 @@ import {
   getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
+  HeaderContext,
   useReactTable,
 } from '@tanstack/react-table';
 
@@ -55,13 +56,17 @@ export function DataTable<TData extends object, TValue>({
                   <TableHead className="sticky left-0 z-20 bg-primary-blue-400">
                     {flexRender(
                       columns[0].header,
-                      table.getHeaderGroups()[0].headers[0].getContext()
+                      table
+                        .getHeaderGroups()[0]
+                        .headers[0].getContext() as HeaderContext<TData, TValue>
                     )}
                   </TableHead>
                   <TableHead className="sticky left-[100px] z-20 bg-primary-blue-400">
                     {flexRender(
                       columns[1].header,
-                      table.getHeaderGroups()[0].headers[1].getContext()
+                      table
+                        .getHeaderGroups()[0]
+                        .headers[1].getContext() as HeaderContext<TData, TValue>
                     )}
                   </TableHead>
                   {/* Scrollable Columns */}

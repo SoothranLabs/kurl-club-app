@@ -1,19 +1,34 @@
 'use client';
 
+import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
-import { MoreVertical } from 'lucide-react';
+import { Eye } from 'lucide-react';
 
-import { Member } from '@/types';
-
+import { Member } from '@/types/members';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
 
+const ActionsCell: React.FC<{ user: Member }> = ({ user }) => {
+  return (
+    <Button variant="ghost" className="h-8 w-8 p-0">
+      <span className="sr-only">View member profile</span>
+      <Link href={`/members/${user.id}`}>
+        <Eye className="h-4 w-4 text-primary-green-600" />
+      </Link>
+    </Button>
+  );
+};
+
 export const columns: ColumnDef<Member>[] = [
   {
-    accessorKey: 'gymNo',
-    header: 'Gym no',
-    cell: ({ row }) => <div className="w-[100px]">{row.getValue('gymNo')}</div>,
+    accessorKey: 'memberIdentifier',
+    header: 'Member ID',
+    cell: ({ row }) => (
+      <div className="w-[100px] uppercase">
+        {row.getValue('memberIdentifier')}
+      </div>
+    ),
     enableSorting: false,
     enableHiding: false,
   },
@@ -93,34 +108,39 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: 'gender',
     header: 'Gender',
     cell: ({ row }) => (
-      <div className="min-w-[100px]">{row.getValue('gender')}</div>
+      <div className="min-w-[100px] capitalize">{row.getValue('gender')}</div>
     ),
   },
   {
     accessorKey: 'doj',
     header: 'Date of Joining',
-    cell: ({ row }) => (
-      <div className="min-w-[120px]">{row.getValue('doj')}</div>
-    ),
+    cell: ({ row }) => {
+      const date = row.getValue<string>('doj');
+      return (
+        <div className="min-w-[120px]">
+          {date
+            ? new Intl.DateTimeFormat('en-GB').format(new Date(date))
+            : 'N/A'}
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'dob',
     header: 'Date of Birth',
-    cell: ({ row }) => (
-      <div className="min-w-[120px]">{row.getValue('dob')}</div>
-    ),
+    cell: ({ row }) => {
+      const date = row.getValue<string>('dob');
+      return (
+        <div className="min-w-[120px]">
+          {date
+            ? new Intl.DateTimeFormat('en-GB').format(new Date(date))
+            : 'N/A'}
+        </div>
+      );
+    },
   },
   {
     id: 'actions',
-    cell: ({ row }) => (
-      <Button
-        variant="ghost"
-        className="h-8 w-8 p-0"
-        onClick={() => console.log('Selected Row:', row.original)}
-      >
-        <span className="sr-only">Open menu</span>
-        <MoreVertical className="h-4 w-4" />
-      </Button>
-    ),
+    cell: ({ row }) => <ActionsCell user={row.original} />,
   },
 ];
