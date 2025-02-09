@@ -6,7 +6,7 @@ import { DietPlans } from './diet-plans';
 import { KTabs, TabItem } from '@/components/form/k-tabs';
 import { Button } from '@/components/ui/button';
 
-export default function WorkoutPlanner() {
+export default function PlannerSection() {
   const [activeTab, setActiveTab] = useState<string>('workout');
 
   const tabs: TabItem[] = [
