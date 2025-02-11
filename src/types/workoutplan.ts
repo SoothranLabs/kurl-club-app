@@ -19,6 +19,7 @@ export interface Exercise {
 
 export interface DayPlan {
   day: string;
+  duration: number;
   exercises: Exercise[];
 }
 
@@ -65,4 +66,31 @@ export const DEFAULT_EXERCISES: Record<MuscleGroup, string[]> = {
   ],
   Core: ['Planks', 'Crunches', 'Russian Twists', 'Leg Raises'],
   Custom: [],
+};
+
+export const DEFAULT_PLAN: WorkoutPlan = {
+  id: 'default',
+  gymId: 1,
+  planName: 'Default Plan',
+  description: 'A default workout plan',
+  type: 'strength',
+  durationInDays: 7,
+  difficultyLevel: 'beginner',
+  cost: 0,
+  isDefault: true,
+  workouts: [
+    {
+      day: 'Monday',
+      duration: 60,
+      exercises: [
+        {
+          id: '1',
+          name: 'Bench Press',
+          sets: 3,
+          reps: 10,
+          muscleGroup: 'Chest',
+        },
+      ],
+    },
+  ],
 };

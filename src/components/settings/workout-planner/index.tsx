@@ -49,6 +49,11 @@ export function WorkoutPlanner() {
     openSheet();
   };
 
+  const handleSaveNewPlan = (newPlan: WorkoutPlan) => {
+    setPlans((prev) => (prev ? [...prev, newPlan] : [newPlan]));
+    openSheet();
+  };
+
   const handleUpdatePlan = (updatedPlan: WorkoutPlan) => {
     if (plans === null) return;
     setPlans(plans.map((p) => (p.id === updatedPlan.id ? updatedPlan : p)));
@@ -103,6 +108,7 @@ export function WorkoutPlanner() {
           closeSheet={closeSheet}
           onUpdate={handleUpdatePlan}
           onDelete={handleDeletePlan}
+          onSaveNew={handleSaveNewPlan}
         />
       </div>
     </div>
