@@ -383,3 +383,11 @@ export const createMemberSchema = z.object({
   amountPaid: z.string().min(0, 'Amount paid must be a positive number'),
   workoutPlanId: z.string().min(1, 'Workout plan selection is required'),
 });
+
+export const workoutPlanSchema = z.object({
+  planName: z.string().min(1, 'Plan name is required'),
+  description: z.string().min(1, 'Description is required'),
+  difficultyLevel: z.enum(['beginner', 'intermediate', 'advanced']),
+  durationInDays: z.number().min(1, 'Duration must be at least 1 day'),
+  isDefault: z.boolean(),
+});

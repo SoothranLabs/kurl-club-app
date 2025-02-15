@@ -1,16 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronLeft, Edit2, Check, Trash2 } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
+
 import { useAppDialog } from '@/hooks/use-app-dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { WorkoutPlan, Exercise } from '@/types/workoutplan';
+
 import { Button } from '@/components/ui/button';
 import { KSheet } from '@/components/form/k-sheet';
-import type { WorkoutPlan, Exercise } from '@/types/workoutplan';
 import { Overview } from './overview';
 import { Schedule } from './schedule';
-import { ExerciseList } from './exercise-list';
 import { AddExercise } from './add-exercise';
+import { ExerciseList } from './exercise-list';
 
 interface WorkoutPlanSheetProps {
   plan: WorkoutPlan | null;
@@ -26,10 +27,8 @@ const DEFAULT_PLAN: WorkoutPlan = {
   gymId: 1,
   planName: 'New Workout Plan',
   description: 'Add a description for your workout plan',
-  type: 'strength',
   durationInDays: 7,
   difficultyLevel: 'beginner',
-  cost: 0,
   isDefault: false,
   workouts: [],
 };
@@ -52,7 +51,7 @@ export function WorkoutPlanSheet({
 
   useEffect(() => {
     setEditedPlan(plan || DEFAULT_PLAN);
-    setIsEditMode(!plan); // Set to edit mode if it's a new plan
+    setIsEditMode(!plan);
   }, [plan]);
 
   const handleSavePlan = () => {
@@ -62,6 +61,7 @@ export function WorkoutPlanSheet({
       onSaveNew(editedPlan);
     }
     setIsEditMode(false);
+    closeSheet();
   };
 
   const handleDeletePlan = () => {
@@ -137,8 +137,37 @@ export function WorkoutPlanSheet({
     });
   };
 
+  const footer =
+    selectedDay && isEditMode ? null : (
+      <div className="flex justify-end gap-3">
+        {isEditMode ? (
+          <>
+            <Button
+              type="button"
+              onClick={() => {
+                setEditedPlan(plan || DEFAULT_PLAN);
+                setIsEditMode(false);
+              }}
+              variant="secondary"
+              className="h-[46px] min-w-[90px]"
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleSavePlan} className="h-[46px] min-w-[73px]">
+              Save Changes
+            </Button>
+          </>
+        ) : (
+          <Button variant="destructive" onClick={handleDeletePlan}>
+            Delete plan
+          </Button>
+        )}
+      </div>
+    );
+
   return (
     <KSheet
+      className="w-[585px]"
       isOpen={isOpen}
       onClose={closeSheet}
       title={
@@ -160,9 +189,18 @@ export function WorkoutPlanSheet({
           )}
         </>
       }
+      footer={footer}
     >
       {selectedDay ? (
         <div className="mt-6 space-y-6">
+          {isEditMode && (
+            <AddExercise
+              onAddExercise={(exercise) =>
+                handleAddExercise(selectedDay, exercise)
+              }
+            />
+          )}
+
           <ExerciseList
             dayPlan={
               editedPlan.workouts.find((w) => w.day === selectedDay) || {
@@ -179,64 +217,25 @@ export function WorkoutPlanSheet({
               handleRemoveExercise(selectedDay, exerciseId)
             }
           />
-          {isEditMode && (
-            <AddExercise
-              onAddExercise={(exercise) =>
-                handleAddExercise(selectedDay, exercise)
-              }
-            />
-          )}
         </div>
       ) : (
-        <Tabs defaultValue="overview" className="mt-6">
-          <div className="flex justify-between items-center">
-            <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="schedule">Schedule</TabsTrigger>
-            </TabsList>
-            <Button variant="destructive" onClick={handleDeletePlan}>
-              <Trash2 />
-            </Button>
-          </div>
+        <div className="space-y-4">
+          <Overview
+            plan={editedPlan}
+            isEditMode={isEditMode}
+            onPlanChange={(updates) =>
+              setEditedPlan((prev) => ({ ...prev, ...updates }))
+            }
+            onDelete={handleDeletePlan}
+            onEdit={() => setIsEditMode(!isEditMode)}
+          />
 
-          <TabsContent value="overview">
-            <div className="flex justify-end mb-4">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsEditMode(!isEditMode)}
-              >
-                {isEditMode ? (
-                  <Check className="w-4 h-4 mr-2" />
-                ) : (
-                  <Edit2 className="w-4 h-4 mr-2" />
-                )}
-                {isEditMode ? 'Save' : 'Edit'}
-              </Button>
-            </div>
-            <Overview
-              plan={editedPlan}
-              isEditMode={isEditMode}
-              onPlanChange={(updates) =>
-                setEditedPlan((prev) => ({ ...prev, ...updates }))
-              }
-              onSave={handleSavePlan}
-              onDelete={handleDeletePlan}
-              onCancel={() => {
-                setEditedPlan(plan || DEFAULT_PLAN);
-                setIsEditMode(false);
-              }}
-            />
-          </TabsContent>
-
-          <TabsContent value="schedule">
-            <Schedule
-              plan={editedPlan}
-              isEditMode={isEditMode}
-              onEditDay={setSelectedDay}
-            />
-          </TabsContent>
-        </Tabs>
+          <Schedule
+            plan={editedPlan}
+            isEditMode={isEditMode}
+            onEditDay={setSelectedDay}
+          />
+        </div>
       )}
     </KSheet>
   );

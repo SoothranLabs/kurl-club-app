@@ -2,24 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { WorkoutCard } from './workout-card';
-import { WorkoutPlanSheet } from './workout-plan-sheet';
+
 import type { WorkoutPlan } from '@/types/workoutplan';
 import { useSheet } from '@/hooks/use-sheet';
 
-const DEFAULT_PLAN: WorkoutPlan = {
-  id: crypto.randomUUID(),
-  gymId: 1,
-  planName: 'New Workout Plan',
-  description: 'Add a description for your workout plan',
-  type: 'strength',
-  durationInDays: 30,
-  difficultyLevel: 'beginner',
-  cost: 0,
-  isDefault: false,
-  workouts: [],
-};
+import { Button } from '@/components/ui/button';
+import { WorkoutCard } from './workout-card';
+import { WorkoutPlanSheet } from './workout-plan-sheet';
 
 export function WorkoutPlanner() {
   const [plans, setPlans] = useState<WorkoutPlan[] | null>(null);
@@ -42,10 +31,7 @@ export function WorkoutPlanner() {
   }, [plans]);
 
   const handleCreatePlan = () => {
-    if (plans === null) return;
-    const newPlan = { ...DEFAULT_PLAN, id: crypto.randomUUID() };
-    setPlans([...plans, newPlan]);
-    setSelectedPlan(newPlan);
+    setSelectedPlan(null);
     openSheet();
   };
 

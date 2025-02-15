@@ -6,7 +6,7 @@ import {
   CardContent,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Dumbbell, Timer } from 'lucide-react';
+import { Calendar, Timer } from 'lucide-react';
 import type { WorkoutPlan } from '@/types/workoutplan';
 
 interface WorkoutCardProps {
@@ -51,10 +51,6 @@ export function WorkoutCard({ plan, onClick }: WorkoutCardProps) {
       </CardHeader>
       <CardContent>
         <div className="flex items-center gap-4 text-sm text-gray-300">
-          <div className="flex items-center gap-1">
-            <Dumbbell className="w-4 h-4" />
-            {plan.type}
-          </div>
           <div className="flex items-center gap-1">
             <Calendar className="w-4 h-4" />
             {plan.durationInDays} days
