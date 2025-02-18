@@ -8,6 +8,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Timer } from 'lucide-react';
 import type { WorkoutPlan } from '@/types/workoutplan';
+import { getDifficultyColor } from '@/lib/utils';
 
 interface WorkoutCardProps {
   plan: WorkoutPlan;
@@ -15,19 +16,6 @@ interface WorkoutCardProps {
 }
 
 export function WorkoutCard({ plan, onClick }: WorkoutCardProps) {
-  const getDifficultyColor = (level: string) => {
-    switch (level) {
-      case 'beginner':
-        return 'bg-green-500/10 text-green-500';
-      case 'intermediate':
-        return 'bg-yellow-500/10 text-yellow-500';
-      case 'advanced':
-        return 'bg-red-500/10 text-red-500';
-      default:
-        return 'bg-gray-500/10 text-gray-500';
-    }
-  };
-
   return (
     <Card
       className="cursor-pointer transition-all hover:shadow-lg bg-secondary-blue-300/20 backdrop-blur-lg border-white/20 hover:border-primary-green-500/30 text-white"

@@ -137,8 +137,32 @@ export function WorkoutPlanSheet({
     });
   };
 
-  const footer =
-    selectedDay && isEditMode ? null : (
+  const footer = (() => {
+    if (selectedDay && isEditMode) {
+      return (
+        <div className="flex justify-end gap-3">
+          <Button
+            type="button"
+            onClick={() => setSelectedDay(null)}
+            variant="secondary"
+            className="h-[46px] min-w-[90px]"
+          >
+            Cancel
+          </Button>
+          <Button
+            type="button"
+            onClick={() => {
+              setSelectedDay(null);
+            }}
+            className="h-[46px] min-w-[73px]"
+          >
+            Add
+          </Button>
+        </div>
+      );
+    }
+
+    return (
       <div className="flex justify-end gap-3">
         {isEditMode ? (
           <>
@@ -164,6 +188,7 @@ export function WorkoutPlanSheet({
         )}
       </div>
     );
+  })();
 
   return (
     <KSheet
@@ -223,9 +248,7 @@ export function WorkoutPlanSheet({
           <Overview
             plan={editedPlan}
             isEditMode={isEditMode}
-            onPlanChange={(updates) =>
-              setEditedPlan((prev) => ({ ...prev, ...updates }))
-            }
+            onUpdatePlan={setEditedPlan}
             onDelete={handleDeletePlan}
             onEdit={() => setIsEditMode(!isEditMode)}
           />

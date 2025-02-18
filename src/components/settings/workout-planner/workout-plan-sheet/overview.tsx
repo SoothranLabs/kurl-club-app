@@ -1,25 +1,23 @@
 'use client';
 
-import * as z from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Clock, PenLine, TrendingUp, User2 } from 'lucide-react';
 
-import { workoutPlanSchema } from '@/schemas';
 import type { WorkoutPlan } from '@/types/workoutplan';
+import { getDifficultyColor } from '@/lib/utils';
 
-import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { Badge } from '@/components/ui/badge';
 
-type WorkoutPlanFormValues = z.infer<typeof workoutPlanSchema>;
+import { KInput } from '@/components/form/k-input';
+import { KTextarea } from '@/components/form/k-textarea';
+import { KSelect } from '@/components/form/k-select';
 
 interface OverviewProps {
   plan: WorkoutPlan;
   isEditMode: boolean;
-  onPlanChange: (updatedPlan: WorkoutPlan) => void;
+  onUpdatePlan: (updatedPlan: WorkoutPlan) => void;
   onDelete: () => void;
   onEdit: () => void;
 }
@@ -27,25 +25,10 @@ interface OverviewProps {
 export function Overview({
   plan,
   isEditMode,
-  onPlanChange,
+  onUpdatePlan,
   onEdit,
 }: OverviewProps) {
-  const form = useForm<WorkoutPlanFormValues>({
-    resolver: zodResolver(workoutPlanSchema),
-    defaultValues: {
-      planName: plan.planName,
-      description: plan.description,
-      difficultyLevel: plan.difficultyLevel,
-      durationInDays: plan.durationInDays,
-      isDefault: plan.isDefault,
-    },
-  });
-
-  const onSubmit = (data: WorkoutPlanFormValues) => {
-    onPlanChange({ ...plan, ...data });
-  };
-
-  const renderOverviewCard = (data: WorkoutPlanFormValues) => (
+  const renderOverviewCard = (data: WorkoutPlan) => (
     <Card className="w-full bg-secondary-blue-500 border-secondary-blue-600 text-white rounded-md">
       <CardHeader className="space-y-3">
         <div className="flex items-center justify-between">
@@ -62,11 +45,11 @@ export function Overview({
         </p>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div className="flex items-start gap-3">
             <User2 className="w-6 h-6 text-primary-blue-200 shrink-0" />
             <div>
-              <p className="text-primary-blue-200 text-sm">Member strength</p>
+              <p className="text-primary-blue-50 text-sm">Member strength</p>
               <div className="flex items-center">
                 <div className="flex -space-x-2">
                   {[1, 2, 3].map((i) => (
@@ -82,7 +65,9 @@ export function Overview({
                     </Avatar>
                   ))}
                 </div>
-                <span className="ml-1 text-sm">+ 27 others</span>
+                <span className="ml-1 text-sm text-semantic-blue-500 underline cursor-pointer">
+                  + 27 others
+                </span>
               </div>
             </div>
           </div>
@@ -95,8 +80,13 @@ export function Overview({
           <div className="flex items-start gap-3">
             <TrendingUp className="w-6 h-6 text-primary-blue-200 shrink-0" />
             <div>
-              <p className="text-primary-blue-200 text-sm">Training level</p>
-              <p className="text-sm capitalize">{data.difficultyLevel}</p>
+              <p className="text-primary-blue-50 text-sm">Training level</p>
+              <Badge
+                variant="secondary"
+                className={`${getDifficultyColor(plan.difficultyLevel)} text-xs rounded-2xl px-2 py-1 capitalize`}
+              >
+                {plan.difficultyLevel}
+              </Badge>
             </div>
           </div>
 
@@ -108,8 +98,8 @@ export function Overview({
           <div className="flex items-start gap-3">
             <Clock className="w-6 h-6 text-primary-blue-200 shrink-0" />
             <div>
-              <p className="text-primary-blue-200 text-sm">Duration</p>
-              <p className="text-sm">{data.durationInDays} Days</p>
+              <p className="text-primary-blue-50 text-sm">Duration</p>
+              <p className="text-sm text-white">{data.durationInDays} Days</p>
             </div>
           </div>
         </div>
@@ -118,57 +108,66 @@ export function Overview({
   );
 
   return isEditMode ? (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <KFormField
-          control={form.control}
-          name="planName"
-          label="Plan Name"
-          fieldType={KFormFieldType.INPUT}
-          disabled={!isEditMode}
+    <div className="space-y-4">
+      <KInput
+        label="Name"
+        placeholder=" "
+        value={plan.planName}
+        onChange={(e) => onUpdatePlan({ ...plan, planName: e.target.value })}
+        disabled={!isEditMode}
+        mandetory
+      />
+
+      <KTextarea
+        label="Description"
+        value={plan.description}
+        onChange={(e) => onUpdatePlan({ ...plan, description: e.target.value })}
+        disabled={!isEditMode}
+      />
+
+      <div className="flex flex-col md:flex-row gap-4">
+        <KSelect
+          label="Difficulty level"
+          value={plan.difficultyLevel}
+          onValueChange={(value) =>
+            onUpdatePlan({
+              ...plan,
+              difficultyLevel: value as WorkoutPlan['difficultyLevel'],
+            })
+          }
+          options={[
+            { label: 'Beginner', value: 'beginner' },
+            { label: 'Intermediate', value: 'intermediate' },
+            { label: 'Advanced', value: 'advanced' },
+          ]}
+          className="!border-white !rounded-lg"
         />
 
-        <KFormField
-          control={form.control}
-          name="description"
-          label="Description"
-          fieldType={KFormFieldType.TEXTAREA}
+        <KInput
+          label="Duration (days)"
+          type="number"
+          placeholder={undefined}
+          value={plan.durationInDays}
+          onChange={(e) =>
+            onUpdatePlan({
+              ...plan,
+              durationInDays: Number.parseInt(e.target.value),
+            })
+          }
           disabled={!isEditMode}
+          mandetory
         />
+      </div>
 
-        <div className="flex gap-4">
-          <KFormField
-            control={form.control}
-            name="difficultyLevel"
-            label="Difficulty Level"
-            fieldType={KFormFieldType.SELECT}
-            disabled={!isEditMode}
-            options={[
-              { label: 'Beginner', value: 'beginner' },
-              { label: 'Intermediate', value: 'intermediate' },
-              { label: 'Advanced', value: 'advanced' },
-            ]}
-          />
-
-          <KFormField
-            control={form.control}
-            name="durationInDays"
-            label="Duration (days)"
-            fieldType={KFormFieldType.INPUT}
-            disabled={!isEditMode}
-          />
-        </div>
-
-        <KFormField
-          control={form.control}
-          name="isDefault"
-          label="Is Default Plan"
-          fieldType={KFormFieldType.CHECKBOX}
-          disabled={!isEditMode}
-        />
-      </form>
-    </Form>
+      <input
+        type="checkbox"
+        id="isDefault"
+        checked={plan.isDefault}
+        onChange={(e) => onUpdatePlan({ ...plan, isDefault: e.target.checked })}
+        disabled={!isEditMode}
+      />
+    </div>
   ) : (
-    <>{renderOverviewCard(form.getValues())}</>
+    <>{renderOverviewCard(plan)}</>
   );
 }

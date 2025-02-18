@@ -167,3 +167,16 @@ export function base64ToFile(base64String: string, fileName: string): File {
   const blob = new Blob([byteArray], { type: 'image/png' });
   return new File([blob], fileName, { type: 'image/png' });
 }
+
+export const getDifficultyColor = (level: string) => {
+  switch (level) {
+    case 'beginner':
+      return 'bg-green-500/10 text-green-500';
+    case 'intermediate':
+      return 'bg-yellow-500/10 text-yellow-500';
+    case 'advanced':
+      return 'bg-red-500/10 text-red-500';
+    default:
+      return 'bg-gray-500/10 text-gray-500';
+  }
+};
