@@ -20,6 +20,7 @@ interface OverviewProps {
   onUpdatePlan: (updatedPlan: WorkoutPlan) => void;
   onDelete: () => void;
   onEdit: () => void;
+  onShowMembers: () => void;
 }
 
 export function Overview({
@@ -27,6 +28,7 @@ export function Overview({
   isEditMode,
   onUpdatePlan,
   onEdit,
+  onShowMembers,
 }: OverviewProps) {
   const renderOverviewCard = (data: WorkoutPlan) => (
     <Card className="w-full bg-secondary-blue-500 border-secondary-blue-600 text-white rounded-md">
@@ -65,7 +67,10 @@ export function Overview({
                     </Avatar>
                   ))}
                 </div>
-                <span className="ml-1 text-sm text-semantic-blue-500 underline cursor-pointer">
+                <span
+                  className="ml-1 text-sm text-semantic-blue-500 underline cursor-pointer"
+                  onClick={onShowMembers}
+                >
                   + 27 others
                 </span>
               </div>

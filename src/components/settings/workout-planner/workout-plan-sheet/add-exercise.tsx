@@ -81,8 +81,10 @@ export function AddExercise({ onAddExercise }: AddExerciseProps) {
               )
             }
             options={[
-              ...DEFAULT_EXERCISES[selectedMuscleGroup],
-              ...customExercises[selectedMuscleGroup],
+              ...new Set([
+                ...DEFAULT_EXERCISES[selectedMuscleGroup],
+                ...customExercises[selectedMuscleGroup],
+              ]),
             ].map((exercise) => ({
               label: exercise,
               value: exercise,

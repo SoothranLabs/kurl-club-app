@@ -46,6 +46,7 @@ export function WorkoutPlanSheet({
   );
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isMemberListVisible, setIsMemberListVisible] = useState(false);
 
   const { showConfirm } = useAppDialog();
 
@@ -137,13 +138,59 @@ export function WorkoutPlanSheet({
     });
   };
 
-  const footer = (() => {
+  const sheetTitle = (() => {
+    if (isMemberListVisible) {
+      return (
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mr-2"
+            onClick={() => setIsMemberListVisible(false)}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          Members List
+        </div>
+      );
+    }
+
+    if (selectedDay) {
+      return (
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mr-2"
+            onClick={() => {
+              setEditedPlan(plan || DEFAULT_PLAN);
+              setSelectedDay(null);
+            }}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          {selectedDay} Workout
+        </div>
+      );
+    }
+
+    return editedPlan.planName;
+  })();
+
+  const sheetFooter = (() => {
+    if (isMemberListVisible) {
+      return null;
+    }
+
     if (selectedDay && isEditMode) {
       return (
         <div className="flex justify-end gap-3">
           <Button
             type="button"
-            onClick={() => setSelectedDay(null)}
+            onClick={() => {
+              setEditedPlan(plan || DEFAULT_PLAN);
+              setSelectedDay(null);
+            }}
             variant="secondary"
             className="h-[46px] min-w-[90px]"
           >
@@ -195,28 +242,12 @@ export function WorkoutPlanSheet({
       className="w-[585px]"
       isOpen={isOpen}
       onClose={closeSheet}
-      title={
-        <>
-          {selectedDay ? (
-            <div className="flex items-center">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="mr-2"
-                onClick={() => setSelectedDay(null)}
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              {selectedDay} Workout
-            </div>
-          ) : (
-            editedPlan.planName
-          )}
-        </>
-      }
-      footer={footer}
+      title={sheetTitle}
+      footer={sheetFooter}
     >
-      {selectedDay ? (
+      {isMemberListVisible ? (
+        <div>Member view</div>
+      ) : selectedDay ? (
         <div className="mt-6 space-y-6">
           {isEditMode && (
             <AddExercise
@@ -251,6 +282,7 @@ export function WorkoutPlanSheet({
             onUpdatePlan={setEditedPlan}
             onDelete={handleDeletePlan}
             onEdit={() => setIsEditMode(!isEditMode)}
+            onShowMembers={() => setIsMemberListVisible(true)}
           />
 
           <Schedule
