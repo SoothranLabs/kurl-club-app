@@ -25,6 +25,24 @@ export async function createSession(idToken: string) {
   });
 }
 
+// Store Gym Branch Details in a Secure Cookie
+export async function storeGymBranch(gymBranch: {
+  gymId: number;
+  gymName: string;
+  gymLocation: string;
+}) {
+  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
+  const cookieStore = await cookies();
+
+  cookieStore.set('gymBranch', JSON.stringify(gymBranch), {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    expires: expiresAt,
+    path: '/',
+  });
+}
+
 /**
  * Retrieves the idToken stored in cookies.
  *
@@ -54,4 +72,5 @@ export async function getSession(): Promise<string | null> {
 export async function deleteSession() {
   const cookieStore = await cookies();
   cookieStore.delete('idToken');
+  cookieStore.delete('gymBranch');
 }

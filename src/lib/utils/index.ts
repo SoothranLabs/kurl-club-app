@@ -120,16 +120,14 @@ export function searchItems<T extends Record<string, unknown>>(
   });
 }
 
-export const getInitials = (name: string): string => {
-  const words = name.trim().split(/\s+/); // Split by spaces and remove extra spaces
-
-  if (words.length === 1) {
-    // If there's only one word, return the first two letters
-    return words[0].slice(0, 2).toUpperCase();
-  }
-
-  // Otherwise, return the first letter of the first word + first letter of the last word
-  return (words[0][0] + words[1][0]).toUpperCase();
+export const getInitials = (name?: string): string => {
+  return name
+    ? name
+        .split(' ')
+        .map((word) => word[0])
+        .join('')
+        .toUpperCase()
+    : '';
 };
 
 /**
@@ -158,3 +156,14 @@ export const getGreeting = (): string => {
     return 'Good night 💤';
   }
 };
+
+export function base64ToFile(base64String: string, fileName: string): File {
+  const byteCharacters = atob(base64String);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  const blob = new Blob([byteArray], { type: 'image/png' });
+  return new File([blob], fileName, { type: 'image/png' });
+}

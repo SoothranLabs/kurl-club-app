@@ -3,6 +3,8 @@ import localFont from 'next/font/local';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { QueryProvider } from '@/providers/query-provider';
 import { AuthProvider } from '@/providers/auth-provider';
+import { GymBranchProvider } from '@/providers/gym-branch-provider';
+import { DialogProvider } from '@/providers/dialog-context';
 import { Toaster } from 'sonner';
 import './globals.css';
 import AppLayout from '@/components/layout/app-layout';
@@ -56,15 +58,19 @@ export default function RootLayout({
       <body className={`${figtree.className} bg-background-dark antialiased`}>
         <QueryProvider>
           <AuthProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Toaster richColors position="top-right" />
-              <AppLayout>{children}</AppLayout>
-            </ThemeProvider>
+            <GymBranchProvider>
+              <DialogProvider>
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="dark"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  <Toaster richColors position="top-right" />
+                  <AppLayout>{children}</AppLayout>
+                </ThemeProvider>
+              </DialogProvider>
+            </GymBranchProvider>
           </AuthProvider>
         </QueryProvider>
       </body>

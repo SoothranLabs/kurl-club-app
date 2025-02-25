@@ -1,18 +1,37 @@
-export interface Member {
-  name: string;
-  memberSince: string;
+export type Member = {
+  id: string;
   gymNo: string;
+  name: string;
+  avatar: string;
+  package: 'Monthly' | 'Yearly' | 'Special' | 'Quarterly' | 'Half_Yearly';
+  feeStatus: 'paid' | 'partially_paid' | 'unpaid';
   email: string;
-  mobile: string;
+  phone: string;
+  bloodGroup: string;
+  gender?: string;
+  dob?: string;
+  doj?: string;
+};
+
+export type MemberDetails = {
+  id: number;
+  memberIdentifier: string;
+  name: string;
   dob: string;
-  height: string;
-  weight: string;
-  workoutPlan: WorkoutPlan;
-  assignedTo: Trainer;
-  bloodGroup: BloodGroup;
-  address: string;
-  pin: string;
-}
+  bloodGroup: string;
+  gender?: string;
+  package: string;
+  feeStatus: string;
+  doj: string;
+  phone: string;
+  email: string;
+  height: number;
+  weight: number;
+  personalTrainer: number;
+  fullAddress: string;
+  workoutPlan: number;
+  profilePicture: string | File | null;
+};
 
 export type WorkoutPlan = 'Weight loss' | 'Muscle gain' | 'General fitness';
 export type BloodGroup =
@@ -28,8 +47,9 @@ export type Trainer = 'Hafiz' | 'John' | 'Sarah';
 
 export interface EditableSectionProps {
   isEditing: boolean;
-  details: Member;
-  onUpdate: <K extends keyof Member>(key: K, value: Member[K]) => void;
-  memberSince?: string;
-  gymNo?: string;
+  details: MemberDetails | null;
+  onUpdate: <K extends keyof MemberDetails>(
+    key: K,
+    value: MemberDetails[K]
+  ) => void;
 }

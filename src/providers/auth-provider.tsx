@@ -57,6 +57,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         data: AppUser;
       }>(`/User/GetUserById/${uid}`);
       setAppUser(response.data);
+      if (response.data.gyms.length > 0) {
+        localStorage.setItem(
+          'gymBranch',
+          JSON.stringify(response.data.gyms[0])
+        );
+      }
     } catch (error) {
       console.error('Failed to fetch app user:', error);
       setAppUser(null);
