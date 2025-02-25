@@ -5,7 +5,17 @@ import React, { useState } from 'react';
 import Header from './header';
 import Permissions from './permissions';
 
-export default function Contents() {
+export default function Contents({
+  staffId,
+  isEditing,
+  handleSave,
+  toggleEdit,
+}: {
+  staffId: string;
+  isEditing: boolean;
+  handleSave: () => Promise<boolean>;
+  toggleEdit: () => void;
+}) {
   const [activeTab, setActiveTab] = useState<string>('roles');
 
   const tabs: TabItem[] = [
@@ -15,7 +25,12 @@ export default function Contents() {
 
   return (
     <div className="w-full">
-      <Header />
+      <Header
+        staffId={staffId}
+        isEditing={isEditing}
+        handleSave={handleSave}
+        toggleEdit={toggleEdit}
+      />
       <KTabs
         items={tabs}
         variant="underline"

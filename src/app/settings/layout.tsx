@@ -5,7 +5,7 @@ import { KTabs, TabItem } from '@/components/form/k-tabs';
 import { IndianRupee, Map, Settings, Users } from 'lucide-react';
 
 const navItems: TabItem[] = [
-  { id: 'user-management', label: 'User Management', icon: Users },
+  { id: 'staff-management', label: 'Staff Management', icon: Users },
   { id: 'packages', label: 'Packages', icon: IndianRupee },
   { id: 'workout-plans', label: 'Workout Plans', icon: Map },
   { id: 'general-settings', label: 'General Settings', icon: Settings },
@@ -21,10 +21,10 @@ export default function SettingsLayout({
 
   const activeTab =
     navItems.find((item) => pathname.startsWith(`/settings/${item.id}`))?.id ||
-    'user-management';
+    'staff-management';
 
   const isDynamicPath = pathname.match(
-    /\/settings\/(user-management|workout-plans)\/[^/]+/
+    /\/settings\/(staff-management|workout-plans)\/[^/]+/
   );
   const isSidebarVisible = !isDynamicPath;
 

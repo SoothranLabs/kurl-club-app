@@ -18,7 +18,6 @@ import InfoCard from './cards/info-card';
 import KDialog from './form/k-dialog';
 import { CalendarDays, IndianRupee, Map, Settings, Users } from 'lucide-react';
 import { KTabs, TabItem } from './form/k-tabs';
-import { UserForm } from './settings/user-management/add-user-form';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -89,32 +88,11 @@ const SampleTestPage = () => {
   //   console.log(data);
   // };
 
-  const addUserSubmit = (data: {
-    memberName: string;
-    email: string;
-    primaryPhone: string;
-    designation: string;
-    dob: string;
-    gender: string;
-    doj: string;
-    feeStatus: string;
-    amountPaid: string;
-    addressLine1: string;
-    addressLine2?: string;
-  }) => {
-    console.log(data);
-  };
-
   async function onSubmit(values: z.infer<typeof SamplePageSchema>) {
     console.log(`Subitted data = ${JSON.stringify(values)}`);
   }
 
   const { isOpen, openSheet, closeSheet } = useSheet();
-  const {
-    isOpen: isAddUserOpen,
-    openSheet: openAddUserSheet,
-    closeSheet: closeAddUserSheet,
-  } = useSheet();
 
   return (
     <div className="flex flex-col items-center gap-10">
@@ -161,14 +139,6 @@ const SampleTestPage = () => {
       />
       <div className="flex items-center gap-6">
         <ThemeModeToggle />
-        <div className="p-4">
-          <Button onClick={openAddUserSheet}>Add User</Button>
-          <UserForm
-            isOpen={isAddUserOpen}
-            closeSheet={closeAddUserSheet}
-            onSubmit={addUserSubmit}
-          />
-        </div>
         <div className="p-4">
           {/* KSheet Button */}
           <Button onClick={openSheet}>Open Sheet</Button>

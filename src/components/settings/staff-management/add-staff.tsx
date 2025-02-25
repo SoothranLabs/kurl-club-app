@@ -2,7 +2,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { AddUserForm } from '@/schemas/index';
+import { AddForm } from '@/schemas/index';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 import { Badge } from '@/components/ui/badge';
 import { KSelect } from '@/components/form/k-select';
@@ -13,39 +13,50 @@ import { FormControl } from '@/components/ui/form';
 import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
 import { Calendar } from 'lucide-react';
 
-type UserFormData = z.infer<typeof AddUserForm>;
+type CreateStaffDetailsData = z.infer<typeof AddForm>;
 
-type AddUserProps = {
-  onSubmit?: (data: UserFormData) => void;
+type CreateStaffDetailsProps = {
+  onSubmit?: (data: CreateStaffDetailsData) => void;
   closeSheet: () => void;
   isOpen: boolean;
 };
 
 interface Selections {
   gender: string;
-  designation: string;
+  package: string;
   feeStatus: string;
+  workoutPlan: string;
+  personalTrainer: string;
+  bloodGroup: string;
 }
 
-interface UserDetails {
+interface StaffDetails {
   name: string;
-  triId: string;
+  gymNo: string;
 }
 
-export const UserForm: React.FC<AddUserProps> = ({ isOpen, closeSheet }) => {
-  const form = useForm<UserFormData>({
-    resolver: zodResolver(AddUserForm),
+export const AddStaff: React.FC<CreateStaffDetailsProps> = ({
+  isOpen,
+  closeSheet,
+}) => {
+  const form = useForm<CreateStaffDetailsData>({
+    resolver: zodResolver(AddForm),
     defaultValues: {
-      profilePicture: null,
       memberName: '',
+      profilePicture: null,
       email: '',
       primaryPhone: '',
-      designation: '',
       dob: '',
       gender: '',
-      doj: '',
+      package: '',
+      height: '',
+      weight: '',
       feeStatus: '',
       amountPaid: '',
+      doj: '',
+      workoutPlan: '',
+      personalTrainer: '',
+      bloodgroup: '',
       addressLine1: '',
       addressLine2: '',
     },
@@ -53,8 +64,11 @@ export const UserForm: React.FC<AddUserProps> = ({ isOpen, closeSheet }) => {
 
   const [selections, setSelections] = useState<Selections>({
     gender: '',
-    designation: '',
+    package: '',
     feeStatus: '',
+    workoutPlan: '',
+    personalTrainer: '',
+    bloodGroup: '',
   });
 
   const handleSelectionChange = (name: string, value: string) => {
@@ -65,21 +79,27 @@ export const UserForm: React.FC<AddUserProps> = ({ isOpen, closeSheet }) => {
   };
 
   const handleSubmit = (data: {
-    memberName: string;
     email: string;
+    height: string;
+    memberName: string;
     primaryPhone: string;
     dob: string;
     gender: string;
-    doj: string;
+    package: string;
+    weight: string;
     feeStatus: string;
     amountPaid: string;
+    doj: string;
+    workoutPlan: string;
+    personalTrainer: string;
+    bloodgroup: string;
     addressLine1: string;
     addressLine2?: string;
   }) => {
     console.log(data);
   };
 
-  const userDetails: UserDetails = { name: 'John Doe', triId: '38545' };
+  const userDetails: StaffDetails = { name: 'John Doe', gymNo: '38545' };
 
   const footer = (
     <div className="flex justify-end gap-3">
@@ -121,8 +141,8 @@ export const UserForm: React.FC<AddUserProps> = ({ isOpen, closeSheet }) => {
                 </FormControl>
               )}
             />
-            <Badge className="bg-secondary-blue-400 flex items-center w-fit justify-center text-sm text-white rounded-full h-[30px] py-2 px-2 border border-secondary-blue-300 bg-opacity-100">
-              TriID: #{userDetails.triId}
+            <Badge className="bg-secondary-blue-400 flex items-center w-fit justify-center text-sm text-white rounded-full h-[30px] py-2 px-2 border border-secondary-blue-300 bg-opacity-100 ">
+              Gym no: #{userDetails.gymNo}
             </Badge>
           </div>
           <h5 className="text-white text-base font-normal leading-normal !mt-0">
@@ -147,33 +167,7 @@ export const UserForm: React.FC<AddUserProps> = ({ isOpen, closeSheet }) => {
             label="Phone"
             placeholder="(555) 123-4567"
           />
-          <div className="flex justify-between gap-3">
-            <div className="w-1/2">
-              <KSelect
-                label="Designation"
-                value={selections.designation}
-                onValueChange={(value) =>
-                  handleSelectionChange('designation', value)
-                }
-                options={[
-                  { label: 'Owner', value: 'owner' },
-                  { label: 'Trainer', value: 'trainer' },
-                  { label: 'Member', value: 'member' },
-                ]}
-              />
-            </div>
-            <div className="w-1/2">
-              <KFormField
-                fieldType={KFormFieldType.DATE_PICKER}
-                control={form.control}
-                name="dob"
-                dateLabel="Date of birth"
-                mode="single"
-                className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-                iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
-              />
-            </div>
-          </div>
+
           <div className="flex justify-between gap-3">
             <div className="w-1/2">
               <KSelect
@@ -191,14 +185,35 @@ export const UserForm: React.FC<AddUserProps> = ({ isOpen, closeSheet }) => {
               />
             </div>
             <div className="w-1/2">
+              <KSelect
+                label="Package"
+                value={selections.package}
+                onValueChange={(value) =>
+                  handleSelectionChange('package', value)
+                }
+                options={[
+                  { label: 'Monthly', value: 'monthly' },
+                  { label: 'Qauterly', value: 'quaterly' },
+                  { label: 'Yearly', value: 'yearly' },
+                ]}
+              />
+            </div>
+          </div>
+          <div className="flex justify-between gap-3">
+            <div className="w-1/2">
               <KFormField
-                fieldType={KFormFieldType.DATE_PICKER}
+                fieldType={KFormFieldType.INPUT}
                 control={form.control}
-                name="doj"
-                dateLabel="Date of joining"
-                mode="single"
-                className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-                iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
+                name="height"
+                label="Height (In Centimeters)"
+              />
+            </div>
+            <div className="w-1/2">
+              <KFormField
+                fieldType={KFormFieldType.INPUT}
+                control={form.control}
+                name="weight"
+                label="Weight (In Kilograms)"
               />
             </div>
           </div>
@@ -228,7 +243,77 @@ export const UserForm: React.FC<AddUserProps> = ({ isOpen, closeSheet }) => {
               />
             </div>
           </div>
-
+          <div className="flex justify-between gap-3">
+            <div className="w-1/2">
+              <KFormField
+                fieldType={KFormFieldType.DATE_PICKER}
+                control={form.control}
+                name="doj"
+                dateLabel="Date of joining"
+                mode="single"
+                className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
+                iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
+              />
+            </div>
+            <div className="w-1/2">
+              <KFormField
+                fieldType={KFormFieldType.DATE_PICKER}
+                control={form.control}
+                name="dob"
+                dateLabel="Date of birth"
+                mode="single"
+                className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
+                iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
+              />
+            </div>
+          </div>
+          <div className="flex justify-between gap-3">
+            <div className="w-1/2">
+              <KSelect
+                label="Personal Trainer"
+                value={selections.personalTrainer}
+                onValueChange={(value) =>
+                  handleSelectionChange('personalTrainer', value)
+                }
+                options={[
+                  { label: 'Rahul', value: 'rahul' },
+                  { label: 'Jithu', value: 'jithu' },
+                  { label: 'Hari', value: 'hari' },
+                ]}
+              />
+            </div>
+            <div className="w-1/2">
+              <KSelect
+                label="Blood Group"
+                value={selections.bloodGroup}
+                onValueChange={(value) =>
+                  handleSelectionChange('bloodGroup', value)
+                }
+                options={[
+                  { label: 'A+', value: 'A+' },
+                  { label: 'A-', value: 'A-' },
+                  { label: 'B+', value: 'B+' },
+                  { label: 'B-', value: 'B-' },
+                  { label: 'AB+-', value: 'AB+' },
+                  { label: 'AB-', value: 'AB-' },
+                  { label: 'O+', value: 'O+' },
+                  { label: 'O-', value: 'O-' },
+                ]}
+              />
+            </div>
+          </div>
+          <KSelect
+            label=" Workout Plan"
+            value={selections.workoutPlan}
+            onValueChange={(value) =>
+              handleSelectionChange('workoutPlan', value)
+            }
+            options={[
+              { label: 'Bench Press', value: 'bench press' },
+              { label: 'Cardio', value: 'cardio' },
+              { label: 'Inclined Press', value: 'inclined press' },
+            ]}
+          />
           <h5 className="text-white text-base font-normal leading-normal !mt-8">
             Address Details
           </h5>
@@ -250,4 +335,4 @@ export const UserForm: React.FC<AddUserProps> = ({ isOpen, closeSheet }) => {
   );
 };
 
-export default UserForm;
+export default AddStaff;

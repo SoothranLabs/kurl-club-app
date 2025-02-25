@@ -1,29 +1,29 @@
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import AddUser from './add-user';
+import AddStaff from './add-staff';
 
-interface UsersHeaderProps {
+interface StaffsHeaderProps {
   onAddNewClick: () => void;
   isOpen: boolean;
   closeSheet: () => void;
 }
 
-export const UsersHeader = ({
+export const StaffsHeader = ({
   onAddNewClick,
   isOpen,
   closeSheet,
-}: UsersHeaderProps) => {
+}: StaffsHeaderProps) => {
   return (
     <div className="flex items-center justify-between">
       <h4 className="text-[20px] leading-normal tracking-tight font-medium text-white">
-        User Management
+        Staff Management
       </h4>
       <div className="flex items-center space-x-2">
         <Button className="h-10" onClick={onAddNewClick}>
           <Plus className="h-4 w-4" />
           Add new
         </Button>
-        <AddUser isOpen={isOpen} closeSheet={closeSheet} />
+        <AddStaff isOpen={isOpen} closeSheet={closeSheet} />
       </div>
     </div>
   );
