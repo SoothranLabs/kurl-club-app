@@ -17,17 +17,16 @@ interface WorkoutPlanSheetProps {
   plan: WorkoutPlan | null;
   isOpen: boolean;
   onUpdate: (plan: WorkoutPlan) => void;
-  onDelete: (planId: string) => void;
+  onDelete: (planId: number) => void;
   onSaveNew: (plan: WorkoutPlan) => void;
   closeSheet: () => void;
 }
 
 const DEFAULT_PLAN: WorkoutPlan = {
-  id: crypto.randomUUID(),
-  gymId: 1,
+  gymId: 0,
   planName: 'New Workout Plan',
   description: 'Add a description for your workout plan',
-  durationInDays: 7,
+  duration: 60,
   difficultyLevel: 'beginner',
   isDefault: false,
   workouts: [],
@@ -73,7 +72,7 @@ export function WorkoutPlanSheet({
       confirmLabel: 'Yes, delete plan',
       onConfirm: () => {
         if (plan) {
-          onDelete(plan.id);
+          onDelete(plan.gymId);
         }
         closeSheet();
       },
@@ -82,7 +81,8 @@ export function WorkoutPlanSheet({
 
   const handleUpdateExercise = (
     day: string,
-    exerciseId: string,
+    category: string,
+    exerciseIndex: number,
     updates: Partial<Exercise>
   ) => {
     setEditedPlan((prev) => ({
@@ -91,8 +91,15 @@ export function WorkoutPlanSheet({
         w.day === day
           ? {
               ...w,
-              exercises: w.exercises.map((e) =>
-                e.id === exerciseId ? { ...e, ...updates } : e
+              categories: w.categories.map((c) =>
+                c.category === category
+                  ? {
+                      ...c,
+                      exercises: c.exercises.map((e, index) =>
+                        index === exerciseIndex ? { ...e, ...updates } : e
+                      ),
+                    }
+                  : c
               ),
             }
           : w
@@ -100,7 +107,11 @@ export function WorkoutPlanSheet({
     }));
   };
 
-  const handleRemoveExercise = (day: string, exerciseId: string) => {
+  const handleRemoveExercise = (
+    day: string,
+    category: string,
+    exerciseIndex: number
+  ) => {
     setEditedPlan((prev) => ({
       ...prev,
       workouts: prev.workouts
@@ -108,35 +119,81 @@ export function WorkoutPlanSheet({
           w.day === day
             ? {
                 ...w,
-                exercises: w.exercises.filter((e) => e.id !== exerciseId),
+                categories: w.categories
+                  .map((c) =>
+                    c.category === category
+                      ? {
+                          ...c,
+                          exercises: c.exercises.filter(
+                            (_, index) => index !== exerciseIndex
+                          ),
+                        }
+                      : c
+                  )
+                  .filter((c) => c.exercises.length > 0),
               }
             : w
         )
-        .filter((w) => w.exercises.length > 0),
+        .filter((w) => w.categories.length > 0),
     }));
   };
 
-  const handleAddExercise = (day: string, exercise: Exercise) => {
+  const handleAddExercise = (
+    day: string,
+    category: string,
+    exercise: Exercise
+  ) => {
     setEditedPlan((prev) => {
       const existingDayPlan = prev.workouts.find((w) => w.day === day);
       if (existingDayPlan) {
-        return {
-          ...prev,
-          workouts: prev.workouts.map((w) =>
-            w.day === day ? { ...w, exercises: [...w.exercises, exercise] } : w
-          ),
-        };
+        const existingCategory = existingDayPlan.categories.find(
+          (c) => c.category === category
+        );
+        if (existingCategory) {
+          return {
+            ...prev,
+            workouts: prev.workouts.map((w) =>
+              w.day === day
+                ? {
+                    ...w,
+                    categories: w.categories.map((c) =>
+                      c.category === category
+                        ? { ...c, exercises: [...c.exercises, exercise] }
+                        : c
+                    ),
+                  }
+                : w
+            ),
+          };
+        } else {
+          return {
+            ...prev,
+            workouts: prev.workouts.map((w) =>
+              w.day === day
+                ? {
+                    ...w,
+                    categories: [
+                      ...w.categories,
+                      { category, exercises: [exercise] },
+                    ],
+                  }
+                : w
+            ),
+          };
+        }
       } else {
         return {
           ...prev,
           workouts: [
             ...prev.workouts,
-            { day, exercises: [exercise], duration: 0 },
+            { day, categories: [{ category, exercises: [exercise] }] },
           ],
         };
       }
     });
   };
+
+  // ... (rest of the component remains the same)
 
   const sheetTitle = (() => {
     if (isMemberListVisible) {
@@ -251,8 +308,8 @@ export function WorkoutPlanSheet({
         <div className="mt-6 space-y-6">
           {isEditMode && (
             <AddExercise
-              onAddExercise={(exercise) =>
-                handleAddExercise(selectedDay, exercise)
+              onAddExercise={(exercise, category) =>
+                handleAddExercise(selectedDay, category, exercise)
               }
             />
           )}
@@ -261,16 +318,20 @@ export function WorkoutPlanSheet({
             dayPlan={
               editedPlan.workouts.find((w) => w.day === selectedDay) || {
                 day: selectedDay,
-                exercises: [],
-                duration: 0,
+                categories: [],
               }
             }
             isEditMode={isEditMode}
-            onUpdateExercise={(exerciseId, updates) =>
-              handleUpdateExercise(selectedDay, exerciseId, updates)
+            onUpdateExercise={(category, exerciseIndex, updates) =>
+              handleUpdateExercise(
+                selectedDay,
+                category,
+                exerciseIndex,
+                updates
+              )
             }
-            onRemoveExercise={(exerciseId) =>
-              handleRemoveExercise(selectedDay, exerciseId)
+            onRemoveExercise={(category, exerciseIndex) =>
+              handleRemoveExercise(selectedDay, category, exerciseIndex)
             }
           />
         </div>

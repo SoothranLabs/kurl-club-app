@@ -104,7 +104,7 @@ export function Overview({
             <Clock className="w-6 h-6 text-primary-blue-200 shrink-0" />
             <div>
               <p className="text-primary-blue-50 text-sm">Duration</p>
-              <p className="text-sm text-white">{data.durationInDays} Days</p>
+              <p className="text-sm text-white">{data.duration} Minutes</p>
             </div>
           </div>
         </div>
@@ -149,14 +149,14 @@ export function Overview({
         />
 
         <KInput
-          label="Duration (days)"
+          label="Duration (minutes)"
           type="number"
           placeholder={undefined}
-          value={plan.durationInDays}
+          value={plan.duration}
           onChange={(e) =>
             onUpdatePlan({
               ...plan,
-              durationInDays: Number.parseInt(e.target.value),
+              duration: Number.parseInt(e.target.value),
             })
           }
           disabled={!isEditMode}
@@ -164,13 +164,20 @@ export function Overview({
         />
       </div>
 
-      <input
-        type="checkbox"
-        id="isDefault"
-        checked={plan.isDefault}
-        onChange={(e) => onUpdatePlan({ ...plan, isDefault: e.target.checked })}
-        disabled={!isEditMode}
-      />
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="isDefault"
+          checked={plan.isDefault}
+          onChange={(e) =>
+            onUpdatePlan({ ...plan, isDefault: e.target.checked })
+          }
+          disabled={!isEditMode}
+        />
+        <label htmlFor="isDefault" className="text-sm text-white">
+          Set as default plan
+        </label>
+      </div>
     </div>
   ) : (
     <>{renderOverviewCard(plan)}</>

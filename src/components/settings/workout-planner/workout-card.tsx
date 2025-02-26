@@ -16,6 +16,21 @@ interface WorkoutCardProps {
 }
 
 export function WorkoutCard({ plan, onClick }: WorkoutCardProps) {
+  // Calculate the number of days with workouts
+  const daysWithWorkouts = plan.workouts?.length || 0;
+
+  // Calculate the total number of exercises safely
+  const totalExercises =
+    plan.workouts?.reduce(
+      (acc, workout) =>
+        acc +
+        (workout.categories?.reduce(
+          (catAcc, category) => catAcc + (category.exercises?.length || 0),
+          0
+        ) || 0),
+      0
+    ) || 0;
+
   return (
     <Card
       className="cursor-pointer transition-all hover:shadow-lg bg-secondary-blue-300/20 backdrop-blur-lg border-white/20 hover:border-primary-green-500/30 text-white"
@@ -41,15 +56,11 @@ export function WorkoutCard({ plan, onClick }: WorkoutCardProps) {
         <div className="flex items-center gap-4 text-sm text-gray-300">
           <div className="flex items-center gap-1">
             <Calendar className="w-4 h-4" />
-            {plan.durationInDays} days
+            {daysWithWorkouts} days
           </div>
           <div className="flex items-center gap-1">
             <Timer className="w-4 h-4" />
-            {plan.workouts.reduce(
-              (acc, workout) => acc + workout.exercises.length,
-              0
-            )}{' '}
-            exercises
+            {totalExercises} exercises
           </div>
         </div>
       </CardContent>

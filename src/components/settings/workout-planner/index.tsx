@@ -42,12 +42,14 @@ export function WorkoutPlanner() {
 
   const handleUpdatePlan = (updatedPlan: WorkoutPlan) => {
     if (plans === null) return;
-    setPlans(plans.map((p) => (p.id === updatedPlan.id ? updatedPlan : p)));
+    setPlans(
+      plans.map((p) => (p.gymId === updatedPlan.gymId ? updatedPlan : p))
+    );
   };
 
-  const handleDeletePlan = (planId: string) => {
+  const handleDeletePlan = (planId: number) => {
     if (plans === null) return;
-    setPlans(plans.filter((p) => p.id !== planId));
+    setPlans(plans.filter((p) => p.gymId !== planId));
     closeSheet();
   };
 
@@ -76,9 +78,9 @@ export function WorkoutPlanner() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {plans.map((plan) => (
+          {plans.map((plan, index) => (
             <WorkoutCard
-              key={plan.id}
+              key={index}
               plan={plan}
               onClick={() => {
                 setSelectedPlan(plan);

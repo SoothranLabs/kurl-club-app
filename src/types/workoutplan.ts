@@ -1,67 +1,59 @@
-export type MuscleGroup =
-  | 'Chest'
-  | 'Back'
-  | 'Legs'
-  | 'Shoulders'
-  | 'Biceps'
-  | 'Triceps'
-  | 'Core'
-  | 'Custom';
+export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
 
 export interface Exercise {
-  id: string;
   name: string;
   sets: number;
   reps: number;
-  muscleGroup: MuscleGroup;
-  isCustom?: boolean;
+}
+
+export interface Category {
+  category: string;
+  exercises: Exercise[];
 }
 
 export interface DayPlan {
   day: string;
-  duration: number;
-  exercises: Exercise[];
+  categories: Category[];
 }
 
 export interface WorkoutPlan {
-  id: string;
   gymId: number;
   planName: string;
   description: string;
-  durationInDays: number;
-  difficultyLevel: 'beginner' | 'intermediate' | 'advanced';
+  duration: number;
+  difficultyLevel: DifficultyLevel;
   isDefault: boolean;
   workouts: DayPlan[];
 }
 
-export const MUSCLE_GROUPS: MuscleGroup[] = [
-  'Chest',
-  'Back',
-  'Legs',
-  'Shoulders',
-  'Biceps',
-  'Triceps',
-  'Core',
-  'Custom',
+export const MUSCLE_GROUPS: string[] = [
+  'chest',
+  'back',
+  'legs',
+  'shoulders',
+  'biceps',
+  'triceps',
+  'core',
+  'custom',
 ];
 
-export const DEFAULT_EXERCISES: Record<MuscleGroup, string[]> = {
-  Chest: ['Bench Press', 'Incline Press', 'Dumbbell Flies', 'Push-Ups'],
-  Back: ['Pull-Ups', 'Bent Over Rows', 'Lat Pulldowns', 'Deadlifts'],
-  Legs: ['Squats', 'Leg Press', 'Lunges', 'Calf Raises'],
-  Shoulders: ['Overhead Press', 'Lateral Raises', 'Front Raises', 'Face Pulls'],
-  Biceps: [
+export const DEFAULT_EXERCISES: Record<string, string[]> = {
+  chest: ['Bench Press', 'Incline Press', 'Dumbbell Flies', 'Push-Ups'],
+  back: ['Pull-Ups', 'Bent Over Rows', 'Lat Pulldowns', 'Deadlifts'],
+  legs: ['Squats', 'Leg Press', 'Lunges', 'Calf Raises'],
+  shoulders: ['Overhead Press', 'Lateral Raises', 'Front Raises', 'Face Pulls'],
+  biceps: [
     'Barbell Curls',
     'Hammer Curls',
     'Preacher Curls',
     'Concentration Curls',
   ],
-  Triceps: [
+  triceps: [
     'Tricep Pushdowns',
     'Skull Crushers',
     'Diamond Push-Ups',
     'Overhead Extensions',
   ],
-  Core: ['Planks', 'Crunches', 'Russian Twists', 'Leg Raises'],
-  Custom: [],
+  core: ['Planks', 'Crunches', 'Russian Twists', 'Leg Raises'],
+  custom: [],
 };
