@@ -6,6 +6,7 @@ import {
   MUSCLE_GROUPS,
   DEFAULT_EXERCISES,
 } from '@/types/workoutplan';
+import { KAi } from '@/components/icons';
 import { KSelect } from '@/components/form/k-select';
 
 interface AddExerciseProps {
@@ -49,44 +50,52 @@ export function AddExercise({ onAddExercise }: AddExerciseProps) {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="w-full flex items-center justify-between">
-        <div>
-          <KSelect
-            label="Muscle Group"
-            value={selectedMuscleGroup}
-            onValueChange={(value) => setSelectedMuscleGroup(value)}
-            options={MUSCLE_GROUPS.map((group) => ({
-              label: group.charAt(0).toUpperCase() + group.slice(1),
-              value: group,
-            }))}
-            className="w-[180px]"
-          />
-        </div>
-        <div>
-          <KSelect
-            label="Exercise"
-            value=""
-            onValueChange={(value) =>
-              handleAddExercise(
-                value,
-                selectedMuscleGroup,
-                customExercises[selectedMuscleGroup]?.includes(value)
-              )
-            }
-            options={[
-              ...new Set([
-                ...(DEFAULT_EXERCISES[selectedMuscleGroup] || []),
-                ...(customExercises[selectedMuscleGroup] || []),
-              ]),
-            ].map((exercise) => ({
-              label: exercise,
-              value: exercise,
-            }))}
-            className="w-[180px]"
-          />
+    <>
+      <div className="flex items-center justify-between mb-4">
+        <h2>Schedule</h2>
+        <button>
+          <KAi />
+        </button>
+      </div>
+      <div className="space-y-4">
+        <div className="w-full flex items-center justify-between">
+          <div>
+            <KSelect
+              label="Muscle Group"
+              value={selectedMuscleGroup}
+              onValueChange={(value) => setSelectedMuscleGroup(value)}
+              options={MUSCLE_GROUPS.map((group) => ({
+                label: group.charAt(0).toUpperCase() + group.slice(1),
+                value: group,
+              }))}
+              className="w-[180px]"
+            />
+          </div>
+          <div>
+            <KSelect
+              label="Exercise"
+              value=""
+              onValueChange={(value) =>
+                handleAddExercise(
+                  value,
+                  selectedMuscleGroup,
+                  customExercises[selectedMuscleGroup]?.includes(value)
+                )
+              }
+              options={[
+                ...new Set([
+                  ...(DEFAULT_EXERCISES[selectedMuscleGroup] || []),
+                  ...(customExercises[selectedMuscleGroup] || []),
+                ]),
+              ].map((exercise) => ({
+                label: exercise,
+                value: exercise,
+              }))}
+              className="w-[180px]"
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

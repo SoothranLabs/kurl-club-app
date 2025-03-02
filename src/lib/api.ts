@@ -53,7 +53,7 @@ export const api = {
   },
   post: async <TResponse>(
     url: string,
-    data?: Record<string, unknown> | FormData,
+    data?: Record<string, unknown> | object | FormData,
     options?: RequestInit
   ) => {
     const isFormData = data instanceof FormData;
@@ -70,7 +70,7 @@ export const api = {
   },
   put: async <TResponse>(
     url: string,
-    data?: Record<string, unknown> | FormData,
+    data?: Record<string, unknown> | object | FormData,
     options?: RequestInit
   ) => {
     const isFormData = data instanceof FormData;

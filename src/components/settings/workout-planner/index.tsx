@@ -1,61 +1,79 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Plus } from 'lucide-react';
 
 import type { WorkoutPlan } from '@/types/workoutplan';
 import { useSheet } from '@/hooks/use-sheet';
+import { useWorkoutPlans } from '@/hooks/use-workout-plan';
+import { useGymBranch } from '@/providers/gym-branch-provider';
 
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { WorkoutCard } from './workout-card';
 import { WorkoutPlanSheet } from './workout-plan-sheet';
 
 export function WorkoutPlanner() {
-  const [plans, setPlans] = useState<WorkoutPlan[] | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<WorkoutPlan | null>(null);
   const { isOpen, openSheet, closeSheet } = useSheet();
-
-  // Load plans from localStorage (client-side only)
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedPlans = localStorage.getItem('workoutplans');
-      setPlans(savedPlans ? JSON.parse(savedPlans) : []);
-    }
-  }, []);
-
-  // Update localStorage when plans change (client-side only)
-  useEffect(() => {
-    if (typeof window !== 'undefined' && plans !== null) {
-      localStorage.setItem('workoutplans', JSON.stringify(plans));
-    }
-  }, [plans]);
+  const { gymBranch } = useGymBranch();
+  const { plans, isLoading, createPlan, updatePlan, deletePlan } =
+    useWorkoutPlans();
 
   const handleCreatePlan = () => {
+    if (!gymBranch?.gymId) {
+      return;
+    }
     setSelectedPlan(null);
     openSheet();
   };
 
   const handleSaveNewPlan = (newPlan: WorkoutPlan) => {
-    setPlans((prev) => (prev ? [...prev, newPlan] : [newPlan]));
-    openSheet();
-  };
-
-  const handleUpdatePlan = (updatedPlan: WorkoutPlan) => {
-    if (plans === null) return;
-    setPlans(
-      plans.map((p) => (p.gymId === updatedPlan.gymId ? updatedPlan : p))
-    );
-  };
-
-  const handleDeletePlan = (planId: number) => {
-    if (plans === null) return;
-    setPlans(plans.filter((p) => p.gymId !== planId));
+    if (!gymBranch?.gymId) return;
+    const planWithGymId = {
+      ...newPlan,
+      gymId: gymBranch.gymId,
+    };
+    createPlan(planWithGymId);
     closeSheet();
   };
 
-  if (plans === null) {
+  const handleUpdatePlan = (updatedPlan: WorkoutPlan) => {
+    if (!gymBranch?.gymId) return;
+    const updatedPlanWithGymId = {
+      ...updatedPlan,
+      gymId: gymBranch.gymId,
+    };
+    updatePlan({ id: updatedPlan.planId, plan: updatedPlanWithGymId });
+  };
+
+  const handleDeletePlan = (planId: number) => {
+    deletePlan(planId);
+    closeSheet();
+  };
+
+  if (isLoading) {
     return (
-      <p className="text-center text-gray-400">Loading workout plans...</p>
+      <div className="min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <Skeleton className="h-10 w-64 bg-secondary-blue-300/20" />
+              <Skeleton className="h-5 w-96 mt-2 bg-secondary-blue-300/20" />
+            </div>
+            <Skeleton className="h-10 w-32 bg-secondary-blue-300/20" />
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <Skeleton
+                key={i}
+                className="h-48 rounded-lg bg-secondary-blue-300/20"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
     );
   }
 
@@ -78,16 +96,24 @@ export function WorkoutPlanner() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {plans.map((plan, index) => (
-            <WorkoutCard
-              key={index}
-              plan={plan}
-              onClick={() => {
-                setSelectedPlan(plan);
-                openSheet();
-              }}
-            />
-          ))}
+          {plans.length === 0 ? (
+            <div className="col-span-full text-center py-10">
+              <p className="text-gray-400">
+                No workout plans found. Create your first plan!
+              </p>
+            </div>
+          ) : (
+            plans.map((plan, index) => (
+              <WorkoutCard
+                key={index}
+                plan={plan}
+                onClick={() => {
+                  setSelectedPlan(plan);
+                  openSheet();
+                }}
+              />
+            ))
+          )}
         </div>
 
         <WorkoutPlanSheet

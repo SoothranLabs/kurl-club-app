@@ -16,9 +16,6 @@ interface WorkoutCardProps {
 }
 
 export function WorkoutCard({ plan, onClick }: WorkoutCardProps) {
-  // Calculate the number of days with workouts
-  const daysWithWorkouts = plan.workouts?.length || 0;
-
   // Calculate the total number of exercises safely
   const totalExercises =
     plan.workouts?.reduce(
@@ -56,7 +53,7 @@ export function WorkoutCard({ plan, onClick }: WorkoutCardProps) {
         <div className="flex items-center gap-4 text-sm text-gray-300">
           <div className="flex items-center gap-1">
             <Calendar className="w-4 h-4" />
-            {daysWithWorkouts} days
+            {plan.duration} days
           </div>
           <div className="flex items-center gap-1">
             <Timer className="w-4 h-4" />

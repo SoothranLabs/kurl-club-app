@@ -18,6 +18,7 @@ export interface DayPlan {
 
 export interface WorkoutPlan {
   gymId: number;
+  planId: number;
   planName: string;
   description: string;
   duration: number;

@@ -1,4 +1,4 @@
-import { X } from 'lucide-react';
+import { Dumbbell, X } from 'lucide-react';
 
 import type { DayPlan, Exercise } from '@/types/workoutplan';
 import { Button } from '@/components/ui/button';
@@ -25,7 +25,8 @@ export function ExerciseList({
     <div className="space-y-6">
       {dayPlan.categories.map((category) => (
         <div key={category.category} className="space-y-3">
-          <h3 className="text-lg font-semibold capitalize">
+          <h3 className="font-semibold capitalize inline-flex items-center gap-2">
+            <Dumbbell size={16} />
             {category.category}
           </h3>
           {category.exercises.map((exercise, index) => (

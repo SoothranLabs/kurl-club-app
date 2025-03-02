@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
 
 import { KInput } from '@/components/form/k-input';
 import { KTextarea } from '@/components/form/k-textarea';
@@ -17,7 +18,9 @@ import { KSelect } from '@/components/form/k-select';
 interface OverviewProps {
   plan: WorkoutPlan;
   isEditMode: boolean;
+  isNewPlan?: boolean;
   onUpdatePlan: (updatedPlan: WorkoutPlan) => void;
+  onImmediateUpdate: (updatedPlan: WorkoutPlan) => void;
   onDelete: () => void;
   onEdit: () => void;
   onShowMembers: () => void;
@@ -26,15 +29,27 @@ interface OverviewProps {
 export function Overview({
   plan,
   isEditMode,
+  isNewPlan = false,
   onUpdatePlan,
+  onImmediateUpdate,
   onEdit,
   onShowMembers,
 }: OverviewProps) {
+  const handleDefaultChange = (checked: boolean) => {
+    const updatedPlan = { ...plan, isDefault: checked };
+
+    if (isNewPlan) {
+      onUpdatePlan(updatedPlan);
+    } else {
+      onImmediateUpdate(updatedPlan);
+    }
+  };
+
   const renderOverviewCard = (data: WorkoutPlan) => (
     <Card className="w-full bg-secondary-blue-500 border-secondary-blue-600 text-white rounded-md">
       <CardHeader className="space-y-3">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl leading-tight font-normal">{data.planName}</h1>
+          <h1 className="text-xl leading-tight font-medium">{data.planName}</h1>
           <button
             className="text-zinc-400 hover:text-primary-green-200 transition-colors"
             onClick={onEdit}
@@ -104,7 +119,7 @@ export function Overview({
             <Clock className="w-6 h-6 text-primary-blue-200 shrink-0" />
             <div>
               <p className="text-primary-blue-50 text-sm">Duration</p>
-              <p className="text-sm text-white">{data.duration} Minutes</p>
+              <p className="text-sm text-white">{data.duration} Days</p>
             </div>
           </div>
         </div>
@@ -112,74 +127,78 @@ export function Overview({
     </Card>
   );
 
-  return isEditMode ? (
-    <div className="space-y-4">
-      <KInput
-        label="Name"
-        placeholder=" "
-        value={plan.planName}
-        onChange={(e) => onUpdatePlan({ ...plan, planName: e.target.value })}
-        disabled={!isEditMode}
-        mandetory
-      />
-
-      <KTextarea
-        label="Description"
-        value={plan.description}
-        onChange={(e) => onUpdatePlan({ ...plan, description: e.target.value })}
-        disabled={!isEditMode}
-      />
-
-      <div className="flex flex-col md:flex-row gap-4">
-        <KSelect
-          label="Difficulty level"
-          value={plan.difficultyLevel}
-          onValueChange={(value) =>
-            onUpdatePlan({
-              ...plan,
-              difficultyLevel: value as WorkoutPlan['difficultyLevel'],
-            })
-          }
-          options={[
-            { label: 'Beginner', value: 'beginner' },
-            { label: 'Intermediate', value: 'intermediate' },
-            { label: 'Advanced', value: 'advanced' },
-          ]}
-          className="!border-white !rounded-lg"
-        />
-
-        <KInput
-          label="Duration (minutes)"
-          type="number"
-          placeholder={undefined}
-          value={plan.duration}
-          onChange={(e) =>
-            onUpdatePlan({
-              ...plan,
-              duration: Number.parseInt(e.target.value),
-            })
-          }
-          disabled={!isEditMode}
-          mandetory
-        />
+  return (
+    <>
+      <div className="flex items-center justify-between mb-4">
+        <h2>Basic details</h2>
+        <div className="flex items-center gap-2">
+          <span>Set as default</span>
+          <Switch
+            checked={plan.isDefault}
+            onCheckedChange={handleDefaultChange}
+            className="data-[state=checked]:bg-primary-green-500"
+          />
+        </div>
       </div>
+      {isEditMode ? (
+        <div className="space-y-4">
+          <KInput
+            label="Name"
+            placeholder=" "
+            value={plan.planName}
+            onChange={(e) =>
+              onUpdatePlan({ ...plan, planName: e.target.value })
+            }
+            disabled={!isEditMode}
+            mandetory
+          />
 
-      <div className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          id="isDefault"
-          checked={plan.isDefault}
-          onChange={(e) =>
-            onUpdatePlan({ ...plan, isDefault: e.target.checked })
-          }
-          disabled={!isEditMode}
-        />
-        <label htmlFor="isDefault" className="text-sm text-white">
-          Set as default plan
-        </label>
-      </div>
-    </div>
-  ) : (
-    <>{renderOverviewCard(plan)}</>
+          <KTextarea
+            label="Description"
+            value={plan.description}
+            onChange={(e) =>
+              onUpdatePlan({ ...plan, description: e.target.value })
+            }
+            disabled={!isEditMode}
+          />
+
+          <div className="flex flex-col md:flex-row gap-4">
+            <KSelect
+              label="Difficulty level"
+              value={plan.difficultyLevel}
+              onValueChange={(value) =>
+                onUpdatePlan({
+                  ...plan,
+                  difficultyLevel: value as WorkoutPlan['difficultyLevel'],
+                })
+              }
+              options={[
+                { label: 'Beginner', value: 'beginner' },
+                { label: 'Intermediate', value: 'intermediate' },
+                { label: 'Advanced', value: 'advanced' },
+              ]}
+              className="!border-white !rounded-lg"
+            />
+
+            <KInput
+              label="Duration (days)"
+              type="number"
+              placeholder={undefined}
+              value={plan.duration}
+              onChange={(e) =>
+                onUpdatePlan({
+                  ...plan,
+                  duration: Number.parseInt(e.target.value),
+                })
+              }
+              disabled={!isEditMode}
+              mandetory
+            />
+          </div>
+        </div>
+      ) : (
+        <>{renderOverviewCard(plan)}</>
+      )}
+    </>
   );
 }

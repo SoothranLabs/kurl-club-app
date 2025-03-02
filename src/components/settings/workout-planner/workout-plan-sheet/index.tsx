@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Plus } from 'lucide-react';
 
 import { useAppDialog } from '@/hooks/use-app-dialog';
 import type { WorkoutPlan, Exercise } from '@/types/workoutplan';
@@ -23,6 +23,7 @@ interface WorkoutPlanSheetProps {
 }
 
 const DEFAULT_PLAN: WorkoutPlan = {
+  planId: 0,
   gymId: 0,
   planName: 'New Workout Plan',
   description: 'Add a description for your workout plan',
@@ -46,13 +47,19 @@ export function WorkoutPlanSheet({
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isMemberListVisible, setIsMemberListVisible] = useState(false);
+  const [showSchedule, setShowSchedule] = useState(false);
 
   const { showConfirm } = useAppDialog();
 
   useEffect(() => {
-    setEditedPlan(plan || DEFAULT_PLAN);
-    setIsEditMode(!plan);
-  }, [plan]);
+    if (isOpen) {
+      setEditedPlan(plan || DEFAULT_PLAN);
+      setIsEditMode(!plan);
+      setSelectedDay(null);
+      setIsMemberListVisible(false);
+      setShowSchedule(!!plan);
+    }
+  }, [plan, isOpen]);
 
   const handleSavePlan = () => {
     if (plan) {
@@ -72,7 +79,7 @@ export function WorkoutPlanSheet({
       confirmLabel: 'Yes, delete plan',
       onConfirm: () => {
         if (plan) {
-          onDelete(plan.gymId);
+          onDelete(plan.planId);
         }
         closeSheet();
       },
@@ -193,7 +200,19 @@ export function WorkoutPlanSheet({
     });
   };
 
-  // ... (rest of the component remains the same)
+  const handleCancel = () => {
+    if (!plan) {
+      closeSheet();
+    } else {
+      setEditedPlan(plan);
+      setIsEditMode(false);
+    }
+  };
+
+  const handleImmediateUpdate = (updatedPlan: WorkoutPlan) => {
+    onUpdate(updatedPlan);
+    setEditedPlan(updatedPlan);
+  };
 
   const sheetTitle = (() => {
     if (isMemberListVisible) {
@@ -272,10 +291,7 @@ export function WorkoutPlanSheet({
           <>
             <Button
               type="button"
-              onClick={() => {
-                setEditedPlan(plan || DEFAULT_PLAN);
-                setIsEditMode(false);
-              }}
+              onClick={handleCancel}
               variant="secondary"
               className="h-[46px] min-w-[90px]"
             >
@@ -305,7 +321,7 @@ export function WorkoutPlanSheet({
       {isMemberListVisible ? (
         <div>Member view</div>
       ) : selectedDay ? (
-        <div className="mt-6 space-y-6">
+        <div className="space-y-6">
           {isEditMode && (
             <AddExercise
               onAddExercise={(exercise, category) =>
@@ -336,21 +352,34 @@ export function WorkoutPlanSheet({
           />
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-5">
           <Overview
             plan={editedPlan}
             isEditMode={isEditMode}
+            isNewPlan={!plan}
             onUpdatePlan={setEditedPlan}
+            onImmediateUpdate={handleImmediateUpdate}
             onDelete={handleDeletePlan}
             onEdit={() => setIsEditMode(!isEditMode)}
             onShowMembers={() => setIsMemberListVisible(true)}
           />
 
-          <Schedule
-            plan={editedPlan}
-            isEditMode={isEditMode}
-            onEditDay={setSelectedDay}
-          />
+          {!plan && !showSchedule ? (
+            <Button
+              variant="outline"
+              className="h-10"
+              onClick={() => setShowSchedule(true)}
+            >
+              <Plus className=" h-4 w-4 text-primary-green-300" />
+              Add Exercise
+            </Button>
+          ) : (
+            <Schedule
+              plan={editedPlan}
+              isEditMode={isEditMode}
+              onEditDay={setSelectedDay}
+            />
+          )}
         </div>
       )}
     </KSheet>
