@@ -120,6 +120,13 @@ export function searchItems<T extends Record<string, unknown>>(
   });
 }
 
+/**
+ * * Extracts and returns the initials from a given name.
+ * If the name is empty or undefined, returns an empty string.
+ *
+ * @param name - The full name to extract initials from.
+ * @returns The uppercase initials of the name.
+ */
 export const getInitials = (name?: string): string => {
   return name
     ? name
@@ -157,6 +164,14 @@ export const getGreeting = (): string => {
   }
 };
 
+/**
+ * Converts a Base64 string into a File object.
+ * Useful for handling file uploads from Base64-encoded images.
+ *
+ * @param base64String - The Base64-encoded image data.
+ * @param fileName - The desired name for the resulting File object.
+ * @returns A File object representing the image.
+ */
 export function base64ToFile(base64String: string, fileName: string): File {
   const byteCharacters = atob(base64String);
   const byteNumbers = new Array(byteCharacters.length);
@@ -168,15 +183,45 @@ export function base64ToFile(base64String: string, fileName: string): File {
   return new File([blob], fileName, { type: 'image/png' });
 }
 
+/**
+ * Returns the corresponding color classes for a given difficulty level.
+ * Used for styling elements based on difficulty.
+ *
+ * @param level - The difficulty level ('beginner', 'intermediate', 'advanced').
+ * @returns A string containing Tailwind CSS classes for background and text color.
+ */
 export const getDifficultyColor = (level: string) => {
   switch (level) {
     case 'beginner':
-      return 'bg-green-500/10 text-green-500';
+      return 'bg-neutral-green-500/10 border-neutral-green-500';
     case 'intermediate':
-      return 'bg-yellow-500/10 text-yellow-500';
+      return 'bg-neutral-ochre-600/10 border-neutral-ochre-500';
     case 'advanced':
-      return 'bg-red-500/10 text-red-500';
+      return 'bg-alert-red-500/10 border-alert-red-500';
     default:
       return 'bg-gray-500/10 text-gray-500';
   }
+};
+
+/**
+ * Returns a valid image source for a profile picture.
+ * Handles Base64 strings, data URLs, File objects, and provides a fallback if null.
+ *
+ * @param profilePicture - The profile picture as a Base64 string, data URL, File, or null.
+ * @param fallback - A fallback image URL if the profile picture is null.
+ * @returns A valid image source URL.
+ */
+export const getProfilePictureSrc = (
+  profilePicture: string | File | null,
+  fallback: string
+) => {
+  if (!profilePicture) return fallback;
+
+  if (typeof profilePicture === 'string') {
+    return profilePicture.startsWith('data:image')
+      ? profilePicture
+      : `data:image/png;base64,${profilePicture}`;
+  }
+
+  return URL.createObjectURL(profilePicture);
 };

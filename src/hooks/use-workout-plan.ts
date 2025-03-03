@@ -50,6 +50,7 @@ export function useWorkoutPlans() {
         queryKey: ['workoutPlans', gymBranch?.gymId],
       });
       toast.success('Workout plan created successfully');
+      return true;
     },
     onError: (err) => {
       showAlert({
@@ -58,6 +59,7 @@ export function useWorkoutPlans() {
           err instanceof Error ? err.message : 'An unknown error occurred',
         variant: 'destructive',
       });
+      return false;
     },
   });
 
@@ -77,6 +79,7 @@ export function useWorkoutPlans() {
         queryKey: ['workoutPlans', gymBranch?.gymId],
       });
       toast.success('Workout plan updated successfully');
+      return true;
     },
     onError: (err) => {
       showAlert({
@@ -85,6 +88,7 @@ export function useWorkoutPlans() {
           err instanceof Error ? err.message : 'An unknown error occurred',
         variant: 'destructive',
       });
+      return false;
     },
   });
 
@@ -96,6 +100,7 @@ export function useWorkoutPlans() {
         queryKey: ['workoutPlans', gymBranch?.gymId],
       });
       toast.success('Workout plan deleted successfully');
+      return true;
     },
     onError: (err) => {
       showAlert({
@@ -104,6 +109,7 @@ export function useWorkoutPlans() {
           err instanceof Error ? err.message : 'An unknown error occurred',
         variant: 'destructive',
       });
+      return false;
     },
   });
 
@@ -111,9 +117,9 @@ export function useWorkoutPlans() {
     plans,
     isLoading,
     error,
-    createPlan: createPlanMutation.mutate,
-    updatePlan: updatePlanMutation.mutate,
-    deletePlan: deletePlanMutation.mutate,
+    createPlan: createPlanMutation.mutateAsync,
+    updatePlan: updatePlanMutation.mutateAsync,
+    deletePlan: deletePlanMutation.mutateAsync,
     isCreating: createPlanMutation.isPending,
     isUpdating: updatePlanMutation.isPending,
     isDeleting: deletePlanMutation.isPending,

@@ -5,18 +5,23 @@ import { KBadgeCheck, KBadgeClose, KBadgeFlag, KBadgeMinus } from '../icons';
 interface FeeStatusBadgeProps {
   status?: 'paid' | 'partially_paid' | 'unpaid';
   days?: number;
+  showIcon?: boolean;
+  className?: string;
 }
 
 export const FeeStatusBadge = ({
   status = 'paid',
   days,
+  showIcon = true,
+  className,
 }: FeeStatusBadgeProps) => {
-  const isLongDay = days && days > 14 ? true : false;
+  const isLongDay = days && days > 14;
 
   const getBadgeStyles = () => {
     if (days) {
-      if (isLongDay) return 'bg-alert-red-500/10 border-alert-red-500';
-      if (!isLongDay) return 'bg-semantic-blue-500/10 border-semantic-blue-500';
+      return isLongDay
+        ? 'bg-alert-red-500/10 border-alert-red-500'
+        : 'bg-semantic-blue-500/10 border-semantic-blue-500';
     }
 
     switch (status) {
@@ -32,12 +37,17 @@ export const FeeStatusBadge = ({
   };
 
   const getIcon = () => {
-    if (days)
+    if (!showIcon) return null;
+
+    if (days) {
       return (
         <KBadgeFlag
-          className={`${isLongDay ? 'text-alert-red-500' : 'text-semantic-blue-400'}`}
+          className={
+            isLongDay ? 'text-alert-red-500' : 'text-semantic-blue-400'
+          }
         />
       );
+    }
 
     switch (status) {
       case 'paid':
@@ -46,27 +56,24 @@ export const FeeStatusBadge = ({
         return <KBadgeMinus />;
       case 'unpaid':
         return <KBadgeClose />;
+      default:
+        return null;
     }
   };
 
   return (
     <Badge
       variant="outline"
-      className={cn('rounded-[35px] h-[30px] gap-2', getBadgeStyles())}
+      className={cn(
+        'rounded-[35px] h-[30px] gap-2',
+        getBadgeStyles(),
+        className
+      )}
     >
       {getIcon()}
-      {(() => {
-        if (days) return `${days} days`;
-
-        switch (status) {
-          case 'paid':
-            return 'Paid';
-          case 'partially_paid':
-            return 'Partially paid';
-          default:
-            return 'Unpaid';
-        }
-      })()}
+      {days
+        ? `${days} days`
+        : status.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
     </Badge>
   );
 };

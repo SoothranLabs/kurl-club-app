@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, Plus } from 'lucide-react';
 
+import { useGymMembers } from '@/services/member';
 import { useAppDialog } from '@/hooks/use-app-dialog';
+import { useGymBranch } from '@/providers/gym-branch-provider';
 import type { WorkoutPlan, Exercise } from '@/types/workoutplan';
 
 import { Button } from '@/components/ui/button';
@@ -12,6 +14,7 @@ import { Overview } from './overview';
 import { Schedule } from './schedule';
 import { AddExercise } from './add-exercise';
 import { ExerciseList } from './exercise-list';
+import { MemberList } from './member-list';
 
 interface WorkoutPlanSheetProps {
   plan: WorkoutPlan | null;
@@ -50,6 +53,13 @@ export function WorkoutPlanSheet({
   const [showSchedule, setShowSchedule] = useState(false);
 
   const { showConfirm } = useAppDialog();
+
+  const { gymBranch } = useGymBranch();
+  const { data: members = [] } = useGymMembers(gymBranch?.gymId || 0);
+
+  const planMembers = members.filter(
+    (member) => member.workoutPlan === editedPlan.planName
+  );
 
   useEffect(() => {
     if (isOpen) {
@@ -319,7 +329,7 @@ export function WorkoutPlanSheet({
       footer={sheetFooter}
     >
       {isMemberListVisible ? (
-        <div>Member view</div>
+        <MemberList members={planMembers} />
       ) : selectedDay ? (
         <div className="space-y-6">
           {isEditMode && (
@@ -355,6 +365,7 @@ export function WorkoutPlanSheet({
         <div className="space-y-5">
           <Overview
             plan={editedPlan}
+            planMembers={planMembers}
             isEditMode={isEditMode}
             isNewPlan={!plan}
             onUpdatePlan={setEditedPlan}

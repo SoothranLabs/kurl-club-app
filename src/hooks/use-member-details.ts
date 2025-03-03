@@ -30,8 +30,12 @@ export function useMemberDetails(userId: string | number) {
       const formData = new FormData();
 
       for (const key in details) {
-        const formKey = key === 'fullAddress' ? 'address' : key;
+        let formKey = key === 'fullAddress' ? 'address' : key;
         const value = details[key as keyof MemberDetails];
+
+        if (formKey === 'workoutPlan') {
+          formKey = 'workoutPlanId';
+        }
 
         if (value !== undefined && value !== null) {
           if (formKey === 'profilePicture' && value instanceof File) {

@@ -3,7 +3,12 @@
 import { Clock, PenLine, TrendingUp, User2 } from 'lucide-react';
 
 import type { WorkoutPlan } from '@/types/workoutplan';
-import { getDifficultyColor } from '@/lib/utils';
+import { Member } from '@/types/members';
+import {
+  getDifficultyColor,
+  getInitials,
+  getProfilePictureSrc,
+} from '@/lib/utils';
 
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -17,6 +22,7 @@ import { KSelect } from '@/components/form/k-select';
 
 interface OverviewProps {
   plan: WorkoutPlan;
+  planMembers?: Member[];
   isEditMode: boolean;
   isNewPlan?: boolean;
   onUpdatePlan: (updatedPlan: WorkoutPlan) => void;
@@ -28,6 +34,7 @@ interface OverviewProps {
 
 export function Overview({
   plan,
+  planMembers = [],
   isEditMode,
   isNewPlan = false,
   onUpdatePlan,
@@ -67,27 +74,39 @@ export function Overview({
             <User2 className="w-6 h-6 text-primary-blue-200 shrink-0" />
             <div>
               <p className="text-primary-blue-50 text-sm">Member strength</p>
-              <div className="flex items-center">
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={onShowMembers}
+              >
                 <div className="flex -space-x-2">
-                  {[1, 2, 3].map((i) => (
+                  {planMembers.slice(0, 3).map((member) => (
                     <Avatar
-                      key={i}
-                      className="border-[1px] border-neutral-50 w-5 h-5"
+                      key={member.id}
+                      className="border-[1px] border-neutral-300 w-5 h-5"
                     >
+                      <AvatarFallback className="bg-primary-blue-400 text-[10px]">
+                        {getInitials(member.name)}
+                      </AvatarFallback>
                       <AvatarImage
-                        src={`https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=3276&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
-                        alt={`Member ${i}`}
+                        src={getProfilePictureSrc(
+                          member.profilePicture,
+                          member.avatar
+                        )}
+                        alt={member.name}
                       />
-                      <AvatarFallback>M{i}</AvatarFallback>
                     </Avatar>
                   ))}
                 </div>
-                <span
-                  className="ml-1 text-sm text-semantic-blue-500 underline cursor-pointer"
-                  onClick={onShowMembers}
-                >
-                  + 27 others
-                </span>
+                {planMembers.length > 3 && (
+                  <span className="ml-1 text-sm text-semantic-blue-500 underline">
+                    + {planMembers.length - 3} others
+                  </span>
+                )}
+                {planMembers.length === 0 && (
+                  <span className="text-sm text-gray-400">
+                    No members assigned
+                  </span>
+                )}
               </div>
             </div>
           </div>

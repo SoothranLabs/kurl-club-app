@@ -28,29 +28,51 @@ export function WorkoutPlanner() {
     openSheet();
   };
 
-  const handleSaveNewPlan = (newPlan: WorkoutPlan) => {
+  const handleSaveNewPlan = async (newPlan: WorkoutPlan) => {
     if (!gymBranch?.gymId) return;
     const planWithGymId = {
       ...newPlan,
       gymId: gymBranch.gymId,
     };
-    createPlan(planWithGymId);
-    closeSheet();
+    const success = await createPlan(planWithGymId);
+    if (success) {
+      closeSheet();
+    }
   };
 
-  const handleUpdatePlan = (updatedPlan: WorkoutPlan) => {
+  const handleUpdatePlan = async (updatedPlan: WorkoutPlan) => {
     if (!gymBranch?.gymId) return;
     const updatedPlanWithGymId = {
       ...updatedPlan,
       gymId: gymBranch.gymId,
     };
-    updatePlan({ id: updatedPlan.planId, plan: updatedPlanWithGymId });
+    const success = await updatePlan({
+      id: updatedPlan.planId,
+      plan: updatedPlanWithGymId,
+    });
+    if (success) {
+      if (!updatedPlan.isDefault) {
+        closeSheet();
+      }
+    }
   };
 
-  const handleDeletePlan = (planId: number) => {
-    deletePlan(planId);
-    closeSheet();
+  const handleDeletePlan = async (planId: number) => {
+    const success = await deletePlan(planId);
+    if (success) {
+      closeSheet();
+    }
   };
+
+  if (!gymBranch?.gymId) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-center text-gray-400">
+          Please select a gym to view workout plans
+        </p>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
