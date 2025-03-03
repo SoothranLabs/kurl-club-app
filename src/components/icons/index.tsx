@@ -348,3 +348,32 @@ export const KTrash: React.FC<SVGProps<SVGSVGElement>> = (props) => (
     </defs>
   </svg>
 );
+
+export const KAi: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    width="36"
+    height="36"
+    viewBox="0 0 36 36"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M17.5 3L18.3215 7.9872C19.0562 12.4477 22.5523 15.9438 27.0128 16.6785L32 17.5L27.0128 18.3215C22.5523 19.0562 19.0562 22.5523 18.3215 27.0128L17.5 32L16.6785 27.0128C15.9438 22.5523 12.4477 19.0562 7.98719 18.3215L3 17.5L7.9872 16.6785C12.4477 15.9438 15.9438 12.4477 16.6785 7.98719L17.5 3Z"
+      fill="url(#paint0_linear_3590_7452)"
+    />
+    <defs>
+      <linearGradient
+        id="paint0_linear_3590_7452"
+        x1="17.5"
+        y1="3"
+        x2="3"
+        y2="32"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#D3F702" />
+        <stop offset="1" stopColor="#7C9101" />
+      </linearGradient>
+    </defs>
+  </svg>
+);

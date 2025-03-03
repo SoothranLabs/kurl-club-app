@@ -9,10 +9,14 @@ interface KTextareaProps
 }
 
 const KTextarea = forwardRef<HTMLTextAreaElement, KTextareaProps>(
-  ({ className, label, onChange, ...props }, ref) => {
+  ({ className, label, value, defaultValue, onChange, ...props }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
-    const [hasContent, setHasContent] = useState(false);
     const localRef = useRef<HTMLTextAreaElement | null>(null);
+
+    // Ensure the floating label is positioned correctly on mount
+    const hasContent =
+      (typeof value === 'string' && value.trim().length > 0) ||
+      (typeof defaultValue === 'string' && defaultValue.trim().length > 0);
 
     // Synchronize the forwarded ref with the internal ref
     const handleRef = (node: HTMLTextAreaElement | null) => {
@@ -29,7 +33,6 @@ const KTextarea = forwardRef<HTMLTextAreaElement, KTextareaProps>(
     const handleBlur = () => setIsFocused(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setHasContent(e.target.value.trim().length > 0);
       onChange?.(e);
       adjustTextareaHeight();
     };
@@ -44,18 +47,20 @@ const KTextarea = forwardRef<HTMLTextAreaElement, KTextareaProps>(
     // Ensure the textarea resizes on initial render
     useEffect(() => {
       adjustTextareaHeight();
-    }, []);
+    }, [value, defaultValue]);
 
     return (
       <div className="relative">
         <textarea
           className={cn(
-            'k-input pt-6 pb-2 px-4 min-h-[80px] overflow-auto max-h-[80px]:',
+            'w-full pt-6 pb-2 px-4 min-h-[80px] rounded-md text-white bg-secondary-blue-500 hover:outline-secondary-blue-400 hover:outline-1 shadow-none !ring-0 hover:outline focus:outline focus:outline-1 focus:outline-primary-green-700 outline-transparent ease-in-out disabled:cursor-not-allowed text-sm disabled:opacity-50 resize-none overflow-hidden',
             isFocused || hasContent ? 'pt-6' : 'pt-3',
             className
           )}
           ref={handleRef}
           {...props}
+          value={value}
+          defaultValue={defaultValue}
           onFocus={handleFocus}
           onBlur={handleBlur}
           onChange={handleChange}

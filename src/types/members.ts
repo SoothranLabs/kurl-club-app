@@ -11,6 +11,9 @@ export type Member = {
   gender?: string;
   dob?: string;
   doj?: string;
+  workoutPlan?: string;
+  memberIdentifier?: string;
+  profilePicture: string | File | null;
 };
 
 export type MemberDetails = {

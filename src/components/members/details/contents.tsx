@@ -6,7 +6,7 @@ import InfoCard from '@/components/cards/info-card';
 import { Clock4 } from 'lucide-react';
 import { Chart } from './chart';
 import PaymentCard from './payment-card';
-import WorkoutPlanner from './planner-section';
+import PlannerSection from './planner-section';
 
 function Contents({
   memberId,
@@ -50,7 +50,7 @@ function Contents({
           }}
         />
       </div>
-      <WorkoutPlanner />
+      <PlannerSection />
     </div>
   );
 }

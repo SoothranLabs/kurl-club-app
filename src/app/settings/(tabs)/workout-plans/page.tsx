@@ -1,11 +1,11 @@
-import Contents from '@/components/settings/workout-plans/contents';
-import Header from '@/components/settings/workout-plans/header';
+'use client';
 
-export default function WorkoutPlans() {
+import { WorkoutPlanner } from '@/components/settings/workout-planner';
+
+export default function WorkoutPlanPage() {
   return (
     <div className="p-8">
-      <Header />
-      <Contents />
+      <WorkoutPlanner />
     </div>
   );
 }

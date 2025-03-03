@@ -22,18 +22,21 @@ const KInput = forwardRef<HTMLInputElement, KInputProps>(
       suffix,
       maxLength,
       onChange,
+      value,
       ...props
     },
     ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
-    const [hasContent, setHasContent] = useState(false);
+
+    const hasContent =
+      (typeof value === 'number' && !isNaN(value)) ||
+      (typeof value === 'string' && value.trim().length > 0);
 
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setHasContent(e.target.value.trim().length > 0);
       onChange?.(e);
     };
 
@@ -51,6 +54,7 @@ const KInput = forwardRef<HTMLInputElement, KInputProps>(
           aria-labelledby={`floating-label-${label.replace(/\s+/g, '-').toLowerCase()}`}
           autoComplete={props.autoComplete || 'off'}
           maxLength={maxLength}
+          value={value}
         />
         {suffix && (
           <span className="absolute right-3 top-[42%] p-1 text-primary-blue-100 text-sm font-normal leading-normal bg-secondary-blue-500">
