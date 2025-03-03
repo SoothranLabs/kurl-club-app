@@ -5,6 +5,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Eye } from 'lucide-react';
 
 import { Member } from '@/types/members';
+import { getProfilePictureSrc } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
@@ -43,7 +44,13 @@ export const columns: ColumnDef<Member>[] = [
             <AvatarFallback className="bg-primary-blue-400/70">
               {name.slice(0, 2)}
             </AvatarFallback>
-            <AvatarImage src={row.original.avatar} alt={name} />
+            <AvatarImage
+              src={getProfilePictureSrc(
+                row.original.profilePicture,
+                row.original.avatar
+              )}
+              alt={name}
+            />
           </Avatar>
           <span>{name}</span>
         </div>
