@@ -1,9 +1,9 @@
-export type Trainer = {
+export type Staff = {
   id: string;
   trainerId: string;
   name: string;
   avatar: string;
-  designation: 'Admin' | 'Trainer' | 'Regular_User';
+  designation: 'Adminstrator' | 'Trainer';
   email: string;
   phone: string;
 };

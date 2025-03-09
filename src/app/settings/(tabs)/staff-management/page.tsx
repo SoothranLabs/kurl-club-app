@@ -1,20 +1,21 @@
 'use client';
 
-import { columns } from '@/components/settings/staff-management/columns';
-import { DataTable } from '@/components/table/data-table';
-import { DataTableToolbar } from '@/components/table/data-table-toolbar';
-import { StaffsHeader } from '@/components/settings/staff-management/staff-header';
-import { useFilterableList } from '@/hooks/use-filterable-list';
 import { useSheet } from '@/hooks/use-sheet';
-import { Trainer } from '@/types';
-import { initialTrainers } from '@/lib/dummy/data';
-import { trainerFilters } from '@/lib/dummy/fiters';
+import { Staff } from '@/types';
+import { initialStaffs } from '@/lib/dummy/data';
+import { staffFilters } from '@/lib/dummy/fiters';
 import { searchItems } from '@/lib/utils';
+
+import { DataTable } from '@/components/table/data-table';
+import { useFilterableList } from '@/hooks/use-filterable-list';
+import { DataTableToolbar } from '@/components/table/data-table-toolbar';
+import { columns } from '@/components/settings/staff-management/columns';
+import { StaffsHeader } from '@/components/settings/staff-management/staff-header';
 
 export default function StaffManagement() {
   const { isOpen, openSheet, closeSheet } = useSheet();
-  const { items: trainers, search } = useFilterableList<Trainer>(
-    initialTrainers,
+  const { items: staffs, search } = useFilterableList<Staff>(
+    initialStaffs,
     searchItems
   );
 
@@ -27,12 +28,12 @@ export default function StaffManagement() {
       />
       <DataTable
         columns={columns}
-        data={trainers}
+        data={staffs}
         toolbar={(table) => (
           <DataTableToolbar
             table={table}
             onSearch={search}
-            filters={trainerFilters}
+            filters={staffFilters}
           />
         )}
       />

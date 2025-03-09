@@ -391,3 +391,64 @@ export const workoutPlanSchema = z.object({
   durationInDays: z.number().min(1, 'Duration must be at least 1 day'),
   isDefault: z.boolean(),
 });
+
+export const trainerFormSchema = z.object({
+  profilePicture: z
+    .custom<File | null>((value) => value instanceof File || value === null, {
+      message: 'Profile picture must be a file.',
+    })
+    .refine((file) => file === null || file.size <= 5 * 1024 * 1024, {
+      message: 'File size must be less than 5MB',
+    })
+    .optional(),
+  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+  phone: z
+    .string()
+    .min(10, { message: 'Phone number must be at least 10 digits.' }),
+  dob: z.preprocess(
+    (val) => (val instanceof Date ? val.toISOString() : val),
+    z.string().min(1, 'Please select Date of Birth.')
+  ),
+  doj: z.preprocess(
+    (val) => (val instanceof Date ? val.toISOString() : val),
+    z.string().min(1, 'Please select Date of Joining.')
+  ),
+  certifications: z.array(z.string()).default([]),
+  gender: z.string().min(1, 'Gender selection is required'),
+  address: z
+    .string()
+    .min(1, 'Address is required.')
+    .max(250, 'Address must not exceed 250 characters.'),
+  bloodGroup: z.string().min(1, 'Blood group selection is required'),
+});
+
+export const adminstratorFormSchema = z.object({
+  profilePicture: z
+    .custom<File | null>((value) => value instanceof File || value === null, {
+      message: 'Profile picture must be a file.',
+    })
+    .refine((file) => file === null || file.size <= 5 * 1024 * 1024, {
+      message: 'File size must be less than 5MB',
+    })
+    .optional(),
+  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+  phone: z
+    .string()
+    .min(10, { message: 'Phone number must be at least 10 digits.' }),
+  dob: z.preprocess(
+    (val) => (val instanceof Date ? val.toISOString() : val),
+    z.string().min(1, 'Please select Date of Birth.')
+  ),
+  doj: z.preprocess(
+    (val) => (val instanceof Date ? val.toISOString() : val),
+    z.string().min(1, 'Please select Date of Joining.')
+  ),
+  gender: z.string().min(1, 'Gender selection is required'),
+  address: z
+    .string()
+    .min(1, 'Address is required.')
+    .max(250, 'Address must not exceed 250 characters.'),
+  bloodGroup: z.string().min(1, 'Blood group selection is required'),
+});

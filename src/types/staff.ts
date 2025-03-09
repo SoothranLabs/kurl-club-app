@@ -1,3 +1,5 @@
+export type StaffType = 'trainer' | 'administrator';
+
 export type Staff = {
   id: string;
   gymNo: string;

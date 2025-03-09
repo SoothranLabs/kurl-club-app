@@ -6,7 +6,6 @@ import {
   Gift,
   PersonStanding,
   CircleUserRound,
-  User,
 } from 'lucide-react';
 
 export const filters = [
@@ -47,14 +46,13 @@ export const filters = [
   },
 ];
 
-export const trainerFilters = [
+export const staffFilters = [
   {
     columnId: 'designation',
     title: 'Designation',
     options: [
       { label: 'Trainer', value: 'Trainer', icon: PersonStanding },
-      { label: 'Admin', value: 'Admin', icon: CircleUserRound },
-      { label: 'Regular User', value: 'Regular_User', icon: User },
+      { label: 'Admininistrator', value: 'Admin', icon: CircleUserRound },
     ],
   },
 ];

@@ -1,12 +1,12 @@
-import { Trainer } from '@/types';
+import { Staff } from '@/types';
 
-export const initialTrainers: Trainer[] = [
+export const initialStaffs: Staff[] = [
   {
     id: '1a2b3c4d-5e6f-7g8h-9i0j-1234567890ab',
     trainerId: '#00001',
     name: 'Tony Stank',
     avatar: '/placeholder.svg?height=32&width=32',
-    designation: 'Admin',
+    designation: 'Adminstrator',
     email: 'irumbman@gmail.com',
     phone: '+91 8138 964 895',
   },
@@ -15,7 +15,7 @@ export const initialTrainers: Trainer[] = [
     trainerId: '#00002',
     name: 'Arjun Menon',
     avatar: '/placeholder.svg?height=32&width=32',
-    designation: 'Regular_User',
+    designation: 'Trainer',
     email: 'irumbman@gmail.com',
     phone: '+91 8138 964 895',
   },

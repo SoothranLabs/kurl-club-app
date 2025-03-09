@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { format, getYear, setYear } from 'date-fns';
-import { DateRange } from 'react-day-picker';
+import type { DateRange } from 'react-day-picker';
 import { calculateDateRange, cn, formatDayWithLeadingZero } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -13,10 +13,18 @@ import {
 } from '@/components/ui/popover';
 import PresetSidebar from './preset-sidebar';
 import { CalendarDays } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface KDatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
   numberOfMonths?: number;
   showPresets?: boolean;
+  showYearSelector?: boolean;
   label?: string;
   value?: DateRange | Date | undefined;
   onDateChange?: (range: DateRange | Date | undefined) => void;
@@ -31,6 +39,7 @@ interface KDatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
 export function KDatePicker({
   numberOfMonths = 1,
   showPresets = true,
+  showYearSelector = false,
   label = 'Pick a date range',
   value,
   onDateChange,
@@ -116,10 +125,7 @@ export function KDatePicker({
     if (mode === 'range') {
       return rangeDate?.from ? (
         rangeDate.to ? (
-          `${format(rangeDate.from, 'LLL dd, y')} - ${format(
-            rangeDate.to,
-            'LLL dd, y'
-          )}`
+          `${format(rangeDate.from, 'LLL dd, y')} - ${format(rangeDate.to, 'LLL dd, y')}`
         ) : (
           format(rangeDate.from, 'LLL dd, y')
         )
@@ -173,13 +179,43 @@ export function KDatePicker({
       );
     } else {
       return (
-        <Calendar
-          {...commonProps}
-          mode="single"
-          selected={singleDate}
-          onSelect={handleSingleDateSelect}
-          numberOfMonths={numberOfMonths}
-        />
+        <>
+          {showYearSelector && (
+            <div className="mb-1">
+              <Select
+                onValueChange={(year) =>
+                  setViewDate(setYear(viewDate, Number.parseInt(year)))
+                }
+                value={getYear(viewDate).toString()}
+              >
+                <SelectTrigger className="shad-select-trigger">
+                  <SelectValue placeholder="Year" />
+                </SelectTrigger>
+                <SelectContent className="shad-select-content">
+                  {Array.from(
+                    { length: endYear - startYear + 1 },
+                    (_, i) => startYear + i
+                  ).map((year) => (
+                    <SelectItem
+                      key={year}
+                      value={year.toString()}
+                      className="shad-select-item"
+                    >
+                      {year}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          <Calendar
+            {...commonProps}
+            mode="single"
+            selected={singleDate}
+            onSelect={handleSingleDateSelect}
+            numberOfMonths={numberOfMonths}
+          />
+        </>
       );
     }
   };
@@ -206,7 +242,7 @@ export function KDatePicker({
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="flex w-auto overflow-hidden rounded-xl border border-primary-blue-400 bg-secondary-blue-800 p-0"
+          className="flex w-auto overflow-hidden rounded-xl border border-primary-blue-400 bg-secondary-blue-800 p-0 pointer-events-auto"
           align="start"
         >
           {showPresets && mode === 'range' && (
@@ -220,7 +256,7 @@ export function KDatePicker({
               )}
               currentYear={getYear(viewDate).toString()}
               onYearChange={(year) =>
-                setViewDate(setYear(viewDate, parseInt(year)))
+                setViewDate(setYear(viewDate, Number.parseInt(year)))
               }
             />
           )}

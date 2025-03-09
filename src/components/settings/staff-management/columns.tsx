@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { FileText, MessageSquare, MoreVertical, Trash2 } from 'lucide-react';
 
-import { Trainer } from '@/types';
+import { Staff } from '@/types';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,7 @@ import { KSheet } from '@/components/form/k-sheet';
 
 import { ChatWindow } from '@/components/settings/staff-management/chat-window';
 
-const ActionsCell: React.FC<{ user: Trainer }> = ({ user }) => {
+const ActionsCell: React.FC<{ user: Staff }> = ({ user }) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   return (
     <>
@@ -66,7 +66,7 @@ const ActionsCell: React.FC<{ user: Trainer }> = ({ user }) => {
   );
 };
 
-export const columns: ColumnDef<Trainer>[] = [
+export const columns: ColumnDef<Staff>[] = [
   {
     accessorKey: 'trainerId',
     header: 'TrID',
