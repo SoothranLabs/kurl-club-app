@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { FileText, MessageSquare, MoreVertical, Trash2 } from 'lucide-react';
 
-import { Staff } from '@/types';
+import { Staff } from '@/types/staff';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -68,10 +68,10 @@ const ActionsCell: React.FC<{ user: Staff }> = ({ user }) => {
 
 export const columns: ColumnDef<Staff>[] = [
   {
-    accessorKey: 'trainerId',
+    accessorKey: 'identifier',
     header: 'TrID',
     cell: ({ row }) => (
-      <div className="w-[100px]">{row.getValue('trainerId')}</div>
+      <div className="w-[100px]">{row.getValue('identifier')}</div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -97,10 +97,10 @@ export const columns: ColumnDef<Staff>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'designation',
+    accessorKey: 'role',
     header: 'Designation',
     cell: ({ row }) => (
-      <div className="min-w-[100px]">{row.getValue('designation')}</div>
+      <div className="min-w-[100px]">{row.getValue('role')}</div>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -118,6 +118,20 @@ export const columns: ColumnDef<Staff>[] = [
     header: 'Phone',
     cell: ({ row }) => (
       <div className="min-w-[150px]">{row.getValue('phone')}</div>
+    ),
+  },
+  {
+    accessorKey: 'bloodGroup',
+    header: 'Blood Group',
+    cell: ({ row }) => (
+      <div className="min-w-[150px]">{row.getValue('bloodGroup')}</div>
+    ),
+  },
+  {
+    accessorKey: 'gender',
+    header: 'Gender',
+    cell: ({ row }) => (
+      <div className="min-w-[150px] capitalize">{row.getValue('gender')}</div>
     ),
   },
   {

@@ -2,17 +2,14 @@ export type StaffType = 'trainer' | 'administrator';
 
 export type Staff = {
   id: string;
-  gymNo: string;
+  staffId: string;
   name: string;
   avatar: string;
-  package: 'Monthly' | 'Yearly' | 'Special' | 'Quarterly' | 'Half_Yearly';
-  feeStatus: 'paid' | 'partially_paid' | 'unpaid';
+  role: StaffType;
   email: string;
   phone: string;
   bloodGroup: string;
   gender?: string;
-  dob?: string;
-  doj?: string;
 };
 
 export type StaffDetails = {
@@ -34,18 +31,6 @@ export type StaffDetails = {
   workoutPlan: number;
   profilePicture: string | File | null;
 };
-
-export type WorkoutPlan = 'Weight loss' | 'Muscle gain' | 'General fitness';
-export type BloodGroup =
-  | 'A+'
-  | 'B+'
-  | 'O+'
-  | 'AB+'
-  | 'A-'
-  | 'B-'
-  | 'O-'
-  | 'AB-';
-export type Trainer = 'Hafiz' | 'John' | 'Sarah';
 
 export interface EditableSectionProps {
   isEditing: boolean;

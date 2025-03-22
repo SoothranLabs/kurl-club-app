@@ -3,9 +3,13 @@ import { api } from '@/lib/api';
 import { ApiResponse } from '@/types';
 import { Staff, StaffDetails } from '@/types/staff';
 
-export const createStaff = async (data: FormData) => {
+export const createStaff = async (
+  data: FormData,
+  type: 'staff' | 'trainer'
+) => {
   try {
-    const response = await api.post('/Member', data);
+    const endpoint = type === 'staff' ? '/Staff/CreateStaff' : '/Trainer';
+    const response = await api.post(endpoint, data);
 
     return { success: 'Member created successfully!', data: response };
   } catch (error) {
@@ -20,16 +24,18 @@ export const createStaff = async (data: FormData) => {
   }
 };
 
-export const fetchGymMembers = async (gymId: number | string) => {
-  const response = await api.get<ApiResponse<Staff[]>>(`/Member/gym/${gymId}`);
+export const fetchGymStaffs = async (gymId: number | string) => {
+  const response = await api.get<ApiResponse<Staff[]>>(
+    `/Gym/GetAllStaffByGymId/${gymId}`
+  );
 
   return response.data || [];
 };
 
-export const useGymMembers = (gymId: number | string) => {
+export const useGymStaffs = (gymId: number | string) => {
   return useQuery({
     queryKey: ['gymStaffs', gymId],
-    queryFn: () => fetchGymMembers(gymId),
+    queryFn: () => fetchGymStaffs(gymId),
     enabled: !!gymId,
   });
 };

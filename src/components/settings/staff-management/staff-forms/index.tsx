@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { useGymBranch } from '@/providers/gym-branch-provider';
 import { StaffType } from '@/types/staff';
 
 import { KSelect } from '@/components/form/k-select';
@@ -11,12 +12,16 @@ import AdministratorForm from './administrator-form';
 interface StaffFormProps {
   onSuccess: () => void;
   onActiveIdChange: (activeId: string) => void;
+  onSubmittingChange: (isSubmitting: boolean) => void;
 }
 
 export default function StaffForm({
   onSuccess,
   onActiveIdChange,
+  onSubmittingChange,
 }: StaffFormProps) {
+  const { gymBranch } = useGymBranch();
+
   const [staffType, setStaffType] = useState<StaffType>('trainer');
 
   const activeId =
@@ -50,11 +55,19 @@ export default function StaffForm({
       </div>
 
       {staffType === 'trainer' && (
-        <TrainerForm onSuccess={handleSubmitSuccess} />
+        <TrainerForm
+          gymId={gymBranch?.gymId}
+          onSuccess={handleSubmitSuccess}
+          onSubmittingChange={onSubmittingChange}
+        />
       )}
 
       {staffType === 'administrator' && (
-        <AdministratorForm onSuccess={handleSubmitSuccess} />
+        <AdministratorForm
+          gymId={gymBranch?.gymId}
+          onSuccess={handleSubmitSuccess}
+          onSubmittingChange={onSubmittingChange}
+        />
       )}
     </div>
   );

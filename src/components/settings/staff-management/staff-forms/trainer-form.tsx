@@ -3,10 +3,14 @@
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { Calendar } from 'lucide-react';
 
 import { bloodGroupOptions, genderOptions } from '@/lib/constants';
+import { useGymFormOptions } from '@/hooks/use-gymform-options';
 import { trainerFormSchema } from '@/schemas';
+import { createStaff } from '@/services/staff';
 
 import { Form, FormControl } from '@/components/ui/form';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
@@ -15,39 +19,71 @@ import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
 type TrainerFormValues = z.infer<typeof trainerFormSchema>;
 
 interface TrainerFormProps {
+  gymId?: number;
   onSuccess: () => void;
+  onSubmittingChange: (isSubmitting: boolean) => void;
 }
 
-export default function TrainerForm({ onSuccess }: TrainerFormProps) {
+export default function TrainerForm({
+  gymId,
+  onSuccess,
+  onSubmittingChange,
+}: TrainerFormProps) {
+  const { formOptions } = useGymFormOptions(gymId);
+  const queryClient = useQueryClient();
+
   const form = useForm<TrainerFormValues>({
     resolver: zodResolver(trainerFormSchema),
     defaultValues: {
-      name: '',
-      email: '',
-      phone: '',
-      gender: undefined,
-      bloodGroup: undefined,
-      dob: '',
-      doj: '',
-      certifications: [],
+      ProfilePicture: null,
+      TrainerName: '',
+      Email: '',
+      Phone: '',
+      Dob: '',
+      BloodGroup: undefined,
+      Gender: undefined,
+      AddressLine: '',
+      Doj: '',
+      Certification: [],
     },
   });
 
-  const FRAMEWORKS = [
-    { value: 'next.js', label: 'Next.js' },
-    { value: 'sveltekit', label: 'SvelteKit' },
-    { value: 'nuxt.js', label: 'Nuxt.js' },
-    { value: 'remix', label: 'Remix' },
-    { value: 'astro', label: 'Astro' },
-    { value: 'wordpress', label: 'WordPress' },
-    { value: 'express.js', label: 'Express.js' },
-    { value: 'nest.js', label: 'Nest.js' },
-  ];
+  const onSubmit = async (data: TrainerFormValues) => {
+    onSubmittingChange(true);
+    const formData = new FormData();
 
-  function onSubmit(data: TrainerFormValues) {
-    console.log('Trainer form submitted:', data);
-    onSuccess();
-  }
+    Object.keys(data).forEach((key) => {
+      const value = data[key as keyof TrainerFormValues];
+
+      if (key === 'ProfilePicture' && value instanceof File) {
+        formData.append(key, value);
+      } else if (key === 'Certification' && Array.isArray(value)) {
+        const labels = value.map((cert) => cert.label);
+        formData.append(key, JSON.stringify(labels));
+      } else {
+        formData.append(key, String(value));
+      }
+    });
+
+    if (gymId) {
+      formData.append('Gymid', String(gymId));
+    }
+
+    const result = await createStaff(formData, 'trainer');
+
+    if (result.success) {
+      toast.success(result.success);
+      onSuccess();
+      form.reset();
+
+      // **Invalidate the gymStaffs query to refetch data**
+      queryClient.invalidateQueries({ queryKey: ['gymStaffs', gymId] });
+    } else {
+      toast.error(result.error);
+    }
+
+    onSubmittingChange(false);
+  };
 
   return (
     <Form {...form}>
@@ -61,7 +97,7 @@ export default function TrainerForm({ onSuccess }: TrainerFormProps) {
           <KFormField
             fieldType={KFormFieldType.SKELETON}
             control={form.control}
-            name="profilePicture"
+            name="ProfilePicture"
             renderSkeleton={(field) => (
               <FormControl>
                 <ProfilePictureUploader
@@ -78,7 +114,7 @@ export default function TrainerForm({ onSuccess }: TrainerFormProps) {
         {/* Name */}
         <KFormField
           control={form.control}
-          name="name"
+          name="TrainerName"
           fieldType={KFormFieldType.INPUT}
           label="Full Name"
           placeholder="John Doe"
@@ -86,7 +122,7 @@ export default function TrainerForm({ onSuccess }: TrainerFormProps) {
         {/* Email */}
         <KFormField
           control={form.control}
-          name="email"
+          name="Email"
           fieldType={KFormFieldType.INPUT}
           label="Email"
           placeholder="john@example.com"
@@ -94,7 +130,7 @@ export default function TrainerForm({ onSuccess }: TrainerFormProps) {
         {/* Phone number */}
         <KFormField
           control={form.control}
-          name="phone"
+          name="Phone"
           fieldType={KFormFieldType.PHONE_INPUT}
           label="Phone Number"
         />
@@ -104,7 +140,7 @@ export default function TrainerForm({ onSuccess }: TrainerFormProps) {
             <KFormField
               fieldType={KFormFieldType.SELECT}
               control={form.control}
-              name="gender"
+              name="Gender"
               label="Gender"
               options={genderOptions}
             />
@@ -115,7 +151,7 @@ export default function TrainerForm({ onSuccess }: TrainerFormProps) {
             <KFormField
               fieldType={KFormFieldType.SELECT}
               control={form.control}
-              name="bloodGroup"
+              name="BloodGroup"
               label="Blood Group"
               options={bloodGroupOptions}
             />
@@ -127,7 +163,7 @@ export default function TrainerForm({ onSuccess }: TrainerFormProps) {
             <KFormField
               fieldType={KFormFieldType.DATE_PICKER}
               control={form.control}
-              name="dob"
+              name="Dob"
               dateLabel="Date of birth"
               mode="single"
               className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
@@ -141,7 +177,7 @@ export default function TrainerForm({ onSuccess }: TrainerFormProps) {
             <KFormField
               fieldType={KFormFieldType.DATE_PICKER}
               control={form.control}
-              name="doj"
+              name="Doj"
               label="Date of joining"
               dateLabel="Date of joining"
               mode="single"
@@ -153,10 +189,17 @@ export default function TrainerForm({ onSuccess }: TrainerFormProps) {
         <KFormField
           fieldType={KFormFieldType.MULTISELECT}
           control={form.control}
-          name="certifications"
+          name="Certification"
           label="Certifications"
           placeholder="List relevant certifications (e.g., NASM, ACE, ISSA)"
-          options={FRAMEWORKS}
+          options={
+            formOptions?.certificatesOptions
+              ? formOptions.certificatesOptions.map((certificate) => ({
+                  label: certificate.name,
+                  value: String(certificate.id),
+                }))
+              : []
+          }
         />
 
         {/* Address Details */}
@@ -166,7 +209,7 @@ export default function TrainerForm({ onSuccess }: TrainerFormProps) {
         <KFormField
           fieldType={KFormFieldType.TEXTAREA}
           control={form.control}
-          name="address"
+          name="AddressLine"
           label="Address Line"
         />
       </form>

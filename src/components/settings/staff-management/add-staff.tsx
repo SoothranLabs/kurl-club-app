@@ -14,9 +14,14 @@ export const AddStaff: React.FC<CreateStaffDetailsProps> = ({
   closeSheet,
 }) => {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleActiveIdChange = (activeId: string) => {
     setActiveId(activeId);
+  };
+
+  const handleSubmittingChange = (isSubmitting: boolean) => {
+    setIsSubmitting(isSubmitting);
   };
 
   const footer = (
@@ -27,6 +32,7 @@ export const AddStaff: React.FC<CreateStaffDetailsProps> = ({
           type="button"
           variant="secondary"
           className="h-[46px] min-w-[90px]"
+          disabled={isSubmitting}
         >
           Cancel
         </Button>
@@ -34,8 +40,9 @@ export const AddStaff: React.FC<CreateStaffDetailsProps> = ({
           form={activeId ?? undefined}
           type="submit"
           className="h-[46px] min-w-[73px]"
+          disabled={isSubmitting}
         >
-          Add
+          {isSubmitting ? 'Adding...' : 'Add'}
         </Button>
       </div>
     </div>
@@ -52,6 +59,7 @@ export const AddStaff: React.FC<CreateStaffDetailsProps> = ({
       <StaffForm
         onSuccess={closeSheet}
         onActiveIdChange={handleActiveIdChange}
+        onSubmittingChange={handleSubmittingChange}
       />
     </KSheet>
   );
