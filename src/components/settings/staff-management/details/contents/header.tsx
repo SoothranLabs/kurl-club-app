@@ -7,6 +7,7 @@ import { MessageSquareText, Trash2 } from 'lucide-react';
 
 import { useAppDialog } from '@/hooks/use-app-dialog';
 import { deleteStaff } from '@/services/staff';
+import { StaffType } from '@/types/staff';
 
 import { KEdit } from '@/components/icons';
 import { Button } from '@/components/ui/button';
@@ -16,22 +17,29 @@ interface HeaderProps {
   handleSave: () => void;
   toggleEdit: () => void;
   staffId: string;
+  staffRole: StaffType;
 }
 
-function Header({ isEditing, handleSave, toggleEdit, staffId }: HeaderProps) {
+function Header({
+  isEditing,
+  handleSave,
+  toggleEdit,
+  staffId,
+  staffRole,
+}: HeaderProps) {
   const queryClient = useQueryClient();
   const router = useRouter();
 
   const { showConfirm } = useAppDialog();
 
-  const handleDeleteStaff = (id: string) => {
+  const handleDeleteStaff = (id: string, role: StaffType) => {
     showConfirm({
       title: `Delete Staff`,
       description: `Are you sure you want to delete this staff from your Database? This action cannot be undone.`,
       variant: 'destructive',
       confirmLabel: 'Delete',
       onConfirm: async () => {
-        const response = await deleteStaff(id);
+        const response = await deleteStaff(id, role);
 
         if (response.success) {
           toast.success(response.success);
@@ -69,7 +77,7 @@ function Header({ isEditing, handleSave, toggleEdit, staffId }: HeaderProps) {
             <Button
               className="h-10"
               variant="destructive"
-              onClick={() => handleDeleteStaff(staffId)}
+              onClick={() => handleDeleteStaff(staffId, staffRole)}
             >
               <Trash2 className="!h-5 !w-5" />
             </Button>

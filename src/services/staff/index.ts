@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { ApiResponse } from '@/types';
-import { Staff, StaffDetails } from '@/types/staff';
+import { Staff, StaffDetails, StaffType } from '@/types/staff';
 
 export const createStaff = async (
   data: FormData,
@@ -40,27 +40,37 @@ export const useGymStaffs = (gymId: number | string) => {
   });
 };
 
-export const fetchStaffByID = async (id: string | number) => {
-  const response = await api.get<{ status: string; data: StaffDetails }>(
-    `/Member/${id}`
-  );
+export const fetchStaffByID = async (id: string | number, role: StaffType) => {
+  const endpoint =
+    role === 'staff' ? `/Staff/GetStaffById/${id}` : `/Trainer/${id}`;
 
+  const response = await api.get<{ status: string; data: StaffDetails }>(
+    endpoint
+  );
   return response.data;
 };
 
-export const useStaffByID = (id: string | number) => {
+export const useStaffByID = (id: string | number, role: StaffType) => {
   return useQuery({
-    queryKey: ['staff', id],
-    queryFn: () => fetchStaffByID(id),
-    enabled: !!id,
+    queryKey: ['staff', id, role],
+    queryFn: () => fetchStaffByID(id, role),
+    enabled: !!id && !!role,
     staleTime: 1000 * 60 * 5,
   });
 };
 
-export const updateStaff = async (id: string | number, data: FormData) => {
+export const updateStaff = async (
+  id: string | number,
+  data: FormData,
+  role: StaffType
+) => {
   try {
-    const response = await api.put<ApiResponse>(`/Member/${id}`, data);
+    const endpoint =
+      role === 'staff'
+        ? `/Staff/UpdateStaff/${id}`
+        : `/Trainer/UpdateTrainer/${id}`;
 
+    const response = await api.put<ApiResponse>(endpoint, data);
     return response;
   } catch (error) {
     console.error('Error updating member:', error);
@@ -68,9 +78,12 @@ export const updateStaff = async (id: string | number, data: FormData) => {
   }
 };
 
-export const deleteStaff = async (id: string | number) => {
+export const deleteStaff = async (id: string | number, role: StaffType) => {
   try {
-    await api.delete(`/Member/${id}`);
+    const endpoint =
+      role === 'staff' ? `/Staff/DeleteStaff/${id}` : `/Trainer/${id}`;
+
+    await api.delete(endpoint);
 
     return { success: 'Member deleted successfully!' };
   } catch (error) {

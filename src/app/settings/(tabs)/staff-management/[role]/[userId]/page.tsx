@@ -4,16 +4,21 @@ import { useState, useEffect } from 'react';
 import Contents from '@/components/settings/staff-management/details/contents';
 import { Sidebar } from '@/components/settings/staff-management/details/sidebar';
 import { useStaffDetails } from '@/hooks/use-staff-details';
+import { StaffType } from '@/types/staff';
 
 interface StaffDetailsPageProps {
-  params: Promise<{ userId: string }>;
+  params: Promise<{ role: StaffType; userId: string }>;
 }
 
 export default function StaffDetailsPage({ params }: StaffDetailsPageProps) {
-  const [userId, setUserId] = useState<string | null>(null);
+  const [staffId, setStaffId] = useState<string>('');
+  const [staffRole, setStaffRole] = useState<StaffType>('staff');
 
   useEffect(() => {
-    params.then(({ userId }) => setUserId(userId));
+    params.then(({ userId, role }) => {
+      setStaffId(userId);
+      setStaffRole(role);
+    });
   }, [params]);
 
   const {
@@ -24,9 +29,8 @@ export default function StaffDetailsPage({ params }: StaffDetailsPageProps) {
     loading,
     error,
     updateStaffDetail,
-  } = useStaffDetails(userId!);
+  } = useStaffDetails(staffId, staffRole);
 
-  if (!userId) return <p>Loading...</p>;
   if (loading) return <p>Loading staff details...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -38,7 +42,8 @@ export default function StaffDetailsPage({ params }: StaffDetailsPageProps) {
         updateStaffDetail={updateStaffDetail}
       />
       <Contents
-        staffId={userId}
+        staffRole={staffRole}
+        staffId={staffId}
         isEditing={isEditing}
         handleSave={handleSave}
         toggleEdit={toggleEdit}

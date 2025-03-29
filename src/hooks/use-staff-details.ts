@@ -2,15 +2,15 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
+import { StaffDetails, StaffType } from '@/types/staff';
 import { useStaffByID, updateStaff } from '@/services/staff';
-import { StaffDetails } from '@/types/staff';
 
-export function useStaffDetails(userId: string | number) {
+export function useStaffDetails(userId: string | number, role?: string) {
   const [isEditing, setIsEditing] = useState(false);
   const [details, setDetails] = useState<StaffDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const { data, isLoading: loading } = useStaffByID(userId);
+  const { data, isLoading: loading } = useStaffByID(userId, role as StaffType);
 
   useEffect(() => {
     if (data) setDetails(data);
@@ -44,7 +44,7 @@ export function useStaffDetails(userId: string | number) {
         }
       }
 
-      const response = await updateStaff(userId, formData);
+      const response = await updateStaff(userId, formData, role as StaffType);
 
       if (response.status === 'Success') {
         toast.success(response.message);
@@ -62,7 +62,7 @@ export function useStaffDetails(userId: string | number) {
       toast.error('An error occurred while updating the staff details.');
       return false;
     }
-  }, [details, userId]);
+  }, [details, userId, role]);
 
   const toggleEdit = useCallback(() => {
     setIsEditing((prev) => !prev);

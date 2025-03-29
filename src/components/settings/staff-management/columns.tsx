@@ -41,7 +41,9 @@ const ActionsCell: React.FC<{ user: Staff }> = ({ user }) => {
             <MessageSquare className="mr-2 h-6 w-6" />
             Message
           </DropdownMenuItem>
-          <Link href={`/settings/staff-management/${user.id}`}>
+          <Link
+            href={`/settings/staff-management/${user.role.toLowerCase()}/${user.id}`}
+          >
             <DropdownMenuItem className="shad-select-item p-1 h-8 text-[15px] leading-normal font-normal text-white rounded-[4px]">
               <FileText className="mr-2 h-6 w-6" />
               View details
