@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { FileText, MessageSquare, MoreVertical, Trash2 } from 'lucide-react';
 
-import { Trainer } from '@/types';
+import { Staff } from '@/types/staff';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -17,9 +17,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { KSheet } from '@/components/form/k-sheet';
 
-import { ChatWindow } from '@/components/settings/user-management/chat-window';
+import { ChatWindow } from '@/components/settings/staff-management/chat-window';
 
-const ActionsCell: React.FC<{ user: Trainer }> = ({ user }) => {
+const ActionsCell: React.FC<{ user: Staff }> = ({ user }) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   return (
     <>
@@ -30,22 +30,27 @@ const ActionsCell: React.FC<{ user: Trainer }> = ({ user }) => {
             <MoreVertical className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="shad-select-content" align="end">
+        <DropdownMenuContent
+          className="shad-select-content p-4 rounded-[4px] border-primary-blue-400 flex flex-col gap-2"
+          align="end"
+        >
           <DropdownMenuItem
-            className="shad-select-item"
+            className="shad-select-item p-1 h-8 text-[15px] leading-normal font-normal text-white rounded-[4px]"
             onClick={() => setIsSheetOpen(true)}
           >
-            <MessageSquare className="mr-2 h-4 w-4" />
+            <MessageSquare className="mr-2 h-6 w-6" />
             Message
           </DropdownMenuItem>
-          <Link href={`/settings/user-management/${user.id}`}>
-            <DropdownMenuItem className="shad-select-item">
-              <FileText className="mr-2 h-4 w-4" />
+          <Link
+            href={`/settings/staff-management/${user.role.toLowerCase()}/${user.id}`}
+          >
+            <DropdownMenuItem className="shad-select-item p-1 h-8 text-[15px] leading-normal font-normal text-white rounded-[4px]">
+              <FileText className="mr-2 h-6 w-6" />
               View details
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem className="text-red-600 shad-select-item">
-            <Trash2 className="mr-2 h-4 w-4" />
+          <DropdownMenuItem className="shad-select-item p-1 h-8 text-[15px] leading-normal font-normal text-white rounded-[4px]">
+            <Trash2 className="mr-2 h-6 w-6" />
             Delete trainer
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -63,12 +68,12 @@ const ActionsCell: React.FC<{ user: Trainer }> = ({ user }) => {
   );
 };
 
-export const columns: ColumnDef<Trainer>[] = [
+export const columns: ColumnDef<Staff>[] = [
   {
-    accessorKey: 'trainerId',
+    accessorKey: 'identifier',
     header: 'TrID',
     cell: ({ row }) => (
-      <div className="w-[100px]">{row.getValue('trainerId')}</div>
+      <div className="w-[100px]">{row.getValue('identifier')}</div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -94,10 +99,10 @@ export const columns: ColumnDef<Trainer>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'designation',
+    accessorKey: 'role',
     header: 'Designation',
     cell: ({ row }) => (
-      <div className="min-w-[100px]">{row.getValue('designation')}</div>
+      <div className="min-w-[100px]">{row.getValue('role')}</div>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -115,6 +120,20 @@ export const columns: ColumnDef<Trainer>[] = [
     header: 'Phone',
     cell: ({ row }) => (
       <div className="min-w-[150px]">{row.getValue('phone')}</div>
+    ),
+  },
+  {
+    accessorKey: 'bloodGroup',
+    header: 'Blood Group',
+    cell: ({ row }) => (
+      <div className="min-w-[150px]">{row.getValue('bloodGroup')}</div>
+    ),
+  },
+  {
+    accessorKey: 'gender',
+    header: 'Gender',
+    cell: ({ row }) => (
+      <div className="min-w-[150px] capitalize">{row.getValue('gender')}</div>
     ),
   },
   {
