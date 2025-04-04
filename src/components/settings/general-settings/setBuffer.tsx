@@ -1,0 +1,145 @@
+import { useState } from 'react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
+import { Plus, Trash2 } from 'lucide-react';
+import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { FormProvider, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { dayBufferSchema } from '@/schemas';
+import { z } from 'zod';
+
+type CreateMemberDetailsData = z.infer<typeof dayBufferSchema>;
+
+export default function SetBuffer() {
+  const [buffers, setBuffers] = useState([
+    { id: 1, amount: '', days: '', plan: 'All plans' },
+  ]);
+
+  const addBuffer = () => {
+    setBuffers([
+      ...buffers,
+      { id: Date.now(), amount: '', days: '', plan: 'All plans' },
+    ]);
+  };
+
+  const removeBuffer = (id: number) => {
+    setBuffers(buffers.filter((buffer) => buffer.id !== id));
+  };
+
+  // form
+  const form = useForm<CreateMemberDetailsData>({
+    resolver: zodResolver(dayBufferSchema),
+    defaultValues: {
+      day_buffer_days: '12',
+      fee_buffer_amount: '',
+      fee_buffer_days: '',
+    },
+  });
+
+  return (
+    <div className="w-full bg-secondary-blue-500 rounded-lg border border-secondary-blue-400">
+      <Accordion type="single" collapsible>
+        <AccordionItem className="border-0" value="day-buffer">
+          <AccordionTrigger className="p-6 !no-underline">
+            <div className="flex flex-col gap-3">
+              <h2 className="font-medium text-white text-xl leading-normal">
+                Set buffer
+              </h2>
+              <p className="font-normal text-white text-base leading-normal">
+                Set up buffer for fee & due time
+              </p>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent className="border-t border-secondary-blue-400 p-6">
+            <FormProvider {...form}>
+              <form
+                id="buffer-form"
+                className="flex flex-col gap-5 max-w-[630px]"
+              >
+                {/* day buffer section */}
+                <div>
+                  <h3 className="text-base text-white leading-normal">
+                    Day buffer
+                  </h3>
+                  <p className="text-sm text-white leading-normal mt-3">
+                    Enter the time period a person can use the gym facilities
+                    after their fee is due.
+                  </p>
+                  <KFormField
+                    fieldType={KFormFieldType.INPUT}
+                    control={form.control}
+                    name="day_buffer_days"
+                    label="Days"
+                    maxLength={5}
+                    className="mt-4 bg-secondary-blue-400 hover:!outline-primary-green-700 max-w-[88px]"
+                  />
+                </div>
+
+                {/* Fee Buffer Section */}
+                <div className="mt-3">
+                  <h3 className="text-base text-white leading-normal">
+                    Fee buffer
+                  </h3>
+                  <p className="text-sm text-white leading-normal mt-3">
+                    Enter the minimum payable amount to qualify for “Partial
+                    payment”.
+                  </p>
+                  {buffers.map((buffer, index) => (
+                    <div key={buffer.id} className="flex gap-6 mt-4">
+                      <KFormField
+                        fieldType={KFormFieldType.INPUT}
+                        control={form.control}
+                        name="fee_buffer_amount"
+                        label="Amount"
+                        maxLength={8}
+                        className=" bg-secondary-blue-400 hover:!outline-primary-green-700"
+                      />
+                      <div className="max-w-[88px]">
+                        <KFormField
+                          fieldType={KFormFieldType.INPUT}
+                          control={form.control}
+                          name="fee_buffer_days"
+                          label="Days"
+                          maxLength={8}
+                          className=" bg-secondary-blue-400 hover:!outline-primary-green-700"
+                        />
+                      </div>
+                      <select className="bg-gray-800 text-white px-3 py-2 rounded-md">
+                        <option>All plans</option>
+                        <option>Weight loss</option>
+                        <option>Weight gain</option>
+                      </select>
+                      {index > 0 && (
+                        <Button
+                          type="button"
+                          onClick={() => removeBuffer(buffer.id)}
+                          className="h-[52px] w-[52px] border border-secondary-blue-400"
+                          variant="secondary"
+                        >
+                          <Trash2 />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <Button
+                  className="w-fit border border-secondary-blue-400 py-2.5 px-3"
+                  variant="ghost"
+                  onClick={addBuffer}
+                >
+                  <Plus className="text-primary-green-500" /> Add
+                </Button>
+              </form>
+            </FormProvider>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </div>
+  );
+}
