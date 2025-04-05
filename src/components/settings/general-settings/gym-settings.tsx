@@ -8,21 +8,16 @@ import { GymDataDetailsSchema } from '@/schemas';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
 import { FormControl } from '@/components/ui/form';
-import { Subscription } from './subcription';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
 
 type GymDetails = z.infer<typeof GymDataDetailsSchema>;
 
-interface BasicDetailsFormProps {
-  onSubmit: (data: GymDetails) => void;
-}
-
-export const BasicDetailsForm = ({ onSubmit }: BasicDetailsFormProps) => {
+export const GymSettings = () => {
   const [isPending] = useTransition();
 
-  const form = useForm<GymDetails>({
+  const form = useForm({
     resolver: zodResolver(GymDataDetailsSchema),
     defaultValues: {
       ProfilePicture: null,
@@ -47,18 +42,18 @@ export const BasicDetailsForm = ({ onSubmit }: BasicDetailsFormProps) => {
   }, [fields.length, append]);
 
   const handleSubmit = (data: GymDetails) => {
-    onSubmit(data);
+    console.log(data);
   };
 
   return (
     <>
-      <h2 className="text-base font-semibold mt-[32px]">Basic Details</h2>
+      <h2 className="text-base font-semibold leading-normal">Basic Details</h2>
       <FormProvider {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
           className="flex flex-col"
         >
-          <div className="space-y-4 max-h-[46vh] w-[618px] mt-4 p-1 no-scrollbar">
+          <div className="space-y-5 w-[618px] mt-6">
             <KFormField
               fieldType={KFormFieldType.SKELETON}
               control={form.control}
@@ -105,13 +100,13 @@ export const BasicDetailsForm = ({ onSubmit }: BasicDetailsFormProps) => {
               disabled={isPending}
               mandetory
             />
-            <h2 className="text-base font-semibold ">Subscription</h2>
-
-            <Subscription />
-
+            {/* TODO: Add subscribe card */}
+            {/* <h2 className="text-base leading-normal !mt-8 font-semibold ">Subscription</h2>
+            <Subscription /> */}
             {/* Social Links */}
-            <h2 className="text-base font-semibold ">Social Links</h2>
-
+            <h2 className="text-base leading-normal !mt-8 font-semibold ">
+              Social Links
+            </h2>
             {/* Social links section */}
             <div className="space-y-3">
               {fields.map((field, index) => (
@@ -131,7 +126,7 @@ export const BasicDetailsForm = ({ onSubmit }: BasicDetailsFormProps) => {
                     <Button
                       type="button"
                       onClick={() => remove(index)}
-                      className="h-[52px] w-[52px]"
+                      className="h-[52px] w-[52px] border border-secondary-blue-400"
                       variant="secondary"
                     >
                       <Trash2 />
@@ -139,11 +134,10 @@ export const BasicDetailsForm = ({ onSubmit }: BasicDetailsFormProps) => {
                   )}
                 </div>
               ))}
-
               <Button
-                type="button"
+                className="w-fit border border-secondary-blue-400 py-2.5 px-3"
+                variant="ghost"
                 onClick={() => append({ url: '' })}
-                className="mt-4"
               >
                 Add Social Link
               </Button>
