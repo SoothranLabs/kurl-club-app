@@ -12,6 +12,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { dayBufferSchema } from '@/schemas';
 import { z } from 'zod';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 
 type CreateMemberDetailsData = z.infer<typeof dayBufferSchema>;
 
@@ -40,6 +47,21 @@ export default function SetBuffer() {
       fee_buffer_days: '',
     },
   });
+
+  const selectPlans = [
+    {
+      label: 'All plans',
+      value: 'all plans',
+    },
+    {
+      label: 'Weight loss',
+      value: 'weight loss',
+    },
+    {
+      label: 'Weight gain',
+      value: 'weight gain',
+    },
+  ];
 
   return (
     <div className="w-full bg-secondary-blue-500 rounded-lg border border-secondary-blue-400">
@@ -109,11 +131,22 @@ export default function SetBuffer() {
                           className=" bg-secondary-blue-400 hover:!outline-primary-green-700"
                         />
                       </div>
-                      <select className="bg-gray-800 text-white px-3 py-2 rounded-md">
-                        <option>All plans</option>
-                        <option>Weight loss</option>
-                        <option>Weight gain</option>
-                      </select>
+                      <Select>
+                        <SelectTrigger className="bg-secondary-blue-400 rounded-md border-transparent hover:border-primary-green-700 focus:border-primary-green-700 active:border-primary-green-700 text-white !ring-0 h-13 text-sm px-3 aria-expanded:border-primary-green-700">
+                          <SelectValue placeholder="Select a plan" />
+                        </SelectTrigger>
+                        <SelectContent className="shad-select-content">
+                          {selectPlans.map((option) => (
+                            <SelectItem
+                              className="shad-select-item"
+                              key={option.value}
+                              value={option.value}
+                            >
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       {index > 0 && (
                         <Button
                           type="button"
