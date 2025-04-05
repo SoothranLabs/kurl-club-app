@@ -459,3 +459,38 @@ export const adminstratorFormSchema = z.object({
     .max(250, 'Address must not exceed 250 characters.'),
   bloodGroup: z.string().min(1, 'Blood group selection is required'),
 });
+
+export const GymDataDetailsSchema = z.object({
+  ProfilePicture: z
+    .custom<File | null>((value) => value instanceof File || value === null, {
+      message: 'Profile picture must be a file.',
+    })
+    .refine((file) => file === null || file.size <= 5 * 1024 * 1024, {
+      message: 'File size must be less than 5MB',
+    })
+    .optional(),
+  GymName: z
+    .string()
+    .min(2, { message: 'Name must be at least 2 characters.' }),
+  Email: z.string().email({ message: 'Please enter a valid email address.' }),
+  Phone: z
+    .string()
+    .min(10, { message: 'Phone number must be at least 10 digits.' }),
+  Address: z
+    .string()
+    .min(1, 'Address is required.')
+    .max(250, 'Address must not exceed 250 characters.'),
+  socialLinks: z
+    .array(
+      z.object({
+        url: z.string().url(),
+      })
+    )
+    .optional(),
+});
+
+export const dayBufferSchema = z.object({
+  day_buffer_days: z.string().min(1, 'buffer day is required'),
+  fee_buffer_amount: z.string().min(1, 'buffer amount is required'),
+  fee_buffer_days: z.string().min(1, 'buffer day is required'),
+});
