@@ -1,7 +1,11 @@
+import Contents from '@/components/settings/packages/contents';
+import Header from '@/components/settings/packages/header';
+
 export default function Packages() {
   return (
-    <div className="p-8">
-      <h1 className="text-2xl">Packages</h1>
-    </div>
+    <main className="p-8">
+      <Header />
+      <Contents />
+    </main>
   );
 }

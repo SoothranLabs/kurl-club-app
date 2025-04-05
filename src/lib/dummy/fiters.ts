@@ -6,7 +6,6 @@ import {
   Gift,
   PersonStanding,
   CircleUserRound,
-  User,
 } from 'lucide-react';
 
 export const filters = [
@@ -47,14 +46,27 @@ export const filters = [
   },
 ];
 
-export const trainerFilters = [
+export const staffFilters = [
   {
-    columnId: 'designation',
+    columnId: 'role',
     title: 'Designation',
     options: [
       { label: 'Trainer', value: 'Trainer', icon: PersonStanding },
-      { label: 'Admin', value: 'Admin', icon: CircleUserRound },
-      { label: 'Regular User', value: 'Regular_User', icon: User },
+      { label: 'Staff', value: 'Staff', icon: CircleUserRound },
+    ],
+  },
+  {
+    columnId: 'bloodGroup',
+    title: 'Blood Group',
+    options: [
+      { label: 'A+', value: 'A+' },
+      { label: 'A-', value: 'A-' },
+      { label: 'B+', value: 'B+' },
+      { label: 'B-', value: 'B-' },
+      { label: 'AB+', value: 'AB+' },
+      { label: 'AB-', value: 'AB-' },
+      { label: 'O+', value: 'O+' },
+      { label: 'O-', value: 'O-' },
     ],
   },
 ];

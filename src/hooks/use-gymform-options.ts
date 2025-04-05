@@ -5,6 +5,7 @@ export type FormOptionsResponse = {
   workoutPlans: { id: number; name: string; isDefault?: boolean }[];
   packageOptions: { id: number; name: string }[];
   trainers: { id: number; trainerName: string }[];
+  certificatesOptions: { id: number; name: string }[];
 };
 
 export const useGymFormOptions = (gymId?: number) => {

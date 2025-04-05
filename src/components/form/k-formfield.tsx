@@ -29,6 +29,7 @@ import { KInput } from '@/components/form/k-input';
 import { KPassword } from '@/components/form/k-password';
 import { KTextarea } from '@/components/form/k-textarea';
 import { KDatePicker } from '@/components/form/k-datepicker';
+import { KMultiSelect } from '@/components/form/k-multi-select';
 
 export enum KFormFieldType {
   INPUT = 'input',
@@ -38,6 +39,7 @@ export enum KFormFieldType {
   CHECKBOX = 'checkbox',
   DATE_PICKER = 'datePicker',
   SELECT = 'select',
+  MULTISELECT = 'multiSelect',
   OTP = 'otp',
   SKELETON = 'skeleton',
 }
@@ -60,6 +62,7 @@ interface CustomProps<T extends FieldValues> {
   mode?: 'range' | 'single';
   dateLabel?: string;
   showPresets?: boolean;
+  showYearSelector?: boolean;
   children?: React.ReactNode;
   className?: string;
   suffix?: string;
@@ -90,6 +93,7 @@ const RenderField = <T extends FieldValues>({
     dateLabel,
     mode,
     showPresets,
+    showYearSelector,
     className,
     suffix,
     maxLength,
@@ -178,6 +182,19 @@ const RenderField = <T extends FieldValues>({
         </FormControl>
       );
 
+    case KFormFieldType.MULTISELECT:
+      return (
+        <FormControl>
+          <KMultiSelect
+            options={props.options ?? []}
+            selected={field.value || []}
+            onChange={field.onChange}
+            placeholder={props.placeholder}
+            disabled={props.disabled}
+          />
+        </FormControl>
+      );
+
     case KFormFieldType.OTP:
       return (
         <FormControl>
@@ -207,6 +224,7 @@ const RenderField = <T extends FieldValues>({
             numberOfMonths={numberOfMonths}
             label={dateLabel}
             showPresets={showPresets}
+            showYearSelector={showYearSelector}
             onDateChange={field.onChange}
             value={field.value}
             mode={mode ?? 'range'}

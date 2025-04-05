@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { cn } from '@/lib/utils';
+import { cn, getInitials } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 
 export function UserNav() {
@@ -38,6 +38,27 @@ export function UserNav() {
     });
   };
 
+  const gymList = [
+    {
+      key: 1,
+      avatar: '/assets/svg/gym-dp.svg',
+      name: 'Gold’s Gym',
+      gymId: '#go2224',
+    },
+    {
+      key: 2,
+      avatar: '',
+      name: 'Monolith gym',
+      gymId: '#go2225',
+    },
+    {
+      key: 3,
+      avatar: '',
+      name: 'Smart gym',
+      gymId: '#go2226',
+    },
+  ];
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -49,16 +70,16 @@ export function UserNav() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-[405px] bg-secondary-blue-700 border border-secondary-blue-400 text-white p-0"
+        className="w-[292px] bg-secondary-blue-700 border border-secondary-blue-400 text-white p-0"
         align="end"
         forceMount
       >
-        <DropdownMenuLabel className="flex flex-col gap-3 items-center bg-secondary-blue-500 p-6">
-          <Avatar className="h-[52px] w-[52px]">
+        <DropdownMenuLabel className="flex gap-3 items-center bg-secondary-blue-500 p-6">
+          <Avatar className="h-10 w-h-10">
             <AvatarImage src="/assets/svg/gym-dp.svg" alt="Profile picture" />
             <AvatarFallback>KC</AvatarFallback>
           </Avatar>
-          <div className="flex flex-col gap-2 items-center">
+          <div className="flex flex-col gap-2">
             <h6 className="text-[20px] font-medium leading-normal text-white">
               Gold’s Gym
             </h6>
@@ -68,101 +89,66 @@ export function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuGroup>
+          <DropdownMenuItem className="py-2.5 px-4 h-[44px] cursor-pointer hover:bg-secondary-blue-800 k-transition">
+            <User className="mr-2.5 !h-6 !w-6" />
+            <span className="text-white font-semibold text-xs leading-normal">
+              Profile
+            </span>
+          </DropdownMenuItem>
           <Link href="/settings">
-            <DropdownMenuItem className="py-3 px-6 h-[48px] cursor-pointer hover:bg-secondary-blue-800 k-transition">
-              <Settings className="mr-2.5 !h-5 !w-5" />
-              <span className="text-white font-normal text-xs leading-normal">
+            <DropdownMenuItem className="py-2.5 px-4 h-[44px] cursor-pointer hover:bg-secondary-blue-800 k-transition">
+              <Settings className="mr-2.5 !h-6 !w-6" />
+              <span className="text-white font-semibold text-xs leading-normal">
                 Settings
               </span>
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem className="py-3 px-6 h-[48px] cursor-pointer hover:bg-secondary-blue-800 k-transition">
-            <User className="mr-2.5 !h-5 !w-5" />
-            <span className="text-white font-normal text-xs leading-normal">
-              Profile
-            </span>
-          </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator className="bg-primary-blue-400 my-3" />
+        <DropdownMenuSeparator className="bg-primary-blue-400 my-[6px]" />
 
         <DropdownMenuGroup>
-          <DropdownMenuItem className="py-4 pl-6 pr-[30px] h-[66px] cursor-pointer hover:bg-secondary-blue-800 k-transition justify-between">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-[32px] w-[32px]">
-                <AvatarImage
-                  src="/assets/svg/gym-dp.svg"
-                  alt="Profile picture"
-                />
-                <AvatarFallback>KC</AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col gap-1">
-                <h6 className="text-white font-normal text-[15px] leading-normal">
-                  Gold’s Gym
-                </h6>
-                <p className="text-sm text-primary-blue-100 font-semibold leading-normal">
-                  #go2224
-                </p>
+          {gymList.map((gym, index) => (
+            <DropdownMenuItem
+              key={gym.key}
+              className="py-2.5 px-4 h-[54px] cursor-pointer hover:bg-secondary-blue-800 k-transition justify-between"
+            >
+              <div className="flex items-center gap-3 mr-2">
+                <Avatar className="h-[32px] w-[32px] bg-secondary-blue-500">
+                  <AvatarImage src={gym.avatar} alt="Profile picture" />
+                  <AvatarFallback>{getInitials(gym.name)}</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col gap-1">
+                  <h6 className="text-white font-normal text-[15px] leading-normal">
+                    {gym.name}
+                  </h6>
+                  <p className="text-sm text-primary-blue-100 font-semibold leading-normal">
+                    {gym.gymId}
+                  </p>
+                </div>
               </div>
-            </div>
-            <Check className="!h-6 !w-6 text-primary-green-500" />
-          </DropdownMenuItem>
-          <DropdownMenuItem className="py-4 pl-6 pr-[30px] h-[66px] cursor-pointer hover:bg-secondary-blue-800 k-transition justify-between">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-[32px] w-[32px]">
-                <AvatarImage
-                  src="/assets/svg/gym-dp.svg"
-                  alt="Profile picture"
-                />
-                <AvatarFallback>KC</AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col gap-1">
-                <h6 className="text-white font-normal text-[15px] leading-normal">
-                  Monolith gym
-                </h6>
-                <p className="text-sm text-primary-blue-100 font-semibold leading-normal">
-                  #go2224
-                </p>
-              </div>
-            </div>
-            {/* <Check className='!h-6 !w-6 text-primary-green-500' /> */}
-          </DropdownMenuItem>
-          <DropdownMenuItem className="py-4 pl-6 pr-[30px] h-[66px] cursor-pointer hover:bg-secondary-blue-800 k-transition justify-between">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-[32px] w-[32px]">
-                <AvatarImage
-                  src="/assets/svg/gym-dp.svg"
-                  alt="Profile picture"
-                />
-                <AvatarFallback>KC</AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col gap-1">
-                <h6 className="text-white font-normal text-[15px] leading-normal">
-                  DMV fitness
-                </h6>
-                <p className="text-sm text-primary-blue-100 font-semibold leading-normal">
-                  #go2224
-                </p>
-              </div>
-            </div>
-            {/* <Check className='!h-6 !w-6 text-primary-green-500' /> */}
-          </DropdownMenuItem>
-          <DropdownMenuItem className="py-3 px-6 cursor-pointer hover:bg-secondary-blue-800 k-transition">
-            <Plus className="mr-2.5 !h-5 !w-5" />
+              {index === 0 && (
+                <Check className="!h-6 !w-6 text-primary-green-500" />
+              )}
+            </DropdownMenuItem>
+          ))}
+
+          <DropdownMenuItem className="p-4 cursor-pointer hover:bg-secondary-blue-800 k-transition">
+            <Plus className="mr-3 !h-6 !w-6" />
             <span className="text-white font-semibold text-sm leading-normal">
               Add account
             </span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator className="bg-primary-blue-400 my-3" />
+        <DropdownMenuSeparator className="bg-primary-blue-400 py-0" />
         <DropdownMenuItem
           onClick={handleLogout}
           className={cn(
-            'py-2 px-6 h-[48px] cursor-pointer hover:bg-secondary-blue-800 k-transition mb-4',
+            'p-4 cursor-pointer hover:bg-secondary-blue-800 k-transition',
             isPending && 'opacity-50 pointer-events-none'
           )}
         >
-          <LogOut className="mr-2.5 !h-5 !w-5" />
-          <span className="text-white font-normal text-xs leading-normal">
+          <LogOut className="mr-3 !h-6 !w-6" />
+          <span className="text-white font-semibold text-sm leading-normal">
             {isPending ? 'Logging out...' : 'Logout'}
           </span>
         </DropdownMenuItem>
