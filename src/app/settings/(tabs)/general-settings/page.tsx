@@ -1,7 +1,9 @@
+import { GymDetailsForm } from '@/components/settings/general-settings/general-details';
+
 export default function GeneralSettings() {
   return (
-    <div className="p-8">
-      <h1 className="text-2xl">General Settings</h1>
+    <div>
+      <GymDetailsForm />
     </div>
   );
 }
