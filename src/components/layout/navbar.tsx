@@ -23,7 +23,7 @@ function Navbar() {
     {
       id: 3,
       title: 'Payments & attendance',
-      url: '#',
+      url: '/payments-and-attendance',
     },
     {
       id: 4,
