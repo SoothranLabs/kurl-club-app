@@ -18,6 +18,7 @@ import InfoCard from './cards/info-card';
 import KDialog from './form/k-dialog';
 import { CalendarDays, IndianRupee, Map, Settings, Users } from 'lucide-react';
 import { KTabs, TabItem } from './form/k-tabs';
+import { SubscriptionCard } from './cards/subscription-card';
 
 const IdentificationTypes = [
   'Birth Certificate',
@@ -97,6 +98,9 @@ const SampleTestPage = () => {
   return (
     <div className="flex flex-col items-center gap-10">
       <div className="p-6 space-y-8 w-full">
+        <SubscriptionCard variant="standard" />
+        <SubscriptionCard variant="premium" />
+        <SubscriptionCard variant="expired" />
         {/* Underline Variant */}
         <div>
           <h2 className="mb-4 text-lg font-semibold text-white">

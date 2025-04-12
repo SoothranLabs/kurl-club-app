@@ -11,6 +11,7 @@ import { FormControl } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
+import { SubscriptionCard } from '@/components/cards/subscription-card';
 
 type GymDetails = z.infer<typeof GymDataDetailsSchema>;
 
@@ -100,9 +101,10 @@ export const GymSettings = () => {
               disabled={isPending}
               mandetory
             />
-            {/* TODO: Add subscribe card */}
-            {/* <h2 className="text-base leading-normal !mt-8 font-semibold ">Subscription</h2>
-            <Subscription /> */}
+            <h2 className="text-base leading-normal !mt-8 font-semibold ">
+              Subscription
+            </h2>
+            <SubscriptionCard variant="premium" />
             {/* Social Links */}
             <h2 className="text-base leading-normal !mt-8 font-semibold ">
               Social Links

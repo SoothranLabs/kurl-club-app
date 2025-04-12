@@ -377,3 +377,18 @@ export const KAi: React.FC<SVGProps<SVGSVGElement>> = (props) => (
     </defs>
   </svg>
 );
+
+export const KPremiumListIcon: React.FC<SVGProps<SVGSVGElement>> = () => (
+  <svg
+    width="10"
+    height="16"
+    viewBox="0 0 10 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M9.5 0L5 6L2 3L4 6.5L0 7.5L4.5 8.5L5 11.5L6.5 9L9.5 15.5L7.5 8L10 7.5L7 6.5L9.5 0Z"
+      fill="#596801"
+    />
+  </svg>
+);
