@@ -19,3 +19,22 @@ export type Member = {
   doj?: string;
   dob?: string;
 };
+
+export type OutstandingPayments = {
+  id: string;
+  gymNo: string;
+  name: string;
+  avatar: string;
+  package: 'Monthly' | 'Yearly' | 'Special' | 'Quarterly' | 'Half_Yearly';
+  feeStatus: 'paid' | 'partially_paid' | 'unpaid';
+  amount: string;
+};
+
+export type Skippers = {
+  id: string;
+  gymNo: string;
+  name: string;
+  avatar: string;
+  lastCheckIn: string;
+  sinceLastCheckIn: string;
+};

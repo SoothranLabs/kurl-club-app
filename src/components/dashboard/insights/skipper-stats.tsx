@@ -1,15 +1,31 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { KViewMore } from '@/components/icons';
+import { SkipperTable } from './table/skipper-table';
+import { useSkippers } from '@/hooks/use-skipper';
+import { SkipperColumns } from './table/skipper-column';
+import { skipperData } from '@/lib/dummy/data';
 
 function SkipperStats() {
+  const { outstanding } = useSkippers(skipperData);
+
   return (
-    <Card className="border-none bg-secondary-blue-500 rounded-lg w-full">
-      <CardHeader className="flex flex-row items-center justify-between p-5 pb-7">
+    <Card className="relative border-none bg-secondary-blue-500 rounded-lg w-full overflow-hidden">
+      <CardHeader className="flex flex-row items-center justify-between p-5">
         <CardTitle className="text-white text-base font-normal leading-normal">
           Skipper stats
         </CardTitle>
+        <Button className="!bg-transparent h-fit w-fit p-0">
+          <KViewMore className="!w-8 !h-8" />
+        </Button>
       </CardHeader>
-      <CardContent className="px-5 pb-5 k-chart">Contents</CardContent>
+
+      <CardContent className="p-5 k-chart">
+        <SkipperTable columns={SkipperColumns} data={outstanding} />
+      </CardContent>
+
+      <div className="absolute bottom-0 left-0 w-full h-28 bg-gradient-to-t from-secondary-blue-500 via-secondary-blue-500/70 to-transparent rounded-b-lg pointer-events-none z-10" />
     </Card>
   );
 }

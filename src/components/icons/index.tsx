@@ -392,3 +392,31 @@ export const KPremiumListIcon: React.FC<SVGProps<SVGSVGElement>> = () => (
     />
   </svg>
 );
+
+export const KViewMore: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    width="32"
+    height="33"
+    viewBox="0 0 32 33"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <g clipPath="url(#clip0_262_9530)">
+      <path
+        d="M11 9.92188V11.4219H20.4425L8 23.8644L9.0575 24.9219L21.5 12.4794V21.9219H23V9.92188H11Z"
+        fill="white"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_262_9530">
+        <rect
+          width="32"
+          height="32"
+          fill="white"
+          transform="translate(0 0.921875)"
+        />
+      </clipPath>
+    </defs>
+  </svg>
+);
