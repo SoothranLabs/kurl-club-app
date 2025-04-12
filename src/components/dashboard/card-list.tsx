@@ -36,7 +36,7 @@ function CardList() {
   ];
 
   return (
-    <div className="grid grid-cols-4 gap-4 h-[74px] mt-8 mb-6">
+    <div className="grid grid-cols-4 gap-4 h-[74px] mt-8">
       {cards.map((item) => (
         <InfoCard item={item} key={item.id} />
       ))}
