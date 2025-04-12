@@ -23,7 +23,7 @@ function OutstandingPayment() {
       </CardHeader>
 
       {/* Table Content */}
-      <CardContent className="p-5 k-chart">
+      <CardContent className="p-5 pt-0 k-chart">
         <PaymentTable columns={paymentColumns} data={outstanding} />
       </CardContent>
 

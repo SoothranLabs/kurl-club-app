@@ -21,7 +21,7 @@ function SkipperStats() {
         </Button>
       </CardHeader>
 
-      <CardContent className="p-5 k-chart">
+      <CardContent className="p-5 pt-0 k-chart">
         <SkipperTable columns={SkipperColumns} data={outstanding} />
       </CardContent>
 
