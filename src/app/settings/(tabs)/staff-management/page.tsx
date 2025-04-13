@@ -26,7 +26,7 @@ export default function StaffManagement() {
   );
 
   return (
-    <div className="flex-col gap-4 px-8 my-8 flex w-full">
+    <div className="flex-col gap-4 px-8 my-8 flex w-full max-w-[calc(100vw-336px)]">
       <StaffsHeader
         onAddNewClick={() => openSheet()}
         isOpen={isOpen}

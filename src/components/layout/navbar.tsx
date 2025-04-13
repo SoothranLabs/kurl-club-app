@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Bell, Search } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { UserNav } from './user-nav';
 
 function Navbar() {
@@ -25,11 +25,11 @@ function Navbar() {
       title: 'Payments & attendance',
       url: '/payments-and-attendance',
     },
-    {
-      id: 4,
-      title: 'Chats',
-      url: '#',
-    },
+    // {
+    //   id: 4,
+    //   title: 'Chats',
+    //   url: '#',
+    // },
   ];
 
   return (
@@ -64,9 +64,9 @@ function Navbar() {
         </div>
         <div className="flex items-center gap-6 justify-end">
           <div className="flex items-center gap-[14px]">
-            <span className="w-8 h-8 cursor-pointer flex items-center justify-center">
+            {/* <span className="w-8 h-8 cursor-pointer flex items-center justify-center">
               <Search size={20} />
-            </span>
+            </span> */}
             <span className="w-8 h-8 cursor-pointer flex items-center justify-center">
               <Bell size={20} />
             </span>
