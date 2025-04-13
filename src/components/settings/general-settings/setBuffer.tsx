@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { Plus, Trash2 } from 'lucide-react';
+import { CheckCheck, Plus, Trash2 } from 'lucide-react';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -111,8 +111,8 @@ export default function SetBuffer() {
                     Enter the minimum payable amount to qualify for “Partial
                     payment”.
                   </p>
-                  {buffers.map((buffer, index) => (
-                    <div key={buffer.id} className="flex gap-6 mt-4">
+                  {buffers.map((buffer) => (
+                    <div key={buffer.id} className="flex gap-3 mt-4">
                       <KFormField
                         fieldType={KFormFieldType.INPUT}
                         control={form.control}
@@ -147,22 +147,23 @@ export default function SetBuffer() {
                           ))}
                         </SelectContent>
                       </Select>
-                      {index > 0 && (
-                        <Button
-                          type="button"
-                          onClick={() => removeBuffer(buffer.id)}
-                          className="h-[52px] w-[52px] border border-secondary-blue-400"
-                          variant="secondary"
-                        >
-                          <Trash2 />
-                        </Button>
-                      )}
+                      <Button
+                        type="button"
+                        onClick={() => removeBuffer(buffer.id)}
+                        className="h-[52px] w-[52px] border border-secondary-blue-400 hover:border-primary-green-500"
+                        variant="secondary"
+                      >
+                        <Trash2 />
+                      </Button>
+                      <Button type="button" className="h-[52px] w-[52px]">
+                        <CheckCheck className="!h-5 !w-5" />
+                      </Button>
                     </div>
                   ))}
                 </div>
 
                 <Button
-                  className="w-fit border border-secondary-blue-400 py-2.5 px-3"
+                  className="w-fit border border-secondary-blue-400 py-2.5 px-3 hover:border-primary-green-500"
                   variant="ghost"
                   onClick={addBuffer}
                 >
