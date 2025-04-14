@@ -45,18 +45,18 @@ export function UserNav() {
       name: 'Gold’s Gym',
       gymId: '#go2224',
     },
-    {
-      key: 2,
-      avatar: '',
-      name: 'Monolith gym',
-      gymId: '#go2225',
-    },
-    {
-      key: 3,
-      avatar: '',
-      name: 'Smart gym',
-      gymId: '#go2226',
-    },
+    // {
+    //   key: 2,
+    //   avatar: '',
+    //   name: 'Monolith gym',
+    //   gymId: '#go2225',
+    // },
+    // {
+    //   key: 3,
+    //   avatar: '',
+    //   name: 'Smart gym',
+    //   gymId: '#go2226',
+    // },
   ];
 
   return (

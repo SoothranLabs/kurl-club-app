@@ -96,10 +96,14 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
     <div
       className={`rounded-lg w-full p-5 border border-transparent ${bgClass} bg-[url("/assets/svg/subscription-bg.svg")] bg-no-repeat bg-right bg-contain`}
     >
-      <h1 className="text-secondary-blue-900 text-2xl font-medium leading-normal">
+      <h1
+        className={`text-secondary-blue-900 text-2xl font-medium leading-normal ${variant === 'expired' && '!text-white'}`}
+      >
         {title}
       </h1>
-      <p className="text-secondary-blue-900 text-sm leading-normal mt-2">
+      <p
+        className={`text-secondary-blue-900 text-sm leading-normal mt-2 ${variant === 'expired' && '!text-white'}`}
+      >
         {descriptions[variant]}
       </p>
 

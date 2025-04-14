@@ -275,6 +275,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 mode="single"
                 className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
                 iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
+                showYearSelector
               />
             </div>
           </div>
