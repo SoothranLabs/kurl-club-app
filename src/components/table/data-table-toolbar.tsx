@@ -8,17 +8,7 @@ import { Button } from '@/components/ui/button';
 import { DataTableFacetedFilter } from '@/components/table/data-table-faceted-filter';
 import { DataTableViewOptions } from '@/components/table/data-table-view-options';
 import { Search } from '@/components/search';
-
-interface FilterOption {
-  label: string;
-  value: string;
-}
-
-interface FilterConfig {
-  columnId: string;
-  title: string;
-  options: FilterOption[];
-}
+import { FilterConfig } from '@/lib/filters';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;

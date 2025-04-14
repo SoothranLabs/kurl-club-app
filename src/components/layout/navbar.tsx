@@ -54,7 +54,11 @@ function Navbar() {
             {navLink.map((link) => (
               <Link href={link.url} key={link.id}>
                 <li
-                  className={`rounded-[35px] h-[35px]  cursor-pointer py-2 px-3 text-whites text-[15px] font-normal capitalize ${pathname === link.url ? 'text-primary-blue-900 bg-primary-green-100' : ''}`}
+                  className={`rounded-[35px] h-[35px] cursor-pointer py-2 px-3 text-whites text-[15px] font-normal capitalize ${
+                    pathname === link.url || pathname.startsWith(`${link.url}/`)
+                      ? 'text-primary-blue-900 bg-primary-green-100'
+                      : ''
+                  }`}
                 >
                   {link.title}
                 </li>
