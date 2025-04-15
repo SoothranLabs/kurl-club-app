@@ -48,7 +48,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
       weight: '',
       address: '',
       gender: undefined,
-      package: undefined,
+      membershipPlanId: undefined,
       feeStatus: undefined,
       personalTrainer: undefined,
       bloodGroup: undefined,
@@ -194,7 +194,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
               <KFormField
                 fieldType={KFormFieldType.SELECT}
                 control={form.control}
-                name="package"
+                name="membershipPlanId"
                 label="Package"
                 options={formOptions?.membershipPlans.map((plan) => ({
                   label: plan.planName,
@@ -240,7 +240,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
             {/* Amount Paid */}
             <div className="w-1/2">
               {(() => {
-                const selectedPlanId = form.watch('package');
+                const selectedPlanId = form.watch('membershipPlanId');
                 const selectedPlan = formOptions?.membershipPlans.find(
                   (plan) => String(plan.membershipPlanId) === selectedPlanId
                 );
