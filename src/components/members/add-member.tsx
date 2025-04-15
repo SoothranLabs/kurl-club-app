@@ -43,7 +43,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
       phone: '',
       amountPaid: '',
       dob: '',
-      doj: '',
+      doj: new Date().toISOString(),
       height: '',
       weight: '',
       address: '',
@@ -196,9 +196,9 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 control={form.control}
                 name="package"
                 label="Package"
-                options={formOptions?.packageOptions.map((option) => ({
-                  label: option.name,
-                  value: String(option.id),
+                options={formOptions?.membershipPlans.map((plan) => ({
+                  label: plan.planName,
+                  value: String(plan.membershipPlanId),
                 }))}
               />
             </div>
@@ -239,14 +239,26 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
 
             {/* Amount Paid */}
             <div className="w-1/2">
-              <KFormField
-                suffix={'/10,000'}
-                fieldType={KFormFieldType.INPUT}
-                control={form.control}
-                name="amountPaid"
-                label="Amount Paid"
-                maxLength={10}
-              />
+              {(() => {
+                const selectedPlanId = form.watch('package');
+                const selectedPlan = formOptions?.membershipPlans.find(
+                  (plan) => String(plan.membershipPlanId) === selectedPlanId
+                );
+                const planFeeSuffix = selectedPlan
+                  ? `/ ${selectedPlan.fee.toLocaleString()}`
+                  : '';
+
+                return (
+                  <KFormField
+                    suffix={planFeeSuffix}
+                    fieldType={KFormFieldType.INPUT}
+                    control={form.control}
+                    name="amountPaid"
+                    label="Amount Paid"
+                    maxLength={10}
+                  />
+                );
+              })()}
             </div>
           </div>
 
