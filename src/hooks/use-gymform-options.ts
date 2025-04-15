@@ -3,7 +3,13 @@ import { api } from '@/lib/api';
 
 export type FormOptionsResponse = {
   workoutPlans: { id: number; name: string; isDefault?: boolean }[];
-  packageOptions: { id: number; name: string }[];
+  membershipPlans: {
+    membershipPlanId: number;
+    planName: string;
+    details: string;
+    fee: number;
+    durationInDays: number;
+  }[];
   trainers: { id: number; trainerName: string }[];
   certificatesOptions: { id: number; name: string }[];
 };
