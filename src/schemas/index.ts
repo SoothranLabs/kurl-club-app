@@ -363,7 +363,7 @@ export const createMemberSchema = z.object({
   ),
   bloodGroup: z.string().min(1, 'Blood group selection is required'),
   gender: z.string().min(1, 'Gender selection is required'),
-  package: z.string().min(1, 'Package selection is required'),
+  membershipPlanId: z.string().min(1, 'Package selection is required'),
   feeStatus: z.string().min(1, 'Fee status is required'),
   doj: z.preprocess(
     (val) => (val instanceof Date ? val.toISOString() : val),
