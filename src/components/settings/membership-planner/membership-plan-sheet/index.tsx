@@ -1,39 +1,35 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronLeft, Plus } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 
 import { useGymMembers } from '@/services/member';
 import { useAppDialog } from '@/hooks/use-app-dialog';
 import { useGymBranch } from '@/providers/gym-branch-provider';
-import type { WorkoutPlan, Exercise } from '@/types/workoutplan';
+import { MembershipPlan } from '@/types/membership-plan';
 
 import { Button } from '@/components/ui/button';
 import { KSheet } from '@/components/form/k-sheet';
 import { Overview } from './overview';
-import { Schedule } from './schedule';
-import { AddExercise } from './add-exercise';
-import { ExerciseList } from './exercise-list';
 import { MemberList } from './member-list';
 
 interface PackageManageSheetProps {
-  plan: WorkoutPlan | null;
+  plan: MembershipPlan | null;
   isOpen: boolean;
-  onUpdate: (plan: WorkoutPlan) => void;
+  onUpdate: (plan: MembershipPlan) => void;
   onDelete: (planId: number) => void;
-  onSaveNew: (plan: WorkoutPlan) => void;
+  onSaveNew: (plan: MembershipPlan) => void;
   closeSheet: () => void;
 }
 
-const DEFAULT_PLAN: WorkoutPlan = {
-  planId: 0,
+const DEFAULT_PLAN: MembershipPlan = {
+  membershipPlanId: 0,
   gymId: 0,
-  planName: 'New Workout Plan',
-  description: 'Add a description for your workout plan',
-  duration: 60,
-  difficultyLevel: 'beginner',
-  isDefault: false,
-  workouts: [],
+  planName: 'New Membership Plan',
+  details: 'Add a description for your membership plan',
+  fee: 0,
+  durationInDays: 0,
+  isActive: true,
 };
 
 export function MembershipPlanSheet({
@@ -44,13 +40,12 @@ export function MembershipPlanSheet({
   onDelete,
   onSaveNew,
 }: PackageManageSheetProps) {
-  const [editedPlan, setEditedPlan] = useState<WorkoutPlan>(
+  const [editedPlan, setEditedPlan] = useState<MembershipPlan>(
     plan || DEFAULT_PLAN
   );
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isMemberListVisible, setIsMemberListVisible] = useState(false);
-  const [showSchedule, setShowSchedule] = useState(false);
 
   const { showConfirm } = useAppDialog();
 
@@ -67,7 +62,6 @@ export function MembershipPlanSheet({
       setIsEditMode(!plan);
       setSelectedDay(null);
       setIsMemberListVisible(false);
-      setShowSchedule(!!plan);
     }
   }, [plan, isOpen]);
 
@@ -84,129 +78,15 @@ export function MembershipPlanSheet({
   const handleDeletePlan = () => {
     showConfirm({
       title: `Are you absolutely sure?`,
-      description: `This action cannot be undone. This will permanently delete your workout plan and remove it from our servers.`,
+      description: `This action cannot be undone. This will permanently delete your membership plan and remove it from our servers.`,
       variant: 'destructive',
       confirmLabel: 'Yes, delete plan',
       onConfirm: () => {
         if (plan) {
-          onDelete(plan.planId);
+          onDelete(plan.membershipPlanId);
         }
         closeSheet();
       },
-    });
-  };
-
-  const handleUpdateExercise = (
-    day: string,
-    category: string,
-    exerciseIndex: number,
-    updates: Partial<Exercise>
-  ) => {
-    setEditedPlan((prev) => ({
-      ...prev,
-      workouts: prev.workouts.map((w) =>
-        w.day === day
-          ? {
-              ...w,
-              categories: w.categories.map((c) =>
-                c.category === category
-                  ? {
-                      ...c,
-                      exercises: c.exercises.map((e, index) =>
-                        index === exerciseIndex ? { ...e, ...updates } : e
-                      ),
-                    }
-                  : c
-              ),
-            }
-          : w
-      ),
-    }));
-  };
-
-  const handleRemoveExercise = (
-    day: string,
-    category: string,
-    exerciseIndex: number
-  ) => {
-    setEditedPlan((prev) => ({
-      ...prev,
-      workouts: prev.workouts
-        .map((w) =>
-          w.day === day
-            ? {
-                ...w,
-                categories: w.categories
-                  .map((c) =>
-                    c.category === category
-                      ? {
-                          ...c,
-                          exercises: c.exercises.filter(
-                            (_, index) => index !== exerciseIndex
-                          ),
-                        }
-                      : c
-                  )
-                  .filter((c) => c.exercises.length > 0),
-              }
-            : w
-        )
-        .filter((w) => w.categories.length > 0),
-    }));
-  };
-
-  const handleAddExercise = (
-    day: string,
-    category: string,
-    exercise: Exercise
-  ) => {
-    setEditedPlan((prev) => {
-      const existingDayPlan = prev.workouts.find((w) => w.day === day);
-      if (existingDayPlan) {
-        const existingCategory = existingDayPlan.categories.find(
-          (c) => c.category === category
-        );
-        if (existingCategory) {
-          return {
-            ...prev,
-            workouts: prev.workouts.map((w) =>
-              w.day === day
-                ? {
-                    ...w,
-                    categories: w.categories.map((c) =>
-                      c.category === category
-                        ? { ...c, exercises: [...c.exercises, exercise] }
-                        : c
-                    ),
-                  }
-                : w
-            ),
-          };
-        } else {
-          return {
-            ...prev,
-            workouts: prev.workouts.map((w) =>
-              w.day === day
-                ? {
-                    ...w,
-                    categories: [
-                      ...w.categories,
-                      { category, exercises: [exercise] },
-                    ],
-                  }
-                : w
-            ),
-          };
-        }
-      } else {
-        return {
-          ...prev,
-          workouts: [
-            ...prev.workouts,
-            { day, categories: [{ category, exercises: [exercise] }] },
-          ],
-        };
-      }
     });
   };
 
@@ -219,7 +99,7 @@ export function MembershipPlanSheet({
     }
   };
 
-  const handleImmediateUpdate = (updatedPlan: WorkoutPlan) => {
+  const handleImmediateUpdate = (updatedPlan: MembershipPlan) => {
     onUpdate(updatedPlan);
     setEditedPlan(updatedPlan);
   };
@@ -330,37 +210,6 @@ export function MembershipPlanSheet({
     >
       {isMemberListVisible ? (
         <MemberList members={planMembers} />
-      ) : selectedDay ? (
-        <div className="space-y-6">
-          {isEditMode && (
-            <AddExercise
-              onAddExercise={(exercise, category) =>
-                handleAddExercise(selectedDay, category, exercise)
-              }
-            />
-          )}
-
-          <ExerciseList
-            dayPlan={
-              editedPlan.workouts.find((w) => w.day === selectedDay) || {
-                day: selectedDay,
-                categories: [],
-              }
-            }
-            isEditMode={isEditMode}
-            onUpdateExercise={(category, exerciseIndex, updates) =>
-              handleUpdateExercise(
-                selectedDay,
-                category,
-                exerciseIndex,
-                updates
-              )
-            }
-            onRemoveExercise={(category, exerciseIndex) =>
-              handleRemoveExercise(selectedDay, category, exerciseIndex)
-            }
-          />
-        </div>
       ) : (
         <div className="space-y-5">
           <Overview
@@ -374,23 +223,6 @@ export function MembershipPlanSheet({
             onEdit={() => setIsEditMode(!isEditMode)}
             onShowMembers={() => setIsMemberListVisible(true)}
           />
-
-          {!plan && !showSchedule ? (
-            <Button
-              variant="outline"
-              className="h-10"
-              onClick={() => setShowSchedule(true)}
-            >
-              <Plus className=" h-4 w-4 text-primary-green-300" />
-              Add Exercise
-            </Button>
-          ) : (
-            <Schedule
-              plan={editedPlan}
-              isEditMode={isEditMode}
-              onEditDay={setSelectedDay}
-            />
-          )}
         </div>
       )}
     </KSheet>

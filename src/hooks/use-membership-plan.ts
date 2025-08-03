@@ -3,58 +3,58 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import {
-  getWorkoutPlans,
-  createWorkoutPlan,
-  updateWorkoutPlan,
-  deleteWorkoutPlan,
-} from '@/services/workoutplan';
+  getMembershipPlans,
+  createMembershipPlan,
+  updateMembershipPlan,
+  deleteMembershipPlan,
+} from '@/services/membership-plan';
 import { useGymBranch } from '@/providers/gym-branch-provider';
-import type { WorkoutPlan } from '@/types/workoutplan';
+import type { MembershipPlan } from '@/types/membership-plan';
 import { useAppDialog } from './use-app-dialog';
 
-export function useWorkoutPlans() {
+export function useMembershipPlans() {
   const queryClient = useQueryClient();
   const { showAlert } = useAppDialog();
   const { gymBranch } = useGymBranch();
 
-  // Get all workout plans
+  // Get all membership plans
   const {
     data: plans = [],
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['workoutPlans', gymBranch?.gymId],
+    queryKey: ['membershipPlans', gymBranch?.gymId],
     queryFn: () => {
       if (!gymBranch?.gymId) {
         throw new Error('No gym selected');
       }
-      return getWorkoutPlans(gymBranch.gymId);
+      return getMembershipPlans(gymBranch.gymId);
     },
     enabled: !!gymBranch?.gymId,
     staleTime: 1000 * 60 * 3,
   });
 
-  // Create a new workout plan
+  // Create a new membership plan
   const createPlanMutation = useMutation({
-    mutationFn: (newPlan: WorkoutPlan) => {
+    mutationFn: (newPlan: MembershipPlan) => {
       if (!gymBranch?.gymId) {
         throw new Error('No gym selected');
       }
-      return createWorkoutPlan({
+      return createMembershipPlan({
         ...newPlan,
         gymId: gymBranch.gymId,
       });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['workoutPlans', gymBranch?.gymId],
+        queryKey: ['membershipPlans', gymBranch?.gymId],
       });
-      toast.success('Workout plan created successfully');
+      toast.success('Membership plan created successfully');
       return true;
     },
     onError: (err) => {
       showAlert({
-        title: 'Error creating workout plan',
+        title: 'Error creating membership plan',
         description:
           err instanceof Error ? err.message : 'An unknown error occurred',
         variant: 'destructive',
@@ -63,27 +63,27 @@ export function useWorkoutPlans() {
     },
   });
 
-  // Update an existing workout plan
+  // Update an existing membership plan
   const updatePlanMutation = useMutation({
-    mutationFn: ({ id, plan }: { id: number; plan: WorkoutPlan }) => {
+    mutationFn: ({ id, plan }: { id: number; plan: MembershipPlan }) => {
       if (!gymBranch?.gymId) {
         throw new Error('No gym selected');
       }
-      return updateWorkoutPlan(id, {
+      return updateMembershipPlan(id, {
         ...plan,
         gymId: gymBranch.gymId,
       });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['workoutPlans', gymBranch?.gymId],
+        queryKey: ['membershipPlans', gymBranch?.gymId],
       });
-      toast.success('Workout plan updated successfully');
+      toast.success('Membership plan updated successfully');
       return true;
     },
     onError: (err) => {
       showAlert({
-        title: 'Error updating workout plan',
+        title: 'Error updating membership plan',
         description:
           err instanceof Error ? err.message : 'An unknown error occurred',
         variant: 'destructive',
@@ -92,19 +92,19 @@ export function useWorkoutPlans() {
     },
   });
 
-  // Delete a workout plan
+  // Delete a membership plan
   const deletePlanMutation = useMutation({
-    mutationFn: (id: number) => deleteWorkoutPlan(id),
+    mutationFn: (id: number) => deleteMembershipPlan(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['workoutPlans', gymBranch?.gymId],
+        queryKey: ['membershipPlans', gymBranch?.gymId],
       });
-      toast.success('Workout plan deleted successfully');
+      toast.success('Membership plan deleted successfully');
       return true;
     },
     onError: (err) => {
       showAlert({
-        title: 'Error deleting workout plan',
+        title: 'Error deleting membership plan',
         description:
           err instanceof Error ? err.message : 'An unknown error occurred',
         variant: 'destructive',
@@ -125,29 +125,3 @@ export function useWorkoutPlans() {
     isDeleting: deletePlanMutation.isPending,
   };
 }
-
-// export function useWorkoutPlan(id: number | null) {
-//   const { showAlert } = useAppDialog();
-
-//   const {
-//     data: plan,
-//     isLoading,
-//     error,
-//   } = useQuery({
-//     queryKey: ['workoutPlan', id],
-//     queryFn: () => (id ? getWorkoutPlan(id) : null),
-//     enabled: !!id,
-//     staleTime: 1000 * 60 * 3,
-//   });
-
-//   if (error) {
-//     showAlert({
-//       title: 'Error loading workout plan',
-//       description:
-//         error instanceof Error ? error.message : 'An unknown error occurred',
-//       variant: 'destructive',
-//     });
-//   }
-
-//   return { plan, isLoading, error };
-// }

@@ -6,7 +6,7 @@ import { MembershipPlan } from '@/types/membership-plan';
 export const getMembershipPlans = async (gymId: number) => {
   try {
     const response = await api.get<ApiResponse<MembershipPlan[]>>(
-      `Gym/get-membership-plans-by-gym/${gymId}`
+      `/Gym/get-membership-plans-by-gym/${gymId}`
     );
     return response.data || [];
   } catch (error) {
@@ -28,7 +28,7 @@ export async function getMembershipPlanById(id: number) {
   }
 }
 
-// Create a new Membership plan /api/Gym/create-membership-plan
+// Create a new Membership plan
 export async function createMembershipPlan(membershipPlan: MembershipPlan) {
   try {
     const response = await api.post<ApiResponse<MembershipPlan>>(

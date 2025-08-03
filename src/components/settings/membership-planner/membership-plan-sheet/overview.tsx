@@ -1,32 +1,31 @@
 'use client';
 
-import { Clock, PenLine, TrendingUp, User2 } from 'lucide-react';
+import { Clock, PenLine, User2 } from 'lucide-react';
 
-import type { WorkoutPlan } from '@/types/workoutplan';
+import { MembershipPlan } from '@/types/membership-plan';
 import { Member } from '@/types/members';
-import {
-  getDifficultyColor,
-  getInitials,
-  getProfilePictureSrc,
-} from '@/lib/utils';
+import { getInitials, getProfilePictureSrc } from '@/lib/utils';
 
 import { Separator } from '@/components/ui/separator';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 
 import { KInput } from '@/components/form/k-input';
 import { KTextarea } from '@/components/form/k-textarea';
-import { KSelect } from '@/components/form/k-select';
 
 interface OverviewProps {
-  plan: WorkoutPlan;
+  plan: MembershipPlan;
   planMembers?: Member[];
   isEditMode: boolean;
   isNewPlan?: boolean;
-  onUpdatePlan: (updatedPlan: WorkoutPlan) => void;
-  onImmediateUpdate: (updatedPlan: WorkoutPlan) => void;
+  onUpdatePlan: (updatedPlan: MembershipPlan) => void;
+  onImmediateUpdate: (updatedPlan: MembershipPlan) => void;
   onDelete: () => void;
   onEdit: () => void;
   onShowMembers: () => void;
@@ -43,7 +42,7 @@ export function Overview({
   onShowMembers,
 }: OverviewProps) {
   const handleDefaultChange = (checked: boolean) => {
-    const updatedPlan = { ...plan, isDefault: checked };
+    const updatedPlan = { ...plan, isActive: checked };
 
     if (isNewPlan) {
       onUpdatePlan(updatedPlan);
@@ -52,7 +51,7 @@ export function Overview({
     }
   };
 
-  const renderOverviewCard = (data: WorkoutPlan) => (
+  const renderOverviewCard = (data: MembershipPlan) => (
     <Card className="w-full bg-secondary-blue-500 border-secondary-blue-600 text-white rounded-md">
       <CardHeader className="space-y-3">
         <div className="flex items-center justify-between">
@@ -64,16 +63,18 @@ export function Overview({
             <PenLine className="w-5 h-5" />
           </button>
         </div>
-        <p className="text-[15px] text-zinc-200 font-light leading-relaxed">
-          {data.description}
-        </p>
+        <div className="inline-flex px-4 bg-primary-blue-400 rounded-3xl w-auto max-w-max">
+          <p className="text-lg text-white font-medium leading-relaxed">
+            &#8377;{new Intl.NumberFormat('en-IN').format(Number(data.fee))}
+          </p>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div className="flex items-start gap-3">
             <User2 className="w-6 h-6 text-primary-blue-200 shrink-0" />
             <div>
-              <p className="text-primary-blue-50 text-sm">Member strength</p>
+              <p className="text-primary-blue-50 text-sm">Total Members</p>
               <div
                 className="flex items-center cursor-pointer"
                 onClick={onShowMembers}
@@ -117,43 +118,30 @@ export function Overview({
           />
 
           <div className="flex items-start gap-3">
-            <TrendingUp className="w-6 h-6 text-primary-blue-200 shrink-0" />
-            <div>
-              <p className="text-primary-blue-50 text-sm">Training level</p>
-              <Badge
-                variant="secondary"
-                className={`${getDifficultyColor(plan.difficultyLevel)} text-xs rounded-2xl px-2 py-1 capitalize`}
-              >
-                {plan.difficultyLevel}
-              </Badge>
-            </div>
-          </div>
-
-          <Separator
-            orientation="vertical"
-            className="h-12 hidden sm:block bg-primary-blue-400"
-          />
-
-          <div className="flex items-start gap-3">
             <Clock className="w-6 h-6 text-primary-blue-200 shrink-0" />
             <div>
               <p className="text-primary-blue-50 text-sm">Duration</p>
-              <p className="text-sm text-white">{data.duration} Days</p>
+              <p className="text-sm text-white">{data.durationInDays} Days</p>
             </div>
           </div>
         </div>
       </CardContent>
+      <CardFooter>
+        <p className="text-[15px] text-zinc-200 font-light leading-relaxed">
+          {data.details}
+        </p>
+      </CardFooter>
     </Card>
   );
 
   return (
     <>
       <div className="flex items-center justify-between mb-4">
-        <h2>Basic details</h2>
+        <h2>Membership details</h2>
         <div className="flex items-center gap-2">
-          <span>Set as default</span>
+          <span>Activate</span>
           <Switch
-            checked={plan.isDefault}
+            checked={plan.isActive}
             onCheckedChange={handleDefaultChange}
             className="data-[state=checked]:bg-primary-green-500"
           />
@@ -162,7 +150,7 @@ export function Overview({
       {isEditMode ? (
         <div className="space-y-4">
           <KInput
-            label="Name"
+            label="Membership Plan Name"
             placeholder=" "
             value={plan.planName}
             onChange={(e) =>
@@ -171,43 +159,34 @@ export function Overview({
             disabled={!isEditMode}
             mandetory
           />
+          <KInput
+            label="Amount in (INR)"
+            placeholder=" "
+            value={plan.fee}
+            onChange={(e) =>
+              onUpdatePlan({ ...plan, fee: Number.parseInt(e.target.value) })
+            }
+            disabled={!isEditMode}
+            mandetory
+          />
 
           <KTextarea
             label="Description"
-            value={plan.description}
-            onChange={(e) =>
-              onUpdatePlan({ ...plan, description: e.target.value })
-            }
+            value={plan.details}
+            onChange={(e) => onUpdatePlan({ ...plan, details: e.target.value })}
             disabled={!isEditMode}
           />
 
           <div className="flex flex-col md:flex-row gap-4">
-            <KSelect
-              label="Difficulty level"
-              value={plan.difficultyLevel}
-              onValueChange={(value) =>
-                onUpdatePlan({
-                  ...plan,
-                  difficultyLevel: value as WorkoutPlan['difficultyLevel'],
-                })
-              }
-              options={[
-                { label: 'Beginner', value: 'beginner' },
-                { label: 'Intermediate', value: 'intermediate' },
-                { label: 'Advanced', value: 'advanced' },
-              ]}
-              className="!border-white !rounded-lg"
-            />
-
             <KInput
               label="Duration (days)"
               type="number"
               placeholder={undefined}
-              value={plan.duration}
+              value={plan.durationInDays}
               onChange={(e) =>
                 onUpdatePlan({
                   ...plan,
-                  duration: Number.parseInt(e.target.value),
+                  durationInDays: Number.parseInt(e.target.value),
                 })
               }
               disabled={!isEditMode}

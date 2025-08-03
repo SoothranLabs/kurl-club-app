@@ -3,22 +3,22 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 
-import type { WorkoutPlan } from '@/types/workoutplan';
+import { MembershipPlan } from '@/types/membership-plan';
 import { useSheet } from '@/hooks/use-sheet';
-import { useWorkoutPlans } from '@/hooks/use-workout-plan';
+import { useMembershipPlans } from '@/hooks/use-membership-plan';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { WorkoutCard } from './workout-card';
+import { MembershipCard } from './membership-card';
 import { MembershipPlanSheet } from './membership-plan-sheet';
 
 export function PackageManager() {
-  const [selectedPlan, setSelectedPlan] = useState<WorkoutPlan | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<MembershipPlan | null>(null);
   const { isOpen, openSheet, closeSheet } = useSheet();
   const { gymBranch } = useGymBranch();
   const { plans, isLoading, createPlan, updatePlan, deletePlan } =
-    useWorkoutPlans();
+    useMembershipPlans();
 
   const handleCreatePlan = () => {
     if (!gymBranch?.gymId) {
@@ -28,7 +28,7 @@ export function PackageManager() {
     openSheet();
   };
 
-  const handleSaveNewPlan = async (newPlan: WorkoutPlan) => {
+  const handleSaveNewPlan = async (newPlan: MembershipPlan) => {
     if (!gymBranch?.gymId) return;
     const planWithGymId = {
       ...newPlan,
@@ -40,18 +40,18 @@ export function PackageManager() {
     }
   };
 
-  const handleUpdatePlan = async (updatedPlan: WorkoutPlan) => {
+  const handleUpdatePlan = async (updatedPlan: MembershipPlan) => {
     if (!gymBranch?.gymId) return;
     const updatedPlanWithGymId = {
       ...updatedPlan,
       gymId: gymBranch.gymId,
     };
     const success = await updatePlan({
-      id: updatedPlan.planId,
+      id: updatedPlan.membershipPlanId,
       plan: updatedPlanWithGymId,
     });
     if (success) {
-      if (!updatedPlan.isDefault) {
+      if (!updatedPlan.isActive) {
         closeSheet();
       }
     }
@@ -105,10 +105,10 @@ export function PackageManager() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-bold tracking-tight text-white">
-              Workout Plans
+              Membership Plans
             </h1>
             <p className="text-gray-400 mt-2">
-              Create and manage your personalized workout routines
+              Create and manage your gym membership plans
             </p>
           </div>
           <Button onClick={handleCreatePlan}>
@@ -121,12 +121,13 @@ export function PackageManager() {
           {plans.length === 0 ? (
             <div className="col-span-full text-center py-10">
               <p className="text-gray-400">
-                No workout plans found. Create your first plan!
+                No membership plans available. Click &quot;Create Plan&quot; to
+                add one.
               </p>
             </div>
           ) : (
             plans.map((plan, index) => (
-              <WorkoutCard
+              <MembershipCard
                 key={index}
                 plan={plan}
                 onClick={() => {
