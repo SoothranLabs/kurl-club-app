@@ -22,10 +22,20 @@ export function MembershipCard({ plan, onClick }: WorkoutCardProps) {
           &#8377;{new Intl.NumberFormat('en-IN').format(Number(plan.fee))}
         </h6>
       </div>
-
-      <div className="p-5 pt-6">
+      <div className="p-5 pt-6 h-full">
         <div
-          className="prose prose-sm text-zinc-200 font-light leading-relaxed max-w-none"
+          className="prose prose-sm flex flex-col gap-2 prose-invert max-w-none
+             prose-h1:text-2xl
+             prose-p:text-white prose-p:leading-relaxed
+             prose-ul:flex prose-ul:flex-col prose-ul:gap-4 prose-ul:list-none
+             prose-ol:flex prose-ol:flex-col prose-ol:gap-4 prose-ol:list-none
+             prose-li:list-none prose-li:text-white prose-li:font-medium prose-li:text-sm
+             [&>*]:m-0 [&>*]:p-0 [&_li]:m-0 [&_li]:p-0
+             [&_li]:relative [&_li]:pl-5
+             [&_li::before]:content-[''] [&_li::before]:absolute [&_li::before]:left-0 [&_li::before]:top-[6px]
+             [&_li::before]:w-3 [&_li::before]:h-3 [&_li::before]:rounded-full
+             [&_li::before]:border-[3px] [&_li::before]:border-primary-green-100
+             [&_li::before]:bg-transparent [&_ol>li>p]:m-0 [&_ol>li>p]:p-0"
           dangerouslySetInnerHTML={{ __html: plan.details }}
         />
       </div>
