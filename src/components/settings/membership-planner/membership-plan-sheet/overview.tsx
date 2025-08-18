@@ -17,7 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Switch } from '@/components/ui/switch';
 
 import { KInput } from '@/components/form/k-input';
-import { KTextarea } from '@/components/form/k-textarea';
+import RichTextEditor from '@/components/rich-text-editor';
 
 interface OverviewProps {
   plan: MembershipPlan;
@@ -127,9 +127,10 @@ export function Overview({
         </div>
       </CardContent>
       <CardFooter>
-        <p className="text-[15px] text-zinc-200 font-light leading-relaxed">
-          {data.details}
-        </p>
+        <div
+          className="prose prose-sm text-zinc-200 font-light leading-relaxed max-w-none"
+          dangerouslySetInnerHTML={{ __html: data.details }}
+        />
       </CardFooter>
     </Card>
   );
@@ -170,11 +171,11 @@ export function Overview({
             mandetory
           />
 
-          <KTextarea
-            label="Description"
-            value={plan.details}
-            onChange={(e) => onUpdatePlan({ ...plan, details: e.target.value })}
-            disabled={!isEditMode}
+          <RichTextEditor
+            content={plan.details}
+            onUpdate={(value: string) =>
+              onUpdatePlan({ ...plan, details: value })
+            }
           />
 
           <div className="flex flex-col md:flex-row gap-4">

@@ -24,9 +24,10 @@ export function MembershipCard({ plan, onClick }: WorkoutCardProps) {
       </div>
 
       <div className="p-5 pt-6">
-        <p className="text-white text-sm font-medium leading-[130%]">
-          {plan.details}
-        </p>
+        <div
+          className="prose prose-sm text-zinc-200 font-light leading-relaxed max-w-none"
+          dangerouslySetInnerHTML={{ __html: plan.details }}
+        />
       </div>
     </Card>
   );
