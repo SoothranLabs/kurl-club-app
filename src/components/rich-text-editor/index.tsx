@@ -6,7 +6,16 @@ import StarterKit from '@tiptap/starter-kit';
 
 import type { Editor } from '@tiptap/react';
 import { Button } from '../ui/button';
-import { Bold, Italic, List, ListOrdered, Strikethrough } from 'lucide-react';
+import {
+  Bold,
+  Heading1,
+  Heading2,
+  Heading3,
+  Italic,
+  List,
+  ListOrdered,
+  Strikethrough,
+} from 'lucide-react';
 
 export const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const buttonStyle = (isActive: boolean) =>
@@ -46,8 +55,17 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
       <Button
         variant="ghost"
         size="sm"
-        className={`h-10 w-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700/50 ${buttonStyle(editor?.isActive('list-item') ?? false)}`}
+        className={`h-10 w-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700/50 ${buttonStyle(editor?.isActive('list-disc') ?? false)}`}
         onClick={() => editor?.chain().focus().toggleBulletList().run()}
+      >
+        <List className="h-5 w-5" strokeWidth={2} />
+      </Button>
+
+      <Button
+        variant="ghost"
+        size="sm"
+        className={`h-10 w-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700/50 ${buttonStyle(editor?.isActive('list-item') ?? false)}`}
+        onClick={() => editor?.chain().focus().toggleOrderedList().run()}
       >
         <ListOrdered className="h-5 w-5" strokeWidth={2} />
       </Button>
@@ -55,10 +73,31 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
       <Button
         variant="ghost"
         size="sm"
-        className={`h-10 w-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700/50 ${buttonStyle(editor?.isActive('list-disc') ?? false)}`}
-        onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+        onClick={() =>
+          editor?.chain().focus().toggleHeading({ level: 1 }).run()
+        }
       >
-        <List className="h-5 w-5" strokeWidth={2} />
+        <Heading1 className="h-5 w-5" strokeWidth={2} />
+      </Button>
+
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() =>
+          editor?.chain().focus().toggleHeading({ level: 2 }).run()
+        }
+      >
+        <Heading2 className="h-5 w-5" strokeWidth={2} />
+      </Button>
+
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() =>
+          editor?.chain().focus().toggleHeading({ level: 3 }).run()
+        }
+      >
+        <Heading3 className="h-5 w-5" strokeWidth={2} />
       </Button>
     </div>
   );
@@ -87,7 +126,7 @@ export default function RichTextEditor({
       <MenuBar editor={editor} />
       <EditorContent
         editor={editor}
-        className="prose prose-sm max-w-none p-4 pt-0 rounded shadow text-white"
+        className="prose prose-sm max-w-none p-4 rounded shadow text-white"
       />
       <style jsx global>{`
         .ProseMirror {
@@ -95,7 +134,22 @@ export default function RichTextEditor({
           border: none !important;
           outline: none !important;
         }
-        strong {
+
+        .ProseMirror * {
+          margin: 0 !important;
+          padding: 0 !important;
+          margin-bottom: 8px !important;
+        }
+
+        .ProseMirror ul,
+        .ProseMirror ol {
+          padding-left: 20px !important;
+        }
+
+        .ProseMirror h1,
+        .ProseMirror h2,
+        .ProseMirror h3,
+        .ProseMirror strong {
           color: white !important;
         }
       `}</style>
