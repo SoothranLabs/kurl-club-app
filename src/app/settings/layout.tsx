@@ -6,7 +6,7 @@ import { IndianRupee, Map, Settings, Users } from 'lucide-react';
 
 const navItems: TabItem[] = [
   { id: 'staff-management', label: 'Staff Management', icon: Users },
-  { id: 'packages', label: 'Packages', icon: IndianRupee },
+  { id: 'membership-plans', label: 'Membership Plans', icon: IndianRupee },
   { id: 'workout-plans', label: 'Workout Plans', icon: Map },
   { id: 'general-settings', label: 'General Settings', icon: Settings },
 ];

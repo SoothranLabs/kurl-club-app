@@ -151,6 +151,19 @@ body {
   justify-content: center;
 }
 
+/* ===== TIPTAP RICH-TEXT-EDITOR ===== */
+.prose mark {
+  @apply bg-yellow-200 rounded px-1;
+}
+
+.prose pre {
+  @apply bg-black text-white rounded-lg p-4 font-mono;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0 text-white;
+}
+
 /* charts */
 /* .k-chart{
   max-height: 235px !important;
