@@ -6,7 +6,7 @@ import StarterKit from '@tiptap/starter-kit';
 
 import type { Editor } from '@tiptap/react';
 import { Button } from '../ui/button';
-import { Bold, Italic, List, ListOrdered } from 'lucide-react';
+import { Bold, Italic, List, ListOrdered, Strikethrough } from 'lucide-react';
 
 export const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const buttonStyle = (isActive: boolean) =>
@@ -32,6 +32,15 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
         onClick={() => editor?.chain().focus().toggleItalic().run()}
       >
         <Italic className="h-5 w-5" strokeWidth={2} />
+      </Button>
+
+      <Button
+        variant="ghost"
+        size="sm"
+        className={`h-10 w-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700/50 ${buttonStyle(editor?.isActive('strike') ?? false)}`}
+        onClick={() => editor?.chain().focus().toggleStrike().run()}
+      >
+        <Strikethrough className="h-5 w-5" strokeWidth={2} />
       </Button>
 
       <Button
@@ -78,14 +87,15 @@ export default function RichTextEditor({
       <MenuBar editor={editor} />
       <EditorContent
         editor={editor}
-        className="prose prose-sm max-w-none mt-4 p-5 rounded shadow text-white"
-        style={{
-          // Ensure ProseMirror root uses white text
-          color: 'white',
-        }}
+        className="prose prose-sm max-w-none p-4 pt-0 rounded shadow text-white"
       />
       <style jsx global>{`
         .ProseMirror {
+          color: white !important;
+          border: none !important;
+          outline: none !important;
+        }
+        strong {
           color: white !important;
         }
       `}</style>
