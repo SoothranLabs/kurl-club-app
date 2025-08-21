@@ -53,7 +53,7 @@ export default function Payments() {
         className="px-2 border-secondary-blue-500"
       />
 
-      <div className="p-8">
+      <div className="p-8 max-w-[calc(100vw-342px)]">
         {
           {
             'outstanding-payments': <Outstanding />,
