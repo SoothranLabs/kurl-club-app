@@ -13,7 +13,6 @@ import {
   Heading3,
   Italic,
   List,
-  ListOrdered,
   Strikethrough,
 } from 'lucide-react';
 
@@ -59,15 +58,6 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
         onClick={() => editor?.chain().focus().toggleBulletList().run()}
       >
         <List className="h-5 w-5" strokeWidth={2} />
-      </Button>
-
-      <Button
-        variant="ghost"
-        size="sm"
-        className={`h-10 w-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700/50 ${buttonStyle(editor?.isActive('list-item') ?? false)}`}
-        onClick={() => editor?.chain().focus().toggleOrderedList().run()}
-      >
-        <ListOrdered className="h-5 w-5" strokeWidth={2} />
       </Button>
 
       <Button

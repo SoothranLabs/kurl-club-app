@@ -38,7 +38,7 @@ function Navbar() {
         <div className="flex justify-between items-center">
           <span
             onClick={() => {
-              router.push('/');
+              router.push('/dashboard');
             }}
             className="max-w-[143px] cursor-pointer max-h-[20px] min-w-[143px] min-h-[20px]"
           >
