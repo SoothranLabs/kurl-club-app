@@ -1,6 +1,7 @@
 import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
 import React from 'react';
 import EditDetails from './edit-details';
+import { Progress } from '@/components/ui/progress';
 
 interface PaymentCardProps {
   info: {
@@ -34,8 +35,8 @@ function PaymentCard({ info }: PaymentCardProps) {
         </div>
         <EditDetails />
       </div>
-
-      <div className="p-2 mt-7 flex gap-[68px] bg-primary-blue-400 rounded-[4px]">
+      <Progress value={70} className="w-full mt-6 bg-primary-green-300" />
+      <div className="p-2 mt-8 grid grid-cols-2 gap-4 bg-primary-blue-400 rounded-[4px]">
         {[
           {
             label: 'Current outstanding',
@@ -58,22 +59,23 @@ function PaymentCard({ info }: PaymentCardProps) {
           </div>
         ))}
       </div>
-
-      {[
-        { label: 'Package', value: info.package },
-        { label: 'Due date', value: info.due_data, color: statusColor },
-      ].map((item, index) => (
-        <div key={index} className="mt-6 flex flex-col gap-3">
-          <h6 className="text-primary-blue-100 font-normal leading-normal text-base">
-            {item.label}
-          </h6>
-          <h5
-            className={`text-xl ${item.color || 'text-white'} leading-normal font-medium`}
-          >
-            {item.value}
-          </h5>
-        </div>
-      ))}
+      <div className="grid grid-cols-2 gap-4 mt-8">
+        {[
+          { label: 'Package', value: info.package },
+          { label: 'Due date', value: info.due_data, color: statusColor },
+        ].map((item, index) => (
+          <div key={index} className=" flex flex-col gap-3">
+            <h6 className="text-primary-blue-100 font-normal leading-normal text-base">
+              {item.label}
+            </h6>
+            <h5
+              className={`text-xl ${item.color || 'text-white'} leading-normal font-medium`}
+            >
+              {item.value}
+            </h5>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
