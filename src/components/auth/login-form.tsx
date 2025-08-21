@@ -8,12 +8,10 @@ import { toast } from 'sonner';
 import { sendEmailVerification } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { useAuth } from '@/providers/auth-provider';
 import { createSession, deleteSession } from '@/services/auth/session';
 import { auth } from '@/lib/firebase';
 import { LoginSchema } from '@/schemas';
-
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { AuthWrapper } from '@/components/auth/auth-wrapper';

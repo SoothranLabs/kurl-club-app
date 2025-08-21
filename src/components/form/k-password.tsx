@@ -35,7 +35,10 @@ const KPassword = forwardRef<HTMLInputElement, KPasswordProps>(
         <div className="relative">
           <input
             type={inputType}
-            className={cn('k-input px-4 pb-2.5 pt-6', className)}
+            className={cn(
+              'k-input px-4 pb-2.5 pt-6 bg-secondary-blue-500',
+              className
+            )}
             ref={ref}
             {...props}
             onFocus={handleFocus}
