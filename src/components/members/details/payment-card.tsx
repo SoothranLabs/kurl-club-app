@@ -35,7 +35,7 @@ function PaymentCard({ info }: PaymentCardProps) {
         </div>
         <EditDetails />
       </div>
-      <Progress value={70} className="w-full mt-6 bg-primary-green-300" />
+      <Progress value={70} className="w-full mt-6" gradient />
       <div className="p-2 mt-8 grid grid-cols-2 gap-4 bg-primary-blue-400 rounded-[4px]">
         {[
           {
