@@ -5,9 +5,16 @@ import { WorkoutPlans } from './workout-plans';
 import { DietPlans } from './diet-plans';
 import { KTabs, TabItem } from '@/components/form/k-tabs';
 import { Button } from '@/components/ui/button';
+import { RefreshCw } from 'lucide-react';
 
 export default function PlannerSection() {
   const [activeTab, setActiveTab] = useState<string>('workout');
+  const [isRotating, setIsRotating] = useState<boolean>(false);
+
+  const handleClick = () => {
+    setIsRotating(true);
+    setTimeout(() => setIsRotating(false), 1000);
+  };
 
   const tabs: TabItem[] = [
     { id: 'workout', label: 'Workout plans' },
@@ -20,9 +27,15 @@ export default function PlannerSection() {
         <h6 className="text-base leading-normal font-normal text-white">
           Diet & workouts
         </h6>
-        <Button variant="secondary" className="h-[46px] px-5 py-4">
-          {' '}
-          View more
+        <Button
+          variant="secondary"
+          onClick={handleClick}
+          className="group h-[46px] px-5 py-4"
+        >
+          <RefreshCw
+            className={`text-primary-blue-200 group-hover:text-primary-green-400 transition 
+          ${isRotating ? 'animate-spin text-primary-green-400' : ''}`}
+          />
         </Button>
       </div>
 
