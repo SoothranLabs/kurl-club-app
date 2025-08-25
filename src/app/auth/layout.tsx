@@ -18,7 +18,7 @@ export default function AuthLayout({
         />
       </span>
 
-      <div className="flex flex-col items-end justify-between w-full h-full">
+      <div className="flex flex-col items-end justify-between w-full h-full gap-4">
         <span>
           <Image
             className="ml-auto w-fit"

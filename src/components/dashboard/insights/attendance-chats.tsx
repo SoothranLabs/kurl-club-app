@@ -62,13 +62,13 @@ export function AttendanceChats() {
 
   return (
     <Card className="border-none bg-secondary-blue-500 rounded-lg w-full">
-      <CardHeader className="flex flex-row items-center justify-between p-5 pb-7">
+      <CardHeader className="flex flex-row items-center justify-between p-5 sm:pb-7">
         <CardTitle className="text-white text-base font-normal leading-normal">
           Attendance stats (Days v/s Count)
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0 pr-5 pb-5 k-chart">
-        <ChartContainer config={chartConfig} className="w-full h-[235px]">
+        <ChartContainer config={chartConfig} className="w-full sm:h-[235px]">
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid stroke="#414349" vertical={false} />
             <XAxis

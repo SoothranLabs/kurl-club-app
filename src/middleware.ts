@@ -21,12 +21,12 @@ export function middleware(request: NextRequest) {
 
   // If there is an auth token and the user is on a public path, redirect to home
   if (authToken && isPublicPath) {
-    return NextResponse.redirect(new URL('/', request.url));
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/dashboard', '/(api|trpc)(.*)'],
 };

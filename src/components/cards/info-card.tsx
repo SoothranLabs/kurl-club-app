@@ -26,7 +26,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ item, className }) => {
       className={`w-full bg-secondary-blue-500 rounded-lg flex gap-4 items-center py-[13px] px-3 ${className}`}
     >
       <span
-        className={`rounded-[18px] w-[48px] h-[48px] flex items-center justify-center ${
+        className={`rounded-[18px] min-w-[48px] min-h-[48px] max-w-[48px] max-h-[48px] flex items-center justify-center ${
           colorClasses[item.color || 'primary-green-500']
         }`}
       >
