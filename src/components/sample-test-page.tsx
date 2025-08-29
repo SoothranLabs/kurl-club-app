@@ -139,7 +139,7 @@ const SampleTestPage = () => {
           title: 'Total Members',
           count: 100,
         }}
-        className="!w-[332px]"
+        className="w-[332px]!"
       />
       <div className="flex items-center gap-6">
         <ThemeModeToggle />

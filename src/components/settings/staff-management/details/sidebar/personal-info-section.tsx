@@ -32,7 +32,7 @@ export function PersonalInfoSection({
               onUpdate('dob', date instanceof Date ? date.toISOString() : '')
             }
             label="Date of birth"
-            className="bg-transparent border-0 border-b-[1px] border-primary-blue-300 rounded-none hover:bg-transparent hover:border-white k-transition p-0 h-auto w-full pb-1.5 text-white text-[15px] leading-[140%] font-normal gap-1 flex-row-reverse justify-between"
+            className="bg-transparent border-0 border-b border-primary-blue-300 rounded-none hover:bg-transparent hover:border-white k-transition p-0 h-auto w-full pb-1.5 text-white text-[15px] leading-[140%] font-normal gap-1 flex-row-reverse justify-between"
           />
         ) : (
           <p className="text-white text-[15px] leading-[140%] font-normal">
@@ -65,7 +65,7 @@ export function PersonalInfoSection({
             value={details?.phone}
             onChange={(value) => onUpdate('phone', value || '')}
             disabled={!isEditing}
-            className="peer bg-transparent pb-1.5 border-b-[1px] border-primary-blue-300 hover:border-white k-transition"
+            className="peer bg-transparent pb-1.5 border-b border-primary-blue-300 hover:border-white k-transition"
           />
         }
       />
@@ -78,7 +78,7 @@ export function PersonalInfoSection({
           <Textarea
             value={details?.fullAddress}
             onChange={(e) => onUpdate('fullAddress', e.target.value)}
-            className="resize-none border-0 border-b-[1px] border-primary-blue-300 k-transition rounded-none p-0 !text-[15px] focus:border-b-whit focus-visible:outline-0 hover:border-white focus-visible:border-b-white focus-visible:ring-0"
+            className="resize-none border-0 border-b border-primary-blue-300 k-transition rounded-none p-0 text-[15px]! focus:border-b-whit focus-visible:outline-0 hover:border-white focus-visible:border-b-white focus-visible:ring-0"
           />
         ) : (
           <p className="text-white text-[15px] leading-[140%] font-normal">

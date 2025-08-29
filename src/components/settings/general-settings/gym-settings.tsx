@@ -101,12 +101,12 @@ export const GymSettings = () => {
               disabled={isPending}
               mandetory
             />
-            <h2 className="text-base leading-normal !mt-8 font-semibold ">
+            <h2 className="text-base leading-normal mt-8! font-semibold ">
               Subscription
             </h2>
             <SubscriptionCard variant="premium" />
             {/* Social Links */}
-            <h2 className="text-base leading-normal !mt-8 font-semibold ">
+            <h2 className="text-base leading-normal mt-8! font-semibold ">
               Social Links
             </h2>
             {/* Social links section */}

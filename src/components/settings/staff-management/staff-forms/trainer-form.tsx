@@ -108,7 +108,7 @@ export default function TrainerForm({
             )}
           />
         </div>
-        <h5 className="text-white text-base font-normal leading-normal !mt-0">
+        <h5 className="text-white text-base font-normal leading-normal mt-0!">
           Basic Details
         </h5>
         {/* Name */}
@@ -167,7 +167,7 @@ export default function TrainerForm({
               dateLabel="Date of birth"
               mode="single"
               className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-              iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
+              iconSrc={<Calendar className="w-5! h-5! text-white" />}
               showYearSelector
             />
           </div>
@@ -181,8 +181,8 @@ export default function TrainerForm({
               label="Date of joining"
               dateLabel="Date of joining"
               mode="single"
-              className="bg-secondary-blue-500 z-[1000] h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-              iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
+              className="bg-secondary-blue-500 z-1000 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
+              iconSrc={<Calendar className="w-5! h-5! text-white" />}
             />
           </div>
         </div>
@@ -203,7 +203,7 @@ export default function TrainerForm({
         />
 
         {/* Address Details */}
-        <h5 className="text-white text-base font-normal leading-normal !mt-8">
+        <h5 className="text-white text-base font-normal leading-normal mt-8!">
           Address Details
         </h5>
         <KFormField

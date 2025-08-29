@@ -67,7 +67,7 @@ export default function SetBuffer() {
     <div className="w-full bg-secondary-blue-500 rounded-lg border border-secondary-blue-400">
       <Accordion type="single" collapsible>
         <AccordionItem className="border-0" value="day-buffer">
-          <AccordionTrigger className="p-6 !no-underline">
+          <AccordionTrigger className="p-6 no-underline!">
             <div className="flex flex-col gap-3">
               <h2 className="font-medium text-white text-xl leading-normal">
                 Set buffer
@@ -98,7 +98,7 @@ export default function SetBuffer() {
                     name="day_buffer_days"
                     label="Days"
                     maxLength={5}
-                    className="mt-4 bg-secondary-blue-400 hover:!outline-primary-green-700 max-w-[88px]"
+                    className="mt-4 bg-secondary-blue-400 hover:outline-primary-green-700! max-w-[88px]"
                   />
                 </div>
 
@@ -119,7 +119,7 @@ export default function SetBuffer() {
                         name="fee_buffer_amount"
                         label="Amount"
                         maxLength={8}
-                        className=" bg-secondary-blue-400 hover:!outline-primary-green-700"
+                        className=" bg-secondary-blue-400 hover:outline-primary-green-700!"
                       />
                       <div className="max-w-[88px]">
                         <KFormField
@@ -128,11 +128,11 @@ export default function SetBuffer() {
                           name="fee_buffer_days"
                           label="Days"
                           maxLength={8}
-                          className=" bg-secondary-blue-400 hover:!outline-primary-green-700"
+                          className=" bg-secondary-blue-400 hover:outline-primary-green-700!"
                         />
                       </div>
                       <Select>
-                        <SelectTrigger className="bg-secondary-blue-400 rounded-md border-transparent hover:border-primary-green-700 focus:border-primary-green-700 active:border-primary-green-700 text-white !ring-0 h-13 text-sm px-3 aria-expanded:border-primary-green-700">
+                        <SelectTrigger className="bg-secondary-blue-400 rounded-md border-transparent hover:border-primary-green-700 focus:border-primary-green-700 active:border-primary-green-700 text-white ring-0! h-13 text-sm px-3 aria-expanded:border-primary-green-700">
                           <SelectValue placeholder="Select a plan" />
                         </SelectTrigger>
                         <SelectContent className="shad-select-content">
@@ -156,7 +156,7 @@ export default function SetBuffer() {
                         <Trash2 />
                       </Button>
                       <Button type="button" className="h-[52px] w-[52px]">
-                        <CheckCheck className="!h-5 !w-5" />
+                        <CheckCheck className="h-5! w-5!" />
                       </Button>
                     </div>
                   ))}

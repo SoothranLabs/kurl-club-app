@@ -149,7 +149,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
               Gym no: #{memberDetails.gymNo}
             </Badge>
           </div>
-          <h5 className="text-white text-base font-normal leading-normal !mt-0">
+          <h5 className="text-white text-base font-normal leading-normal mt-0!">
             Basic Details
           </h5>
           {/* Member Name */}
@@ -272,7 +272,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 dateLabel="Date of joining"
                 mode="single"
                 className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-                iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
+                iconSrc={<Calendar className="w-5! h-5! text-white" />}
               />
             </div>
 
@@ -286,7 +286,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 dateLabel="Date of birth"
                 mode="single"
                 className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-                iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
+                iconSrc={<Calendar className="w-5! h-5! text-white" />}
                 showYearSelector
               />
             </div>
@@ -336,7 +336,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
           />
 
           {/* Address Details */}
-          <h5 className="text-white text-base font-normal leading-normal !mt-8">
+          <h5 className="text-white text-base font-normal leading-normal mt-8!">
             Address Details
           </h5>
           <KFormField

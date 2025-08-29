@@ -74,7 +74,7 @@ const KInput = forwardRef<HTMLInputElement, KInputProps>(
         >
           {label}
           {mandetory && (
-            <span className="text-alert-red-500 text-sm font-normal leading-normal ml-[1px]">
+            <span className="text-alert-red-500 text-sm font-normal leading-normal ml-px">
               *
             </span>
           )}

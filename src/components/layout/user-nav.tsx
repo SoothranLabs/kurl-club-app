@@ -90,14 +90,14 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuGroup>
           <DropdownMenuItem className="py-2.5 px-4 h-[44px] cursor-pointer hover:bg-secondary-blue-800 k-transition">
-            <User className="mr-2.5 !h-6 !w-6" />
+            <User className="mr-2.5 h-6! w-6!" />
             <span className="text-white font-semibold text-xs leading-normal">
               Profile
             </span>
           </DropdownMenuItem>
           <Link href="/settings">
             <DropdownMenuItem className="py-2.5 px-4 h-[44px] cursor-pointer hover:bg-secondary-blue-800 k-transition">
-              <Settings className="mr-2.5 !h-6 !w-6" />
+              <Settings className="mr-2.5 h-6! w-6!" />
               <span className="text-white font-semibold text-xs leading-normal">
                 Settings
               </span>
@@ -127,13 +127,13 @@ export function UserNav() {
                 </div>
               </div>
               {index === 0 && (
-                <Check className="!h-6 !w-6 text-primary-green-500" />
+                <Check className="h-6! w-6! text-primary-green-500" />
               )}
             </DropdownMenuItem>
           ))}
 
           <DropdownMenuItem className="p-4 cursor-pointer hover:bg-secondary-blue-800 k-transition">
-            <Plus className="mr-3 !h-6 !w-6" />
+            <Plus className="mr-3 h-6! w-6!" />
             <span className="text-white font-semibold text-sm leading-normal">
               Add account
             </span>
@@ -147,7 +147,7 @@ export function UserNav() {
             isPending && 'opacity-50 pointer-events-none'
           )}
         >
-          <LogOut className="mr-3 !h-6 !w-6" />
+          <LogOut className="mr-3 h-6! w-6!" />
           <span className="text-white font-semibold text-sm leading-normal">
             {isPending ? 'Logging out...' : 'Logout'}
           </span>

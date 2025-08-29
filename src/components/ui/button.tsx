@@ -5,20 +5,20 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm leading-normal font-semibold px-3 py-4 k-transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-20 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm leading-normal font-semibold px-3 py-4 k-transition focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-20 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
         default:
-          'bg-primary-green-500 text-primary-blue-500 shadow hover:bg-primary-green-700',
+          'bg-primary-green-500 text-primary-blue-500 shadow-sm hover:bg-primary-green-700',
         destructive:
-          'bg-alert-red-600 text-destructive-foreground shadow-sm hover:bg-alert-red-600/90',
+          'bg-alert-red-600 text-destructive-foreground shadow-xs hover:bg-alert-red-600/90',
         outline:
-          'border border-secondary-blue-500 text-white bg-background shadow-sm hover:bg-secondary-blue-500',
+          'border border-secondary-blue-500 text-white bg-background shadow-xs hover:bg-secondary-blue-500',
         outlinePrimary:
-          'border border-primary-green-500 bg-background shadow-sm text-primary-green-500 hover:bg-secondary-blue-500',
+          'border border-primary-green-500 bg-background shadow-xs text-primary-green-500 hover:bg-secondary-blue-500',
         secondary:
-          'bg-transparent text-primary-green-500 shadow-sm hover:bg-secondary-blue-500',
+          'bg-transparent text-primary-green-500 shadow-xs hover:bg-secondary-blue-500',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         expandIcon:
@@ -88,7 +88,7 @@ const Button = React.forwardRef<
         )}
         <Slottable>{props.children}</Slottable>
         {Icon && iconPlacement === 'right' && (
-          <div className="w-0 translate-x-[100%] pl-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:translate-x-0 group-hover:pl-1 group-hover:opacity-100">
+          <div className="w-0 translate-x-full pl-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:translate-x-0 group-hover:pl-1 group-hover:opacity-100">
             <Icon />
           </div>
         )}
