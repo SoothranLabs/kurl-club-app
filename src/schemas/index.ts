@@ -379,18 +379,22 @@ export const createMemberSchema = z.object({
     })
     .optional(),
   name: z.string().min(1, 'Member name is required'),
-  dob: z.preprocess(
-    (val) => (val instanceof Date ? val.toISOString() : val),
-    z.string().min(1, 'Date of birth is required')
-  ),
+  dob: z
+    .string()
+    .min(1, 'Date of birth is required')
+    .transform((val) => {
+      return new Date(val).toISOString();
+    }),
   bloodGroup: z.string().min(1, 'Blood group selection is required'),
   gender: z.string().min(1, 'Gender selection is required'),
   membershipPlanId: z.string().min(1, 'Package selection is required'),
   feeStatus: z.string().min(1, 'Fee status is required'),
-  doj: z.preprocess(
-    (val) => (val instanceof Date ? val.toISOString() : val),
-    z.string().min(1, 'Date of joining is required')
-  ),
+  doj: z
+    .string()
+    .min(1, 'Date of joining is required')
+    .transform((val) => {
+      return new Date(val).toISOString();
+    }),
   phone: z
     .string()
     .regex(/^\+?[1-9]\d{1,14}$/, 'Phone number must be at least 10 digits'),
@@ -432,14 +436,15 @@ export const trainerFormSchema = z.object({
   Phone: z.string().min(10, {
     error: 'Phone number must be at least 10 digits.',
   }),
-  Dob: z.preprocess(
-    (val) => (val instanceof Date ? val.toISOString() : val),
-    z.string().min(1, 'Please select Date of Birth.')
-  ),
-  Doj: z.preprocess(
-    (val) => (val instanceof Date ? val.toISOString() : val),
-    z.string().min(1, 'Please select Date of Joining.')
-  ),
+  Dob: z
+    .string()
+    .min(1, 'Please select Date of Birth.')
+    .transform((val) => new Date(val).toISOString()),
+
+  Doj: z
+    .string()
+    .min(1, 'Please select Date of Joining.')
+    .transform((val) => new Date(val).toISOString()),
   Certification: z.array(
     z.object({
       label: z.string(),
@@ -472,14 +477,15 @@ export const adminstratorFormSchema = z.object({
   Phone: z.string().min(10, {
     error: 'Phone number must be at least 10 digits.',
   }),
-  Dob: z.preprocess(
-    (val) => (val instanceof Date ? val.toISOString() : val),
-    z.string().min(1, 'Please select Date of Birth.')
-  ),
-  Doj: z.preprocess(
-    (val) => (val instanceof Date ? val.toISOString() : val),
-    z.string().min(1, 'Please select Date of Joining.')
-  ),
+  Dob: z
+    .string()
+    .min(1, 'Please select Date of Birth.')
+    .transform((val) => new Date(val).toISOString()),
+
+  Doj: z
+    .string()
+    .min(1, 'Please select Date of Joining.')
+    .transform((val) => new Date(val).toISOString()),
   Gender: z.string().min(1, 'Gender selection is required'),
   AddressLine: z
     .string()
