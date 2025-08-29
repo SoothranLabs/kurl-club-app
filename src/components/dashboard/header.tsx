@@ -2,7 +2,7 @@
 
 import { KFormField, KFormFieldType } from '../form/k-formfield';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { SamplePageSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '../ui/form';

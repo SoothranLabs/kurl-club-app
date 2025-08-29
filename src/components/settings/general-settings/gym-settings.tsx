@@ -1,7 +1,7 @@
 'use client';
 
 import { useTransition } from 'react';
-import type * as z from 'zod';
+import { z } from 'zod/v4';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { GymDataDetailsSchema } from '@/schemas';

@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import * as z from 'zod';
+import { z } from 'zod/v4';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'sonner';

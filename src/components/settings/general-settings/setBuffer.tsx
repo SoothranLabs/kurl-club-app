@@ -11,7 +11,7 @@ import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { dayBufferSchema } from '@/schemas';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import {
   Select,
   SelectTrigger,

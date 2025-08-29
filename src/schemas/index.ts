@@ -1,4 +1,4 @@
-import * as z from 'zod';
+import { z } from 'zod/v4';
 
 const isPhoneNumberValid = (phone: string): boolean => {
   // Example validation logic using regex:
@@ -10,61 +10,74 @@ const isPhoneNumberValid = (phone: string): boolean => {
 // Register Schema
 export const RegisterSchema = z
   .object({
-    email: z.string().email({ message: 'Invalid email address' }),
+    email: z.email({
+      error: 'Invalid email address',
+    }),
     password: z
       .string()
-      .min(8, { message: 'Password must be at least 8 characters' })
-      .max(20, { message: 'Password must not exceed 15 characters' })
+      .min(8, {
+        error: 'Password must be at least 8 characters',
+      })
+      .max(20, {
+        error: 'Password must not exceed 15 characters',
+      })
       .superRefine((value, ctx) => {
         if (!/[A-Z]/.test(value)) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: 'custom',
             message: 'Password should have at least one uppercase letter',
           });
         }
         if (!/[a-z]/.test(value)) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: 'custom',
             message: 'Password should have at least one lowercase letter',
           });
         }
         if (!/[0-9]/.test(value)) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: 'custom',
             message: 'Password should have at least one numeric digit',
           });
         }
         if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: 'custom',
             message: 'Password should have at least one special character',
           });
         }
       }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: 'Confirm password is required' }),
+    confirmPassword: z.string().min(1, {
+      error: 'Confirm password is required',
+    }),
     privacyConsent: z.boolean().refine((val) => val === true, {
-      message: 'You must agree to the terms & conditions',
+      error: 'You must agree to the terms & conditions',
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
     path: ['confirmPassword'],
+    error: 'Passwords do not match',
   });
 
 // Login Schema
 export const LoginSchema = z.object({
   email: z
-    .string()
-    .min(1, { message: 'Email is required' })
-    .email({ message: 'Invalid email address' }),
-  password: z.string().min(1, { message: 'Password is required' }),
+    .email({
+      error: 'Invalid email address',
+    })
+    .min(1, {
+      error: 'Email is required',
+    }),
+  password: z.string().min(1, {
+    error: 'Password is required',
+  }),
 });
 
 // Reset Schema
 export const ResetSchema = z.object({
-  email: z.string().email({ message: 'Invalid email address' }),
+  email: z.email({
+    error: 'Invalid email address',
+  }),
 });
 
 // New Password Schema
@@ -72,48 +85,52 @@ export const UpdatePasswordSchema = z
   .object({
     newPassword: z
       .string()
-      .min(8, { message: 'Password must be at least 8 characters long' })
-      .max(20, { message: 'Password must not exceed 20 characters' })
+      .min(8, {
+        error: 'Password must be at least 8 characters long',
+      })
+      .max(20, {
+        error: 'Password must not exceed 20 characters',
+      })
       .superRefine((value, ctx) => {
         if (!/[A-Z]/.test(value)) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: 'custom',
             message: 'Password should have at least one uppercase letter',
           });
         }
         if (!/[a-z]/.test(value)) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: 'custom',
             message: 'Password should have at least one lowercase letter',
           });
         }
         if (!/[0-9]/.test(value)) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: 'custom',
             message: 'Password should have at least one numeric digit',
           });
         }
         if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: 'custom',
             message: 'Password should have at least one special character',
           });
         }
       }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: 'Confirm password is required' }),
+    confirmPassword: z.string().min(1, {
+      error: 'Confirm password is required',
+    }),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: 'Passwords do not match',
     path: ['confirmPassword'],
+    error: 'Passwords do not match',
   });
 
 // Onboarding Form Schema
 // Phone Verify Schema
 export const PhoneVerifySchema = z.object({
   phone: z.string().refine((val) => isPhoneNumberValid(val), {
-    message:
+    error:
       'Invalid phone number. Please provide a valid number with the country code.',
   }),
 });
@@ -125,7 +142,7 @@ export const OTPSchema = z.object({
     .length(6, 'OTP must be exactly 6 digits')
     .regex(/^\d{6}$/, 'OTP must contain only numbers')
     .refine((val) => val !== '', {
-      message: 'OTP cannot be empty',
+      error: 'OTP cannot be empty',
     }),
 });
 
@@ -139,7 +156,7 @@ export const GymDetailsSchema = z.object({
 
   profilePicture: z
     .custom<File | null>((value) => value instanceof File || value === null, {
-      message: 'Profile picture must be a file.',
+      error: 'Profile picture must be a file.',
     })
     .optional(),
 
@@ -164,25 +181,21 @@ export const GymDetailsSchema = z.object({
     .min(1, 'Primary phone number is required'),
 
   email: z
-    .string()
     .email('Enter a valid email address')
     .min(1, 'Email address is required')
     .max(150, 'Email address should not exceed 150 characters'),
 
   websiteLink: z
-    .string()
     .url('Enter a valid website URL')
     .max(255, 'Website URL cannot exceed 255 characters')
     .optional(),
 
   facebookPageLink: z
-    .string()
     .url('Enter a valid Facebook page URL')
     .max(255, 'Facebook page URL cannot exceed 255 characters')
     .optional(),
 
   instagramLink: z
-    .string()
     .url('Enter a valid Instagram URL')
     .max(255, 'Instagram URL cannot exceed 255 characters')
     .optional(),
@@ -204,13 +217,13 @@ export const CreateGymSchema = z.object({
       /^\+?[1-9]\d{1,14}$/,
       'Gym phone number must be a valid phone number.'
     ),
-  Email: z.string().email('Gym email must be a valid email address.'),
+  Email: z.email('Gym email must be a valid email address.'),
   ProfilePicture: z
     .custom<File | null>((value) => value instanceof File || value === null, {
-      message: 'Profile picture must be a file.',
+      error: 'Profile picture must be a file.',
     })
     .refine((file) => file === null || file.size <= 5 * 1024 * 1024, {
-      message: 'File size must be less than 5MB',
+      error: 'File size must be less than 5MB',
     })
     .optional(),
   SocialLink1: z.string().optional(),
@@ -223,36 +236,47 @@ export const TrainerFormSchema = z.object({
   trainers: z
     .array(
       z.object({
-        email: z.string().email('Enter a valid email'),
+        email: z.email('Enter a valid email'),
       })
     )
     .optional(),
 });
 
 export const SamplePageSchema = z.object({
-  email: z.string().email({ message: 'Invalid email address' }),
-  password: z
-    .string()
-    .min(8, { message: 'Password must be at least 8 characters' }),
-  confirmPassword: z
-    .string()
-    .min(1, { message: 'Confirm password is required' }),
-  privacyConsent: z.boolean().refine((val) => val === true, {
-    message: 'You must agree to the terms and conditions',
+  email: z.email({
+    error: 'Invalid email address',
   }),
-  fullName: z.string().min(1, { message: 'Full Name is required' }),
-  websiteUrl: z.string().min(1, { message: 'Enter a valid Url' }),
+  password: z.string().min(8, {
+    error: 'Password must be at least 8 characters',
+  }),
+  confirmPassword: z.string().min(1, {
+    error: 'Confirm password is required',
+  }),
+  privacyConsent: z.boolean().refine((val) => val === true, {
+    error: 'You must agree to the terms and conditions',
+  }),
+  fullName: z.string().min(1, {
+    error: 'Full Name is required',
+  }),
+  websiteUrl: z.string().min(1, {
+    error: 'Enter a valid Url',
+  }),
   familyHistory: z.string().optional(),
-  phoneNumber: z.string().min(10, { message: 'Phone number is invalid' }),
-  identificationType: z
-    .string()
-    .min(1, { message: 'Please select an ID type' }),
-  dateOfBirth: z.date({ invalid_type_error: 'Invalid date format' }),
+  phoneNumber: z.string().min(10, {
+    error: 'Phone number is invalid',
+  }),
+  identificationType: z.string().min(1, {
+    error: 'Please select an ID type',
+  }),
+  dateOfBirth: z.date({
+    error: (issue) =>
+      issue.input === undefined ? undefined : 'Invalid date format',
+  }),
   identificationDocument: z.string().optional(),
   otp: z.string().length(6, 'OTP must be exactly 6 digits'),
   profilePicture: z
     .custom<File | null>((value) => value instanceof File || value === null, {
-      message: 'Profile picture must be a file.',
+      error: 'Profile picture must be a file.',
     })
     .optional(),
 });
@@ -265,11 +289,10 @@ export const AddForm = z.object({
     .trim(),
   profilePicture: z
     .custom<File | null>((value) => value instanceof File || value === null, {
-      message: 'Profile picture must be a file.',
+      error: 'Profile picture must be a file.',
     })
     .optional(),
   email: z
-    .string()
     .email('Enter a valid email address')
     .min(1, 'Email address is required')
     .max(150, 'Email address should not exceed 150 characters'),
@@ -310,11 +333,10 @@ export const AddUserForm = z.object({
     .trim(),
   profilePicture: z
     .custom<File | null>((value) => value instanceof File || value === null, {
-      message: 'Profile picture must be a file.',
+      error: 'Profile picture must be a file.',
     })
     .optional(),
   email: z
-    .string()
     .email('Enter a valid email address')
     .min(1, 'Email address is required')
     .max(150, 'Email address should not exceed 150 characters'),
@@ -350,10 +372,10 @@ export const EditDetailsForm = z.object({
 export const createMemberSchema = z.object({
   profilePicture: z
     .custom<File | null>((value) => value instanceof File || value === null, {
-      message: 'Profile picture must be a file.',
+      error: 'Profile picture must be a file.',
     })
     .refine((file) => file === null || file.size <= 5 * 1024 * 1024, {
-      message: 'File size must be less than 5MB',
+      error: 'File size must be less than 5MB',
     })
     .optional(),
   name: z.string().min(1, 'Member name is required'),
@@ -372,7 +394,7 @@ export const createMemberSchema = z.object({
   phone: z
     .string()
     .regex(/^\+?[1-9]\d{1,14}$/, 'Phone number must be at least 10 digits'),
-  email: z.string().email('Invalid email format'),
+  email: z.email('Invalid email format'),
   height: z.string().min(1, 'Height is required'),
   weight: z.string().min(1, 'Weight is required'),
   personalTrainer: z.string().min(1, 'Personal trainer selection is required'),
@@ -395,19 +417,21 @@ export const workoutPlanSchema = z.object({
 export const trainerFormSchema = z.object({
   ProfilePicture: z
     .custom<File | null>((value) => value instanceof File || value === null, {
-      message: 'Profile picture must be a file.',
+      error: 'Profile picture must be a file.',
     })
     .refine((file) => file === null || file.size <= 5 * 1024 * 1024, {
-      message: 'File size must be less than 5MB',
+      error: 'File size must be less than 5MB',
     })
     .optional(),
-  TrainerName: z
-    .string()
-    .min(2, { message: 'Name must be at least 2 characters.' }),
-  Email: z.string().email({ message: 'Please enter a valid email address.' }),
-  Phone: z
-    .string()
-    .min(10, { message: 'Phone number must be at least 10 digits.' }),
+  TrainerName: z.string().min(2, {
+    error: 'Name must be at least 2 characters.',
+  }),
+  Email: z.email({
+    error: 'Please enter a valid email address.',
+  }),
+  Phone: z.string().min(10, {
+    error: 'Phone number must be at least 10 digits.',
+  }),
   Dob: z.preprocess(
     (val) => (val instanceof Date ? val.toISOString() : val),
     z.string().min(1, 'Please select Date of Birth.')
@@ -433,17 +457,21 @@ export const trainerFormSchema = z.object({
 export const adminstratorFormSchema = z.object({
   ProfilePicture: z
     .custom<File | null>((value) => value instanceof File || value === null, {
-      message: 'Profile picture must be a file.',
+      error: 'Profile picture must be a file.',
     })
     .refine((file) => file === null || file.size <= 5 * 1024 * 1024, {
-      message: 'File size must be less than 5MB',
+      error: 'File size must be less than 5MB',
     })
     .optional(),
-  Name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  Email: z.string().email({ message: 'Please enter a valid email address.' }),
-  Phone: z
-    .string()
-    .min(10, { message: 'Phone number must be at least 10 digits.' }),
+  Name: z.string().min(2, {
+    error: 'Name must be at least 2 characters.',
+  }),
+  Email: z.email({
+    error: 'Please enter a valid email address.',
+  }),
+  Phone: z.string().min(10, {
+    error: 'Phone number must be at least 10 digits.',
+  }),
   Dob: z.preprocess(
     (val) => (val instanceof Date ? val.toISOString() : val),
     z.string().min(1, 'Please select Date of Birth.')
@@ -463,19 +491,21 @@ export const adminstratorFormSchema = z.object({
 export const GymDataDetailsSchema = z.object({
   ProfilePicture: z
     .custom<File | null>((value) => value instanceof File || value === null, {
-      message: 'Profile picture must be a file.',
+      error: 'Profile picture must be a file.',
     })
     .refine((file) => file === null || file.size <= 5 * 1024 * 1024, {
-      message: 'File size must be less than 5MB',
+      error: 'File size must be less than 5MB',
     })
     .optional(),
-  GymName: z
-    .string()
-    .min(2, { message: 'Name must be at least 2 characters.' }),
-  Email: z.string().email({ message: 'Please enter a valid email address.' }),
-  Phone: z
-    .string()
-    .min(10, { message: 'Phone number must be at least 10 digits.' }),
+  GymName: z.string().min(2, {
+    error: 'Name must be at least 2 characters.',
+  }),
+  Email: z.email({
+    error: 'Please enter a valid email address.',
+  }),
+  Phone: z.string().min(10, {
+    error: 'Phone number must be at least 10 digits.',
+  }),
   Address: z
     .string()
     .min(1, 'Address is required.')
@@ -483,7 +513,7 @@ export const GymDataDetailsSchema = z.object({
   socialLinks: z
     .array(
       z.object({
-        url: z.string().url(),
+        url: z.url(),
       })
     )
     .optional(),

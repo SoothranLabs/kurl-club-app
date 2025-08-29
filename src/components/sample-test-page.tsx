@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl } from '@/components/ui/form';
 import { SelectGroup, SelectItem, SelectLabel } from '@/components/ui/select';
