@@ -1,28 +1,30 @@
-# Pull Request Title
+# Pull Request
 
-## Description
+## 📝 Description
 
 Please include a summary of the changes and the purpose of the PR.
 
-## Related Issue
+## 🎫 Jira Issues
 
-Fixes # (issue number)
+Reference Jira tickets:
 
-## Changes
+- KC-
 
-Description of what was changed
+## 🔧 Changes Made
 
-## Screenshots (if applicable)
+- Description of what was changed
 
-Add screenshots to help explain the changes, if applicable.
+## 📸 Screenshots
 
-## Checklist
+<!-- Add screenshots if UI changes -->
+
+## ✅ Checklist
 
 - [ ] I have performed a self-review of my own code
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing tests pass locally with my changes
 - [ ] I have checked for merge conflicts
 
-## Additional Notes
+## 📌 Notes
 
-Add any other context or details here.
+<!-- Additional context or deployment notes -->
