@@ -135,12 +135,12 @@ export function EditableField({
         customInput ? (
           customInput
         ) : (
-          <div className="flex items-center pb-1.5 border-b-[1px] gap-2 border-primary-blue-300 group focus-within:border-white hover:border-white k-transition">
+          <div className="flex items-center pb-1.5 border-b gap-2 border-primary-blue-300 group focus-within:border-white hover:border-white k-transition">
             <Input
               maxLength={suffix ? 6 : undefined}
               value={value}
               onChange={(e) => onChange(e.target.value)}
-              className="border-0 rounded-none h-auto p-0 !text-[15px] focus-visible:outline-0 focus-visible:ring-0"
+              className="border-0 rounded-none h-auto p-0 text-[15px]! focus-visible:outline-0 focus-visible:ring-0"
             />
             {suffix && (
               <span className="text-white text-[15px] leading-[140%] font-normal">
@@ -187,7 +187,7 @@ function EditableSelect<T extends string>({
       </Label>
       {isEditing ? (
         <Select value={value} onValueChange={onChange}>
-          <SelectTrigger className="border-0 border-b-[1px] rounded-none focus:outline-none focus:shadow-none focus:ring-0 p-0 h-auto text-[15px] text-white font-normal leading-normal pb-2 border-primary-blue-300 focus:border-white hover:border-white k-transition focus:outline-0">
+          <SelectTrigger className="border-0 border-b rounded-none focus:outline-hidden focus:shadow-none focus:ring-0 p-0 h-auto text-[15px] text-white font-normal leading-normal pb-2 border-primary-blue-300 focus:border-white hover:border-white k-transition focus:outline-0">
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="shad-select-content">

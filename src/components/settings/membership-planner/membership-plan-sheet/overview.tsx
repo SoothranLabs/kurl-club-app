@@ -83,7 +83,7 @@ export function Overview({
                   {planMembers.slice(0, 3).map((member) => (
                     <Avatar
                       key={member.id}
-                      className="border-[1px] border-neutral-300 w-5 h-5"
+                      className="border border-neutral-300 w-5 h-5"
                     >
                       <AvatarFallback className="bg-primary-blue-400 text-[10px]">
                         {getInitials(member.name)}
@@ -133,7 +133,7 @@ export function Overview({
              prose-p:text-white prose-p:leading-relaxed
              prose-ul:flex prose-ul:flex-col prose-ul:gap-4 prose-ul:list-none
              prose-li:list-none prose-li:text-white prose-li:font-medium prose-li:text-sm
-             [&>*]:m-0 [&>*]:p-0 [&_li]:m-0 [&_li]:p-0
+             *:m-0 *:p-0 [&_li]:m-0 [&_li]:p-0
              [&_li]:relative [&_li]:pl-5
              [&_li::before]:content-[''] [&_li::before]:absolute [&_li::before]:left-0 [&_li::before]:top-[4px]
              [&_li::before]:w-3 [&_li::before]:h-3 [&_li::before]:rounded-full

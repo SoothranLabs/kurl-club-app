@@ -14,11 +14,11 @@ export const Social = ({ isLogin = false }: SocialProps) => {
     <div className="">
       {/* Divider with text */}
       <div className="flex items-center gap-4 mt-3">
-        <span className="flex-1 h-[1px] bg-gradient-to-l from-primary-blue-400 via-primary-blue-400 to-transparent"></span>
+        <span className="flex-1 h-px bg-linear-to-l from-primary-blue-400 via-primary-blue-400 to-transparent"></span>
         <p className="text-sm font-normal leading-normal text-center text-white">
           Or {actionText} with
         </p>
-        <span className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-primary-blue-400 to-primary-blue-400"></span>
+        <span className="flex-1 h-px bg-linear-to-l from-transparent via-primary-blue-400 to-primary-blue-400"></span>
       </div>
 
       {/* Social Buttons */}

@@ -82,7 +82,7 @@ export function Overview({
                   {planMembers.slice(0, 3).map((member) => (
                     <Avatar
                       key={member.id}
-                      className="border-[1px] border-neutral-300 w-5 h-5"
+                      className="border border-neutral-300 w-5 h-5"
                     >
                       <AvatarFallback className="bg-primary-blue-400 text-[10px]">
                         {getInitials(member.name)}
@@ -196,7 +196,7 @@ export function Overview({
                 { label: 'Intermediate', value: 'intermediate' },
                 { label: 'Advanced', value: 'advanced' },
               ]}
-              className="!border-white !rounded-lg"
+              className="border-white! rounded-lg!"
             />
 
             <KInput

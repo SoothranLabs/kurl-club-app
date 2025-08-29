@@ -1,4 +1,4 @@
-import * as z from 'zod';
+import { z } from 'zod/v4';
 import { api } from '@/lib/api';
 import { CreateGymSchema } from '@/schemas';
 
@@ -11,7 +11,7 @@ export const createGym = async (
   const validationResult = CreateGymSchema.safeParse(schemaValues);
 
   if (!validationResult.success) {
-    const errorMessages = validationResult.error.errors
+    const errorMessages = validationResult.error.issues
       .map((err) => err.message)
       .join(', ');
     return { error: errorMessages };

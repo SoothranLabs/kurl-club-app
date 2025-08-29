@@ -62,7 +62,7 @@ export function Breadcrumb({
 }
 
 const BreadcrumbItem = ({ children }: { children: React.ReactNode }) => (
-  <li className="inline-flex items-center !ml-0">{children}</li>
+  <li className="inline-flex items-center ml-0!">{children}</li>
 );
 
 const BreadcrumbLink = ({
@@ -87,7 +87,7 @@ const BreadcrumbPage = ({ children }: { children: React.ReactNode }) => (
 );
 
 const BreadcrumbSeparator = ({ children }: { children: React.ReactNode }) => (
-  <li className="text-primary-blue-200 h-3 w-3 !ml-1">{children}</li>
+  <li className="text-primary-blue-200 h-3 w-3 ml-1!">{children}</li>
 );
 
 const BreadcrumbEllipsis = () => <li className="text-gray-400">...</li>;

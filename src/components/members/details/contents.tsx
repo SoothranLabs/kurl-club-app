@@ -35,7 +35,7 @@ function Contents({
           title: 'Total hours spent',
           count: 10,
         }}
-        className="!w-[332px] mt-4"
+        className="w-[332px]! mt-4"
       />
       <div className="grid grid-cols-2 mt-3 gap-4">
         <Chart />

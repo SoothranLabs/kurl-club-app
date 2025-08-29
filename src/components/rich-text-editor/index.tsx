@@ -23,7 +23,7 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
     }`;
 
   return (
-    <div className="absolute bottom-5 right-5 flex items-center gap-1 bg-primary-blue-400/80 backdrop-blur-sm rounded-lg p-1 border border-slate-600/50 z-20">
+    <div className="absolute bottom-5 right-5 flex items-center gap-1 bg-primary-blue-400/80 backdrop-blur-xs rounded-lg p-1 border border-slate-600/50 z-20">
       <Button
         variant="ghost"
         size="sm"
@@ -116,7 +116,7 @@ export default function RichTextEditor({
       <MenuBar editor={editor} />
       <EditorContent
         editor={editor}
-        className="prose prose-sm max-w-none p-4 rounded shadow text-white"
+        className="prose prose-sm max-w-none p-4 rounded-sm shadow-sm text-white"
       />
       <style jsx global>{`
         .ProseMirror {
