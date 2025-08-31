@@ -530,3 +530,10 @@ export const dayBufferSchema = z.object({
   fee_buffer_amount: z.string().min(1, 'buffer amount is required'),
   fee_buffer_days: z.string().min(1, 'buffer day is required'),
 });
+
+export const messagingTemplateSchema = z.object({
+  name: z.string().min(1, 'Template name is required'),
+  category: z.enum(['payment', 'reminder', 'notification', 'general']),
+  channel: z.literal('whatsapp'),
+  content: z.string().min(1, 'Message content is required'),
+});

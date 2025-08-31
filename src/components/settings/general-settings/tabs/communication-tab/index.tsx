@@ -1,7 +1,9 @@
-import React from 'react';
+import { MessagingTemplatePanel } from './messaging-template-panel';
 
-const Communication = () => {
-  return <div>Communication</div>;
-};
-
-export default Communication;
+export function CommunicationTab() {
+  return (
+    <div>
+      <MessagingTemplatePanel />
+    </div>
+  );
+}
