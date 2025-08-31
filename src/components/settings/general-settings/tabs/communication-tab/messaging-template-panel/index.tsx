@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useSheet } from '@/hooks/use-sheet';
 import {
   Card,
   CardContent,
@@ -24,8 +25,7 @@ import type { MessageTemplate } from '@/types/messaging-template';
 
 export function MessagingTemplatePanel() {
   const { templates, refreshTemplates } = useMessagingTemplate();
-  const [messagingTemplateDialogOpen, setMessagingTemplateDialogOpen] =
-    useState(false);
+  const { isOpen, openSheet, closeSheet } = useSheet();
   const [editingTemplate, setEditingTemplate] = useState<
     MessageTemplate | undefined
   >();
@@ -72,11 +72,11 @@ export function MessagingTemplatePanel() {
 
   const handleEditTemplate = (template: MessageTemplate) => {
     setEditingTemplate(template);
-    setMessagingTemplateDialogOpen(true);
+    openSheet();
   };
 
   const handleDialogClose = () => {
-    setMessagingTemplateDialogOpen(false);
+    closeSheet();
     setEditingTemplate(undefined);
     refreshTemplates();
   };
@@ -113,7 +113,6 @@ export function MessagingTemplatePanel() {
                   setCurrentView('categories');
                   setSelectedCategory(null);
                 }}
-                className="border-slate-600 text-slate-300 hover:bg-slate-600 bg-transparent mr-2"
               >
                 ← Back
               </Button>
@@ -122,10 +121,7 @@ export function MessagingTemplatePanel() {
               (currentView === 'templates' &&
                 selectedCategory &&
                 templatesByCategory[selectedCategory].length > 0)) && (
-              <Button
-                size="sm"
-                onClick={() => setMessagingTemplateDialogOpen(true)}
-              >
+              <Button size="sm" onClick={() => openSheet()}>
                 <span className="sr-only">Add template</span>+ Add Template
               </Button>
             )}
@@ -170,7 +166,7 @@ export function MessagingTemplatePanel() {
                 selectedCategory && (
                   <EmptyState
                     category={selectedCategory}
-                    onCreate={() => setMessagingTemplateDialogOpen(true)}
+                    onCreate={() => openSheet()}
                   />
                 )
               )}
@@ -180,7 +176,7 @@ export function MessagingTemplatePanel() {
       </Card>
 
       <MessagingTemplateForm
-        isOpen={messagingTemplateDialogOpen}
+        isOpen={isOpen}
         closeSheet={handleDialogClose}
         editingTemplate={editingTemplate}
         defaultCategory={currentView === 'templates' ? selectedCategory : null}
@@ -214,7 +210,7 @@ function CategoryCard({
         <ChevronRight className="w-5 h-5 text-secondary-blue-200 group-hover:text-primary-green-500" />
       </div>
       <h3 className="font-medium text-white">{title}</h3>
-      <p className="text-sm text-slate-400 mb-2">{description}</p>
+      <p className="text-sm text-primary-blue-200 mb-2">{description}</p>
       <Badge
         variant="outline"
         className="text-xs border-secondary-blue-500 text-slate-300"
@@ -255,7 +251,7 @@ function TemplateCard({
         <ChevronRight className="w-5 h-5 text-secondary-blue-200 group-hover:text-primary-green-500" />
       </div>
       <h4 className="font-medium text-white mb-2">{template.name}</h4>
-      <p className="text-sm text-slate-400 mb-3 line-clamp-2">
+      <p className="text-sm text-primary-blue-200 mb-3 line-clamp-2">
         {template.content.substring(0, 180)}...
       </p>
       <div className="flex items-center justify-between text-xs text-slate-500">

@@ -18,6 +18,7 @@ import {
   messageVariableSuggestions,
 } from '@/lib/utils/messaging-templates';
 import { MessageLivePreviewer } from './message-live-previewer';
+import { useAppDialog } from '@/hooks/use-app-dialog';
 
 type CreateMessagingTemplateData = z.infer<typeof messagingTemplateSchema>;
 
@@ -43,6 +44,7 @@ export function MessagingTemplateForm({
 }: MessagingTemplateFormProps) {
   const { createTemplate, updateTemplate, deleteTemplate } =
     useMessagingTemplate();
+  const { showConfirm } = useAppDialog();
   const isEditing = !!editingTemplate;
   const [showPreview, setShowPreview] = useState(false);
 
@@ -101,13 +103,18 @@ export function MessagingTemplateForm({
   const watchedCategory = form.watch('category');
 
   const handleDelete = () => {
-    if (
-      editingTemplate &&
-      window.confirm('Are you sure you want to delete this template?')
-    ) {
-      deleteTemplate(editingTemplate.id);
-      toast.success('Template deleted successfully');
-      closeSheet();
+    if (editingTemplate) {
+      showConfirm({
+        title: 'Delete Template?',
+        description: `This will permanently delete the "${editingTemplate.name}" template. This action cannot be undone.`,
+        variant: 'destructive',
+        confirmLabel: 'Delete Template',
+        onConfirm: () => {
+          deleteTemplate(editingTemplate.id);
+          toast.success('Template deleted successfully');
+          closeSheet();
+        },
+      });
     }
   };
 
