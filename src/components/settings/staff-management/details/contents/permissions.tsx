@@ -82,7 +82,7 @@ function Permissions() {
             value={roleValue}
             onValueChange={(value) => setRoleValue(value)}
           >
-            <SelectTrigger className="border border-transparent rounded-md focus:outline-none focus:border-primary-blue-200 hover:border-primary-blue-200 focus:shadow-none focus:ring-0 p-[10px] h-[52px] text-[15px] text-white font-normal leading-normal focus:outline-0 bg-secondary-blue-400 max-w-[265px] data-[state=open]:border-primary-blue-200 data-[state=open]:border-b-transparent data-[state=open]:rounded-b-none">
+            <SelectTrigger className="border border-transparent rounded-md focus:outline-hidden focus:border-primary-blue-200 hover:border-primary-blue-200 focus:shadow-none focus:ring-0 p-[10px] h-[52px] text-[15px] text-white font-normal leading-normal focus:outline-0 bg-secondary-blue-400 max-w-[265px] data-[state=open]:border-primary-blue-200 data-[state=open]:border-b-transparent data-[state=open]:rounded-b-none">
               <SelectValue placeholder="Select role" />
             </SelectTrigger>
             <SelectContent className="bg-secondary-blue-400 m-0 rounded-t-none border mt-[-3.7px] border-primary-blue-200 max-w-[265px]  border-t-primary-blue-300">

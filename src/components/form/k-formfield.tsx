@@ -72,6 +72,7 @@ interface CustomProps<T extends FieldValues> {
   renderSkeleton?: (
     field: ControllerRenderProps<T, FieldPath<T>>
   ) => React.ReactNode;
+  type?: React.InputHTMLAttributes<HTMLInputElement>['type'];
 }
 
 const RenderField = <T extends FieldValues>({
@@ -98,6 +99,7 @@ const RenderField = <T extends FieldValues>({
     suffix,
     maxLength,
     mandetory,
+    type,
   } = props;
 
   switch (fieldType) {
@@ -110,7 +112,7 @@ const RenderField = <T extends FieldValues>({
                 {iconSrc}
               </div>
             )}
-            <div className="flex-grow">
+            <div className="grow">
               <KInput
                 label={label ?? 'Input'}
                 id={name}
@@ -121,6 +123,7 @@ const RenderField = <T extends FieldValues>({
                 suffix={suffix}
                 maxLength={maxLength}
                 mandetory={mandetory}
+                type={type}
               />
             </div>
           </div>
@@ -242,6 +245,7 @@ const RenderField = <T extends FieldValues>({
               id={name}
               checked={field.value}
               onCheckedChange={field.onChange}
+              disabled={props.disabled}
             />
             <label htmlFor={name} className="checkbox-label">
               {label}
@@ -272,7 +276,7 @@ export function KFormField<T extends FieldValues>(props: CustomProps<T>) {
           )}
 
           <RenderField field={field} props={props} />
-          <FormMessage className="text-alert-red-400 before:content-['*'] before:mr-[1px]" />
+          <FormMessage className="text-alert-red-400 before:content-['*'] before:mr-px" />
         </FormItem>
       )}
     />

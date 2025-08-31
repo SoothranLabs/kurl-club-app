@@ -47,11 +47,11 @@ export function MemberHeader({
         </div>
         <div>
           {isEditing ? (
-            <div className="flex items-center pb-1.5 border-b-[1px] gap-2 border-primary-blue-300 group focus-within:border-white hover:border-white k-transition">
+            <div className="flex items-center pb-1.5 border-b gap-2 border-primary-blue-300 group focus-within:border-white hover:border-white k-transition">
               <Input
                 value={details?.name}
                 onChange={(e) => onUpdate('name', e.target.value)}
-                className="border-0 font-medium rounded-none h-auto p-0 !text-[20px] focus-visible:outline-0 focus-visible:ring-0"
+                className="border-0 font-medium rounded-none h-auto p-0 text-[20px]! focus-visible:outline-0 focus-visible:ring-0"
               />
             </div>
           ) : (

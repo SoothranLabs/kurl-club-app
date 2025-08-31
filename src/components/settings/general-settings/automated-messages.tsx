@@ -67,7 +67,7 @@ export default function AutomatedMessages() {
                       key={index}
                       className="grid grid-cols-[1fr_2fr] py-6 border-b last:border-0 border-primary-blue-300"
                     >
-                      <KSwitch label={item} labelClass="!text-base" />
+                      <KSwitch label={item} labelClass="text-base!" />
                       <div className="flex items-center gap-4">
                         {channels.map((channel, cIndex) => (
                           <div

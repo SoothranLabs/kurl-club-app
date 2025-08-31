@@ -1,6 +1,6 @@
 'use client';
 
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
@@ -102,7 +102,7 @@ export default function AdministratorForm({
             )}
           />
         </div>
-        <h5 className="text-white text-base font-normal leading-normal !mt-0">
+        <h5 className="text-white text-base font-normal leading-normal mt-0!">
           Basic Details
         </h5>
         {/* Name */}
@@ -161,7 +161,7 @@ export default function AdministratorForm({
               dateLabel="Date of birth"
               mode="single"
               className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-              iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
+              iconSrc={<Calendar className="w-5! h-5! text-white" />}
               showYearSelector
             />
           </div>
@@ -175,14 +175,14 @@ export default function AdministratorForm({
               label="Date of joining"
               dateLabel="Date of joining"
               mode="single"
-              className="bg-secondary-blue-500 z-[1000] h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-              iconSrc={<Calendar className="!w-5 !h-5 text-white" />}
+              className="bg-secondary-blue-500 z-1000 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
+              iconSrc={<Calendar className="w-5! h-5! text-white" />}
             />
           </div>
         </div>
 
         {/* Address Details */}
-        <h5 className="text-white text-base font-normal leading-normal !mt-8">
+        <h5 className="text-white text-base font-normal leading-normal mt-8!">
           Address Details
         </h5>
         <KFormField
