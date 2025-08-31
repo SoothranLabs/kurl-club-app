@@ -53,7 +53,7 @@ const KTextarea = forwardRef<HTMLTextAreaElement, KTextareaProps>(
       <div className="relative">
         <textarea
           className={cn(
-            'w-full pt-6 pb-2 px-4 min-h-[80px] rounded-md text-white bg-secondary-blue-500 hover:outline-secondary-blue-400 hover:outline-1 shadow-none !ring-0 hover:outline focus:outline focus:outline-1 focus:outline-primary-green-700 outline-transparent ease-in-out disabled:cursor-not-allowed text-sm disabled:opacity-50 resize-none overflow-hidden',
+            'w-full pt-6 pb-2 px-4 min-h-[80px] rounded-md text-white bg-secondary-blue-500 hover:outline-secondary-blue-400 hover:outline-1 shadow-none ring-0! hover:outline-solid focus:outline-solid focus:outline-1 focus:outline-primary-green-700 outline-transparent ease-in-out disabled:cursor-not-allowed text-sm disabled:opacity-50 resize-none overflow-hidden',
             isFocused || hasContent ? 'pt-6' : 'pt-3',
             className
           )}

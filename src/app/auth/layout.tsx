@@ -11,7 +11,7 @@ export default function AuthLayout({
         <Image
           src="/assets/png/login-banner.png"
           alt="login-banner"
-          className="object-cover object-left-bottom w-full h-full rounded-xl"
+          className="object-cover object-bottom-left w-full h-full rounded-xl"
           height={1000}
           width={1000}
           priority

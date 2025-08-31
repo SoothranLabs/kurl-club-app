@@ -93,7 +93,7 @@ export function KMultiSelect({
       <PopoverTrigger asChild>
         <div
           className={cn(
-            'w-full pt-6 pb-2 px-2.5 min-h-[52px] rounded-md text-white bg-secondary-blue-500 hover:outline-secondary-blue-400 hover:outline-1 shadow-none !ring-0 hover:outline focus:outline focus:outline-1 focus:outline-primary-green-700 outline-transparent ease-in-out disabled:cursor-not-allowed text-sm disabled:opacity-50 resize-none overflow-hidden flex flex-wrap gap-1 py-2',
+            'w-full pt-6 pb-2 px-2.5 min-h-[52px] rounded-md text-white bg-secondary-blue-500 hover:outline-secondary-blue-400 hover:outline-1 shadow-none ring-0! hover:outline-solid focus:outline-solid focus:outline-1 focus:outline-primary-green-700 outline-transparent ease-in-out disabled:cursor-not-allowed text-sm disabled:opacity-50 resize-none overflow-hidden flex flex-wrap gap-1 py-2',
             disabled && 'cursor-not-allowed opacity-50',
             className
           )}
@@ -110,7 +110,7 @@ export function KMultiSelect({
                 {option.label}
                 <button
                   type="button"
-                  className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                  className="ml-1 rounded-full outline-hidden ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       handleUnselect(option);
@@ -132,7 +132,7 @@ export function KMultiSelect({
           <input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
+            className="ml-2 flex-1 bg-transparent outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed"
             placeholder={selected.length === 0 ? placeholder : ''}
             disabled={disabled || isMaxSelected}
             onKeyDown={handleKeyDown}
@@ -140,7 +140,7 @@ export function KMultiSelect({
         </div>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[var(--radix-popover-trigger-width)] pointer-events-auto shad-select-content"
+        className="w-(--radix-popover-trigger-width) pointer-events-auto shad-select-content"
         align="start"
       >
         <Command className="w-full">

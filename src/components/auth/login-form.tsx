@@ -3,7 +3,7 @@
 import { useState, useEffect, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import * as z from 'zod';
+import { z } from 'zod/v4';
 import { toast } from 'sonner';
 import { sendEmailVerification } from 'firebase/auth';
 import { useForm } from 'react-hook-form';

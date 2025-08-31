@@ -50,7 +50,7 @@ export default function StaffForm({
             { label: 'Trainer', value: 'trainer' },
             { label: 'Administrator', value: 'administrator' },
           ]}
-          className="!border-white !rounded-lg"
+          className="border-white! rounded-lg!"
         />
       </div>
 

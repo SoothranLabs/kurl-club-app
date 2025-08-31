@@ -78,6 +78,6 @@ KSelect.displayName = 'KSelect';
     { label: 'United States', value: 'US' },
     { label: 'Australia', value: 'AU' },
   ]}
-  className="!border-white !rounded-lg"
+  className="border-white! rounded-lg!"
 /> */
 }

@@ -28,7 +28,7 @@ export default function PaymentAndAttendanceLayout({
   };
 
   return (
-    <div className="min-h-[calc(100vh-80px)] flex container !px-0">
+    <div className="min-h-[calc(100vh-80px)] flex container px-0!">
       <aside className="flex flex-col border-r border-secondary-blue-600 h-[calc(100vh-80px)] sticky left-0 top-[80px] min-w-[336px]">
         <div className="p-8">
           <h3 className="text-2xl leading-normal font-medium text-white">

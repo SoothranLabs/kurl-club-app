@@ -30,7 +30,7 @@ const PresetSidebar: React.FC<PresetSidebarProps> = ({
       {/* Year Selector */}
       <div className="p-2 border-b border-primary-blue-400">
         <Select onValueChange={onYearChange} value={currentYear}>
-          <SelectTrigger className="bg-secondary-blue-500 text-white placeholder:text-white border-0 appearance-none focus:outline-none focus:ring-0 focus:ring-offset-0">
+          <SelectTrigger className="bg-secondary-blue-500 text-white placeholder:text-white border-0 appearance-none focus:outline-hidden focus:ring-0 focus:ring-offset-0">
             <SelectValue placeholder="Year" />
           </SelectTrigger>
           <SelectContent className="shad-select-content">

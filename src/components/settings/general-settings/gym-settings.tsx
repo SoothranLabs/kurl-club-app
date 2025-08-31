@@ -1,7 +1,7 @@
 'use client';
 
 import { useTransition } from 'react';
-import type * as z from 'zod';
+import { z } from 'zod/v4';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { GymDataDetailsSchema } from '@/schemas';
@@ -101,12 +101,12 @@ export const GymSettings = () => {
               disabled={isPending}
               mandetory
             />
-            <h2 className="text-base leading-normal !mt-8 font-semibold ">
+            <h2 className="text-base leading-normal mt-8! font-semibold ">
               Subscription
             </h2>
             <SubscriptionCard variant="premium" />
             {/* Social Links */}
-            <h2 className="text-base leading-normal !mt-8 font-semibold ">
+            <h2 className="text-base leading-normal mt-8! font-semibold ">
               Social Links
             </h2>
             {/* Social links section */}

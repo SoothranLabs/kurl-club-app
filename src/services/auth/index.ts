@@ -1,6 +1,6 @@
 'use server';
 
-import * as z from 'zod';
+import { z } from 'zod/v4';
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -13,7 +13,7 @@ export const registerUser = async (values: z.infer<typeof RegisterSchema>) => {
   // Validate input fields
   const validationResult = RegisterSchema.safeParse(values);
   if (!validationResult.success) {
-    const errorMessages = validationResult.error.errors
+    const errorMessages = validationResult.error.issues
       .map((err) => err.message)
       .join(', ');
     return { error: errorMessages };

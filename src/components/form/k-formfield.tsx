@@ -110,7 +110,7 @@ const RenderField = <T extends FieldValues>({
                 {iconSrc}
               </div>
             )}
-            <div className="flex-grow">
+            <div className="grow">
               <KInput
                 label={label ?? 'Input'}
                 id={name}
@@ -272,7 +272,7 @@ export function KFormField<T extends FieldValues>(props: CustomProps<T>) {
           )}
 
           <RenderField field={field} props={props} />
-          <FormMessage className="text-alert-red-400 before:content-['*'] before:mr-[1px]" />
+          <FormMessage className="text-alert-red-400 before:content-['*'] before:mr-px" />
         </FormItem>
       )}
     />

@@ -4,9 +4,9 @@ import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form
 
 function Banner() {
   return (
-    <div className="rounded-xl mt-6 p-[1px] bg-gradient-to-br from-white/50 via-white/30 to-white/0">
+    <div className="rounded-xl mt-6 p-px bg-linear-to-br from-white/50 via-white/30 to-white/0">
       <div className='relative flex flex-col items-start rounded-xl px-9 py-[39px] bg-[url("/assets/png/dashboard-banner.png")] bg-cover bg-right'>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent rounded-[11px]"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-black/60 to-transparent rounded-[11px]"></div>
         <div className="relative z-10">
           <h4 className="text-white leading-normal font-medium text-[28px]">
             Complete profile

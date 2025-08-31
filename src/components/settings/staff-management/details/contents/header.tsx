@@ -68,10 +68,10 @@ function Header({
         ) : (
           <>
             <Button className="h-10 w-10" variant="outline">
-              <MessageSquareText className="text-primary-green-500 !h-5 !w-5" />
+              <MessageSquareText className="text-primary-green-500 h-5! w-5!" />
             </Button>
             <Button className="h-10" variant="outline" onClick={toggleEdit}>
-              <KEdit className="!h-5 !w-5" />
+              <KEdit className="h-5! w-5!" />
               Edit
             </Button>
             <Button
@@ -79,7 +79,7 @@ function Header({
               variant="destructive"
               onClick={() => handleDeleteStaff(staffId, staffRole)}
             >
-              <Trash2 className="!h-5 !w-5" />
+              <Trash2 className="h-5! w-5!" />
             </Button>
           </>
         )}
