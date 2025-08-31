@@ -13,6 +13,7 @@ import {
   AccordionTrigger,
 } from '../ui/accordion';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { cn } from '@/lib/utils';
 
 function Navbar() {
   const [isActive, setActive] = useState(false);
@@ -35,6 +36,9 @@ function Navbar() {
       url: '/payments-and-attendance',
     },
   ];
+  const routeChange = (link: string) => {
+    router.push(link);
+  };
 
   return (
     <>
@@ -115,40 +119,75 @@ function Navbar() {
         </span>
         <Accordion type="single" collapsible className="w-full p-5">
           <AccordionItem value="dashboard" className="border-0">
-            <AccordionTrigger className="[&>svg]:hidden py-2 hover:bg-primary-green-500 hover:bg-primary-blue-500under data-[state=open]:bg-primary-green-500 data-[state=open]:text-primary-blue-500 px-2 rounded-md !no-underline">
+            <AccordionTrigger
+              onClick={() => routeChange('/dashboard')}
+              className={cn(
+                '[&>svg]:hidden py-2 px-2 rounded-md !no-underline transition-colors',
+                pathname === '/dashboard' || pathname.startsWith('/dashboard')
+                  ? 'bg-primary-green-500 text-primary-blue-500'
+                  : ''
+              )}
+            >
               Dashboard
             </AccordionTrigger>
           </AccordionItem>
 
           {/* Payment Section */}
           <AccordionItem value="payment" className="border-0 mt-3">
-            <AccordionTrigger className="py-2 hover:bg-primary-green-500 hover:bg-primary-blue-500under data-[state=open]:bg-primary-green-500 data-[state=open]:text-primary-blue-500 px-2 rounded-md !no-underline">
-              Payment
+            <AccordionTrigger
+              onClick={() => routeChange('/members')}
+              className={cn(
+                'py-2 px-2 rounded-md [&>svg]:hidden !no-underline transition-colors',
+                pathname === '/members' || pathname.startsWith('/members')
+                  ? 'bg-primary-green-500 text-primary-blue-500'
+                  : ''
+              )}
+            >
+              Members
             </AccordionTrigger>
-            <AccordionContent className="pb-0 py-2">
-              <ul className="ml-4 text-sm flex flex-col gap-1 text-muted-foreground">
-                <li className="hover:text-foreground cursor-pointer p-2 rounded-md hover:bg-primary-blue-400 text-primary-green-500">
-                  abc
-                </li>
-                <li className="hover:text-foreground cursor-pointer p-2 rounded-md hover:bg-primary-blue-400">
-                  cde
-                </li>
-              </ul>
-            </AccordionContent>
           </AccordionItem>
 
           {/* Settings Section */}
           <AccordionItem value="settings" className="border-0 mt-3">
-            <AccordionTrigger className="py-2 hover:bg-primary-green-500 hover:text-primary-blue-500 data-[state=open]:bg-primary-green-500 data-[state=open]:text-primary-blue-500 px-2 rounded-md !no-underline">
-              Settings
+            <AccordionTrigger
+              className={cn(
+                'py-2 px-2 rounded-md !no-underline transition-colors',
+                pathname === '/payments-and-attendance' ||
+                  pathname.startsWith('/payments-and-attendance')
+                  ? 'bg-primary-green-500 text-primary-blue-500'
+                  : ''
+              )}
+            >
+              Payments and attendance
             </AccordionTrigger>
             <AccordionContent className="pb-0 py-2">
               <ul className="ml-4 flex flex-col text-sm text-muted-foreground gap-1">
-                <li className="hover:text-foreground cursor-pointer p-2 rounded-md hover:bg-primary-blue-400">
-                  zyx
+                <li
+                  onClick={() =>
+                    routeChange('/payments-and-attendance/payments')
+                  }
+                  className={cn(
+                    'cursor-pointer p-2 rounded-md transition-colors',
+                    pathname === '/payments' || pathname.endsWith('/payments')
+                      ? 'bg-primary-blue-400 text-white'
+                      : 'hover:bg-primary-blue-400 hover:text-foreground'
+                  )}
+                >
+                  Payments
                 </li>
-                <li className="hover:text-foreground cursor-pointer p-2 rounded-md hover:bg-primary-blue-400">
-                  xyz
+                <li
+                  onClick={() =>
+                    routeChange('/payments-and-attendance/attendance')
+                  }
+                  className={cn(
+                    'cursor-pointer p-2 rounded-md transition-colors',
+                    pathname === '/attendance' ||
+                      pathname.endsWith('/attendance')
+                      ? 'bg-primary-blue-400 text-white'
+                      : 'hover:bg-primary-blue-400 hover:text-foreground'
+                  )}
+                >
+                  Attendance
                 </li>
               </ul>
             </AccordionContent>
