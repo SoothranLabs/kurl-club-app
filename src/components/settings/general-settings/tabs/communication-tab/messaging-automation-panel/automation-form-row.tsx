@@ -16,7 +16,7 @@ type TemplateOption = { id: string; name: string };
 
 const automationTimingFormSchema = z.object({
   direction: z.enum(['before', 'after']),
-  days: z.number().min(0),
+  days: z.string(),
   sendAt: z
     .string()
     .regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
@@ -84,7 +84,7 @@ export function AutomationFormRow({
     resolver: zodResolver(automationTimingFormSchema),
     defaultValues: {
       direction: value.direction,
-      days: value.days,
+      days: String(value.days),
       sendAt: value.sendAt,
       templateId: value.templateId,
       whatsappEnabled: value.channels.includes('whatsapp'),
@@ -97,7 +97,7 @@ export function AutomationFormRow({
   useEffect(() => {
     form.reset({
       direction: value.direction,
-      days: value.days,
+      days: String(value.days),
       sendAt: value.sendAt,
       templateId: value.templateId,
       whatsappEnabled: value.channels.includes('whatsapp'),
@@ -114,9 +114,10 @@ export function AutomationFormRow({
     if (formValues.smsEnabled) channels.push('sms');
     if (formValues.mailEnabled) channels.push('chat');
 
+    const daysNumber = parseInt(formValues.days) || 0;
     const hasChanges =
       formValues.direction !== value.direction ||
-      formValues.days !== value.days ||
+      daysNumber !== value.days ||
       formValues.sendAt !== value.sendAt ||
       formValues.templateId !== value.templateId ||
       JSON.stringify(channels.sort()) !== JSON.stringify(value.channels.sort());
@@ -125,7 +126,7 @@ export function AutomationFormRow({
       onChange({
         ...value,
         direction: formValues.direction,
-        days: formValues.days,
+        days: daysNumber,
         sendAt: formValues.sendAt,
         templateId: formValues.templateId,
         channels,
