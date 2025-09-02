@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
+import { useQueryClient } from '@tanstack/react-query';
 import { useMemberByID, updateMember } from '@/services/member';
 import { MemberDetails } from '@/types/members';
 
@@ -9,6 +10,7 @@ export function useMemberDetails(userId: string | number) {
   const [isEditing, setIsEditing] = useState(false);
   const [details, setDetails] = useState<MemberDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const { data, isLoading: loading } = useMemberByID(userId);
 
@@ -54,6 +56,9 @@ export function useMemberDetails(userId: string | number) {
         toast.success(response.message);
         setIsEditing(false);
 
+        // Invalidate gym members query to refresh the list
+        await queryClient.invalidateQueries({ queryKey: ['gymMembers'] });
+
         return true;
       } else {
         toast.error('Failed to update member details.');
@@ -66,6 +71,7 @@ export function useMemberDetails(userId: string | number) {
       toast.error('An error occurred while updating the member details.');
       return false;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [details, userId]);
 
   const toggleEdit = useCallback(() => {
