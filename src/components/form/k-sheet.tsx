@@ -33,7 +33,7 @@ export const KSheet = ({
           )}
           {description && <SheetDescription>{description}</SheetDescription>}
         </SheetHeader>
-        <div className="px-5 pt-8 pb-5 flex-1 overflow-y-auto">{children}</div>
+        <div className="px-5 py-5 flex-1 overflow-y-auto">{children}</div>
         {footer && (
           <div className="flex h-[80px] justify-end bg-secondary-blue-700 px-3 py-4 border-t border-primary-blue-400 flex-shrink-0">
             {footer}
