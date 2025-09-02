@@ -56,7 +56,7 @@ export const useCSVImport = <T>(
     setIsMappingRequired(true);
   };
 
-  const validateAndImport = (onImport: (data: T[]) => void) => {
+  const validateAndImport = async (onImport: (data: T[]) => Promise<void>) => {
     const newErrors: { [key: string]: string } = {};
 
     requiredFields.forEach((field) => {
@@ -91,7 +91,7 @@ export const useCSVImport = <T>(
         : (transformedRow as T);
     });
 
-    onImport(importedData);
+    await onImport(importedData);
     return true;
   };
 

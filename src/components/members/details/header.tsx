@@ -32,14 +32,17 @@ function Header({ isEditing, handleSave, toggleEdit, memberId }: HeaderProps) {
       variant: 'destructive',
       confirmLabel: 'Delete',
       onConfirm: async () => {
-        const response = await deleteMember(id);
+        try {
+          const response = await deleteMember(id, queryClient);
 
-        if (response.success) {
-          toast.success(response.success);
-          router.push('/members');
-          queryClient.invalidateQueries({ queryKey: ['gymMembers'] });
-        } else {
-          toast.error(response.error || 'Failed to delete member.');
+          if (response.success) {
+            toast.success(response.success);
+            router.push('/members');
+          } else {
+            toast.error(response.error || 'Failed to delete member.');
+          }
+        } catch {
+          toast.error('Failed to delete member.');
         }
       },
     });

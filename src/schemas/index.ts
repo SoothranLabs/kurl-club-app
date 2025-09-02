@@ -585,3 +585,15 @@ export const updateAutomationSchema = automationSchema.partial().omit({
   id: true,
   createdAt: true,
 });
+
+export const paymentFormSchema = z.object({
+  amount: z.string().refine((val) => {
+    const num = Number(val);
+    return num >= 1;
+  }, 'Amount must be at least 1'),
+  method: z.string().min(1, 'Payment method is required'),
+  extendDays: z.string().refine((val) => {
+    const num = Number(val);
+    return num >= 1;
+  }, 'Days must be at least 1'),
+});

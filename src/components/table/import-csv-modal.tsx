@@ -17,7 +17,7 @@ import {
 interface ImportCSVModalProps<T> {
   isOpen: boolean;
   onClose: () => void;
-  onImport: (data: T[]) => void;
+  onImport: (data: T[]) => Promise<void>;
   requiredFields: string[];
   transformations?: (row: Partial<T>, rowIndex: number) => Partial<T>;
   defaults?: Partial<T>;
@@ -32,6 +32,7 @@ export const ImportCSVModal = <T,>({
   defaults,
 }: ImportCSVModalProps<T>) => {
   const [importCompleted, setImportCompleted] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
 
   const {
     csvData,
@@ -47,11 +48,16 @@ export const ImportCSVModal = <T,>({
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const handleImport = () => {
-    if (validateAndImport(onImport)) {
-      setImportCompleted(false);
-      resetImport();
-      onClose();
+  const handleImport = async () => {
+    setIsImporting(true);
+    try {
+      if (await validateAndImport(onImport)) {
+        setImportCompleted(false);
+        resetImport();
+        onClose();
+      }
+    } finally {
+      setIsImporting(false);
     }
   };
 
@@ -109,8 +115,11 @@ export const ImportCSVModal = <T,>({
           <Button onClick={handleClose} variant="outline">
             Cancel
           </Button>
-          <Button onClick={handleImport} disabled={csvData.length === 0}>
-            Import
+          <Button
+            onClick={handleImport}
+            disabled={csvData.length === 0 || isImporting}
+          >
+            {isImporting ? 'Importing...' : 'Import'}
           </Button>
         </DialogFooter>
       </DialogContent>

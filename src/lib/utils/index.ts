@@ -225,3 +225,46 @@ export const getProfilePictureSrc = (
 
   return URL.createObjectURL(profilePicture);
 };
+
+/**
+ * Formats an ISO date string to a readable format.
+ *
+ * @param isoString - The ISO date string to format.
+ * @param format - Format type: 'date', 'time', or 'both' (default).
+ * @returns A formatted string.
+ */
+export const formatDateTime = (
+  isoString: string,
+  format: 'date' | 'time' | 'both' = 'both'
+): string => {
+  try {
+    const date = new Date(isoString);
+
+    if (format === 'date') {
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+    }
+
+    if (format === 'time') {
+      return date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      });
+    }
+
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  } catch {
+    return isoString;
+  }
+};

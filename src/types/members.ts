@@ -1,6 +1,7 @@
 export type Member = {
   id: string;
   gymNo: string;
+  gymId?: string;
   name: string;
   avatar: string;
   package: 'Monthly' | 'Yearly' | 'Special' | 'Quarterly' | 'Half_Yearly';
