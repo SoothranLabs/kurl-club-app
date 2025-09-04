@@ -7,7 +7,6 @@ import { useSheet } from '@/hooks/use-sheet';
 import { useMembershipPlans } from '@/hooks/use-membership-plan';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import { MembershipCard } from './membership-card';
 import { MembershipPlanSheet } from './membership-plan-sheet';
 
@@ -15,8 +14,7 @@ export function PackageManager() {
   const [selectedPlan, setSelectedPlan] = useState<MembershipPlan | null>(null);
   const { isOpen, openSheet, closeSheet } = useSheet();
   const { gymBranch } = useGymBranch();
-  const { plans, isLoading, createPlan, updatePlan, deletePlan } =
-    useMembershipPlans();
+  const { plans, createPlan, updatePlan, deletePlan } = useMembershipPlans();
 
   const handleCreatePlan = () => {
     if (!gymBranch?.gymId) {
@@ -68,31 +66,6 @@ export function PackageManager() {
         <p className="text-center text-gray-400">
           Please select a gym to view workout plans
         </p>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <Skeleton className="h-10 w-64 bg-secondary-blue-300/20" />
-              <Skeleton className="h-5 w-96 mt-2 bg-secondary-blue-300/20" />
-            </div>
-            <Skeleton className="h-10 w-32 bg-secondary-blue-300/20" />
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <Skeleton
-                key={i}
-                className="h-48 rounded-lg bg-secondary-blue-300/20"
-              />
-            ))}
-          </div>
-        </div>
       </div>
     );
   }

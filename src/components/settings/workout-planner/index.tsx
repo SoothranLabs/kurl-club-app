@@ -9,7 +9,6 @@ import { useWorkoutPlans } from '@/hooks/use-workout-plan';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import { WorkoutCard } from './workout-card';
 import { WorkoutPlanSheet } from './workout-plan-sheet';
 
@@ -17,8 +16,7 @@ export function WorkoutPlanner() {
   const [selectedPlan, setSelectedPlan] = useState<WorkoutPlan | null>(null);
   const { isOpen, openSheet, closeSheet } = useSheet();
   const { gymBranch } = useGymBranch();
-  const { plans, isLoading, createPlan, updatePlan, deletePlan } =
-    useWorkoutPlans();
+  const { plans, createPlan, updatePlan, deletePlan } = useWorkoutPlans();
 
   const handleCreatePlan = () => {
     if (!gymBranch?.gymId) {
@@ -70,31 +68,6 @@ export function WorkoutPlanner() {
         <p className="text-center text-gray-400">
           Please select a gym to view workout plans
         </p>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <Skeleton className="h-10 w-64 bg-secondary-blue-300/20" />
-              <Skeleton className="h-5 w-96 mt-2 bg-secondary-blue-300/20" />
-            </div>
-            <Skeleton className="h-10 w-32 bg-secondary-blue-300/20" />
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <Skeleton
-                key={i}
-                className="h-48 rounded-lg bg-secondary-blue-300/20"
-              />
-            ))}
-          </div>
-        </div>
       </div>
     );
   }

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { WorkoutPlans } from './workout-plans';
-import { DietPlans } from './diet-plans';
+import DietPlanner from './diet-planner';
 import { KTabs, TabItem } from '@/components/form/k-tabs';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
@@ -10,6 +10,9 @@ import { RefreshCw } from 'lucide-react';
 export default function PlannerSection() {
   const [activeTab, setActiveTab] = useState<string>('workout');
   const [isRotating, setIsRotating] = useState<boolean>(false);
+
+  // Placeholder vitals pulled from sidebar in real app
+  const vitals = { sex: 'Male' as const, age: 28, heightCm: 180, weightKg: 76 };
 
   const handleClick = () => {
     setIsRotating(true);
@@ -46,7 +49,11 @@ export default function PlannerSection() {
         onTabChange={setActiveTab}
       />
 
-      {activeTab === 'workout' ? <WorkoutPlans /> : <DietPlans />}
+      {activeTab === 'workout' ? (
+        <WorkoutPlans />
+      ) : (
+        <DietPlanner vitals={vitals} />
+      )}
     </div>
   );
 }
