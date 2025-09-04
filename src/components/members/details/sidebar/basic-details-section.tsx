@@ -31,7 +31,9 @@ export function BasicDetailsSection({
         label="Height"
         value={details?.height}
         isEditing={isEditing}
-        onChange={(value) => onUpdate('height', parseFloat(value))}
+        onChange={(value) =>
+          onUpdate('height', value === '' ? 0 : parseFloat(value) || 0)
+        }
         suffix="CM"
       />
 
@@ -40,7 +42,9 @@ export function BasicDetailsSection({
         label="Weight"
         value={details?.weight}
         isEditing={isEditing}
-        onChange={(value) => onUpdate('weight', parseFloat(value))}
+        onChange={(value) =>
+          onUpdate('weight', value === '' ? 0 : parseFloat(value) || 0)
+        }
         suffix="KG"
       />
 
@@ -138,7 +142,7 @@ export function EditableField({
           <div className="flex items-center pb-1.5 border-b gap-2 border-primary-blue-300 group focus-within:border-white hover:border-white k-transition">
             <Input
               maxLength={suffix ? 6 : undefined}
-              value={value}
+              value={value === 0 || isNaN(Number(value)) ? '' : value}
               onChange={(e) => onChange(e.target.value)}
               className="border-0 rounded-none h-auto p-0 text-[15px]! focus-visible:outline-0 focus-visible:ring-0"
             />

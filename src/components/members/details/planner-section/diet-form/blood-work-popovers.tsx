@@ -54,13 +54,13 @@ export function DiabeticPopover({
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={`w-full justify-start ${hasData ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : ''}`}
+          className={`w-full justify-start ${hasData ? 'bg-primary-green-100 border-primary-green-800 text-black' : 'bg-secondary-blue-500'}`}
         >
-          {hasData && <Check className="h-4 w-4 mr-2" />}
-          Diabetes (T2DM/IFG)
+          {hasData && <Check className="h-4 w-4" />}
+          Diabetes
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-96 bg-secondary-blue-700 border-primary-blue-400">
+      <PopoverContent className="w-96 bg-secondary-blue-600 border-primary-blue-400 shadow-lg">
         <div className="space-y-4">
           <h4 className="font-medium">Diabetes details</h4>
           <div className="grid gap-3 grid-cols-2">
@@ -77,6 +77,7 @@ export function DiabeticPopover({
                     hba1c: e.target.value ? Number(e.target.value) : undefined,
                   })
                 }
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
             <div className="grid gap-1.5">
@@ -93,6 +94,7 @@ export function DiabeticPopover({
                       : undefined,
                   })
                 }
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
             <div className="grid gap-1.5">
@@ -109,6 +111,7 @@ export function DiabeticPopover({
                       : undefined,
                   })
                 }
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
             <div className="grid gap-1.5">
@@ -117,15 +120,20 @@ export function DiabeticPopover({
                 placeholder="e.g., Metformin, Insulin"
                 value={data.meds ?? ''}
                 onChange={(e) => onChange({ ...data, meds: e.target.value })}
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-white/80">
             If HbA1c ≥ 6.5% or FPG ≥ 126 mg/dL, carbs are tightened to 35% of
             calories.
           </p>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={handleCancel} className="flex-1">
+            <Button
+              variant="secondary"
+              onClick={handleCancel}
+              className="flex-1"
+            >
               Cancel
             </Button>
             <Button onClick={handleSave} className="flex-1">
@@ -176,9 +184,9 @@ export function ThyroidPopover({
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={`w-full justify-start ${hasData ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : ''}`}
+          className={`w-full justify-start ${hasData ? 'bg-primary-green-100 border-primary-green-800 text-black' : 'bg-secondary-blue-500'}`}
         >
-          {hasData && <Check className="h-4 w-4 mr-2" />}
+          {hasData && <Check className="h-4 w-4" />}
           Hypothyroid
         </Button>
       </PopoverTrigger>
@@ -198,6 +206,7 @@ export function ThyroidPopover({
                     tsh: e.target.value ? Number(e.target.value) : undefined,
                   })
                 }
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
             <div className="grid gap-1.5">
@@ -212,6 +221,7 @@ export function ThyroidPopover({
                     ft4: e.target.value ? Number(e.target.value) : undefined,
                   })
                 }
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
             <div className="grid gap-1.5">
@@ -220,6 +230,7 @@ export function ThyroidPopover({
                 placeholder="Levothyroxine dose..."
                 value={data.meds ?? ''}
                 onChange={(e) => onChange({ ...data, meds: e.target.value })}
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
           </div>
@@ -271,9 +282,9 @@ export function LipidPopover({ data, onChange, onSave }: LipidPopoverProps) {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={`w-full justify-start ${hasData ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : ''}`}
+          className={`w-full justify-start ${hasData ? 'bg-primary-green-100 border-primary-green-800 text-black' : 'bg-secondary-blue-500'}`}
         >
-          {hasData && <Check className="h-4 w-4 mr-2" />}
+          {hasData && <Check className="h-4 w-4" />}
           Dyslipidemia
         </Button>
       </PopoverTrigger>
@@ -292,6 +303,7 @@ export function LipidPopover({ data, onChange, onSave }: LipidPopoverProps) {
                     ldl: e.target.value ? Number(e.target.value) : undefined,
                   })
                 }
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
             <div className="grid gap-1.5">
@@ -305,6 +317,7 @@ export function LipidPopover({ data, onChange, onSave }: LipidPopoverProps) {
                     hdl: e.target.value ? Number(e.target.value) : undefined,
                   })
                 }
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
             <div className="grid gap-1.5">
@@ -318,10 +331,11 @@ export function LipidPopover({ data, onChange, onSave }: LipidPopoverProps) {
                     tg: e.target.value ? Number(e.target.value) : undefined,
                   })
                 }
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-white/80">
             Fats are slightly lowered; recommend MUFA/PUFA and fiber ≥
             25–30g/day.
           </p>
@@ -373,9 +387,9 @@ export function BPPopover({ data, onChange, onSave }: BPPopoverProps) {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={`w-full justify-start ${hasData ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : ''}`}
+          className={`w-full justify-start ${hasData ? 'bg-primary-green-100 border-primary-green-800 text-black' : 'bg-secondary-blue-500'}`}
         >
-          {hasData && <Check className="h-4 w-4 mr-2" />}
+          {hasData && <Check className="h-4 w-4" />}
           Hypertension
         </Button>
       </PopoverTrigger>
@@ -396,6 +410,7 @@ export function BPPopover({ data, onChange, onSave }: BPPopoverProps) {
                       : undefined,
                   })
                 }
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
             <div className="grid gap-1.5">
@@ -411,10 +426,11 @@ export function BPPopover({ data, onChange, onSave }: BPPopoverProps) {
                       : undefined,
                   })
                 }
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-white/80">
             Prioritize sodium less than 2g/day, potassium-rich whole foods, and
             aerobic work per plan.
           </p>
@@ -466,9 +482,9 @@ export function RenalPopover({ data, onChange, onSave }: RenalPopoverProps) {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={`w-full justify-start ${hasData ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : ''}`}
+          className={`w-full justify-start ${hasData ? 'bg-primary-green-100 border-primary-green-800 text-black' : 'bg-secondary-blue-500'}`}
         >
-          {hasData && <Check className="h-4 w-4 mr-2" />}
+          {hasData && <Check className="h-4 w-4" />}
           Renal impairment
         </Button>
       </PopoverTrigger>
@@ -488,6 +504,7 @@ export function RenalPopover({ data, onChange, onSave }: RenalPopoverProps) {
                     egfr: e.target.value ? Number(e.target.value) : undefined,
                   })
                 }
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
             <div className="grid gap-1.5">
@@ -504,10 +521,11 @@ export function RenalPopover({ data, onChange, onSave }: RenalPopoverProps) {
                       : undefined,
                   })
                 }
+                className="shad-select-trigger bg-secondary-blue-400/45!"
               />
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-white/80">
             Protein capped at 1.2 g/kg unless cleared by clinician. Hydration
             and potassium restrictions per stage.
           </p>

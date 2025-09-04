@@ -5,11 +5,12 @@ import 'react-phone-number-input/style.css';
 
 import type { EditableSectionProps } from '@/types/staff';
 import { safeParseDate, safeDateFormat } from '@/lib/utils';
+import { bloodGroupOptions } from '@/lib/constants';
 
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { KDatePicker } from '@/components/form/k-datepicker';
-import { EditableField } from './basic-details-section';
+import { EditableField, EditableSelect } from './basic-details-section';
 
 export function PersonalInfoSection({
   isEditing,
@@ -18,29 +19,6 @@ export function PersonalInfoSection({
 }: EditableSectionProps) {
   return (
     <Fragment>
-      {/* CALENDER | DOB  */}
-      <div className="py-3 flex flex-col gap-2">
-        <Label className="text-primary-blue-100 font-normal text-sm leading-normal">
-          DOB
-        </Label>
-        {isEditing ? (
-          <KDatePicker
-            icon={<Calendar />}
-            mode="single"
-            value={safeParseDate(details?.dob)}
-            onDateChange={(date) =>
-              onUpdate('dob', date instanceof Date ? date.toISOString() : '')
-            }
-            label="Date of birth"
-            className="bg-transparent border-0 border-b border-primary-blue-300 rounded-none hover:bg-transparent hover:border-white k-transition p-0 h-auto w-full pb-1.5 text-white text-[15px] leading-[140%] font-normal gap-1 flex-row-reverse justify-between"
-          />
-        ) : (
-          <p className="text-white text-[15px] leading-[140%] font-normal">
-            {safeDateFormat(details?.dob)}
-          </p>
-        )}
-      </div>
-
       {/* EMAIL  */}
       <EditableField
         label="Email"
@@ -68,22 +46,78 @@ export function PersonalInfoSection({
         }
       />
 
+      {/* DOB  */}
+      <div className="py-3 flex flex-col gap-2">
+        <Label className="text-primary-blue-100 font-normal text-sm leading-normal">
+          Date of Birth
+        </Label>
+        {isEditing ? (
+          <KDatePicker
+            icon={<Calendar />}
+            mode="single"
+            value={safeParseDate(details?.dob)}
+            onDateChange={(date) =>
+              onUpdate('dob', date instanceof Date ? date.toISOString() : '')
+            }
+            label="Date of birth"
+            className="bg-transparent border-0 border-b border-primary-blue-300 rounded-none hover:bg-transparent hover:border-white k-transition p-0 h-auto w-full pb-1.5 text-white text-[15px] leading-[140%] font-normal gap-1 flex-row-reverse justify-between"
+          />
+        ) : (
+          <p className="text-white text-[15px] leading-[140%] font-normal">
+            {safeDateFormat(details?.dob)}
+          </p>
+        )}
+      </div>
+
+      {/* DOJ  */}
+      <div className="py-3 flex flex-col gap-2">
+        <Label className="text-primary-blue-100 font-normal text-sm leading-normal">
+          Date of Joining
+        </Label>
+        {isEditing ? (
+          <KDatePicker
+            icon={<Calendar />}
+            mode="single"
+            value={safeParseDate(details?.doj)}
+            onDateChange={(date) =>
+              onUpdate('doj', date instanceof Date ? date.toISOString() : '')
+            }
+            label="Date of joining"
+            className="bg-transparent border-0 border-b border-primary-blue-300 rounded-none hover:bg-transparent hover:border-white k-transition p-0 h-auto w-full pb-1.5 text-white text-[15px] leading-[140%] font-normal gap-1 flex-row-reverse justify-between"
+          />
+        ) : (
+          <p className="text-white text-[15px] leading-[140%] font-normal">
+            {safeDateFormat(details?.doj)}
+          </p>
+        )}
+      </div>
+
+      {/* ADDRESS  */}
       <div className="py-3 flex flex-col gap-2">
         <Label className="text-primary-blue-100 font-normal text-sm leading-normal">
           Address
         </Label>
         {isEditing ? (
           <Textarea
-            value={details?.fullAddress}
-            onChange={(e) => onUpdate('fullAddress', e.target.value)}
+            value={details?.addressLine}
+            onChange={(e) => onUpdate('addressLine', e.target.value)}
             className="resize-none border-0 border-b border-primary-blue-300 k-transition rounded-none p-0 text-[15px]! focus:border-b-whit focus-visible:outline-0 hover:border-white focus-visible:border-b-white focus-visible:ring-0"
           />
         ) : (
           <p className="text-white text-[15px] leading-[140%] font-normal">
-            {details?.fullAddress}
+            {details?.addressLine}
           </p>
         )}
       </div>
+
+      {/* BLOOD_GROUP  */}
+      <EditableSelect
+        label="Blood Group"
+        value={details?.bloodGroup}
+        isEditing={isEditing}
+        onChange={(value) => onUpdate('bloodGroup', value)}
+        options={bloodGroupOptions}
+      />
     </Fragment>
   );
 }

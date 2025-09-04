@@ -12,7 +12,7 @@ interface StaffDetailsPageProps {
 
 export default function StaffDetailsPage({ params }: StaffDetailsPageProps) {
   const [staffId, setStaffId] = useState<string>('');
-  const [staffRole, setStaffRole] = useState<StaffType>('administrator');
+  const [staffRole, setStaffRole] = useState<StaffType>('staff');
 
   useEffect(() => {
     params.then(({ userId, role }) => {
@@ -40,6 +40,7 @@ export default function StaffDetailsPage({ params }: StaffDetailsPageProps) {
         isEditing={isEditing}
         details={details}
         updateStaffDetail={updateStaffDetail}
+        staffRole={staffRole}
       />
       <Contents
         staffRole={staffRole}

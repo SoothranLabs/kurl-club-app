@@ -132,7 +132,7 @@ export default function DietPlanner({
   };
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 items-stretch p-6">
+    <div className="grid gap-4 md:grid-cols-2 items-stretch p-6">
       <Card className="bg-primary-blue-400/70 border-primary-blue-400">
         <CardHeader className="px-6">
           <CardTitle className="text-base md:text-lg flex items-center gap-2">
@@ -172,10 +172,7 @@ export default function DietPlanner({
             onRenalChange={setRenal}
           />
 
-          <div className="flex items-center justify-end gap-2">
-            <Button variant="outline" type="button">
-              Save as draft
-            </Button>
+          <div className="flex justify-end">
             <Button type="button" onClick={handleSave}>
               Save plan
             </Button>

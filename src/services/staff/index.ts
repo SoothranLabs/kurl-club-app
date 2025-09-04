@@ -5,11 +5,10 @@ import { Staff, StaffDetails, StaffType } from '@/types/staff';
 
 export const createStaff = async (
   data: FormData,
-  type: 'administrator' | 'trainer'
+  type: 'staff' | 'trainer'
 ) => {
   try {
-    const endpoint =
-      type === 'administrator' ? '/Staff/CreateStaff' : '/Trainer';
+    const endpoint = type === 'staff' ? '/Staff/CreateStaff' : '/Trainer';
     const response = await api.post(endpoint, data);
 
     return {
@@ -33,7 +32,10 @@ export const fetchGymStaffs = async (gymId: number | string) => {
     `/Gym/GetAllStaffByGymId/${gymId}`
   );
 
-  return response.data || [];
+  const staffData = response.data || [];
+  return staffData.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 };
 
 export const useGymStaffs = (gymId: number | string) => {
@@ -46,7 +48,7 @@ export const useGymStaffs = (gymId: number | string) => {
 
 export const fetchStaffByID = async (id: string | number, role: StaffType) => {
   const endpoint =
-    role === 'administrator' ? `/Staff/GetStaffById/${id}` : `/Trainer/${id}`;
+    role === 'staff' ? `/Staff/GetStaffById/${id}` : `/Trainer/${id}`;
 
   const response = await api.get<{ status: string; data: StaffDetails }>(
     endpoint
@@ -70,7 +72,7 @@ export const updateStaff = async (
 ) => {
   try {
     const endpoint =
-      role === 'administrator'
+      role === 'staff'
         ? `/Staff/UpdateStaff/${id}`
         : `/Trainer/UpdateTrainer/${id}`;
 
@@ -85,7 +87,7 @@ export const updateStaff = async (
 export const deleteStaff = async (id: string | number, role: StaffType) => {
   try {
     const endpoint =
-      role === 'administrator' ? `/Staff/DeleteStaff/${id}` : `/Trainer/${id}`;
+      role === 'staff' ? `/Staff/DeleteStaff/${id}` : `/Trainer/${id}`;
 
     await api.delete(endpoint);
 

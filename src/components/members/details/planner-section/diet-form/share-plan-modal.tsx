@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -6,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { ClipboardCopy, Download, MessageCircle, Share } from 'lucide-react';
+import { ClipboardCopy, Download, Share2 } from 'lucide-react';
 
 interface SharePlanModalProps {
   prescriptionText: string;
@@ -40,13 +41,16 @@ export function SharePlanModal({ prescriptionText }: SharePlanModalProps) {
 
   return (
     <>
-      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
-        <Share className="h-4 w-4 mr-2" />
-        Share Plan
+      <Button
+        onClick={() => setOpen(true)}
+        className="shadow-none text-primary-green-500"
+        variant="link"
+      >
+        <Share2 /> Share
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-2xl bg-secondary-blue-700 border-primary-blue-400">
+        <DialogContent className="sm:max-w-2xl bg-secondary-blue-800 border-primary-blue-400">
           <DialogHeader>
             <DialogTitle>Share Nutrition Plan</DialogTitle>
           </DialogHeader>
@@ -71,14 +75,22 @@ export function SharePlanModal({ prescriptionText }: SharePlanModalProps) {
                 rel="noopener noreferrer"
                 className="flex-1"
               >
-                <Button className="bg-emerald-600 hover:bg-emerald-500 text-white w-full">
-                  <MessageCircle className="h-4 w-4 mr-2" />
+                <Button
+                  className="w-full bg-secondary-blue-500 hover:bg-primary-blue-400"
+                  variant="secondary"
+                >
+                  <Image
+                    src="/assets/svg/whatsapp.svg"
+                    alt="WhatsApp"
+                    width={20}
+                    height={20}
+                  />
                   WhatsApp
                 </Button>
               </a>
             </div>
 
-            <div className="rounded-md border bg-background/40 p-4">
+            <div className="rounded-md border border-primary-blue-500 bg-secondary-blue-500 p-4">
               <div className="text-sm font-medium mb-2">Plan Preview:</div>
               <pre className="max-h-96 overflow-auto text-xs leading-6 whitespace-pre-wrap">
                 {prescriptionText}

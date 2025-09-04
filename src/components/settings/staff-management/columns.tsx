@@ -1,70 +1,22 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
-import { FileText, MessageSquare, MoreVertical, Trash2 } from 'lucide-react';
+import { Eye } from 'lucide-react';
 
 import { Staff } from '@/types/staff';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { KSheet } from '@/components/form/k-sheet';
-
-import { ChatWindow } from '@/components/settings/staff-management/chat-window';
 
 const ActionsCell: React.FC<{ user: Staff }> = ({ user }) => {
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreVertical className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          className="shad-select-content p-4 rounded-[4px] border-primary-blue-400 flex flex-col gap-2"
-          align="end"
-        >
-          <DropdownMenuItem
-            className="shad-select-item p-1 h-8 text-[15px] leading-normal font-normal text-white rounded-[4px]"
-            onClick={() => setIsSheetOpen(true)}
-          >
-            <MessageSquare className="mr-2 h-6 w-6" />
-            Message
-          </DropdownMenuItem>
-          <Link
-            href={`/settings/staff-management/${user.role.toLowerCase()}/${user.id}`}
-          >
-            <DropdownMenuItem className="shad-select-item p-1 h-8 text-[15px] leading-normal font-normal text-white rounded-[4px]">
-              <FileText className="mr-2 h-6 w-6" />
-              View details
-            </DropdownMenuItem>
-          </Link>
-          <DropdownMenuItem className="shad-select-item p-1 h-8 text-[15px] leading-normal font-normal text-white rounded-[4px]">
-            <Trash2 className="mr-2 h-6 w-6" />
-            Delete trainer
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      <KSheet
-        title={`Chat with ${user.name}`}
-        isOpen={isSheetOpen}
-        onClose={() => setIsSheetOpen(false)}
-        className="w-[582px]"
+    <Button variant="ghost" className="h-8 w-8 p-0">
+      <span className="sr-only">View member profile</span>
+      <Link
+        href={`/settings/staff-management/${user.role.toLowerCase()}/${user.id}`}
       >
-        <ChatWindow />
-      </KSheet>
-    </>
+        <Eye className="h-4 w-4 text-primary-green-600" />
+      </Link>
+    </Button>
   );
 };
 

@@ -7,7 +7,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { HeartPulse, Utensils, Apple } from 'lucide-react';
+import { KTextarea } from '@/components/form/k-textarea';
+import { HeartPulse, Utensils } from 'lucide-react';
 
 type DietaryPreference =
   | 'No Restriction'
@@ -93,19 +94,11 @@ export function BasicInfoSection({
         </div>
       </div>
 
-      <div className="grid gap-2">
-        <Label htmlFor="notes" className="flex items-center gap-2">
-          <Apple className="h-4 w-4 text-emerald-400" />
-          Other health conditions / notes
-        </Label>
-        <Input
-          id="notes"
-          placeholder="e.g., PCOS, GERD, recent surgery..."
-          value={notes}
-          onChange={(e) => onNotesChange(e.target.value)}
-          className="shad-select-trigger"
-        />
-      </div>
+      <KTextarea
+        label="Other health conditions / notes"
+        value={notes}
+        onChange={(e) => onNotesChange(e.target.value)}
+      />
     </div>
   );
 }

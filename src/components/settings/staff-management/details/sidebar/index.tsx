@@ -1,20 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-
-import { StaffDetails } from '@/types/staff';
+import { StaffDetails, StaffType } from '@/types/staff';
 import { Breadcrumb } from '@/components/breadcrumbs';
 import { CollapsibleSection } from '@/components/layout/collapsible-section';
 import { StaffHeader } from './staff-header';
-import { BasicDetailsSection } from './basic-details-section';
 import { PersonalInfoSection } from './personal-info-section';
+import { CertificationSection } from './certification-section';
 
-type SectionKey = 'basicDetails' | 'personalInfo';
+type SectionKey = 'personalInfo' | 'certifications';
 
 export function Sidebar({
   isEditing,
   details,
   updateStaffDetail,
+  staffRole,
 }: {
   isEditing: boolean;
   details: StaffDetails | null;
@@ -22,26 +22,16 @@ export function Sidebar({
     key: K,
     value: StaffDetails[K]
   ) => void;
+  staffRole: StaffType;
 }) {
   const [sectionStates, setSectionStates] = useState<
     Record<SectionKey, boolean>
   >({
-    basicDetails: true,
     personalInfo: true,
+    certifications: true,
   });
 
   const sections = [
-    {
-      title: 'Membership & Fitness',
-      key: 'basicDetails' as SectionKey,
-      content: (
-        <BasicDetailsSection
-          isEditing={isEditing}
-          details={details}
-          onUpdate={updateStaffDetail}
-        />
-      ),
-    },
     {
       title: 'Personal Info',
       key: 'personalInfo' as SectionKey,
@@ -53,6 +43,21 @@ export function Sidebar({
         />
       ),
     },
+    ...(staffRole === 'trainer'
+      ? [
+          {
+            title: 'Certifications',
+            key: 'certifications' as SectionKey,
+            content: (
+              <CertificationSection
+                isEditing={isEditing}
+                details={details}
+                onUpdate={updateStaffDetail}
+              />
+            ),
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -60,13 +65,13 @@ export function Sidebar({
       <div className="px-8 sticky top-0 bg-primary-blue-500 py-8 z-20">
         <Breadcrumb
           items={[
-            { label: 'Members', href: '/members' },
-            { label: 'Member details' },
+            { label: 'Staff Management', href: '/settings/staff-management' },
+            { label: 'Staff details' },
           ]}
         />
 
         <h5 className="text-2xl mt-2 leading-normal font-normal mb-6">
-          Member details
+          Staff details
         </h5>
 
         <StaffHeader
