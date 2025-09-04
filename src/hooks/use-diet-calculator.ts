@@ -172,9 +172,9 @@ export const useDietCalculator = ({
   // Chart data for visualization
   const chartData = useMemo(
     () => [
-      { name: 'Protein', value: proteinG * 4, color: '#22c55e' },
-      { name: 'Carbs', value: carbsG * 4, color: '#eab308' },
-      { name: 'Fat', value: fatG * 9, color: '#60a5fa' },
+      { name: 'Protein', value: proteinG * 4, color: '#c0e102' },
+      { name: 'Carbs', value: carbsG * 4, color: '#679cf1' },
+      { name: 'Fat', value: fatG * 9, color: '#db9e56' },
     ],
     [proteinG, carbsG, fatG]
   );

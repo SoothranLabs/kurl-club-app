@@ -7,17 +7,22 @@ import { Clock4 } from 'lucide-react';
 import { Chart } from './chart';
 import PaymentCard from './payment-card';
 import PlannerSection from './planner-section';
+import { MemberDetails } from '@/types/members';
 
 function Contents({
   memberId,
   isEditing,
   handleSave,
   toggleEdit,
+  details,
+  originalDetails,
 }: {
   memberId: string;
   isEditing: boolean;
   handleSave: () => Promise<boolean>;
   toggleEdit: () => void;
+  details: MemberDetails | null;
+  originalDetails: MemberDetails | null;
 }) {
   return (
     <div className="p-8 pt-0 w-full max-w-[calc(100%-336px)]">
@@ -50,7 +55,7 @@ function Contents({
           }}
         />
       </div>
-      <PlannerSection />
+      <PlannerSection memberDetails={originalDetails || details} />
     </div>
   );
 }

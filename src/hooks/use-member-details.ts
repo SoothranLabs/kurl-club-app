@@ -9,24 +9,44 @@ import { MemberDetails } from '@/types/members';
 export function useMemberDetails(userId: string | number) {
   const [isEditing, setIsEditing] = useState(false);
   const [details, setDetails] = useState<MemberDetails | null>(null);
+  const [originalDetails, setOriginalDetails] = useState<MemberDetails | null>(
+    null
+  );
   const [error, setError] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
   const { data, isLoading: loading } = useMemberByID(userId);
 
   useEffect(() => {
-    if (data) setDetails(data);
+    if (data) {
+      setDetails(data);
+      setOriginalDetails(data);
+    }
   }, [data]);
 
   const updateMemberDetail = useCallback(
     <K extends keyof MemberDetails>(key: K, value: MemberDetails[K]) => {
-      setDetails((prev) => (prev ? { ...prev, [key]: value } : null));
+      setDetails((prev) => {
+        if (!prev) return null;
+        return { ...prev, [key]: value };
+      });
     },
     []
   );
 
   const handleSave = useCallback(async () => {
     if (!details) return false;
+
+    // Validate required fields
+    if (!details.height || details.height <= 0) {
+      toast.error('Height is required and must be greater than 0');
+      return false;
+    }
+
+    if (!details.weight || details.weight <= 0) {
+      toast.error('Weight is required and must be greater than 0');
+      return false;
+    }
 
     try {
       const formData = new FormData();
@@ -56,8 +76,9 @@ export function useMemberDetails(userId: string | number) {
         toast.success(response.message);
         setIsEditing(false);
 
-        // Invalidate gym members query to refresh the list
+        // Invalidate queries to refresh data
         await queryClient.invalidateQueries({ queryKey: ['gymMembers'] });
+        await queryClient.invalidateQueries({ queryKey: ['member', userId] });
 
         return true;
       } else {
@@ -75,11 +96,22 @@ export function useMemberDetails(userId: string | number) {
   }, [details, userId]);
 
   const toggleEdit = useCallback(() => {
-    setIsEditing((prev) => !prev);
-  }, []);
+    setIsEditing((prev) => {
+      // If canceling edit, restore original values
+      if (prev && originalDetails) {
+        setDetails(originalDetails);
+      }
+      // If starting edit, store current values as original
+      if (!prev && details) {
+        setOriginalDetails({ ...details });
+      }
+      return !prev;
+    });
+  }, [details, originalDetails]);
 
   return {
     details,
+    originalDetails,
     isEditing,
     loading,
     error,

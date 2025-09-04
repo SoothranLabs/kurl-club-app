@@ -74,7 +74,7 @@ export function BloodWorkSection({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <Label className="flex items-center gap-2">
         <Droplets className="h-4 w-4 text-emerald-400" />
         Blood work conditions
