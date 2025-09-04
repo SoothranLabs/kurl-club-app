@@ -256,7 +256,10 @@ function TemplateCard({
       </p>
       <div className="flex items-center justify-between text-xs text-slate-500">
         <span>
-          Created: {new Date(template.createdAt).toLocaleDateString()}
+          Created:{' '}
+          {template.createdAt
+            ? new Date(template.createdAt).toLocaleDateString()
+            : 'N/A'}
         </span>
       </div>
     </div>

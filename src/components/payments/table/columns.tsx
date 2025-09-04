@@ -34,7 +34,7 @@ const ActionsCell: React.FC<{
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild className="shad-select-item">
           <Link
-            href={`/members/${user.id}`}
+            href={`/members/${user.memberId}`}
             className="flex items-center gap-2"
           >
             <Eye className="h-4 w-4" />

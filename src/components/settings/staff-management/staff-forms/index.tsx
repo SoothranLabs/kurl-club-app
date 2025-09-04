@@ -62,7 +62,7 @@ export default function StaffForm({
         />
       )}
 
-      {staffType === 'staff' && (
+      {staffType === 'administrator' && (
         <AdministratorForm
           gymId={gymBranch?.gymId}
           onSuccess={handleSubmitSuccess}

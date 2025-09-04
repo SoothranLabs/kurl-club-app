@@ -20,7 +20,7 @@ export function useWorkoutPlans() {
   // Get all workout plans
   const {
     data: plans = [],
-    isLoading,
+    isPending,
     error,
   } = useQuery({
     queryKey: ['workoutPlans', gymBranch?.gymId],
@@ -115,7 +115,7 @@ export function useWorkoutPlans() {
 
   return {
     plans,
-    isLoading,
+    isLoading: isPending,
     error,
     createPlan: createPlanMutation.mutateAsync,
     updatePlan: updatePlanMutation.mutateAsync,

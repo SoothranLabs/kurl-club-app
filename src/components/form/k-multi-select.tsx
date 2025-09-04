@@ -120,7 +120,10 @@ export function KMultiSelect({
                     e.preventDefault();
                     e.stopPropagation();
                   }}
-                  onClick={() => handleUnselect(option)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleUnselect(option);
+                  }}
                   disabled={disabled}
                 >
                   <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
@@ -129,23 +132,38 @@ export function KMultiSelect({
               </Badge>
             );
           })}
-          <input
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            className="ml-2 flex-1 bg-transparent outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed"
-            placeholder={selected.length === 0 ? placeholder : ''}
-            disabled={disabled || isMaxSelected}
-            onKeyDown={handleKeyDown}
-          />
+          {selected.length === 0 && (
+            <span className="text-primary-blue-100 text-sm pointer-events-none">
+              {placeholder}
+            </span>
+          )}
         </div>
       </PopoverTrigger>
       <PopoverContent
-        className="w-(--radix-popover-trigger-width) pointer-events-auto shad-select-content"
+        className="w-[var(--radix-popover-trigger-width)] pointer-events-auto shad-select-content p-0"
         align="start"
       >
+        <div className="p-2 border-b border-primary-blue-400">
+          <input
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            className="w-full px-3 py-2 bg-secondary-blue-500 text-white placeholder:text-primary-blue-100 border border-primary-blue-400 rounded-md outline-none focus:border-primary-green-700"
+            placeholder="Search certifications..."
+            disabled={disabled || isMaxSelected}
+            onKeyDown={handleKeyDown}
+            autoFocus
+          />
+        </div>
         <Command className="w-full">
-          <CommandList className="max-h-[calc(var(--radix-popover-content-available-height)-2rem)] overflow-y-auto">
-            <CommandEmpty>{emptyMessage}</CommandEmpty>
+          <CommandList
+            className="max-h-[200px] overflow-y-auto"
+            onWheel={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <CommandEmpty className="py-6 text-center text-sm text-primary-blue-100">
+              {emptyMessage}
+            </CommandEmpty>
             <CommandGroup>
               {filteredOptions.map((option) => (
                 <CommandItem
@@ -154,7 +172,7 @@ export function KMultiSelect({
                     onChange([...selected, option]);
                     setInputValue('');
                   }}
-                  className="shad-select-item"
+                  className="shad-select-item cursor-pointer"
                 >
                   {option.label}
                 </CommandItem>

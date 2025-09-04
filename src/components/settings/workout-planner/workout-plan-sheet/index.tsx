@@ -55,7 +55,10 @@ export function WorkoutPlanSheet({
   const { showConfirm } = useAppDialog();
 
   const { gymBranch } = useGymBranch();
-  const { data: members = [] } = useGymMembers(gymBranch?.gymId || 0);
+  // Only fetch members if sheet is open and a plan exists and gymId is present
+  const { data: members = [] } = useGymMembers(
+    isOpen && plan && gymBranch?.gymId ? gymBranch.gymId : 0
+  );
 
   const planMembers = members.filter(
     (member) => member.workoutPlan === editedPlan.planName

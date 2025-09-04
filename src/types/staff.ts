@@ -1,4 +1,4 @@
-export type StaffType = 'trainer' | 'staff';
+export type StaffType = 'trainer' | 'administrator';
 
 export type Staff = {
   id: string;
