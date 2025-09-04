@@ -8,12 +8,18 @@ import { useStaffByID, updateStaff } from '@/services/staff';
 export function useStaffDetails(userId: string | number, role?: string) {
   const [isEditing, setIsEditing] = useState(false);
   const [details, setDetails] = useState<StaffDetails | null>(null);
+  const [originalDetails, setOriginalDetails] = useState<StaffDetails | null>(
+    null
+  );
   const [error, setError] = useState<string | null>(null);
 
   const { data, isLoading: loading } = useStaffByID(userId, role as StaffType);
 
   useEffect(() => {
-    if (data) setDetails(data);
+    if (data) {
+      setDetails(data);
+      setOriginalDetails(data);
+    }
   }, [data]);
 
   const updateStaffDetail = useCallback(
@@ -30,8 +36,13 @@ export function useStaffDetails(userId: string | number, role?: string) {
       const formData = new FormData();
 
       for (const key in details) {
-        const formKey = key === 'fullAddress' ? 'address' : key;
+        const formKey = key;
         const value = details[key as keyof StaffDetails];
+
+        // Skip fields that shouldn't be sent to API
+        if (['hasProfilePicture', 'status', 'gymId'].includes(key)) {
+          continue;
+        }
 
         if (value !== undefined && value !== null) {
           if (formKey === 'profilePicture' && value instanceof File) {
@@ -49,6 +60,8 @@ export function useStaffDetails(userId: string | number, role?: string) {
       if (response.status === 'Success') {
         toast.success(response.message);
         setIsEditing(false);
+        // Update original details after successful save
+        setOriginalDetails(details);
 
         return true;
       } else {
@@ -65,8 +78,14 @@ export function useStaffDetails(userId: string | number, role?: string) {
   }, [details, userId, role]);
 
   const toggleEdit = useCallback(() => {
-    setIsEditing((prev) => !prev);
-  }, []);
+    setIsEditing((prev) => {
+      // If we're currently editing and toggling off (canceling), reset to original
+      if (prev && originalDetails) {
+        setDetails(originalDetails);
+      }
+      return !prev;
+    });
+  }, [originalDetails]);
 
   return {
     details,

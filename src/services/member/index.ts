@@ -23,7 +23,10 @@ export const createMember = async (data: FormData) => {
 export const fetchGymMembers = async (gymId: number | string) => {
   const response = await api.get<ApiResponse<Member[]>>(`/Member/gym/${gymId}`);
 
-  return response.data || [];
+  const memberData = response.data || [];
+  return memberData.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 };
 
 export const useGymMembers = (gymId: number | string) => {

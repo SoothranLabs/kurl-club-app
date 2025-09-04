@@ -38,8 +38,8 @@ export default function AdministratorForm({
       Email: '',
       Phone: '',
       Dob: undefined,
-      bloodGroup: undefined,
-      Gender: undefined,
+      bloodGroup: '',
+      Gender: '',
       AddressLine: '',
       Doj: new Date().toISOString(),
     },
@@ -65,7 +65,7 @@ export default function AdministratorForm({
       formData.append('Gymid', String(gymId));
     }
 
-    const result = await createStaff(formData, 'administrator');
+    const result = await createStaff(formData, 'staff');
 
     if (result.success) {
       toast.success(result.success);

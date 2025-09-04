@@ -1,7 +1,7 @@
 'use client';
 
 import { KTabs, TabItem } from '@/components/form/k-tabs';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StaffType } from '@/types/staff';
 import Header from './header';
 import Permissions from './permissions';
@@ -19,12 +19,19 @@ export default function Contents({
   handleSave: () => Promise<boolean>;
   toggleEdit: () => void;
 }) {
-  const [activeTab, setActiveTab] = useState<string>('roles');
+  const [activeTab, setActiveTab] = useState<string>(
+    staffRole === 'trainer' ? 'members' : 'roles'
+  );
 
-  const tabs: TabItem[] = [
-    { id: 'roles', label: 'Roles & permissions' },
-    { id: 'members', label: 'Assigned members' },
-  ];
+  // Reset active tab when staff role changes
+  useEffect(() => {
+    setActiveTab(staffRole === 'trainer' ? 'members' : 'roles');
+  }, [staffRole]);
+
+  const tabs: TabItem[] =
+    staffRole === 'trainer'
+      ? [{ id: 'members', label: 'Assigned members' }]
+      : [{ id: 'roles', label: 'Roles & permissions' }];
 
   return (
     <div className="w-full">
@@ -43,7 +50,13 @@ export default function Contents({
         className="px-2 border-secondary-blue-500"
       />
       <div className="p-8">
-        {activeTab === 'roles' ? <Permissions /> : 'Table'}
+        {staffRole === 'trainer' ? (
+          activeTab === 'members' ? (
+            'Assigned Members Table'
+          ) : null
+        ) : activeTab === 'roles' ? (
+          <Permissions />
+        ) : null}
       </div>
     </div>
   );
