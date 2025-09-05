@@ -12,6 +12,7 @@ import {
   type BloodPanels,
   type DiabeticPanel,
 } from '@/hooks/use-diet-calculator';
+import { useAIDietPlanner } from '@/hooks/use-ai-diet-planner';
 import { generatePlanText } from '@/utils/diet-plan-generator';
 
 import { GoalActivitySection } from './diet-form/goal-activity-section';
@@ -70,18 +71,33 @@ export default function DietPlanner({
   const [bp, setBp] = useState<BPPanel>({});
   const [renal, setRenal] = useState<RenalPanel>({});
 
+  // AI-powered diet planner with manual backup
   const {
     bmr,
     tdee,
     calories,
     proteinG,
-    fatG,
     carbsG,
-    diabeticTightCarb,
-    hydration,
+    fatG,
     chartData,
-    prescription,
-  } = useDietCalculator({
+    prescriptionText: aiPrescriptionText,
+    useAI,
+    isGenerating,
+    error,
+    generateAIPlan,
+  } = useAIDietPlanner({
+    vitals,
+    goal,
+    activityKey,
+    bodyFatPct,
+    dietaryPreference,
+    bloodFlags,
+    panels: { diabetic, thyroid, lipid, bp, renal },
+    notes,
+  });
+
+  // Manual backup calculations
+  const manualData = useDietCalculator({
     vitals,
     goal,
     activityKey,
@@ -90,6 +106,9 @@ export default function DietPlanner({
   });
 
   const prescriptionText = useMemo(() => {
+    if (useAI && aiPrescriptionText) {
+      return aiPrescriptionText;
+    }
     return generatePlanText({
       vitals,
       goal,
@@ -98,11 +117,13 @@ export default function DietPlanner({
       bloodFlags,
       panels: { diabetic, thyroid, lipid, bp, renal },
       notes,
-      prescription,
-      diabeticTightCarb,
-      hydration,
+      prescription: { calories, proteinG, carbsG, fatG },
+      diabeticTightCarb: manualData.diabeticTightCarb,
+      hydration: manualData.hydration,
     });
   }, [
+    useAI,
+    aiPrescriptionText,
     vitals,
     goal,
     activityKey,
@@ -114,9 +135,12 @@ export default function DietPlanner({
     bp,
     renal,
     notes,
-    prescription,
-    diabeticTightCarb,
-    hydration,
+    calories,
+    proteinG,
+    carbsG,
+    fatG,
+    manualData.diabeticTightCarb,
+    manualData.hydration,
   ]);
 
   const handleSave = () => {
@@ -127,7 +151,7 @@ export default function DietPlanner({
       bloodFlags,
       panels: { diabetic, thyroid, lipid, bp, renal },
       notes,
-      prescription,
+      prescription: { calories, proteinG, carbsG, fatG },
     });
   };
 
@@ -172,11 +196,39 @@ export default function DietPlanner({
             onRenalChange={setRenal}
           />
 
-          <div className="flex justify-end">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                onClick={generateAIPlan}
+                disabled={isGenerating}
+                className="flex items-center gap-2"
+              >
+                {isGenerating ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <MaintainWeightIcon className="h-4 w-4" />
+                    Regenerate AI Plan
+                  </>
+                )}
+              </Button>
+            </div>
             <Button type="button" onClick={handleSave}>
               Save plan
             </Button>
           </div>
+          {error && !useAI && (
+            <div className="text-amber-400 text-sm mt-2">
+              AI failed, switched to manual mode. {error}
+            </div>
+          )}
+          {error && useAI && (
+            <div className="text-red-400 text-sm mt-2">{error}</div>
+          )}
         </CardContent>
       </Card>
 
