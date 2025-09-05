@@ -245,7 +245,7 @@ export function NutritionSummary({
                 </Pie>
               </PieChart>
             </ChartContainer>
-            <div className="mt-2 grid grid-cols-3 gap-2 text-xs justify-center w-full">
+            <div className="mt-1 grid grid-cols-3 gap-2 text-xs justify-items-center w-full">
               {chartData.map((d) => (
                 <div key={d.name} className="flex items-center gap-2">
                   <span
