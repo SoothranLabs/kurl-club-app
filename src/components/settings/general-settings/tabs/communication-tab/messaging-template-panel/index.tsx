@@ -83,7 +83,7 @@ export function MessagingTemplatePanel() {
 
   return (
     <>
-      <Card className="bg-secondary-blue-600/20 backdrop-blur-md border-primary-blue-400 py-2">
+      <Card className="bg-secondary-blue-500 rounded-lg border border-secondary-blue-400">
         <CardHeader className="pb-4 flex flex-row justify-between items-start">
           <div className="flex items-center gap-3">
             <MessageSquare className="w-5 h-5 text-primary-green-500" />
@@ -202,18 +202,20 @@ function CategoryCard({
 }) {
   return (
     <div
-      className="shine-effect p-4 max-w-md group rounded-lg border border-white/5 hover:border-primary-blue-300/50 backdrop-blur-lg hover:shadow-lg cursor-pointer"
+      className="p-4 max-w-md group rounded-lg border border-white/5 hover:border-primary-blue-300/50 bg-primary-blue-400 hover:shadow-lg cursor-pointer flex flex-col"
       onClick={onClick}
     >
       <div className="flex items-center justify-between mb-2">
         <Icon className={`w-5 h-5 ${color}`} />
         <ChevronRight className="w-5 h-5 text-secondary-blue-200 group-hover:text-primary-green-500" />
       </div>
+
       <h3 className="font-medium text-white">{title}</h3>
-      <p className="text-sm text-primary-blue-200 mb-2">{description}</p>
+      <p className="text-sm text-white/70 mb-2">{description}</p>
+
       <Badge
         variant="outline"
-        className="text-xs border-secondary-blue-500 text-slate-300"
+        className="mt-auto w-fit text-xs bg-secondary-blue-500 border-0 text-secondary-blue-100"
       >
         {count} templates
       </Badge>
@@ -235,7 +237,7 @@ function TemplateCard({
   return (
     <div
       key={template.id}
-      className="shine-effect p-4 max-w-md group rounded-lg border border-white/5 hover:border-primary-blue-300/50 backdrop-blur-lg hover:shadow-lg cursor-pointer"
+      className="p-4 max-w-md group rounded-lg border border-white/5 hover:border-primary-blue-300/50 bg-primary-blue-400 hover:shadow-lg cursor-pointer flex flex-col"
       onClick={() => onEdit(template)}
     >
       <div className="flex items-center justify-between mb-2">
@@ -243,7 +245,7 @@ function TemplateCard({
           <Icon className={`w-5 h-5 ${color}`} />
           <Badge
             variant="outline"
-            className="text-xs border-secondary-blue-500 text-slate-300 capitalize"
+            className="w-fit text-xs bg-secondary-blue-500 border-0 text-secondary-blue-100 gap-1 border-secondary-blue-500 capitalize"
           >
             {template.category}
           </Badge>
@@ -251,10 +253,10 @@ function TemplateCard({
         <ChevronRight className="w-5 h-5 text-secondary-blue-200 group-hover:text-primary-green-500" />
       </div>
       <h4 className="font-medium text-white mb-2">{template.name}</h4>
-      <p className="text-sm text-primary-blue-200 mb-3 line-clamp-2">
+      <p className="text-sm text-white/70 mb-2 line-clamp-2">
         {template.content.substring(0, 180)}...
       </p>
-      <div className="flex items-center justify-between text-xs text-slate-500">
+      <div className="flex items-center justify-between mt-auto text-xs text-secondary-blue-100">
         <span>
           Created:{' '}
           {template.createdAt

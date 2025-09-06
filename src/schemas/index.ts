@@ -492,6 +492,7 @@ export const GymDataDetailsSchema = z.object({
 export const dayBufferSchema = z.object({
   fee_buffer_amount: z.string().min(1, 'buffer amount is required'),
   fee_buffer_days: z.string().min(1, 'buffer day is required'),
+  plan: z.string().min(1, 'plan selection is required'),
 });
 
 export const messagingTemplateSchema = z.object({

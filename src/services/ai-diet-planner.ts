@@ -98,36 +98,64 @@ export const generateAIDietPlan = async (
     input.panels
   );
 
-  const prompt = `You are a professional nutritionist. Create a comprehensive diet plan with EXACT calculations and structured output.
+  const prompt = `You are a professional nutritionist. Create a concise but comprehensive diet plan with EXACT calculations and Kerala-based food recommendations. Use a professional but simple and motivational tone.
 
-CLIENT PROFILE:
-- Demographics: ${input.vitals.sex}, ${input.vitals.age} years, ${input.vitals.heightCm}cm, ${input.vitals.weightKg}kg
-- Body Fat: ${input.bodyFatPct ? `${input.bodyFatPct}%` : 'Not specified'}
-- Goal: ${input.goal}
-- Activity Level: ${input.activityKey}
-- Dietary Preference: ${input.dietaryPreference}
-- Health Conditions: ${healthConditions}
-- Additional Notes: ${input.notes || 'None'}
+  CLIENT PROFILE:
+  - Demographics: ${input.vitals.sex}, ${input.vitals.age} years, ${input.vitals.heightCm}cm, ${input.vitals.weightKg}kg
+  - Body Fat: ${input.bodyFatPct ? `${input.bodyFatPct}%` : 'Not specified'}
+  - Goal: ${input.goal}
+  - Activity Level: ${input.activityKey}
+  - Dietary Preference: ${input.dietaryPreference}
+  - Health Conditions: ${healthConditions}
+  - Additional Notes: ${input.notes || 'None'}
 
-CALCULATION REQUIREMENTS:
-1. Calculate BMR using Mifflin-St Jeor equation
-2. Calculate TDEE based on activity level
-3. Adjust calories for goal: Fat loss (-20%), Maintenance (0%), Lean bulk (+10%), Bulk (+20%)
-4. Calculate macros: Protein (1.6-2.0g/kg based on goal), Fat (25-30% calories), Carbs (remainder)
-5. Apply health condition adjustments if needed
+  CALCULATION REQUIREMENTS:
+  1. Calculate BMR using Mifflin-St Jeor equation
+  2. Calculate TDEE based on activity level
+  3. Adjust calories for goal: Fat loss (-20%), Maintenance (0%), Lean bulk (+10%), Bulk (+20%)
+  4. Calculate macros: Protein (1.6–2.0g/kg based on goal), Fat (25–30% of calories), Carbs (remainder)
+  5. Apply health condition adjustments if needed
 
-REQUIRED OUTPUT FORMAT (MUST BE EXACT):
-BMR: [number]
-TDEE: [number]
-CALORIES: [number]
-PROTEIN: [number]g
-CARBS: [number]g
-FAT: [number]g
+  REQUIRED OUTPUT FORMAT (START DIRECTLY WITH NUMBERS, NO INTRO OR EXTRA TEXT. MUST FOLLOW THIS FORMAT EXACTLY — WHATSAPP/TXT FRIENDLY):
+  BMR: [number]
+  TDEE: [number]
+  CALORIES: [number]
+  PROTEIN: [number]g
+  CARBS: [number]g
+  FAT: [number]g
 
-DETAILED PLAN:
-[Comprehensive nutrition plan with meal timing, food recommendations, portions, and health-specific guidance]
+  DETAILED PLAN:
 
-IMPORTANT: Start response with the exact calculations in the format above, then provide the detailed plan.`;
+  == Suggested Daily Food Sources (Kerala-Based) ==
+  • Protein: [list]
+  • Carbs: [list]
+  • Fat: [list]
+
+  == Meal Split Guidance ==
+  • Breakfast: [guidance with target macros e.g., 25g protein / 60g carbs / 15g fat]
+  • Lunch: [guidance with target macros]
+  • Evening Snack: [guidance with target macros]
+  • Dinner: [guidance with target macros]
+  • Pre/Post Workout: [guidance with target macros]
+
+  == Hydration ==
+  • Daily target: [liters based on weight and activity]
+
+  == Foods to Avoid ==
+  • [list]
+
+  == Supplements (Optional) ==
+  • [list]
+
+  [motivational note]
+
+  IMPORTANT:
+  1. Do NOT add greetings, disclaimers, or introductory lines before the numbers.
+  2. The response must begin directly with "BMR: [number]".
+  3. Do NOT use Markdown formatting (*, **, etc.).
+  4. Use only simple ASCII characters for headers (==) and bullet points (•).
+  5. Keep the plan concise, practical, and straight to the point so it can be shared via WhatsApp or PDF easily.
+  6. Always keep recommendations Kerala-based with available food options.`;
 
   const response = await generateAIContent(prompt);
 

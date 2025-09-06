@@ -37,8 +37,8 @@ export const KSelect = React.forwardRef<
         }}
       >
         <SelectTrigger
-          className={`peer shad-select-trigger h-14 px-4
-            ${hasValue ? 'pt-5' : 'pt-2'} ${className ? className : ''}`}
+          className={`peer ${className?.includes('bg-') ? 'shad-select-trigger-custom' : 'shad-select-trigger'} h-14 px-4
+            ${hasValue ? 'pt-5' : 'pt-2'} ${className || ''}`}
         >
           <SelectValue placeholder="" />
         </SelectTrigger>

@@ -180,6 +180,7 @@ const RenderField = <T extends FieldValues>({
             onValueChange={field.onChange}
             label={label}
             options={props.options}
+            className={className}
           >
             {children}
           </KSelect>

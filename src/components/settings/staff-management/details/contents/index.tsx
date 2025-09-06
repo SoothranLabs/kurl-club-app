@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { StaffType } from '@/types/staff';
 import Header from './header';
 import Permissions from './permissions';
+import AssignedMembersTable from './assigned-members-table';
 
 export default function Contents({
   staffId,
@@ -52,7 +53,7 @@ export default function Contents({
       <div className="p-8">
         {staffRole === 'trainer' ? (
           activeTab === 'members' ? (
-            'Assigned Members Table'
+            <AssignedMembersTable trainerId={staffId} />
           ) : null
         ) : activeTab === 'roles' ? (
           <Permissions />
