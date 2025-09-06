@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { z } from 'zod/v4';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -11,6 +11,9 @@ import {
 } from 'react-hook-form';
 import { toast } from 'sonner';
 import { Trash2 } from 'lucide-react';
+
+import { useAuth } from '@/providers/auth-provider';
+import { updateGym, fetchGymProfilePicture } from '@/services/gym';
 
 import {
   Card,
@@ -32,17 +35,25 @@ type BusinessProfile = z.infer<typeof GymDataDetailsSchema>;
 
 const defaultProfile: BusinessProfile = {
   ProfilePicture: null,
-  GymName: "Gold's gym",
-  Phone: '+918789456325',
-  Email: 'goldsgym@gmail,com',
-  Address: "Gold's gym, Punnapra arcade, Nanminda-Balussery rd, Kakkur",
+  GymName: '',
+  Phone: '',
+  Email: '',
+  Address: '',
   socialLinks: [{ url: '' }],
 };
 
 export function BusinessProfileTab() {
+  const { gymDetails } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(
+    null
+  );
+  const [initialDataLoaded, setInitialDataLoaded] = useState(false);
+
   const form = useForm<BusinessProfile>({
     resolver: zodResolver(GymDataDetailsSchema),
     defaultValues: defaultProfile,
+    mode: 'onSubmit',
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -56,25 +67,136 @@ export function BusinessProfileTab() {
     }
   }, [fields.length, append]);
 
+  useEffect(() => {
+    if (gymDetails && !initialDataLoaded) {
+      const loadData = async () => {
+        // Fetch profile picture
+        try {
+          const response = await fetchGymProfilePicture(gymDetails.id);
+          if (response && typeof response === 'object' && 'data' in response) {
+            setProfilePictureUrl((response as { data: string }).data);
+          } else {
+            setProfilePictureUrl(null);
+          }
+        } catch {
+          setProfilePictureUrl(null);
+        }
+
+        const formData = {
+          ProfilePicture: null,
+          GymName: gymDetails.gymName,
+          Phone: gymDetails.contactNumber1,
+          Email: gymDetails.email,
+          Address: gymDetails.location,
+          socialLinks:
+            [
+              { url: gymDetails.socialLink1 || '' },
+              { url: gymDetails.socialLink2 || '' },
+              { url: gymDetails.socialLink3 || '' },
+            ].filter((link) => link.url.trim()).length > 0
+              ? [
+                  { url: gymDetails.socialLink1 || '' },
+                  { url: gymDetails.socialLink2 || '' },
+                  { url: gymDetails.socialLink3 || '' },
+                ].filter((link) => link.url.trim())
+              : [{ url: '' }],
+        };
+
+        // Reset form and clear dirty state
+        form.reset(formData, { keepDefaultValues: false });
+
+        // Small delay to ensure form state is properly reset
+        setTimeout(() => {
+          setInitialDataLoaded(true);
+        }, 100);
+      };
+
+      loadData();
+    }
+  }, [gymDetails, form, initialDataLoaded]);
+
   const isDirty = form.formState.isDirty;
 
-  const handleSubmit = (data: BusinessProfile) => {
+  const handleSubmit = async (data: BusinessProfile) => {
+    if (!gymDetails?.id) {
+      toast.error('No gym selected');
+      return;
+    }
+
+    setIsLoading(true);
     try {
-      localStorage.setItem('businessProfile', JSON.stringify(data));
-      form.reset(data);
-      toast.success('Profile updated.');
+      const formData = new FormData();
+      formData.append('GymName', data.GymName);
+      formData.append('ContactNumber1', data.Phone);
+      formData.append('Email', data.Email);
+      formData.append('Location', data.Address);
+
+      // Add social links
+      if (data.socialLinks) {
+        const validSocialLinks = data.socialLinks
+          .filter((link) => link.url.trim())
+          .map((link) => link.url);
+        formData.append('SocialLinks', JSON.stringify(validSocialLinks));
+      }
+
+      if (data.ProfilePicture instanceof File) {
+        formData.append('ProfilePicture', data.ProfilePicture);
+      }
+
+      if (gymDetails?.gymAdminId) {
+        formData.append('GymAdminId', gymDetails.gymAdminId.toString());
+      }
+
+      const result = await updateGym(gymDetails.id, formData);
+
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        form.reset(data);
+        toast.success('Profile updated successfully!');
+      }
     } catch {
       toast.error('Unable to save, Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDiscard = () => {
-    form.reset();
+    if (gymDetails) {
+      const formData = {
+        ProfilePicture: null,
+        GymName: gymDetails.gymName,
+        Phone: gymDetails.contactNumber1,
+        Email: gymDetails.email,
+        Address: gymDetails.location,
+        socialLinks:
+          [
+            { url: gymDetails.socialLink1 || '' },
+            { url: gymDetails.socialLink2 || '' },
+            { url: gymDetails.socialLink3 || '' },
+          ].filter((link) => link.url.trim()).length > 0
+            ? [
+                { url: gymDetails.socialLink1 || '' },
+                { url: gymDetails.socialLink2 || '' },
+                { url: gymDetails.socialLink3 || '' },
+              ].filter((link) => link.url.trim())
+            : [{ url: '' }],
+      };
+      form.reset(formData);
+    }
   };
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const formData = form.getValues();
+          handleSubmit(formData);
+        }}
+        className="space-y-6"
+      >
         {/* Basic Details */}
         <Card className="bg-secondary-blue-600/20 backdrop-blur-md border-primary-blue-400 py-2">
           <CardHeader className="pb-4">
@@ -85,15 +207,22 @@ export function BusinessProfileTab() {
                   Manage your gym&apos;s basic information and contact details
                 </CardDescription>
               </div>
-              {isDirty ? (
+              {isDirty && initialDataLoaded ? (
                 <div
                   className="flex items-center gap-2 animate-in fade-in zoom-in-95 duration-200"
                   aria-live="polite"
                 >
-                  <Button variant="secondary" onClick={handleDiscard}>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={handleDiscard}
+                    disabled={isLoading}
+                  >
                     Discard
                   </Button>
-                  <Button type="submit">Save Changes</Button>
+                  <Button type="submit" disabled={isLoading}>
+                    {isLoading ? 'Saving...' : 'Save Changes'}
+                  </Button>
                 </div>
               ) : null}
             </div>
@@ -108,6 +237,7 @@ export function BusinessProfileTab() {
                   <ProfilePictureUploader
                     files={field.value as File | null}
                     onChange={(file) => field.onChange(file)}
+                    existingImageUrl={profilePictureUrl}
                   />
                 </FormControl>
               )}
@@ -188,6 +318,7 @@ export function BusinessProfileTab() {
             ))}
 
             <Button
+              type="button"
               className="w-fit bg-secondary-blue-900 hover:bg-secondary-blue-500 py-2.5 px-3"
               variant="secondary"
               onClick={() => append({ url: '' })}

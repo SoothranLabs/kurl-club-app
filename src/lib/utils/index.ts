@@ -140,6 +140,40 @@ export const getInitials = (name?: string): string => {
 };
 
 /**
+ * Generates consistent avatar colors based on input text.
+ * Uses a hash function to ensure the same text always produces the same colors.
+ *
+ * @param text - The text to generate colors for (e.g., name, email).
+ * @returns An object containing background and text color classes.
+ */
+export const getAvatarColors = (
+  text?: string
+): { bgClass: string; textClass: string } => {
+  if (!text) return { bgClass: 'bg-gray-500', textClass: 'text-white' };
+
+  // Simple hash function for consistent color generation
+  let hash = 0;
+  for (let i = 0; i < text.length; i++) {
+    hash = text.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  // Color combinations with good contrast
+  const colorCombinations = [
+    { bgClass: 'bg-blue-500', textClass: 'text-white' },
+    { bgClass: 'bg-green-500', textClass: 'text-white' },
+    { bgClass: 'bg-purple-500', textClass: 'text-white' },
+    { bgClass: 'bg-red-500', textClass: 'text-white' },
+    { bgClass: 'bg-orange-500', textClass: 'text-white' },
+    { bgClass: 'bg-teal-500', textClass: 'text-white' },
+    { bgClass: 'bg-pink-500', textClass: 'text-white' },
+    { bgClass: 'bg-indigo-500', textClass: 'text-white' },
+  ];
+
+  const index = Math.abs(hash) % colorCombinations.length;
+  return colorCombinations[index];
+};
+
+/**
  * Returns a greeting message based on the current time of the day.
  *
  * - Morning: 5:00 AM to 11:59 AM -> "Good morning"
