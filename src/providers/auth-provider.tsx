@@ -14,13 +14,18 @@ import {
 import { auth } from '@/lib/firebase';
 import { createSession, deleteSession } from '@/services/auth/session';
 import { api } from '@/lib/api';
+import { fetchGymById } from '@/services/gym';
+import { GymDetails } from '@/types/gym';
+import { clearGymBranchGlobally } from './gym-branch-provider';
 
 const AuthContext = createContext<
   | {
       firebaseUser: FirebaseUser | null;
       appUser: AppUser | null;
+      gymDetails: GymDetails | null;
       signIn: (options: SignInOptions) => Promise<void>;
       logout: () => Promise<void>;
+      fetchGymDetails: (gymId: number) => Promise<void>;
     }
   | undefined
 >(undefined);
@@ -47,9 +52,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [appUser, setAppUser] = useState<AppUser | null>(null);
+  const [gymDetails, setGymDetails] = useState<GymDetails | null>(null);
 
   // Fetch the appUser from the backend
-  const fetchAppUser = async (uid: string) => {
+  const fetchAppUser = React.useCallback(async (uid: string) => {
     try {
       const response = await api.get<{
         status: string;
@@ -62,10 +68,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           'gymBranch',
           JSON.stringify(response.data.gyms[0])
         );
+        // Fetch gym details for the first gym
+        await fetchGymDetailsInternal(response.data.gyms[0].gymId);
       }
     } catch (error) {
       console.error('Failed to fetch app user:', error);
       setAppUser(null);
+    }
+  }, []);
+
+  const fetchGymDetailsInternal = async (gymId: number) => {
+    try {
+      const details = await fetchGymById(gymId);
+      setGymDetails(details);
+    } catch (error) {
+      console.error('Failed to fetch gym details:', error);
+      setGymDetails(null);
     }
   };
 
@@ -88,7 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [fetchAppUser]);
 
   const signIn = async (options: SignInOptions) => {
     try {
@@ -139,11 +157,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const logout = async () => {
     await signOut(auth);
     await deleteSession();
+    clearGymBranchGlobally();
     setAppUser(null);
+    setGymDetails(null);
   };
 
   return (
-    <AuthContext.Provider value={{ firebaseUser, appUser, signIn, logout }}>
+    <AuthContext.Provider
+      value={{
+        firebaseUser,
+        appUser,
+        gymDetails,
+        signIn,
+        logout,
+        fetchGymDetails: fetchGymDetailsInternal,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

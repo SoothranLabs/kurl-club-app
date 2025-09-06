@@ -11,12 +11,14 @@ interface ProfilePictureUploaderProps {
   files: File | null;
   onChange: (file: File | null) => void;
   isSmall?: boolean;
+  existingImageUrl?: string | null;
 }
 
 export default function ProfilePictureUploader({
   files,
   onChange,
   isSmall,
+  existingImageUrl,
 }: ProfilePictureUploaderProps) {
   const [image, setImage] = useState<string | null>(null);
   const [cropModalOpen, setCropModalOpen] = useState(false);
@@ -25,14 +27,16 @@ export default function ProfilePictureUploader({
   const [currentFile, setCurrentFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Update the image state when `files` changes
+  // Update the image state when `files` or `existingImageUrl` changes
   useEffect(() => {
     if (files) {
       setImage(URL.createObjectURL(files));
+    } else if (existingImageUrl) {
+      setImage(existingImageUrl);
     } else {
       setImage(null);
     }
-  }, [files]);
+  }, [files, existingImageUrl]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
