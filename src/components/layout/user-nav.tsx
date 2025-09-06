@@ -1,9 +1,9 @@
 'use client';
-import { useTransition } from 'react';
+import { useTransition, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Check, LogOut, Plus, Settings, User } from 'lucide-react';
+import { LogOut, Settings, User } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -16,12 +16,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { cn, getInitials } from '@/lib/utils';
+import { cn, getInitials, getAvatarColors } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
+import { fetchGymProfilePicture } from '@/services/gym';
 
 export function UserNav() {
   const router = useRouter();
-  const { logout } = useAuth();
+  const { logout, appUser, gymDetails } = useAuth();
   const [isPending, startTransition] = useTransition();
 
   const handleLogout = () => {
@@ -38,26 +39,36 @@ export function UserNav() {
     });
   };
 
-  const gymList = [
-    {
-      key: 1,
-      avatar: '/assets/svg/gym-dp.svg',
-      name: 'Gold’s Gym',
-      gymId: '#go2224',
-    },
-    // {
-    //   key: 2,
-    //   avatar: '',
-    //   name: 'Monolith gym',
-    //   gymId: '#go2225',
-    // },
-    // {
-    //   key: 3,
-    //   avatar: '',
-    //   name: 'Smart gym',
-    //   gymId: '#go2226',
-    // },
-  ];
+  const gymList = appUser?.gyms || [];
+  const currentGym =
+    gymDetails ||
+    (gymList.length > 0
+      ? {
+          gymName: gymList[0].gymName,
+          id: gymList[0].gymId,
+          location: gymList[0].gymLocation,
+        }
+      : null);
+
+  const avatarColors = getAvatarColors(currentGym?.gymName || 'KC');
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (currentGym?.id) {
+      try {
+        const response = fetchGymProfilePicture(currentGym.id);
+        if (response && typeof response === 'object' && 'data' in response) {
+          setProfilePictureUrl((response as { data: string }).data);
+        } else {
+          setProfilePictureUrl(null);
+        }
+      } catch {
+        setProfilePictureUrl(null);
+      }
+    }
+  }, [currentGym?.id]);
 
   return (
     <DropdownMenu>
@@ -67,8 +78,15 @@ export function UserNav() {
           className="relative h-10 w-10 rounded-full hidden md:flex"
         >
           <Avatar className="h-10 w-10">
-            <AvatarImage src="/assets/svg/gym-dp.svg" alt="Profile picture" />
-            <AvatarFallback>KC</AvatarFallback>
+            <AvatarImage
+              src={profilePictureUrl || undefined}
+              alt="Profile picture"
+            />
+            <AvatarFallback
+              className={cn(avatarColors.bgClass, avatarColors.textClass)}
+            >
+              {currentGym ? getInitials(currentGym.gymName) : 'KC'}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -79,16 +97,25 @@ export function UserNav() {
       >
         <DropdownMenuLabel className="flex gap-3 items-center bg-secondary-blue-500 p-6">
           <Avatar className="h-10 w-h-10">
-            <AvatarImage src="/assets/svg/gym-dp.svg" alt="Profile picture" />
-            <AvatarFallback>KC</AvatarFallback>
+            <AvatarImage
+              src={profilePictureUrl || undefined}
+              alt="Profile picture"
+            />
+            <AvatarFallback
+              className={cn(avatarColors.bgClass, avatarColors.textClass)}
+            >
+              {currentGym ? getInitials(currentGym.gymName) : 'KC'}
+            </AvatarFallback>
           </Avatar>
-          <div className="flex flex-col gap-2">
-            <h6 className="text-[20px] font-medium leading-normal text-white">
-              Gold’s Gym
+          <div className="flex flex-col gap-1">
+            <h6 className="text-lg font-medium leading-normal text-white">
+              {currentGym?.gymName || 'No Gym Selected'}
             </h6>
-            <p className="text-[15px] font-normal leading-normal text-primary-blue-100">
-              #go2224
-            </p>
+            <div className="bg-primary-green-100/50 w-fit px-2.5 py-0.5 rounded-md">
+              <p className="text-sm font-normal leading-normal text-primary-blue-500">
+                {currentGym ? `#${currentGym.id}` : ''}
+              </p>
+            </div>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuGroup>
@@ -109,23 +136,26 @@ export function UserNav() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="bg-primary-blue-400 my-[6px]" />
 
-        <DropdownMenuGroup>
+        {/* <DropdownMenuGroup>
           {gymList.map((gym, index) => (
             <DropdownMenuItem
-              key={gym.key}
+              key={gym.gymId}
               className="py-2.5 px-4 h-[54px] cursor-pointer hover:bg-secondary-blue-800 k-transition justify-between"
             >
               <div className="flex items-center gap-3 mr-2">
                 <Avatar className="h-[32px] w-[32px] bg-secondary-blue-500">
-                  <AvatarImage src={gym.avatar} alt="Profile picture" />
-                  <AvatarFallback>{getInitials(gym.name)}</AvatarFallback>
+                  <AvatarImage
+                    src="/assets/svg/gym-dp.svg"
+                    alt="Profile picture"
+                  />
+                  <AvatarFallback>{getInitials(gym.gymName)}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col gap-1">
                   <h6 className="text-white font-normal text-[15px] leading-normal">
-                    {gym.name}
+                    {gym.gymName}
                   </h6>
                   <p className="text-sm text-primary-blue-100 font-semibold leading-normal">
-                    {gym.gymId}
+                    #{gym.gymId}
                   </p>
                 </div>
               </div>
@@ -142,7 +172,7 @@ export function UserNav() {
             </span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator className="bg-primary-blue-400 py-0" />
+        <DropdownMenuSeparator className="bg-primary-blue-400 py-0" /> */}
         <DropdownMenuItem
           onClick={handleLogout}
           className={cn(
