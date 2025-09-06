@@ -84,7 +84,7 @@ function eventToCategory(e: EventType | string): CategoryKey {
 
 function EmptyState({ message }: { message: string }) {
   return (
-    <div className="rounded-md border border-dashed border-primary-blue-400/40 p-6 text-center text-primary-blue-300">
+    <div className="rounded-md border border-dashed bg-secondary-blue-500 border-primary-blue-400/40 p-6 text-center text-primary-blue-200">
       {message}
     </div>
   );
@@ -185,7 +185,7 @@ export function MessagingAutomationPanel() {
 
   function AutomationRow({ automation }: { automation: Automation }) {
     return (
-      <div className="shine-effect p-4 group rounded-lg border border-white/5 hover:border-primary-blue-300/50 bg-secondary-blue-600/10 hover:shadow-lg cursor-pointer">
+      <div className="p-4 group rounded-lg border border-white/5 hover:border-primary-blue-300/50 bg-primary-blue-400 hover:shadow-lg cursor-pointer w-full">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="min-w-0">
             <div className="flex items-center gap-3">
@@ -217,7 +217,11 @@ export function MessagingAutomationPanel() {
                     ? `@ ${t.sendAt}`
                     : `${t.direction === 'before' ? '−' : '+'}${t.days}d @ ${t.sendAt}`;
                 return (
-                  <Badge key={t.id} variant="secondary" className="gap-1">
+                  <Badge
+                    key={t.id}
+                    variant="secondary"
+                    className="w-fit text-xs bg-secondary-blue-500 border-0 text-secondary-blue-100 gap-1"
+                  >
                     {when}
                     <span className="mx-1 text-primary-blue-400">•</span>
                     {(t.channels || []).join(', ')}
@@ -275,19 +279,19 @@ export function MessagingAutomationPanel() {
     return (
       <div
         onClick={() => setSelectedCategory(categoryKey)}
-        className="shine-effect p-4 max-w-md group rounded-lg border border-white/5 hover:border-primary-blue-300/50 backdrop-blur-lg hover:shadow-lg cursor-pointer"
+        className="p-4 max-w-md group rounded-lg border border-white/5 hover:border-primary-blue-300/50 bg-primary-blue-400 hover:shadow-lg cursor-pointer"
       >
         <div className="flex items-center justify-between">
           <div>
             <div className="text-lg font-medium text-white">{meta.title}</div>
-            <div className="text-sm text-primary-blue-200">{meta.subtitle}</div>
+            <div className="text-sm text-white">{meta.subtitle}</div>
           </div>
           <ChevronRight className="w-5 h-5 text-secondary-blue-200 group-hover:text-primary-green-500" />
         </div>
         <div className="mt-3">
           <Badge
             variant="outline"
-            className="text-xs border-secondary-blue-500 text-slate-300"
+            className="text-xs bg-secondary-blue-500 border-0 text-secondary-blue-100"
           >
             {count} automations
           </Badge>
@@ -358,7 +362,7 @@ export function MessagingAutomationPanel() {
     cat ? CATEGORY_CONFIG[cat].defaultEvent : undefined;
 
   return (
-    <Card className="mt-8 bg-secondary-blue-600/20 backdrop-blur-md border-primary-blue-400">
+    <Card className="mt-8 bg-secondary-blue-500 border-primary-blue-400 py-2">
       {selectedCategory ? <Detail cat={selectedCategory} /> : <Overview />}
       <AutomationSheet
         open={isOpen}

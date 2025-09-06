@@ -198,12 +198,12 @@ export function BusinessProfileTab() {
         className="space-y-6"
       >
         {/* Basic Details */}
-        <Card className="bg-secondary-blue-600/20 backdrop-blur-md border-primary-blue-400 py-2">
+        <Card className="bg-secondary-blue-500 border-primary-blue-400 py-2">
           <CardHeader className="pb-4">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <CardTitle className="text-white">Basic details</CardTitle>
-                <CardDescription className="text-slate-400">
+                <CardDescription className="text-secondary-blue-200 text-[15px]">
                   Manage your gym&apos;s basic information and contact details
                 </CardDescription>
               </div>
@@ -248,6 +248,7 @@ export function BusinessProfileTab() {
               control={form.control}
               name="GymName"
               label="Gym name"
+              className="bg-primary-blue-400"
               mandetory
             />
 
@@ -258,6 +259,7 @@ export function BusinessProfileTab() {
                 name="Phone"
                 label="Contact number"
                 placeholder="(555) 123-4567"
+                className="input-phone-primary"
                 mandetory
               />
               <KFormField
@@ -265,6 +267,7 @@ export function BusinessProfileTab() {
                 control={form.control}
                 name="Email"
                 label="Enter email"
+                className="bg-primary-blue-400"
                 mandetory
               />
             </div>
@@ -274,6 +277,7 @@ export function BusinessProfileTab() {
               control={form.control}
               name="Address"
               label="Address"
+              className="bg-primary-blue-400"
               mandetory
             />
           </CardContent>
@@ -283,7 +287,7 @@ export function BusinessProfileTab() {
         <SubscriptionCard variant="premium" />
 
         {/* Social Links */}
-        <Card className="bg-secondary-blue-600/20 backdrop-blur-md border-primary-blue-400 py-2">
+        <Card className="bg-secondary-blue-500 border-primary-blue-400 py-2">
           <CardHeader>
             <CardTitle className="text-white">Social Links</CardTitle>
           </CardHeader>
@@ -300,6 +304,7 @@ export function BusinessProfileTab() {
                         onChange={field.onChange}
                         label={`Enter Social Link ${index + 1}`}
                         placeholder="https://www.google.com"
+                        className="bg-primary-blue-400"
                       />
                     )}
                   />
@@ -319,8 +324,8 @@ export function BusinessProfileTab() {
 
             <Button
               type="button"
-              className="w-fit bg-secondary-blue-900 hover:bg-secondary-blue-500 py-2.5 px-3"
               variant="secondary"
+              className="hover:bg-primary-blue-500"
               onClick={() => append({ url: '' })}
             >
               Add Social Link

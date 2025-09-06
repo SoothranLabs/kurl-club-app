@@ -16,6 +16,7 @@ export type Member = {
   memberIdentifier?: string;
   profilePicture: string | File | null;
   createdAt: string;
+  personalTrainer?: string;
 };
 
 export type MemberDetails = {

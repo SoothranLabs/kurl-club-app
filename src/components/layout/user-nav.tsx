@@ -116,12 +116,14 @@ export function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuGroup>
-          <DropdownMenuItem className="py-2.5 px-4 h-[44px] cursor-pointer hover:bg-secondary-blue-800 k-transition">
-            <User className="mr-2.5 h-6! w-6!" />
-            <span className="text-white font-semibold text-xs leading-normal">
-              Profile
-            </span>
-          </DropdownMenuItem>
+          <Link href="/settings/general-settings?tab=business_profile">
+            <DropdownMenuItem className="py-2.5 px-4 h-[44px] cursor-pointer hover:bg-secondary-blue-800 k-transition">
+              <User className="mr-2.5 h-6! w-6!" />
+              <span className="text-white font-semibold text-xs leading-normal">
+                Profile
+              </span>
+            </DropdownMenuItem>
+          </Link>
           <Link href="/settings">
             <DropdownMenuItem className="py-2.5 px-4 h-[44px] cursor-pointer hover:bg-secondary-blue-800 k-transition">
               <Settings className="mr-2.5 h-6! w-6!" />

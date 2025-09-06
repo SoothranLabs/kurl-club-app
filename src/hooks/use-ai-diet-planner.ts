@@ -3,7 +3,7 @@ import { useDietCalculator } from './use-diet-calculator';
 import {
   generateAIDietPlan,
   type DietPlanResponse,
-} from '@/utils/ai-diet-planner';
+} from '@/services/ai-diet-planner';
 import type {
   Goal,
   ActivityKey,
@@ -87,12 +87,12 @@ export const useAIDietPlanner = (props: UseAIDietPlannerProps) => {
     setUseAI(!useAI);
   }, [useAI]);
 
-  // Auto-generate AI plan on mount
+  // Initialize without auto-generating
   useEffect(() => {
     if (!hasInitialized) {
-      generateAIPlan(true); // true = auto-fallback to manual on error
+      setHasInitialized(true);
     }
-  }, [generateAIPlan, hasInitialized]);
+  }, [hasInitialized]);
 
   // Return AI data if available and selected, otherwise manual data
   const currentData =

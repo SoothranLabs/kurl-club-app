@@ -6,13 +6,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { dayBufferSchema } from '@/schemas';
 import { z } from 'zod/v4';
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from '@/components/ui/select';
 
 type CreateMemberDetailsData = z.infer<typeof dayBufferSchema>;
 
@@ -38,6 +31,7 @@ export default function SetBuffer() {
     defaultValues: {
       fee_buffer_amount: '',
       fee_buffer_days: '',
+      plan: 'all plans',
     },
   });
 
@@ -67,17 +61,14 @@ export default function SetBuffer() {
             Set up buffer for fee & due time
           </p>
         </div>
-        <div className="border-t border-secondary-blue-400 pt-6">
+        <div className="border-t border-secondary-blue-400 pt-4">
           <FormProvider {...form}>
             <form
               id="buffer-form"
               className="flex flex-col gap-5 max-w-[630px]"
             >
               {/* Fee Buffer Section */}
-              <div className="mt-3">
-                <h3 className="text-base text-white leading-normal">
-                  Fee buffer
-                </h3>
+              <div>
                 <p className="text-sm text-white leading-normal mt-3">
                   Enter the minimum payable amount to qualify for “Partial
                   payment”.
@@ -90,7 +81,7 @@ export default function SetBuffer() {
                       name="fee_buffer_amount"
                       label="Amount"
                       maxLength={8}
-                      className=" bg-secondary-blue-400 hover:outline-primary-green-700!"
+                      className=" bg-secondary-blue-400/60"
                     />
                     <div className="max-w-[88px]">
                       <KFormField
@@ -99,25 +90,17 @@ export default function SetBuffer() {
                         name="fee_buffer_days"
                         label="Days"
                         maxLength={8}
-                        className=" bg-secondary-blue-400 hover:outline-primary-green-700!"
+                        className=" bg-secondary-blue-400/60"
                       />
                     </div>
-                    <Select>
-                      <SelectTrigger className="bg-secondary-blue-400 rounded-md border-transparent hover:border-primary-green-700 focus:border-primary-green-700 active:border-primary-green-700 text-white ring-0! h-13 text-sm px-3 aria-expanded:border-primary-green-700">
-                        <SelectValue placeholder="Select a plan" />
-                      </SelectTrigger>
-                      <SelectContent className="shad-select-content">
-                        {selectPlans.map((option) => (
-                          <SelectItem
-                            className="shad-select-item"
-                            key={option.value}
-                            value={option.value}
-                          >
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <KFormField
+                      fieldType={KFormFieldType.SELECT}
+                      control={form.control}
+                      name="plan"
+                      label="Plan"
+                      options={selectPlans}
+                      className="bg-secondary-blue-400/60"
+                    />
                     <Button
                       type="button"
                       onClick={() => removeBuffer(buffer.id)}
