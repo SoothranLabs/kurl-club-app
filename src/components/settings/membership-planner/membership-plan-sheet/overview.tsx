@@ -172,11 +172,15 @@ export function Overview({
           />
           <KInput
             label="Amount in (INR)"
-            placeholder=" "
+            placeholder="Enter amount"
             value={plan.fee}
-            onChange={(e) =>
-              onUpdatePlan({ ...plan, fee: Number.parseInt(e.target.value) })
-            }
+            onChange={(e) => {
+              const value = e.target.value;
+              onUpdatePlan({
+                ...plan,
+                fee: value === '' ? '' : Number(value) || '',
+              });
+            }}
             disabled={!isEditMode}
             mandetory
           />
@@ -192,14 +196,15 @@ export function Overview({
             <KInput
               label="Duration (days)"
               type="number"
-              placeholder={undefined}
+              placeholder="Enter duration"
               value={plan.durationInDays}
-              onChange={(e) =>
+              onChange={(e) => {
+                const value = e.target.value;
                 onUpdatePlan({
                   ...plan,
-                  durationInDays: Number.parseInt(e.target.value),
-                })
-              }
+                  durationInDays: value === '' ? '' : Number(value) || '',
+                });
+              }}
               disabled={!isEditMode}
               mandetory
             />

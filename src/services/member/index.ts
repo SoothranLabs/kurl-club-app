@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, QueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { ApiResponse } from '@/types';
 import { Member, MemberDetails } from '@/types/members';
@@ -23,7 +23,10 @@ export const createMember = async (data: FormData) => {
 export const fetchGymMembers = async (gymId: number | string) => {
   const response = await api.get<ApiResponse<Member[]>>(`/Member/gym/${gymId}`);
 
-  return response.data || [];
+  const memberData = response.data || [];
+  return memberData.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 };
 
 export const useGymMembers = (gymId: number | string) => {
@@ -31,6 +34,9 @@ export const useGymMembers = (gymId: number | string) => {
     queryKey: ['gymMembers', gymId],
     queryFn: () => fetchGymMembers(gymId),
     enabled: !!gymId,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 };
 
@@ -62,9 +68,17 @@ export const updateMember = async (id: string | number, data: FormData) => {
   }
 };
 
-export const deleteMember = async (id: string | number) => {
+export const deleteMember = async (
+  id: string | number,
+  queryClient?: QueryClient
+) => {
   try {
     await api.delete(`/Member/${id}`);
+
+    // Invalidate all gym members queries
+    if (queryClient) {
+      await queryClient.invalidateQueries({ queryKey: ['gymMembers'] });
+    }
 
     return { success: 'Member deleted successfully!' };
   } catch (error) {
@@ -75,6 +89,20 @@ export const deleteMember = async (id: string | number) => {
         ? error.message
         : 'An unexpected error occurred while deleting the member.';
 
+    return { error: errorMessage };
+  }
+};
+
+export const bulkImportMembers = async (members: Member[]) => {
+  try {
+    const response = await api.post('/Gym/bulk-import-members', members);
+    return { success: 'Members imported successfully!', data: response };
+  } catch (error) {
+    console.error('Error during bulk import:', error);
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : 'An unexpected error occurred during bulk import.';
     return { error: errorMessage };
   }
 };

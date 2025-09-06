@@ -48,7 +48,7 @@ export default function StaffForm({
           onValueChange={(value) => handleStaffTypeChange(value as StaffType)}
           options={[
             { label: 'Trainer', value: 'trainer' },
-            { label: 'Administrator', value: 'administrator' },
+            { label: 'Staff', value: 'staff' },
           ]}
           className="border-white! rounded-lg!"
         />

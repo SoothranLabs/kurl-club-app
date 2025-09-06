@@ -47,12 +47,12 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
       height: '',
       weight: '',
       address: '',
-      gender: undefined,
-      membershipPlanId: undefined,
-      feeStatus: undefined,
-      personalTrainer: undefined,
-      bloodGroup: undefined,
-      workoutPlanId: undefined,
+      gender: '',
+      membershipPlanId: '',
+      feeStatus: '',
+      personalTrainer: '',
+      bloodGroup: '',
+      workoutPlanId: '',
     },
   });
 

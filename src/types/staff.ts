@@ -1,6 +1,7 @@
 export type StaffType = 'trainer' | 'staff';
 
 export type Staff = {
+  uuid: string;
   id: string;
   staffId: string;
   name: string;
@@ -10,26 +11,36 @@ export type Staff = {
   phone: string;
   bloodGroup: string;
   gender?: string;
+  createdAt: string;
 };
 
 export type StaffDetails = {
   id: number;
-  memberIdentifier: string;
-  name: string;
+  name?: string; // for staff
+  trainerName?: string; // for trainer
+  trainerId?: string; // for trainer
+  email: string;
+  phone: string;
   dob: string;
   bloodGroup: string;
-  gender?: string;
-  package: string;
-  feeStatus: string;
+  gender: string;
+  addressLine: string;
   doj: string;
-  phone: string;
-  email: string;
-  height: number;
-  weight: number;
-  personalTrainer: number;
-  fullAddress: string;
-  workoutPlan: number;
+  status: string;
   profilePicture: string | File | null;
+  hasProfilePicture?: boolean;
+  // Trainer specific
+  certification?: string;
+  gymId?: number;
+  // Legacy fields (keeping for compatibility)
+  uuid?: string;
+  memberIdentifier?: string;
+  package?: string;
+  feeStatus?: string;
+  height?: number;
+  weight?: number;
+  personalTrainer?: number;
+  workoutPlan?: number;
 };
 
 export interface EditableSectionProps {

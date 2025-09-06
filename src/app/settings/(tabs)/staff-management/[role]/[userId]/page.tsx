@@ -40,6 +40,7 @@ export default function StaffDetailsPage({ params }: StaffDetailsPageProps) {
         isEditing={isEditing}
         details={details}
         updateStaffDetail={updateStaffDetail}
+        staffRole={staffRole}
       />
       <Contents
         staffRole={staffRole}

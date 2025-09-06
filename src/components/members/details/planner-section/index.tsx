@@ -2,14 +2,31 @@
 
 import { useState } from 'react';
 import { WorkoutPlans } from './workout-plans';
-import { DietPlans } from './diet-plans';
+import DietPlanner from './diet-planner';
 import { KTabs, TabItem } from '@/components/form/k-tabs';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
+import { MemberDetails } from '@/types/members';
+import { calculateAge } from '@/lib/utils';
 
-export default function PlannerSection() {
+interface PlannerSectionProps {
+  memberDetails: MemberDetails | null;
+}
+
+export default function PlannerSection({ memberDetails }: PlannerSectionProps) {
   const [activeTab, setActiveTab] = useState<string>('workout');
   const [isRotating, setIsRotating] = useState<boolean>(false);
+
+  const vitals = memberDetails
+    ? {
+        sex: (memberDetails.gender === 'male' ? 'Male' : 'Female') as
+          | 'Male'
+          | 'Female',
+        age: calculateAge(memberDetails.dob),
+        heightCm: memberDetails.height,
+        weightKg: memberDetails.weight,
+      }
+    : null;
 
   const handleClick = () => {
     setIsRotating(true);
@@ -46,7 +63,18 @@ export default function PlannerSection() {
         onTabChange={setActiveTab}
       />
 
-      {activeTab === 'workout' ? <WorkoutPlans /> : <DietPlans />}
+      {activeTab === 'workout' ? (
+        <WorkoutPlans />
+      ) : vitals ? (
+        <DietPlanner vitals={vitals} />
+      ) : (
+        <div className="p-6 text-center text-primary-blue-100">
+          <p>
+            Member data incomplete. Please update height, weight, gender, and
+            date of birth to generate diet plans.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

@@ -173,7 +173,7 @@ interface EditableSelectProps<T extends string> {
   options: Array<{ value: T; label: string; avatar?: string }>;
 }
 
-function EditableSelect<T extends string>({
+export function EditableSelect<T extends string>({
   label,
   value,
   isEditing,

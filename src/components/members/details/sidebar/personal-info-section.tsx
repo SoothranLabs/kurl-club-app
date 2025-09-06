@@ -1,10 +1,10 @@
 import { Fragment } from 'react';
 import { Calendar } from 'lucide-react';
-import { format, parseISO } from 'date-fns';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 
 import type { EditableSectionProps } from '@/types/members';
+import { safeParseDate, safeDateFormat } from '@/lib/utils';
 
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -27,7 +27,7 @@ export function PersonalInfoSection({
           <KDatePicker
             icon={<Calendar />}
             mode="single"
-            value={details?.dob ? new Date(details.dob) : undefined}
+            value={safeParseDate(details?.dob)}
             onDateChange={(date) =>
               onUpdate('dob', date instanceof Date ? date.toISOString() : '')
             }
@@ -36,9 +36,7 @@ export function PersonalInfoSection({
           />
         ) : (
           <p className="text-white text-[15px] leading-[140%] font-normal">
-            {details?.dob
-              ? format(parseISO(details.dob), 'MMM do, yyyy')
-              : 'N/A'}
+            {safeDateFormat(details?.dob)}
           </p>
         )}
       </div>

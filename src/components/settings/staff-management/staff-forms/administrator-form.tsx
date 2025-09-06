@@ -37,13 +37,15 @@ export default function AdministratorForm({
       Name: '',
       Email: '',
       Phone: '',
-      Dob: '',
-      bloodGroup: undefined,
-      Gender: undefined,
+      Dob: undefined,
+      bloodGroup: '',
+      Gender: '',
       AddressLine: '',
-      Doj: '',
+      Doj: new Date().toISOString(),
     },
   });
+
+  const isSubmitting = form.formState.isSubmitting;
 
   const onSubmit = async (data: AdministratorFormValues) => {
     onSubmittingChange(true);
@@ -112,6 +114,7 @@ export default function AdministratorForm({
           fieldType={KFormFieldType.INPUT}
           label="Full Name"
           placeholder="John Doe"
+          disabled={isSubmitting}
         />
         {/* Email */}
         <KFormField
@@ -120,6 +123,7 @@ export default function AdministratorForm({
           fieldType={KFormFieldType.INPUT}
           label="Email"
           placeholder="john@example.com"
+          disabled={isSubmitting}
         />
         {/* Phone number */}
         <KFormField
@@ -127,6 +131,7 @@ export default function AdministratorForm({
           name="Phone"
           fieldType={KFormFieldType.PHONE_INPUT}
           label="Phone Number"
+          disabled={isSubmitting}
         />
         <div className="flex justify-between gap-3">
           {/* Gender */}
@@ -137,6 +142,7 @@ export default function AdministratorForm({
               name="Gender"
               label="Gender"
               options={genderOptions}
+              disabled={isSubmitting}
             />
           </div>
 
@@ -148,6 +154,7 @@ export default function AdministratorForm({
               name="bloodGroup"
               label="Blood Group"
               options={bloodGroupOptions}
+              disabled={isSubmitting}
             />
           </div>
         </div>
@@ -163,6 +170,7 @@ export default function AdministratorForm({
               className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
               iconSrc={<Calendar className="w-5! h-5! text-white" />}
               showYearSelector
+              disabled={isSubmitting}
             />
           </div>
 
@@ -177,6 +185,7 @@ export default function AdministratorForm({
               mode="single"
               className="bg-secondary-blue-500 z-1000 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
               iconSrc={<Calendar className="w-5! h-5! text-white" />}
+              disabled={isSubmitting}
             />
           </div>
         </div>
@@ -190,6 +199,7 @@ export default function AdministratorForm({
           control={form.control}
           name="AddressLine"
           label="Address Line"
+          disabled={isSubmitting}
         />
       </form>
     </Form>

@@ -2,6 +2,7 @@
 
 import type React from 'react';
 import { createContext, useContext, useState } from 'react';
+import { Loader2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -20,6 +21,7 @@ type DialogOptions = {
   cancelLabel?: string;
   onConfirm?: () => void;
   onCancel?: () => void;
+  loadingLabel?: string;
 };
 
 type DialogContextType = {
@@ -35,6 +37,7 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
   const [dialogOptions, setDialogOptions] = useState<DialogOptions | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   const openDialog = (options: DialogOptions) => {
     setDialogOptions(options);
@@ -44,9 +47,15 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
     setDialogOptions(null);
   };
 
-  const handleConfirm = () => {
-    dialogOptions?.onConfirm?.();
-    closeDialog();
+  const handleConfirm = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    try {
+      await dialogOptions?.onConfirm?.();
+    } finally {
+      setIsLoading(false);
+      closeDialog();
+    }
   };
 
   const handleCancel = () => {
@@ -57,7 +66,10 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <DialogContext.Provider value={{ openDialog, closeDialog }}>
       {children}
-      <Dialog open={!!dialogOptions} onOpenChange={closeDialog}>
+      <Dialog
+        open={!!dialogOptions}
+        onOpenChange={isLoading ? undefined : closeDialog}
+      >
         <DialogContent className="bg-secondary-blue-700 border-primary-blue-400">
           <DialogHeader>
             <DialogTitle>{dialogOptions?.title}</DialogTitle>
@@ -65,7 +77,11 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
           </DialogHeader>
           <DialogFooter>
             {dialogOptions?.cancelLabel && (
-              <Button variant="outline" onClick={handleCancel}>
+              <Button
+                variant="outline"
+                onClick={handleCancel}
+                disabled={isLoading}
+              >
                 {dialogOptions.cancelLabel}
               </Button>
             )}
@@ -77,8 +93,12 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
                     : 'default'
                 }
                 onClick={handleConfirm}
+                disabled={isLoading}
               >
-                {dialogOptions.confirmLabel}
+                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isLoading
+                  ? dialogOptions.loadingLabel || 'Loading...'
+                  : dialogOptions.confirmLabel}
               </Button>
             )}
           </DialogFooter>

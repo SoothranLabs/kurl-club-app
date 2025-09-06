@@ -80,7 +80,7 @@ export function KTabs({
                 key={item.id}
                 onClick={() => onTabChange?.(item.id)}
                 className={cn(
-                  'flex-1 border-b-2 text-nowrap leading-normal h-7 pb-3 k-transition text-center text-[15px] font-normal transition-all',
+                  'flex-1 border-b-2 text-nowrap leading-normal h-7 pb-3 k-transition text-center text-[15px] font-normal transition-all cursor-pointer',
                   {
                     'border-primary-green-200 text-primary-green-200': isActive,
                     'border-transparent text-white hover:text-primary-green-200':

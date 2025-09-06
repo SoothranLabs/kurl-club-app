@@ -11,14 +11,17 @@ export const createStaff = async (
     const endpoint = type === 'staff' ? '/Staff/CreateStaff' : '/Trainer';
     const response = await api.post(endpoint, data);
 
-    return { success: 'Member created successfully!', data: response };
+    return {
+      success: `${type.charAt(0).toUpperCase() + type.slice(1)} created successfully!`,
+      data: response,
+    };
   } catch (error) {
-    console.error('Error during member creation:', error);
+    console.error(`Error during ${type} creation:`, error);
 
     const errorMessage =
       error instanceof Error
         ? error.message
-        : 'An unexpected error occurred during member creation.';
+        : `An unexpected error occurred during ${type} creation.`;
 
     return { error: errorMessage };
   }
@@ -29,7 +32,10 @@ export const fetchGymStaffs = async (gymId: number | string) => {
     `/Gym/GetAllStaffByGymId/${gymId}`
   );
 
-  return response.data || [];
+  const staffData = response.data || [];
+  return staffData.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 };
 
 export const useGymStaffs = (gymId: number | string) => {
@@ -73,7 +79,7 @@ export const updateStaff = async (
     const response = await api.put<ApiResponse>(endpoint, data);
     return response;
   } catch (error) {
-    console.error('Error updating member:', error);
+    console.error(`Error updating ${role}:`, error);
     throw error;
   }
 };
@@ -85,14 +91,16 @@ export const deleteStaff = async (id: string | number, role: StaffType) => {
 
     await api.delete(endpoint);
 
-    return { success: 'Member deleted successfully!' };
+    return {
+      success: `${role.charAt(0).toUpperCase() + role.slice(1)} deleted successfully!`,
+    };
   } catch (error) {
-    console.error('Error deleting member:', error);
+    console.error(`Error deleting ${role}:`, error);
 
     const errorMessage =
       error instanceof Error
         ? error.message
-        : 'An unexpected error occurred while deleting the member.';
+        : `An unexpected error occurred while deleting the ${role}.`;
 
     return { error: errorMessage };
   }

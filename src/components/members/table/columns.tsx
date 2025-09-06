@@ -5,7 +5,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Eye } from 'lucide-react';
 
 import { Member } from '@/types/members';
-import { getProfilePictureSrc } from '@/lib/utils';
+import { getProfilePictureSrc, safeFormatDate } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
@@ -121,30 +121,20 @@ export const columns: ColumnDef<Member>[] = [
   {
     accessorKey: 'doj',
     header: 'Date of Joining',
-    cell: ({ row }) => {
-      const date = row.getValue<string>('doj');
-      return (
-        <div className="min-w-[120px]">
-          {date
-            ? new Intl.DateTimeFormat('en-GB').format(new Date(date))
-            : 'N/A'}
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <div className="min-w-[120px]">
+        {safeFormatDate(row.getValue<string>('doj'))}
+      </div>
+    ),
   },
   {
     accessorKey: 'dob',
     header: 'Date of Birth',
-    cell: ({ row }) => {
-      const date = row.getValue<string>('dob');
-      return (
-        <div className="min-w-[120px]">
-          {date
-            ? new Intl.DateTimeFormat('en-GB').format(new Date(date))
-            : 'N/A'}
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <div className="min-w-[120px]">
+        {safeFormatDate(row.getValue<string>('dob'))}
+      </div>
+    ),
   },
   {
     id: 'actions',

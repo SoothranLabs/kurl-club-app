@@ -92,7 +92,13 @@ export function DataTable<TData extends object, TValue>({
               <TableBody className="[&_tr]:border-b [&_tr]:border-primary-blue-400">
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id} className="relative">
+                    <TableRow
+                      key={
+                        (row.original as TData & { uuid?: string }).uuid ||
+                        row.id
+                      }
+                      className="relative"
+                    >
                       {/* Fixed Columns */}
                       <TableCell className="sticky left-0 z-10 bg-secondary-blue-500">
                         {flexRender(

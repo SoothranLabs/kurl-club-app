@@ -10,6 +10,7 @@ import {
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
+import { safeParseDate } from '@/lib/utils';
 
 import {
   FormControl,
@@ -72,6 +73,7 @@ interface CustomProps<T extends FieldValues> {
   renderSkeleton?: (
     field: ControllerRenderProps<T, FieldPath<T>>
   ) => React.ReactNode;
+  type?: React.InputHTMLAttributes<HTMLInputElement>['type'];
 }
 
 const RenderField = <T extends FieldValues>({
@@ -98,6 +100,7 @@ const RenderField = <T extends FieldValues>({
     suffix,
     maxLength,
     mandetory,
+    type,
   } = props;
 
   switch (fieldType) {
@@ -121,6 +124,7 @@ const RenderField = <T extends FieldValues>({
                 suffix={suffix}
                 maxLength={maxLength}
                 mandetory={mandetory}
+                type={type}
               />
             </div>
           </div>
@@ -225,8 +229,18 @@ const RenderField = <T extends FieldValues>({
             label={dateLabel}
             showPresets={showPresets}
             showYearSelector={showYearSelector}
-            onDateChange={field.onChange}
-            value={field.value}
+            onDateChange={(date) => {
+              if (mode === 'single' && date instanceof Date) {
+                field.onChange(date.toISOString());
+              } else {
+                field.onChange(date);
+              }
+            }}
+            value={
+              mode === 'single' && typeof field.value === 'string'
+                ? safeParseDate(field.value)
+                : field.value
+            }
             mode={mode ?? 'range'}
             className={className}
             icon={iconSrc}
@@ -242,6 +256,7 @@ const RenderField = <T extends FieldValues>({
               id={name}
               checked={field.value}
               onCheckedChange={field.onChange}
+              disabled={props.disabled}
             />
             <label htmlFor={name} className="checkbox-label">
               {label}

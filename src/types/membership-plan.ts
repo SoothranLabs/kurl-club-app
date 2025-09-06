@@ -3,7 +3,7 @@ export interface MembershipPlan {
   gymId: number;
   planName: string;
   details: string;
-  fee: number;
-  durationInDays: number;
+  fee: number | string;
+  durationInDays: number | string;
   isActive: boolean;
 }

@@ -10,9 +10,7 @@ const isPhoneNumberValid = (phone: string): boolean => {
 // Register Schema
 export const RegisterSchema = z
   .object({
-    email: z.email({
-      error: 'Invalid email address',
-    }),
+    email: z.email('Invalid email address'),
     password: z
       .string()
       .min(8, {
@@ -61,13 +59,7 @@ export const RegisterSchema = z
 
 // Login Schema
 export const LoginSchema = z.object({
-  email: z
-    .email({
-      error: 'Invalid email address',
-    })
-    .min(1, {
-      error: 'Email is required',
-    }),
+  email: z.email('Invalid email address').min(1, 'Email is required'),
   password: z.string().min(1, {
     error: 'Password is required',
   }),
@@ -75,9 +67,7 @@ export const LoginSchema = z.object({
 
 // Reset Schema
 export const ResetSchema = z.object({
-  email: z.email({
-    error: 'Invalid email address',
-  }),
+  email: z.email('Invalid email address'),
 });
 
 // New Password Schema
@@ -243,9 +233,7 @@ export const TrainerFormSchema = z.object({
 });
 
 export const SamplePageSchema = z.object({
-  email: z.email({
-    error: 'Invalid email address',
-  }),
+  email: z.email('Invalid email address'),
   password: z.string().min(8, {
     error: 'Password must be at least 8 characters',
   }),
@@ -379,22 +367,12 @@ export const createMemberSchema = z.object({
     })
     .optional(),
   name: z.string().min(1, 'Member name is required'),
-  dob: z
-    .string()
-    .min(1, 'Date of birth is required')
-    .transform((val) => {
-      return new Date(val).toISOString();
-    }),
+  dob: z.iso.datetime('Please select a valid Date of Birth.'),
+  doj: z.iso.datetime('Please select a valid Date of Joining.'),
   bloodGroup: z.string().min(1, 'Blood group selection is required'),
   gender: z.string().min(1, 'Gender selection is required'),
   membershipPlanId: z.string().min(1, 'Package selection is required'),
   feeStatus: z.string().min(1, 'Fee status is required'),
-  doj: z
-    .string()
-    .min(1, 'Date of joining is required')
-    .transform((val) => {
-      return new Date(val).toISOString();
-    }),
   phone: z
     .string()
     .regex(/^\+?[1-9]\d{1,14}$/, 'Phone number must be at least 10 digits'),
@@ -436,15 +414,8 @@ export const trainerFormSchema = z.object({
   Phone: z.string().min(10, {
     error: 'Phone number must be at least 10 digits.',
   }),
-  Dob: z
-    .string()
-    .min(1, 'Please select Date of Birth.')
-    .transform((val) => new Date(val).toISOString()),
-
-  Doj: z
-    .string()
-    .min(1, 'Please select Date of Joining.')
-    .transform((val) => new Date(val).toISOString()),
+  Dob: z.iso.datetime('Please select a valid Date of Birth.'),
+  Doj: z.iso.datetime('Please select a valid Date of Joining.'),
   Certification: z.array(
     z.object({
       label: z.string(),
@@ -477,15 +448,8 @@ export const adminstratorFormSchema = z.object({
   Phone: z.string().min(10, {
     error: 'Phone number must be at least 10 digits.',
   }),
-  Dob: z
-    .string()
-    .min(1, 'Please select Date of Birth.')
-    .transform((val) => new Date(val).toISOString()),
-
-  Doj: z
-    .string()
-    .min(1, 'Please select Date of Joining.')
-    .transform((val) => new Date(val).toISOString()),
+  Dob: z.iso.datetime('Please select a valid Date of Birth.'),
+  Doj: z.iso.datetime('Please select a valid Date of Joining.'),
   Gender: z.string().min(1, 'Gender selection is required'),
   AddressLine: z
     .string()
@@ -529,4 +493,71 @@ export const dayBufferSchema = z.object({
   day_buffer_days: z.string().min(1, 'buffer day is required'),
   fee_buffer_amount: z.string().min(1, 'buffer amount is required'),
   fee_buffer_days: z.string().min(1, 'buffer day is required'),
+});
+
+export const messagingTemplateSchema = z.object({
+  name: z.string().min(1, 'Template name is required'),
+  category: z.enum(['payment', 'reminder', 'notification', 'general']),
+  channel: z.literal('whatsapp'),
+  content: z.string().min(1, 'Message content is required'),
+});
+
+// Automation schemas
+export const automationTimingSchema = z.object({
+  id: z.string(),
+  direction: z.enum(['before', 'after']),
+  days: z.number().min(0),
+  sendAt: z
+    .string()
+    .regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
+  channels: z
+    .array(z.enum(['chat', 'whatsapp', 'sms']))
+    .min(1, 'At least one channel is required'),
+  templateId: z.string().min(1, 'Template is required'),
+});
+
+export const automationSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  description: z.string().optional(),
+  eventType: z.enum([
+    'payment_advance',
+    'payment_due',
+    'payment_grace',
+    'payment_failed',
+    'payment_received',
+    'class_reminder',
+    'birthday',
+    'anniversary',
+    'achievement',
+  ]),
+  enabled: z.boolean(),
+  timings: z
+    .array(automationTimingSchema)
+    .min(1, 'At least one timing is required'),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+
+export const createAutomationSchema = automationSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const updateAutomationSchema = automationSchema.partial().omit({
+  id: true,
+  createdAt: true,
+});
+
+export const paymentFormSchema = z.object({
+  amount: z.string().refine((val) => {
+    const num = Number(val);
+    return num >= 1;
+  }, 'Amount must be at least 1'),
+  method: z.string().min(1, 'Payment method is required'),
+  extendDays: z.string().refine((val) => {
+    const num = Number(val);
+    return num >= 1;
+  }, 'Days must be at least 1'),
 });

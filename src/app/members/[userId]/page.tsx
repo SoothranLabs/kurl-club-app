@@ -21,6 +21,7 @@ export default function MemberDetailsPage({ params }: MemberDetailsPageProps) {
     handleSave,
     toggleEdit,
     details,
+    originalDetails,
     loading,
     error,
     updateMemberDetail,
@@ -43,6 +44,8 @@ export default function MemberDetailsPage({ params }: MemberDetailsPageProps) {
         isEditing={isEditing}
         handleSave={handleSave}
         toggleEdit={toggleEdit}
+        details={details}
+        originalDetails={originalDetails}
       />
     </main>
   );

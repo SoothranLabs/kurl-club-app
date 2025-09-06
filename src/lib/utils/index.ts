@@ -9,6 +9,8 @@ import {
   endOfMonth,
   startOfYear,
   endOfYear,
+  format,
+  parseISO,
 } from 'date-fns';
 import { DateRange } from 'react-day-picker';
 
@@ -224,4 +226,128 @@ export const getProfilePictureSrc = (
   }
 
   return URL.createObjectURL(profilePicture);
+};
+
+/**
+ * Safely creates a Date object from a string value.
+ * Returns undefined if the date is invalid.
+ *
+ * @param dateValue - The date string to parse.
+ * @returns A valid Date object or undefined.
+ */
+export const safeParseDate = (
+  dateValue: string | null | undefined
+): Date | undefined => {
+  if (!dateValue) return undefined;
+  try {
+    const date = new Date(dateValue);
+    return !isNaN(date.getTime()) ? date : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+/**
+ * Safely formats a date string using Intl.DateTimeFormat.
+ * Returns fallback text if the date is invalid.
+ *
+ * @param dateValue - The date string to format.
+ * @param locale - The locale to use for formatting (default: 'en-GB').
+ * @param fallback - The fallback text if date is invalid (default: 'N/A').
+ * @returns A formatted date string or fallback text.
+ */
+export const safeFormatDate = (
+  dateValue: string | null | undefined,
+  locale: string = 'en-GB',
+  fallback: string = 'N/A'
+): string => {
+  const date = safeParseDate(dateValue);
+  return date ? new Intl.DateTimeFormat(locale).format(date) : fallback;
+};
+
+/**
+ * Safely formats a date string using date-fns format.
+ * Returns fallback text if the date is invalid.
+ *
+ * @param dateValue - The date string to format.
+ * @param formatStr - The format string (default: 'MMM do, yyyy').
+ * @param fallback - The fallback text if date is invalid (default: 'N/A').
+ * @returns A formatted date string or fallback text.
+ */
+export const safeDateFormat = (
+  dateValue: string | null | undefined,
+  formatStr: string = 'MMM do, yyyy',
+  fallback: string = 'N/A'
+): string => {
+  if (!dateValue) return fallback;
+  try {
+    return format(parseISO(dateValue), formatStr);
+  } catch {
+    return fallback;
+  }
+};
+
+/**
+ * Formats an ISO date string to a readable format.
+ *
+ * @param isoString - The ISO date string to format.
+ * @param format - Format type: 'date', 'time', or 'both' (default).
+ * @returns A formatted string.
+ */
+export const formatDateTime = (
+  isoString: string,
+  format: 'date' | 'time' | 'both' = 'both'
+): string => {
+  try {
+    const date = new Date(isoString);
+
+    if (format === 'date') {
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+    }
+
+    if (format === 'time') {
+      return date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      });
+    }
+
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  } catch {
+    return isoString;
+  }
+};
+
+/**
+ * Calculates age from a date of birth string.
+ *
+ * @param dob - Date of birth in ISO string format.
+ * @returns The calculated age in years.
+ */
+export const calculateAge = (dob: string): number => {
+  const birthDate = new Date(dob);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
 };
