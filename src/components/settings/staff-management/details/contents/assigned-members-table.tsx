@@ -24,7 +24,7 @@ export default function AssignedMembersTable({
 
   // Filter members assigned to this trainer
   const assignedMembers = gymMembers.filter(
-    (member: Member) => member.personalTrainer === trainerId
+    (member: Member) => member.personalTrainer === parseInt(trainerId)
   );
 
   const { items: filteredMembers, search } = useFilterableList<Member>(

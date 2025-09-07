@@ -561,3 +561,21 @@ export const paymentFormSchema = z.object({
     return num >= 1;
   }, 'Days must be at least 1'),
 });
+
+export const bufferSchema = z.object({
+  feeBufferAmount: z.string().min(1, 'Amount is required'),
+  feeBufferDays: z.string().min(1, 'Days is required'),
+  membershipPlanId: z.string().min(1, 'Plan is required'),
+});
+
+export const gymUpdateSchema = z.object({
+  Id: z.number(),
+  GymName: z.string().min(1, 'Gym name is required'),
+  Location: z.string().min(1, 'Location is required'),
+  ContactNumber1: z.string().min(1, 'Contact number is required'),
+  ContactNumber2: z.string().optional(),
+  Email: z.string().email('Invalid email format'),
+  SocialLinks: z.string().optional(),
+  ProfilePicture: z.instanceof(File).optional().nullable(),
+  Status: z.string().optional(),
+});

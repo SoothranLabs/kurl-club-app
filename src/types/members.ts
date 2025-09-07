@@ -16,7 +16,7 @@ export type Member = {
   memberIdentifier?: string;
   profilePicture: string | File | null;
   createdAt: string;
-  personalTrainer?: string;
+  personalTrainer?: string | number;
 };
 
 export type MemberDetails = {
@@ -34,6 +34,7 @@ export type MemberDetails = {
   height: number;
   weight: number;
   personalTrainer: number;
+  membershipPlanId: number;
   fullAddress: string;
   workoutPlan: number;
   profilePicture: string | File | null;

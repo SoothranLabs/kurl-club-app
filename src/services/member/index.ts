@@ -2,6 +2,7 @@ import { useQuery, QueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { ApiResponse } from '@/types';
 import { Member, MemberDetails } from '@/types/members';
+import { MemberPaymentDetails } from '@/types/payment';
 
 export const createMember = async (data: FormData) => {
   try {
@@ -105,4 +106,21 @@ export const bulkImportMembers = async (members: Member[]) => {
         : 'An unexpected error occurred during bulk import.';
     return { error: errorMessage };
   }
+};
+
+export const fetchMemberPaymentDetails = async (memberId: number | string) => {
+  const response = await api.get<{
+    status: string;
+    message: string;
+    data: MemberPaymentDetails;
+  }>(`/Transaction/GetPaymentDetailsByMember/${memberId}`);
+  return response.data;
+};
+
+export const useMemberPaymentDetails = (memberId: number | string) => {
+  return useQuery({
+    queryKey: ['memberPaymentDetails', memberId],
+    queryFn: () => fetchMemberPaymentDetails(memberId),
+    enabled: !!memberId,
+  });
 };

@@ -96,9 +96,30 @@ export const createPaymentColumns = (
   {
     accessorKey: 'bufferStatus',
     header: 'Buffer status',
-    cell: ({ row }) => (
-      <div className="min-w-[100px]">{row.getValue('bufferStatus')}</div>
-    ),
+    cell: ({ row }) => {
+      const bufferDaysRemaining = row.original.bufferDaysRemaining;
+      const pendingAmount = row.original.pendingAmount;
+
+      // Only show buffer if there's pending amount and active buffer
+      if (pendingAmount === 0 || bufferDaysRemaining === 0) {
+        return <div className="min-w-[180px]">No buffer</div>;
+      }
+
+      const bufferEndDate = new Date(row.original.bufferEndDate);
+      const formattedDate = bufferEndDate.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
+
+      return (
+        <div className="min-w-[180px]">
+          <div className="bg-secondary-green-500/20 w-fit px-2 py-1 rounded-lg text-xs">
+            {bufferDaysRemaining} days • till {formattedDate}
+          </div>
+        </div>
+      );
+    },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },

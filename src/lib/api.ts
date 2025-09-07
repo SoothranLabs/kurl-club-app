@@ -23,15 +23,24 @@ const baseFetch: typeof fetch = async (url, options = {}) => {
     let errorMessage = 'Unknown API error';
 
     try {
-      const error = await response.json();
-      errorMessage = error.message || errorMessage;
+      const responseText = await response.text();
+      if (responseText) {
+        try {
+          const error = JSON.parse(responseText);
+          errorMessage = error.message || errorMessage;
+        } catch {
+          errorMessage = responseText;
+        }
+      }
     } catch (e) {
-      console.error('Error parsing JSON response:', e);
-      const text = await response.text();
-      console.error('Response body:', text);
+      console.error('Error reading response:', e);
     }
 
-    throw new Error(errorMessage);
+    const error = new Error(errorMessage) as Error & {
+      response: { status: number };
+    };
+    error.response = { status: response.status };
+    throw error;
   }
 
   // Handle no-content response (204)

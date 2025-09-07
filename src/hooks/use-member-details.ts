@@ -6,7 +6,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useMemberByID, updateMember } from '@/services/member';
 import { MemberDetails } from '@/types/members';
 
-export function useMemberDetails(userId: string | number) {
+export function useMemberDetails(
+  userId: string | number,
+  initialData?: MemberDetails
+) {
   const [isEditing, setIsEditing] = useState(false);
   const [details, setDetails] = useState<MemberDetails | null>(null);
   const [originalDetails, setOriginalDetails] = useState<MemberDetails | null>(
@@ -18,11 +21,12 @@ export function useMemberDetails(userId: string | number) {
   const { data, isLoading: loading } = useMemberByID(userId);
 
   useEffect(() => {
-    if (data) {
-      setDetails(data);
-      setOriginalDetails(data);
+    const memberData = data || initialData;
+    if (memberData) {
+      setDetails(memberData);
+      setOriginalDetails(memberData);
     }
-  }, [data]);
+  }, [data, initialData]);
 
   const updateMemberDetail = useCallback(
     <K extends keyof MemberDetails>(key: K, value: MemberDetails[K]) => {

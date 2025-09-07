@@ -44,16 +44,7 @@ function Contents({
       />
       <div className="grid grid-cols-1 [@media(max-width:900px)]:grid-cols-1 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 gap-4 mt-3">
         <Chart />
-        <PaymentCard
-          info={{
-            status: 'unpaid',
-            delay: 1,
-            outstanding: 10000,
-            paid_amount: 0,
-            package: 'Quarterly',
-            due_data: '12/12/2024',
-          }}
-        />
+        <PaymentCard memberId={memberId} />
       </div>
       <PlannerSection memberDetails={originalDetails || details} />
     </div>

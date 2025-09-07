@@ -48,6 +48,32 @@ export function BasicDetailsSection({
         suffix="KG"
       />
 
+      {/* PACKAGE  */}
+      <EditableSelect
+        label="Package"
+        value={
+          isEditing
+            ? details?.membershipPlanId
+              ? String(details.membershipPlanId)
+              : undefined
+            : formOptions?.membershipPlans.find(
+                (plan) => plan.membershipPlanId === details?.membershipPlanId
+              )?.planName || 'Not Selected'
+        }
+        isEditing={isEditing}
+        onChange={(value) => onUpdate('membershipPlanId', Number(value))}
+        options={
+          loading
+            ? [{ value: '', label: 'Loading...' }]
+            : error
+              ? [{ value: '', label: 'Error loading data' }]
+              : formOptions?.membershipPlans.map((plan) => ({
+                  value: String(plan.membershipPlanId),
+                  label: plan.planName,
+                })) || []
+        }
+      />
+
       {/* WORKOUT_PLAN  */}
       <EditableSelect
         label="Workout plan"
