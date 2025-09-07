@@ -1,54 +1,117 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { CheckCheck, Plus, Trash2 } from 'lucide-react';
+import { CheckCheck, Trash2, Edit } from 'lucide-react';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { dayBufferSchema } from '@/schemas';
 import { z } from 'zod/v4';
+import { useBufferConfigs } from '@/hooks/use-buffer-config';
+import { useGymFormOptions } from '@/hooks/use-gymform-options';
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import { useAppDialog } from '@/hooks/use-app-dialog';
+import type { BufferConfig } from '@/services/buffer-config';
+import { bufferSchema } from '@/schemas';
 
-type CreateMemberDetailsData = z.infer<typeof dayBufferSchema>;
+type BufferFormData = z.infer<typeof bufferSchema>;
 
 export default function SetBuffer() {
-  const [buffers, setBuffers] = useState([
-    { id: 1, amount: '', days: '', plan: 'All plans' },
-  ]);
+  const { gymBranch } = useGymBranch();
+  const { configs, isLoading, createConfig, updateConfig, deleteConfig } =
+    useBufferConfigs();
+  const { formOptions } = useGymFormOptions(gymBranch?.gymId);
+  const { showConfirm } = useAppDialog();
+  const [editingId, setEditingId] = useState<number | null>(null);
 
-  const addBuffer = () => {
-    setBuffers([
-      ...buffers,
-      { id: Date.now(), amount: '', days: '', plan: 'All plans' },
-    ]);
-  };
-
-  const removeBuffer = (id: number) => {
-    setBuffers(buffers.filter((buffer) => buffer.id !== id));
-  };
-
-  // form
-  const form = useForm<CreateMemberDetailsData>({
-    resolver: zodResolver(dayBufferSchema),
+  const form = useForm<BufferFormData>({
+    resolver: zodResolver(bufferSchema),
     defaultValues: {
-      fee_buffer_amount: '',
-      fee_buffer_days: '',
-      plan: 'all plans',
+      feeBufferAmount: '',
+      feeBufferDays: '',
+      membershipPlanId: '',
     },
   });
 
-  const selectPlans = [
-    {
-      label: 'All plans',
-      value: 'all plans',
-    },
-    {
-      label: 'Weight loss',
-      value: 'weight loss',
-    },
-    {
-      label: 'Weight gain',
-      value: 'weight gain',
-    },
-  ];
+  const planOptions =
+    formOptions?.membershipPlans.map((plan) => ({
+      label: plan.planName,
+      value: plan.membershipPlanId.toString(),
+    })) || [];
+
+  const handleSave = async (config?: BufferConfig) => {
+    // Validate form before proceeding
+    const isValid = await form.trigger();
+    if (!isValid) {
+      return;
+    }
+
+    const values = form.getValues();
+    const data = {
+      membershipPlanId: parseInt(values.membershipPlanId),
+      feeBufferAmount: parseInt(values.feeBufferAmount),
+      feeBufferDays: parseInt(values.feeBufferDays),
+    };
+
+    // Check if values have changed for existing config
+    if (config) {
+      const hasChanged =
+        config.feeBufferAmount !== data.feeBufferAmount ||
+        config.feeBufferDays !== data.feeBufferDays ||
+        config.membershipPlanId !== data.membershipPlanId;
+
+      if (!hasChanged) {
+        // No changes, just exit edit mode
+        form.reset();
+        setEditingId(null);
+        return;
+      }
+    }
+
+    try {
+      if (config) {
+        await updateConfig({ id: config.id, config: data });
+      } else {
+        await createConfig(data);
+      }
+      form.reset();
+      setEditingId(null);
+    } catch (error) {
+      console.error('Error saving buffer config:', error);
+    }
+  };
+
+  const handleEdit = (config: BufferConfig) => {
+    if (editingId === config.id) {
+      // Toggle off edit mode
+      setEditingId(null);
+      form.reset();
+    } else {
+      // Toggle on edit mode
+      setEditingId(config.id);
+      form.setValue('feeBufferAmount', config.feeBufferAmount.toString());
+      form.setValue('feeBufferDays', config.feeBufferDays.toString());
+      form.setValue('membershipPlanId', config.membershipPlanId.toString());
+    }
+  };
+
+  const handleDelete = (id: number) => {
+    showConfirm({
+      title: 'Delete Buffer Configuration',
+      description:
+        'Are you sure you want to delete this buffer configuration? This action cannot be undone.',
+      variant: 'destructive',
+      onConfirm: async () => {
+        try {
+          await deleteConfig(id);
+        } catch (error) {
+          console.error('Error deleting buffer config:', error);
+        }
+      },
+    });
+  };
+
+  if (isLoading) {
+    return <div className="text-white">Loading buffer configurations...</div>;
+  }
 
   return (
     <div className="w-full bg-secondary-blue-500 rounded-lg border border-secondary-blue-400">
@@ -67,62 +130,141 @@ export default function SetBuffer() {
               id="buffer-form"
               className="flex flex-col gap-5 max-w-[630px]"
             >
-              {/* Fee Buffer Section */}
+              {/* Existing Buffer Configurations */}
               <div>
                 <p className="text-sm text-white leading-normal mt-3">
-                  Enter the minimum payable amount to qualify for “Partial
-                  payment”.
+                  Enter the minimum payable amount to qualify for &quot;Partial
+                  payment&quot;.
                 </p>
-                {buffers.map((buffer) => (
-                  <div key={buffer.id} className="flex gap-3 mt-4">
+
+                {configs.map((config) => (
+                  <div key={config.id} className="flex gap-3 mt-4 items-end">
+                    {editingId === config.id ? (
+                      <>
+                        <KFormField
+                          fieldType={KFormFieldType.INPUT}
+                          control={form.control}
+                          name="feeBufferAmount"
+                          label="Amount"
+                          placeholder="Enter amount"
+                          className="bg-secondary-blue-400/60"
+                        />
+                        <div className="max-w-[88px]">
+                          <KFormField
+                            fieldType={KFormFieldType.INPUT}
+                            control={form.control}
+                            name="feeBufferDays"
+                            label="Days"
+                            placeholder="Days"
+                            className="bg-secondary-blue-400/60"
+                          />
+                        </div>
+                        <KFormField
+                          fieldType={KFormFieldType.SELECT}
+                          control={form.control}
+                          name="membershipPlanId"
+                          label="Plan"
+                          options={planOptions}
+                          className="bg-secondary-blue-400/60"
+                        />
+                        <Button
+                          type="button"
+                          size="icon"
+                          onClick={() => handleSave(config)}
+                        >
+                          <CheckCheck className="h-5 w-5" />
+                        </Button>
+                        <Button
+                          type="button"
+                          size="icon"
+                          onClick={() => handleEdit(config)}
+                          variant="destructive"
+                        >
+                          <Trash2 className="h-5 w-5" />
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex-1">
+                          <label className="text-sm text-white/80">
+                            Amount
+                          </label>
+                          <div className="bg-secondary-blue-400/60 text-[14px] px-4 py-2 rounded text-white">
+                            ₹{config.feeBufferAmount}
+                          </div>
+                        </div>
+                        <div className="max-w-[88px]">
+                          <label className="text-sm text-white/80">Days</label>
+                          <div className="bg-secondary-blue-400/60 text-[14px] px-4 py-2 rounded text-white">
+                            {config.feeBufferDays}
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <label className="text-sm text-white/80">Plan</label>
+                          <div className="bg-secondary-blue-400/60 text-[14px] px-4 py-2 rounded text-white">
+                            {formOptions?.membershipPlans.find(
+                              (p) =>
+                                p.membershipPlanId === config.membershipPlanId
+                            )?.planName || 'Unknown'}
+                          </div>
+                        </div>
+                        <Button
+                          type="button"
+                          size="icon"
+                          onClick={() => handleEdit(config)}
+                        >
+                          <Edit className="h-5 w-5" />
+                        </Button>
+                        <Button
+                          type="button"
+                          size="icon"
+                          onClick={() => handleDelete(config.id)}
+                          variant="destructive"
+                        >
+                          <Trash2 className="h-5 w-5" />
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                ))}
+
+                {/* Add New Buffer Form */}
+                {!editingId && (
+                  <div className="flex gap-3 mt-4 items-end">
                     <KFormField
                       fieldType={KFormFieldType.INPUT}
                       control={form.control}
-                      name="fee_buffer_amount"
+                      name="feeBufferAmount"
                       label="Amount"
-                      maxLength={8}
-                      className=" bg-secondary-blue-400/60"
+                      placeholder="Enter amount"
+                      className="bg-secondary-blue-400/60"
                     />
-                    <div className="max-w-[88px]">
-                      <KFormField
-                        fieldType={KFormFieldType.INPUT}
-                        control={form.control}
-                        name="fee_buffer_days"
-                        label="Days"
-                        maxLength={8}
-                        className=" bg-secondary-blue-400/60"
-                      />
-                    </div>
+                    <KFormField
+                      fieldType={KFormFieldType.INPUT}
+                      control={form.control}
+                      name="feeBufferDays"
+                      label="Days"
+                      placeholder="Days"
+                      className="bg-secondary-blue-400/60"
+                    />
                     <KFormField
                       fieldType={KFormFieldType.SELECT}
                       control={form.control}
-                      name="plan"
+                      name="membershipPlanId"
                       label="Plan"
-                      options={selectPlans}
+                      options={planOptions}
                       className="bg-secondary-blue-400/60"
                     />
                     <Button
                       type="button"
-                      onClick={() => removeBuffer(buffer.id)}
-                      className="h-[52px] w-[52px] border border-secondary-blue-400 hover:border-primary-green-500"
-                      variant="secondary"
+                      size="icon"
+                      onClick={() => handleSave()}
                     >
-                      <Trash2 />
-                    </Button>
-                    <Button type="button" className="h-[52px] w-[52px]">
-                      <CheckCheck className="h-5! w-5!" />
+                      <CheckCheck className="h-5 w-5" />
                     </Button>
                   </div>
-                ))}
+                )}
               </div>
-
-              <Button
-                className="w-fit border border-secondary-blue-400 py-2.5 px-3 hover:border-primary-green-500"
-                variant="ghost"
-                onClick={addBuffer}
-              >
-                <Plus className="text-primary-green-500" /> Add
-              </Button>
             </form>
           </FormProvider>
         </div>
