@@ -21,7 +21,7 @@ export interface CreateBufferConfigData {
 export const createBufferConfig = async (data: CreateBufferConfigData) => {
   try {
     const response = await api.post<ApiResponse<BufferConfig>>(
-      '/Gym/create-buffer-config',
+      '/Transaction/create-buffer-config',
       data
     );
     return {

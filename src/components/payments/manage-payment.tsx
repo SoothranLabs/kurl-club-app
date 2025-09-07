@@ -15,6 +15,12 @@ import { formatDateTime } from '@/lib/utils';
 import type { Payment } from '@/types/payment';
 import { paymentFormSchema } from '@/schemas';
 import { paymentMethodOptions } from '@/lib/constants';
+import {
+  usePaymentManagement,
+  usePaymentHistory,
+} from '@/hooks/use-payment-management';
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import { useAppDialog } from '@/hooks/use-app-dialog';
 
 type PaymentFormData = z.infer<typeof paymentFormSchema>;
 
@@ -30,6 +36,17 @@ export function ManagePaymentSheet({
   member,
 }: ManagePaymentSheetProps) {
   const pending = member?.pendingAmount || 0;
+  const { gymBranch } = useGymBranch();
+  const {
+    recordPartialPayment,
+    recordFullPayment,
+    extendBuffer,
+    isProcessing,
+  } = usePaymentManagement();
+  const { data: paymentHistory = [] } = usePaymentHistory(
+    member?.memberId || 0
+  );
+  const { showConfirm } = useAppDialog();
 
   const form = useForm<PaymentFormData>({
     resolver: zodResolver(paymentFormSchema),
@@ -47,6 +64,57 @@ export function ManagePaymentSheet({
   const isPartialPaymentValid =
     amountNum >= 1 && amountNum <= pending && formValues.method;
   const isExtendValid = extendDaysNum >= 1;
+
+  const handlePartialPayment = async () => {
+    if (!member || !gymBranch?.gymId) return;
+
+    await recordPartialPayment({
+      memberId: member.memberId,
+      gymId: gymBranch.gymId,
+      membershipPlanId: member.package,
+      amount: amountNum,
+      paymentMethod: formValues.method,
+      paymentType: 0,
+    });
+
+    form.reset();
+    onOpenChange(false);
+  };
+
+  const handleFullPayment = () => {
+    if (!member || !gymBranch?.gymId || !formValues.method) return;
+
+    showConfirm({
+      title: 'Confirm Full Payment',
+      description: `Are you sure you want to mark ₹${pending} as fully paid for ${member.memberName}?`,
+      confirmLabel: 'Mark Paid',
+      onConfirm: async () => {
+        await recordFullPayment({
+          memberId: member.memberId,
+          gymId: gymBranch.gymId,
+          membershipPlanId: member.package,
+          amount: pending,
+          paymentMethod: formValues.method,
+          paymentType: 1,
+        });
+
+        form.reset();
+        onOpenChange(false);
+      },
+    });
+  };
+
+  const handleExtendBuffer = async () => {
+    if (!member) return;
+
+    await extendBuffer({
+      memberId: member.memberId,
+      daysToAdd: extendDaysNum,
+    });
+
+    form.reset();
+    onOpenChange(false);
+  };
 
   const footer = (
     <div className="flex items-center justify-end gap-3">
@@ -148,8 +216,11 @@ export function ManagePaymentSheet({
                 />
               </div>
               <div className="mt-4">
-                <Button disabled={!isPartialPaymentValid}>
-                  Add partial payment
+                <Button
+                  disabled={!isPartialPaymentValid || isProcessing}
+                  onClick={handlePartialPayment}
+                >
+                  {isProcessing ? 'Processing...' : 'Add partial payment'}
                 </Button>
               </div>
             </div>
@@ -162,7 +233,12 @@ export function ManagePaymentSheet({
                 Settle full payment
               </div>
               <div className="flex items-center gap-4">
-                <Button disabled={pending <= 0}>Mark paid (₹{pending})</Button>
+                <Button
+                  disabled={pending <= 0 || !formValues.method || isProcessing}
+                  onClick={handleFullPayment}
+                >
+                  {isProcessing ? 'Processing...' : `Mark paid (₹${pending})`}
+                </Button>
                 <div className="min-w-[150px]">
                   <KFormField
                     fieldType={KFormFieldType.SELECT}
@@ -192,7 +268,12 @@ export function ManagePaymentSheet({
                   type="number"
                 />
                 <div className="col-span-2 flex items-end">
-                  <Button disabled={!isExtendValid}>Extend buffer</Button>
+                  <Button
+                    disabled={!isExtendValid || isProcessing}
+                    onClick={handleExtendBuffer}
+                  >
+                    {isProcessing ? 'Processing...' : 'Extend buffer'}
+                  </Button>
                 </div>
               </div>
               <div className="mt-2 text-xs text-primary-blue-200">
@@ -207,9 +288,25 @@ export function ManagePaymentSheet({
               Payment history
             </div>
             <div className="space-y-2">
-              <div className="text-sm text-primary-blue-300">
-                No payments recorded.
-              </div>
+              {paymentHistory.length === 0 ? (
+                <div className="text-sm text-primary-blue-300">
+                  No payments recorded.
+                </div>
+              ) : (
+                paymentHistory.map((payment) => (
+                  <div
+                    key={payment.id}
+                    className="flex justify-between items-center text-sm"
+                  >
+                    <div className="text-white">
+                      ₹{payment.amount} - {payment.paymentMethod}
+                    </div>
+                    <div className="text-primary-blue-300">
+                      {formatDateTime(payment.paymentDate, 'date')}
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
