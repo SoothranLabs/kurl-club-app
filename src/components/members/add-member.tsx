@@ -119,7 +119,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
 
   return (
     <KSheet
-      className="w-[582px]"
+      className="w-[450px]"
       isOpen={isOpen}
       onClose={closeSheet}
       title="Add Member"
@@ -178,8 +178,8 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
           />
 
           {/* Gender */}
-          <div className="flex justify-between gap-3">
-            <div className="w-1/2">
+          <div className="flex justify-between gap-3 flex-wrap sm:flex-nowrap">
+            <div className="w-full sm:w-1/2 ">
               <KFormField
                 fieldType={KFormFieldType.SELECT}
                 control={form.control}
@@ -190,7 +190,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
             </div>
 
             {/* Package */}
-            <div className="w-1/2">
+            <div className="w-full sm:w-1/2 ">
               <KFormField
                 fieldType={KFormFieldType.SELECT}
                 control={form.control}
@@ -203,9 +203,9 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
               />
             </div>
           </div>
-          <div className="flex justify-between gap-3">
+          <div className="flex justify-between gap-3 flex-wrap sm:flex-nowrap">
             {/* height */}
-            <div className="w-1/2">
+            <div className="w-full sm:w-1/2 ">
               <KFormField
                 fieldType={KFormFieldType.INPUT}
                 control={form.control}
@@ -215,7 +215,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
             </div>
 
             {/* weight */}
-            <div className="w-1/2">
+            <div className="w-full sm:w-1/2 ">
               <KFormField
                 fieldType={KFormFieldType.INPUT}
                 control={form.control}
@@ -225,9 +225,9 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
             </div>
           </div>
 
-          <div className="flex justify-between gap-3">
+          <div className="flex justify-between gap-3 flex-wrap sm:flex-nowrap">
             {/* Fee Status */}
-            <div className="w-1/2">
+            <div className="w-full sm:w-1/2 ">
               <KFormField
                 fieldType={KFormFieldType.SELECT}
                 control={form.control}
@@ -238,7 +238,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
             </div>
 
             {/* Amount Paid */}
-            <div className="w-1/2">
+            <div className="w-full sm:w-1/2 ">
               {(() => {
                 const selectedPlanId = form.watch('membershipPlanId');
                 const selectedPlan = formOptions?.membershipPlans.find(
@@ -262,9 +262,9 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
             </div>
           </div>
 
-          <div className="flex justify-between gap-3">
+          <div className="flex justify-between gap-3 flex-wrap sm:flex-nowrap">
             {/* Date of joining */}
-            <div className="w-1/2">
+            <div className="w-full sm:w-1/2 ">
               <KFormField
                 fieldType={KFormFieldType.DATE_PICKER}
                 control={form.control}
@@ -277,7 +277,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
             </div>
 
             {/* Date of birth */}
-            <div className="w-1/2">
+            <div className="w-full sm:w-1/2 ">
               <KFormField
                 fieldType={KFormFieldType.DATE_PICKER}
                 showPresets
@@ -292,9 +292,9 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
             </div>
           </div>
 
-          <div className="flex justify-between gap-3">
+          <div className="flex justify-between gap-3 flex-wrap sm:flex-nowrap">
             {/* Personal Trainer */}
-            <div className="w-1/2">
+            <div className="w-full sm:w-1/2 ">
               <KFormField
                 fieldType={KFormFieldType.SELECT}
                 control={form.control}
@@ -312,7 +312,7 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
             </div>
 
             {/* Blood Group */}
-            <div className="w-1/2">
+            <div className="w-full sm:w-1/2 ">
               <KFormField
                 fieldType={KFormFieldType.SELECT}
                 control={form.control}

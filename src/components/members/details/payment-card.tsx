@@ -21,7 +21,7 @@ function PaymentCard({ info }: PaymentCardProps) {
 
   return (
     <div className="rounded-lg h-full bg-secondary-blue-500 p-5 pb-7 w-full">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-x-4 gap-y-1 flex-wrap">
         <div className="flex items-center gap-4">
           <h6 className="text-white font-normal text-base">Payments</h6>
           <div className="flex items-center gap-2">

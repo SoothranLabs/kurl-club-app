@@ -47,7 +47,7 @@ export default function PlannerSection({ memberDetails }: PlannerSectionProps) {
         <Button
           variant="secondary"
           onClick={handleClick}
-          className="group h-[46px] px-5 py-4"
+          className="group p-0 md:h-[46px] md:px-5 md:py-4"
         >
           <RefreshCw
             className={`text-primary-blue-200 group-hover:text-primary-green-400 transition 

@@ -43,7 +43,7 @@ function Navbar() {
   return (
     <>
       <div className="w-full border-b-[1px] border-secondary-blue-500 bg-primary-blue-500 h-20 sticky top-0 z-50">
-        <div className="container py-5 h-full grid sm:grid-cols-[3fr_1fr] lg:grid-cols-[1.6fr_1fr]">
+        <div className="container py-5 h-full flex items-center justify-between sm:grid sm:grid-cols-[3fr_1fr] lg:grid-cols-[1.6fr_1fr]">
           <div className="flex justify-between items-center">
             <span
               onClick={() => {

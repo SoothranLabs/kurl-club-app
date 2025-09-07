@@ -71,8 +71,6 @@ export function Chart() {
       setSelectedDateRange(range);
       const newChartData = generateDummyData(range);
       setChartData(newChartData);
-      // console.log(`Updated Chart Data:`, newChartData);
-      // console.log(`Updated Date Range: ${JSON.stringify(range)}`);
     } else {
       console.error('Invalid date range selected');
     }
@@ -80,7 +78,7 @@ export function Chart() {
 
   return (
     <Card className="border-none bg-secondary-blue-500 rounded-lg">
-      <CardHeader className="flex flex-row items-center justify-between p-5 pb-7">
+      <CardHeader className="flex flex-row items-center justify-between p-5 pb-7 flex-wrap gap-x-2">
         <CardTitle className="text-white text-base font-normal leading-normal">
           Attendance stats (Days v/s Hours)
         </CardTitle>
@@ -91,6 +89,7 @@ export function Chart() {
           onDateChange={handleDateChange}
           value={selectedDateRange}
           mode="range"
+          className="p-0"
         />
       </CardHeader>
       <CardContent className="p-0 pr-5 pb-5 k-chart">
