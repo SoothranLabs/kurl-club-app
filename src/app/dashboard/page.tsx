@@ -14,7 +14,7 @@ function Dashboard() {
   const { appUser } = useAuth();
 
   return (
-    <div className="container py-8">
+    <div className="container py-5 md:py-8">
       <Header />
       <CardList />
       {appUser?.gyms.length === 0 && <Banner />}
@@ -22,7 +22,7 @@ function Dashboard() {
         <h2 className="text-white font-medium text-2xl leading-normal">
           Insights
         </h2>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(680px,1fr))] gap-4 justify-center">
+        <div className="grid [grid-template-columns:1fr] md:[grid-template-columns:repeat(auto-fit,minmax(680px,_1fr))] gap-4">
           <Payments />
           <OutstandingPayment />
           <SkipperStats />

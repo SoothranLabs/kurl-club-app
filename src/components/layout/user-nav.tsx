@@ -73,7 +73,10 @@ export function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+        <Button
+          variant="ghost"
+          className="relative h-10 w-10 rounded-full hidden md:flex"
+        >
           <Avatar className="h-10 w-10">
             <AvatarImage
               src={profilePictureUrl || undefined}

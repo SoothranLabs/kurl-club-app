@@ -115,7 +115,7 @@ function Calendar({
           defaultClassNames.day
         ),
         range_start: cn(
-          'bg-primary-green-500 text-black rounded-full',
+          '!rounded-l-full bg-secondary-blue-500 text-black',
           defaultClassNames.range_start
         ),
         range_middle: cn(
@@ -123,7 +123,7 @@ function Calendar({
           defaultClassNames.range_middle
         ),
         range_end: cn(
-          'bg-primary-green-500 text-black rounded-full',
+          'rounded-l-full bg-secondary-blue-500 text-black',
           defaultClassNames.range_end
         ),
         today: cn(
@@ -139,9 +139,10 @@ function Calendar({
           defaultClassNames.disabled
         ),
         hidden: cn('invisible', defaultClassNames.hidden),
-        selected:
-          'bg-primary-green-500 text-white hover:bg-primary-green-500 hover:text-white focus:bg-primary-green-500 focus:text-black',
-        ...classNames,
+        selected: cn(
+          '[&>*]:hover:bg-primary-green-500 [&>*]:hover:text-black !rounded-none',
+          classNames
+        ),
       }}
       components={{
         Root: ({ className, rootRef, ...props }) => {

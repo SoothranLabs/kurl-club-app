@@ -25,9 +25,9 @@ export function DataTableToolbar<TData>({
 
   return (
     <div className="flex items-center justify-between w-full">
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2 flex-wrap gap-y-3">
         {/* Search Bar */}
-        <Search onSearch={onSearch} />
+        <Search onSearch={onSearch} wrapperClass="min-w-[160px]" />
 
         {/* Dynamic Filters */}
         {filters.map((filter) => {

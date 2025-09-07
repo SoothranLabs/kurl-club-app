@@ -35,13 +35,13 @@ const paymentSummary = [
 function Payments() {
   return (
     <Card className="border-none bg-secondary-blue-500 rounded-lg w-full">
-      <CardContent className="flex h-full flex-row gap-3 p-5 justify-between">
-        <div className="flex flex-col gap-2">
+      <CardContent className="flex h-full flex-row gap-3 p-5 justify-between flex-wrap">
+        <div className="flex flex-col gap-2 w-full md:w-fit">
           <CardTitle className="text-white text-base font-normal leading-normal">
             Payments
           </CardTitle>
           {/* Pie Chart */}
-          <div className="w-[240px] h-[240px] relative">
+          <div className="w-[240px] h-[240px] relative mx-auto">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -72,7 +72,7 @@ function Payments() {
         </div>
 
         {/* Summary Cards */}
-        <div className="flex flex-col py-3 justify-center gap-[6px] text-white w-full max-w-[50%]">
+        <div className="flex flex-col py-3 justify-center gap-[6px] text-white w-full md:max-w-[50%] max-w-full">
           <div className="bg-primary-blue-400 rounded-xl h-full p-5 flex flex-col gap-[10px]">
             {paymentSummary.slice(0, 2).map((item, idx) => (
               <div className="flex items-start gap-[6px]" key={idx}>

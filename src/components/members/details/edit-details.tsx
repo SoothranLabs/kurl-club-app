@@ -51,7 +51,7 @@ function EditDetails() {
           <DropdownMenuTrigger asChild>
             <Button
               onClick={() => setOpen(true)}
-              className="h-[46px] shadow-none text-primary-green-500"
+              className="shadow-none text-primary-green-500 p-0"
               variant="link"
             >
               Edit details

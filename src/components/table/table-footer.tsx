@@ -98,13 +98,13 @@ export const TableFooter = <TData,>({
   pageSizes = [10, 20, 30, 40, 50],
 }: TableFooterProps<TData>) => {
   return (
-    <div className="flex items-center justify-between px-3">
-      <div className="flex-1 text-sm text-muted-foreground">
+    <div className="flex items-center justify-between sm:px-3 flex-wrap gap-y-2">
+      <div className="flex-1 text-sm text-muted-foreground text-nowrap mr-2">
         {table.getFilteredSelectedRowModel().rows.length} of{' '}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-x-4 gap-y-1 w-full justify-between sm:w-fit flex-wrap">
         {/* Number of Results Section */}
         <div className="flex items-center gap-2">
           <p className="text-sm font-medium">Rows per page</p>
@@ -130,22 +130,23 @@ export const TableFooter = <TData,>({
             </SelectContent>
           </Select>
         </div>
+        <div className="flex items-center ">
+          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+            Page {table.getState().pagination.pageIndex + 1} of{' '}
+            {table.getPageCount()}
+          </div>
 
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Page {table.getState().pagination.pageIndex + 1} of{' '}
-          {table.getPageCount()}
+          {/* Pagination Section */}
+          <Pagination
+            pageCount={table.getPageCount()}
+            canPreviousPage={table.getCanPreviousPage()}
+            canNextPage={table.getCanNextPage()}
+            previousPage={table.previousPage}
+            nextPage={table.nextPage}
+            setPageIndex={table.setPageIndex}
+            getCanPreviousPage={table.getCanPreviousPage}
+          />
         </div>
-
-        {/* Pagination Section */}
-        <Pagination
-          pageCount={table.getPageCount()}
-          canPreviousPage={table.getCanPreviousPage()}
-          canNextPage={table.getCanNextPage()}
-          previousPage={table.previousPage}
-          nextPage={table.nextPage}
-          setPageIndex={table.setPageIndex}
-          getCanPreviousPage={table.getCanPreviousPage}
-        />
       </div>
     </div>
   );

@@ -25,7 +25,7 @@ function Contents({
   originalDetails: MemberDetails | null;
 }) {
   return (
-    <div className="p-8 pt-0 w-full max-w-[calc(100%-336px)]">
+    <div className="md:px-8 pt-0 w-full max-w-[calc(100%-95px)] md:max-w-[calc(100%-300px)] lg:max-w-[calc(100%-336px)]  ">
       <Header
         memberId={memberId}
         isEditing={isEditing}
@@ -40,9 +40,9 @@ function Contents({
           title: 'Total hours spent',
           count: 10,
         }}
-        className="w-[332px]! mt-4"
+        className="max-w-[332px]! w-full md:mt-4"
       />
-      <div className="grid grid-cols-2 mt-3 gap-4">
+      <div className="grid grid-cols-1 [@media(max-width:900px)]:grid-cols-1 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 gap-4 mt-3">
         <Chart />
         <PaymentCard
           info={{

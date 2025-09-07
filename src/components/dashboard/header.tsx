@@ -22,7 +22,7 @@ function Header() {
   const userName = appUser?.userName || appUser?.userEmail || 'User';
 
   return (
-    <div className="flex justify-between items-start gap-2">
+    <div className="flex justify-between items-start gap-4 flex-wrap">
       <div className="flex flex-col">
         <h6 className="text-2xl font-medium leading-normal text-[#747578] capitalize">
           Hello, {userName}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { MemberDetails } from '@/types/members';
 import { Breadcrumb } from '@/components/breadcrumbs';
@@ -8,6 +8,8 @@ import { CollapsibleSection } from '@/components/layout/collapsible-section';
 import { MemberHeader } from './member-header';
 import { BasicDetailsSection } from './basic-details-section';
 import { PersonalInfoSection } from './personal-info-section';
+import { Button } from '@/components/ui/button';
+import { PanelLeftOpen, PanelRightOpen } from 'lucide-react';
 
 type SectionKey = 'basicDetails' | 'personalInfo';
 
@@ -15,10 +17,14 @@ export function Sidebar({
   isEditing,
   details,
   updateMemberDetail,
+  handleSave,
+  toggleEdit,
 }: {
   memberId: string;
   isEditing: boolean;
+  toggleEdit: () => void;
   details: MemberDetails | null;
+  handleSave: () => void;
   updateMemberDetail: <K extends keyof MemberDetails>(
     key: K,
     value: MemberDetails[K]
@@ -30,6 +36,11 @@ export function Sidebar({
     basicDetails: true,
     personalInfo: true,
   });
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    setSidebarOpen(isEditing);
+  }, [isEditing]);
 
   const sections = [
     {
@@ -57,38 +68,62 @@ export function Sidebar({
   ];
 
   return (
-    <div className="min-w-[336px] max-h-[calc(100vh-80px)] sticky left-0 top-[80px] max-w-[336px] h-auto pb-8 bg-primary-blue-500 text-white overflow-y-auto scrollbar-thin border-r border-secondary-blue-500">
-      <div className="px-8 sticky top-0 bg-primary-blue-500 py-8 z-20">
-        <Breadcrumb
-          items={[
-            { label: 'Members', href: '/members' },
-            { label: 'Member details' },
-          ]}
-        />
+    <>
+      <Button
+        onClick={() => setSidebarOpen(true)}
+        className="p-3 ml-2 mt-2 sticky top-[88px] md:hidden"
+      >
+        <PanelLeftOpen />
+      </Button>
+      <div
+        className={`fixed z-40 left-0 sm:max-w-[50%] md:max-w-[300px] lg:max-w-[336px] w-full md:max-h-[calc(100vh-80px)] md:sticky md:left-0 top-[80px] md:h-full pb-8 max-h-full bg-primary-blue-500 text-white overflow-y-auto scrollbar-thin border-r border-secondary-blue-500 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+      >
+        <div className="px-8 sticky top-0 bg-primary-blue-500 py-8 z-20 flex items-start justify-between">
+          <div className="">
+            <Breadcrumb
+              items={[
+                { label: 'Members', href: '/members' },
+                { label: 'Member details' },
+              ]}
+            />
 
-        <h5 className="text-2xl mt-2 leading-normal font-normal mb-6">
-          Member details
-        </h5>
+            <h5 className="text-2xl mt-2 leading-normal font-normal mb-6">
+              Member details
+            </h5>
 
-        <MemberHeader
-          isEditing={isEditing}
-          details={details}
-          onUpdate={updateMemberDetail}
-        />
+            <MemberHeader
+              isEditing={isEditing}
+              details={details}
+              onUpdate={updateMemberDetail}
+            />
+          </div>
+          <div className="flex items-center gap-2 md:hidden">
+            {isEditing ? (
+              <Button onClick={handleSave}>Save</Button>
+            ) : (
+              <Button onClick={toggleEdit} className="h-10" variant="outline">
+                Edit
+              </Button>
+            )}
+            <Button onClick={() => setSidebarOpen(false)} className="p-3">
+              <PanelRightOpen />
+            </Button>
+          </div>
+        </div>
+
+        {sections.map(({ title, key, content }) => (
+          <CollapsibleSection
+            key={key}
+            title={title}
+            isOpen={sectionStates[key]}
+            setIsOpen={(isOpen) =>
+              setSectionStates((prev) => ({ ...prev, [key]: isOpen }))
+            }
+          >
+            <div className="px-8">{content}</div>
+          </CollapsibleSection>
+        ))}
       </div>
-
-      {sections.map(({ title, key, content }) => (
-        <CollapsibleSection
-          key={key}
-          title={title}
-          isOpen={sectionStates[key]}
-          setIsOpen={(isOpen) =>
-            setSectionStates((prev) => ({ ...prev, [key]: isOpen }))
-          }
-        >
-          <div className="px-8">{content}</div>
-        </CollapsibleSection>
-      ))}
-    </div>
+    </>
   );
 }
