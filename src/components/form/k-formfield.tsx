@@ -1,17 +1,24 @@
 'use client';
 
-import { E164Number } from 'libphonenumber-js/core';
 import {
   Control,
-  FieldValues,
-  FieldPath,
   ControllerRenderProps,
+  FieldPath,
+  FieldValues,
 } from 'react-hook-form';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
-import { safeParseDate } from '@/lib/utils';
 
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
+import { E164Number } from 'libphonenumber-js/core';
+
+import { KDatePicker } from '@/components/form/k-datepicker';
+import { KInput } from '@/components/form/k-input';
+import { KMultiSelect } from '@/components/form/k-multi-select';
+import { KPassword } from '@/components/form/k-password';
+import { KSelect } from '@/components/form/k-select';
+import { KTextarea } from '@/components/form/k-textarea';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   FormControl,
   FormField,
@@ -24,13 +31,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { Checkbox } from '@/components/ui/checkbox';
-import { KSelect } from '@/components/form/k-select';
-import { KInput } from '@/components/form/k-input';
-import { KPassword } from '@/components/form/k-password';
-import { KTextarea } from '@/components/form/k-textarea';
-import { KDatePicker } from '@/components/form/k-datepicker';
-import { KMultiSelect } from '@/components/form/k-multi-select';
+import { safeParseDate } from '@/lib/utils';
 
 export enum KFormFieldType {
   INPUT = 'input',

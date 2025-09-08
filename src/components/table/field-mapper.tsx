@@ -1,6 +1,12 @@
 import { ArrowRightLeft } from 'lucide-react';
-import { formatFieldName } from '@/lib/utils';
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -9,13 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { formatFieldName } from '@/lib/utils';
 
 interface FieldMapperProps {
   requiredFields: string[];

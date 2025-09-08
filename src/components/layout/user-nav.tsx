@@ -1,10 +1,14 @@
 'use client';
-import { useTransition, useState, useEffect } from 'react';
+
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { LogOut, Settings, User } from 'lucide-react';
+import { useEffect, useState, useTransition } from 'react';
 
+import { LogOut, Settings, User } from 'lucide-react';
+import { toast } from 'sonner';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,9 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { cn, getInitials, getAvatarColors } from '@/lib/utils';
+import { cn, getAvatarColors, getInitials } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { fetchGymProfilePicture } from '@/services/gym';
 

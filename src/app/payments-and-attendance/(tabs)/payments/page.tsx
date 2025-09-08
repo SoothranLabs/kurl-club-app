@@ -1,7 +1,8 @@
 'use client';
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+
 import { KTabs, TabItem } from '@/components/form/k-tabs';
 import { Expired, History, Outstanding } from '@/components/payments';
 

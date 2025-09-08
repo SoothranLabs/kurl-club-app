@@ -1,25 +1,25 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 
+import { MaintainWeightIcon } from '@/components/icons';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAIDietPlanner } from '@/hooks/use-ai-diet-planner';
 import {
-  useDietCalculator,
-  type Goal,
-  type Vitals,
   type ActivityKey,
   type BloodPanels,
   type DiabeticPanel,
+  type Goal,
+  type Vitals,
+  useDietCalculator,
 } from '@/hooks/use-diet-calculator';
-import { useAIDietPlanner } from '@/hooks/use-ai-diet-planner';
 import { generatePlanText } from '@/utils/diet-plan-generator';
 
-import { GoalActivitySection } from './diet-form/goal-activity-section';
 import { BasicInfoSection } from './diet-form/basic-info-section';
 import { BloodWorkSection } from './diet-form/blood-work-section';
+import { GoalActivitySection } from './diet-form/goal-activity-section';
 import { NutritionSummary } from './diet-form/nutrition-summary';
-import { MaintainWeightIcon } from '@/components/icons';
 
 type ThyroidPanel = { tsh?: number; ft4?: number; meds?: string };
 type LipidPanel = { ldl?: number; hdl?: number; tg?: number };

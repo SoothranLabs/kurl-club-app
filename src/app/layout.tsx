@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import { AppProviders } from '@/providers';
-import './globals.css';
+
 import AppLayout from '@/components/layout/app-layout';
+import { AppProviders } from '@/providers';
+
+import './globals.css';
 
 const figtree = localFont({
   src: [

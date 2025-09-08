@@ -1,5 +1,5 @@
-import { MessagingTemplatePanel } from './messaging-template-panel';
 import { MessagingAutomationPanel } from './messaging-automation-panel';
+import { MessagingTemplatePanel } from './messaging-template-panel';
 
 export function CommunicationTab() {
   return (

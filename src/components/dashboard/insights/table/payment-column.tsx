@@ -1,8 +1,9 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { OutstandingPayments } from '@/types';
 
 export const paymentColumns: ColumnDef<OutstandingPayments>[] = [

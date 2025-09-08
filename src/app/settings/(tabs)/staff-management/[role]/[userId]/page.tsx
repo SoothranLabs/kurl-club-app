@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 import Contents from '@/components/settings/staff-management/details/contents';
 import { Sidebar } from '@/components/settings/staff-management/details/sidebar';
 import { useStaffDetails } from '@/hooks/use-staff-details';

@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+
 import ActivateScreen from '@/components/auth/activate-page';
 
 const ActivatePage = () => {

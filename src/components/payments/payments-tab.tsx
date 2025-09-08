@@ -1,17 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { useGymBranch } from '@/providers/gym-branch-provider';
-import { useFilteredPayments } from '@/services/payments';
-import { outstandingPaymentFilters } from '@/lib/filters';
-import { useSheet } from '@/hooks/use-sheet';
-import type { Payment } from '@/types/payment';
+
 import { IndianRupee, Users } from 'lucide-react';
 
+import { useSheet } from '@/hooks/use-sheet';
+import { outstandingPaymentFilters } from '@/lib/filters';
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import { useFilteredPayments } from '@/services/payments';
+import type { Payment } from '@/types/payment';
+
 import InfoCard from '../cards/info-card';
-import { TableView } from './table/table-view';
-import { createPaymentColumns } from './table/columns';
 import { ManagePaymentSheet } from './manage-payment';
+import { createPaymentColumns } from './table/columns';
+import { TableView } from './table/table-view';
 
 type PaymentTabType = 'outstanding' | 'expired' | 'history';
 

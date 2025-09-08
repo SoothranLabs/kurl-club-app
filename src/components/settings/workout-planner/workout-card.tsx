@@ -1,15 +1,16 @@
+import { Calendar, Timer } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
 } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Calendar, Timer } from 'lucide-react';
-import type { WorkoutPlan } from '@/types/workoutplan';
 import { getDifficultyColor } from '@/lib/utils';
+import type { WorkoutPlan } from '@/types/workoutplan';
 
 interface WorkoutCardProps {
   plan: WorkoutPlan;

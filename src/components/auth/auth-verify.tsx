@@ -1,9 +1,11 @@
 'use client';
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+
 import { applyActionCode } from 'firebase/auth';
 import { toast } from 'sonner';
+
 import { auth } from '@/lib/firebase';
 
 export const AuthVerify = () => {

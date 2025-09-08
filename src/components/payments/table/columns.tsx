@@ -1,9 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { ColumnDef } from '@tanstack/react-table';
-import { Eye, Receipt, MoreHorizontal } from 'lucide-react';
 
+import { ColumnDef } from '@tanstack/react-table';
+import { Eye, MoreHorizontal, Receipt } from 'lucide-react';
+
+import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,12 +15,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
-
-import { Payment } from '@/types/payment';
 import { getProfilePictureSrc } from '@/lib/utils';
+import { Payment } from '@/types/payment';
 
 const ActionsCell: React.FC<{
   user: Payment;

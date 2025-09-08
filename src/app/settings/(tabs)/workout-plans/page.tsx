@@ -1,4 +1,5 @@
 'use client';
+
 import { WorkoutPlanner } from '@/components/settings/workout-planner';
 
 export default function WorkoutPlanPage() {

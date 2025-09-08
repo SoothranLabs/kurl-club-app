@@ -1,5 +1,8 @@
-import { Label } from '@/components/ui/label';
+import { HeartPulse, Utensils } from 'lucide-react';
+
+import { KTextarea } from '@/components/form/k-textarea';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -7,8 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { KTextarea } from '@/components/form/k-textarea';
-import { HeartPulse, Utensils } from 'lucide-react';
 
 type DietaryPreference =
   | 'No Restriction'

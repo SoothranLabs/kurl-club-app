@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import { useSearch } from '@/hooks/use-search';
 
 type SearchFunction<T> = (items: T[], term: string) => T[];

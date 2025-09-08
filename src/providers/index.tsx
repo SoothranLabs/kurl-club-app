@@ -1,11 +1,12 @@
 'use client';
 
-import { ThemeProvider } from '@/providers/theme-provider';
-import { QueryProvider } from '@/providers/query-provider';
-import { AuthProvider } from '@/providers/auth-provider';
-import { GymBranchProvider } from '@/providers/gym-branch-provider';
-import { DialogProvider } from '@/providers/dialog-context';
 import { Toaster } from 'sonner';
+
+import { AuthProvider } from '@/providers/auth-provider';
+import { DialogProvider } from '@/providers/dialog-context';
+import { GymBranchProvider } from '@/providers/gym-branch-provider';
+import { QueryProvider } from '@/providers/query-provider';
+import { ThemeProvider } from '@/providers/theme-provider';
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (

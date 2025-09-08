@@ -1,11 +1,11 @@
 import {
+  DiscordIcon,
   FacebookIcon,
-  TwitterIcon,
   InstagramIcon,
   LinkedInIcon,
-  DiscordIcon,
   SnapchatIcon,
   TiktokIcon,
+  TwitterIcon,
   WebsiteIcon,
 } from '@/components/icons';
 

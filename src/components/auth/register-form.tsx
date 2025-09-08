@@ -1,19 +1,19 @@
 'use client';
 
-import { useState, useTransition, useCallback } from 'react';
-import { z } from 'zod/v4';
-import { toast } from 'sonner';
+import { useCallback, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+import { z } from 'zod/v4';
 
-import { registerUser } from '@/services/auth';
-import { RegisterSchema } from '@/schemas';
-
-import { Form } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
 import { AuthWrapper } from '@/components/auth/auth-wrapper';
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 import { EmailSendSuccess } from '@/components/auth/email-send-success';
+import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { Button } from '@/components/ui/button';
+import { Form } from '@/components/ui/form';
+import { RegisterSchema } from '@/schemas';
+import { registerUser } from '@/services/auth';
 
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();

@@ -1,4 +1,5 @@
-import { useQuery, QueryClient } from '@tanstack/react-query';
+import { QueryClient, useQuery } from '@tanstack/react-query';
+
 import { api } from '@/lib/api';
 import { ApiResponse } from '@/types';
 import { Member, MemberDetails } from '@/types/members';

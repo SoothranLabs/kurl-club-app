@@ -1,6 +1,11 @@
 'use client';
 
+import { useState } from 'react';
+import { DateRange } from 'react-day-picker';
+
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+
+import { KDatePicker } from '@/components/form/k-datepicker';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   ChartConfig,
@@ -8,9 +13,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { KDatePicker } from '@/components/form/k-datepicker';
-import { useState } from 'react';
-import { DateRange } from 'react-day-picker';
 
 // Function to calculate the current week's date range starting from Sunday
 const getCurrentWeekRange = (): DateRange => {

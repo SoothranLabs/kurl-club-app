@@ -1,7 +1,7 @@
 'use client';
 
-import type { MessageChannel } from '@/types/messaging-template';
 import { generateMessagePreview } from '@/lib/utils/messaging-templates';
+import type { MessageChannel } from '@/types/messaging-template';
 
 interface MessageLivePreviewerProps {
   channel: MessageChannel;

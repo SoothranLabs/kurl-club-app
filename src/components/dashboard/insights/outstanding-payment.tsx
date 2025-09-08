@@ -1,11 +1,13 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PaymentTable } from './table/payment-table';
-import { paymentColumns } from './table/payment-column';
-import { useOutstandingPayment } from '@/hooks/use-outstanding-payments';
-import { initialData } from '@/lib/dummy/data';
+
 import { KViewMore } from '@/components/icons';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useOutstandingPayment } from '@/hooks/use-outstanding-payments';
+import { initialData } from '@/lib/dummy/data';
+
+import { paymentColumns } from './table/payment-column';
+import { PaymentTable } from './table/payment-table';
 
 function OutstandingPayment() {
   const { outstanding } = useOutstandingPayment(initialData);

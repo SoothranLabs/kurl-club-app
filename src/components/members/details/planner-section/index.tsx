@@ -1,13 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { WorkoutPlans } from './workout-plans';
-import DietPlanner from './diet-planner';
+
+import { RefreshCw } from 'lucide-react';
+
 import { KTabs, TabItem } from '@/components/form/k-tabs';
 import { Button } from '@/components/ui/button';
-import { RefreshCw } from 'lucide-react';
-import { MemberDetails } from '@/types/members';
 import { calculateAge } from '@/lib/utils';
+import { MemberDetails } from '@/types/members';
+
+import DietPlanner from './diet-planner';
+import { WorkoutPlans } from './workout-plans';
 
 interface PlannerSectionProps {
   memberDetails: MemberDetails | null;

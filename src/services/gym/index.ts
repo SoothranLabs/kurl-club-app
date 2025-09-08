@@ -1,7 +1,8 @@
 import { z } from 'zod/v4';
+
 import { api } from '@/lib/api';
 import { CreateGymSchema } from '@/schemas';
-import { GymResponse, GymDetails } from '@/types/gym';
+import { GymDetails, GymResponse } from '@/types/gym';
 
 export const createGym = async (
   values: z.infer<typeof CreateGymSchema> & { gymAdminId: string }

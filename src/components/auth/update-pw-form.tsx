@@ -1,19 +1,19 @@
 'use client';
 
-import { useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { z } from 'zod/v4';
-import { toast } from 'sonner';
+import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getAuth, confirmPasswordReset } from 'firebase/auth';
+import { confirmPasswordReset, getAuth } from 'firebase/auth';
+import { toast } from 'sonner';
+import { z } from 'zod/v4';
 
-import { UpdatePasswordSchema } from '@/schemas';
-
-import { Form } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
 import { AuthWrapper } from '@/components/auth/auth-wrapper';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { Button } from '@/components/ui/button';
+import { Form } from '@/components/ui/form';
+import { UpdatePasswordSchema } from '@/schemas';
 
 export const UpdatePasswordForm = () => {
   const router = useRouter();

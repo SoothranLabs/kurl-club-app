@@ -7,22 +7,22 @@ import {
   useState,
   useTransition,
 } from 'react';
-import { z } from 'zod/v4';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Controller,
   FormProvider,
   useFieldArray,
   useForm,
 } from 'react-hook-form';
-import { toast } from 'sonner';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Check, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
+import { z } from 'zod/v4';
 
-import { useAuth } from '@/providers/auth-provider';
-import { updateGym, fetchGymProfilePicture } from '@/services/gym';
-import { useAppDialog } from '@/hooks/use-app-dialog';
-import { GymDataDetailsSchema } from '@/schemas';
-
+import { SubscriptionCard } from '@/components/cards/subscription-card';
+import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import SocialLinkInput from '@/components/form/social-link-input';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -30,12 +30,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { FormControl } from '@/components/ui/form';
-import { SubscriptionCard } from '@/components/cards/subscription-card';
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
-import SocialLinkInput from '@/components/form/social-link-input';
+import { useAppDialog } from '@/hooks/use-app-dialog';
+import { useAuth } from '@/providers/auth-provider';
+import { GymDataDetailsSchema } from '@/schemas';
+import { fetchGymProfilePicture, updateGym } from '@/services/gym';
 
 type BusinessProfile = z.infer<typeof GymDataDetailsSchema>;
 

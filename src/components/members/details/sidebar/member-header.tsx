@@ -1,10 +1,9 @@
-import { base64ToFile, getInitials } from '@/lib/utils';
-import { EditableSectionProps } from '@/types/members';
-
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
+import { base64ToFile, getInitials } from '@/lib/utils';
+import { EditableSectionProps } from '@/types/members';
 
 export function MemberHeader({
   isEditing,

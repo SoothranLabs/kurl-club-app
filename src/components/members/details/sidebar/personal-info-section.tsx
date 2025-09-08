@@ -1,14 +1,15 @@
 import { Fragment } from 'react';
-import { Calendar } from 'lucide-react';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 
-import type { EditableSectionProps } from '@/types/members';
-import { safeParseDate, safeDateFormat } from '@/lib/utils';
+import { Calendar } from 'lucide-react';
 
+import { KDatePicker } from '@/components/form/k-datepicker';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { KDatePicker } from '@/components/form/k-datepicker';
+import { safeDateFormat, safeParseDate } from '@/lib/utils';
+import type { EditableSectionProps } from '@/types/members';
+
 import { EditableField } from './basic-details-section';
 
 export function PersonalInfoSection({

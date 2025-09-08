@@ -1,14 +1,15 @@
 'use client';
 
 import React from 'react';
+
 import Banner from '@/components/dashboard/banner';
 import CardList from '@/components/dashboard/card-list';
 import Header from '@/components/dashboard/header';
-import { useAuth } from '@/providers/auth-provider';
 import { AttendanceChats } from '@/components/dashboard/insights/attendance-chats';
+import OutstandingPayment from '@/components/dashboard/insights/outstanding-payment';
 import Payments from '@/components/dashboard/insights/payments';
 import SkipperStats from '@/components/dashboard/insights/skipper-stats';
-import OutstandingPayment from '@/components/dashboard/insights/outstanding-payment';
+import { useAuth } from '@/providers/auth-provider';
 
 function Dashboard() {
   const { appUser } = useAuth();

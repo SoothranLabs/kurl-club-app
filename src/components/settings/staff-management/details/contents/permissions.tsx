@@ -1,4 +1,6 @@
+import Image from 'next/image';
 import { useState } from 'react';
+
 import { KSwitch } from '@/components/form/k-switch';
 import {
   Select,
@@ -7,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import Image from 'next/image';
 
 function Permissions() {
   const permissions = [

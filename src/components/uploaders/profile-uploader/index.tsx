@@ -1,11 +1,14 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import React, { useEffect, useRef, useState } from 'react';
+
+import { CircleUser, Plus, User } from 'lucide-react';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+
 import CropModal from './crop-modal';
 import PreviewModal from './preview-modal';
-import { CircleUser, Plus, User } from 'lucide-react';
 
 interface ProfilePictureUploaderProps {
   files: File | null;

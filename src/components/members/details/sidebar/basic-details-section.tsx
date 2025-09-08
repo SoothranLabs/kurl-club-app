@@ -1,12 +1,8 @@
-import { Fragment } from 'react';
 import Image from 'next/image';
-
-import { useGymBranch } from '@/providers/gym-branch-provider';
-import { useGymFormOptions } from '@/hooks/use-gymform-options';
-import type { EditableSectionProps } from '@/types/members';
-import { bloodGroupOptions } from '@/lib/constants';
+import { Fragment } from 'react';
 
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -14,7 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+import { useGymFormOptions } from '@/hooks/use-gymform-options';
+import { bloodGroupOptions } from '@/lib/constants';
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import type { EditableSectionProps } from '@/types/members';
 
 export function BasicDetailsSection({
   isEditing,

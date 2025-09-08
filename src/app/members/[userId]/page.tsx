@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 import Contents from '@/components/members/details/contents';
 import { Sidebar } from '@/components/members/details/sidebar';
 import { useMemberDetails } from '@/hooks/use-member-details';

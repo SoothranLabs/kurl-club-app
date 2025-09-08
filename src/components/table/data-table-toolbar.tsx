@@ -3,11 +3,10 @@
 import { Table } from '@tanstack/react-table';
 import { X } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-
+import { Search } from '@/components/search';
 import { DataTableFacetedFilter } from '@/components/table/data-table-faceted-filter';
 import { DataTableViewOptions } from '@/components/table/data-table-view-options';
-import { Search } from '@/components/search';
+import { Button } from '@/components/ui/button';
 import { FilterConfig } from '@/lib/filters';
 
 interface DataTableToolbarProps<TData> {

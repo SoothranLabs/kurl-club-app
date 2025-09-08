@@ -1,24 +1,27 @@
 'use client';
 
 import React from 'react';
-import { z } from 'zod/v4';
+import { useForm } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CalendarDays, IndianRupee, Map, Settings, Users } from 'lucide-react';
+import { z } from 'zod/v4';
+
+import FileUploader from '@/components/file-uploader';
+import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
+import { ThemeModeToggle } from '@/components/theme-toggler';
+import { Button } from '@/components/ui/button';
 import { Form, FormControl } from '@/components/ui/form';
 import { SelectGroup, SelectItem, SelectLabel } from '@/components/ui/select';
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-import { Button } from '@/components/ui/button';
-import { ThemeModeToggle } from '@/components/theme-toggler';
-import { SamplePageSchema } from '@/schemas';
-import FileUploader from '@/components/file-uploader';
 import { useSheet } from '@/hooks/use-sheet';
-import { useForm } from 'react-hook-form';
-import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
-import AddFrom from './members/add-member';
+import { SamplePageSchema } from '@/schemas';
+
 import InfoCard from './cards/info-card';
-import KDialog from './form/k-dialog';
-import { CalendarDays, IndianRupee, Map, Settings, Users } from 'lucide-react';
-import { KTabs, TabItem } from './form/k-tabs';
 import { SubscriptionCard } from './cards/subscription-card';
+import KDialog from './form/k-dialog';
+import { KTabs, TabItem } from './form/k-tabs';
+import AddFrom from './members/add-member';
 
 const IdentificationTypes = [
   'Birth Certificate',

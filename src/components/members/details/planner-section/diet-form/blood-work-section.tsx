@@ -1,12 +1,14 @@
-import { Label } from '@/components/ui/label';
 import { Droplets } from 'lucide-react';
+
+import { Label } from '@/components/ui/label';
 import { BloodPanels, DiabeticPanel } from '@/hooks/use-diet-calculator';
+
 import {
-  DiabeticPopover,
-  ThyroidPopover,
-  LipidPopover,
   BPPopover,
+  DiabeticPopover,
+  LipidPopover,
   RenalPopover,
+  ThyroidPopover,
 } from './blood-work-popovers';
 
 type ThyroidPanel = { tsh?: number; ft4?: number; meds?: string };

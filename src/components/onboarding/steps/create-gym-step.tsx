@@ -1,21 +1,21 @@
 'use client';
 
 import { useTransition } from 'react';
-import { z } from 'zod/v4';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { Globe } from 'lucide-react';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Globe } from 'lucide-react';
+import { toast } from 'sonner';
+import { z } from 'zod/v4';
+
+import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { KFacebookFillIcon, KInstagramIcon } from '@/components/icons';
+import { Button } from '@/components/ui/button';
+import { FormControl } from '@/components/ui/form';
+import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
 import { useAuth } from '@/providers/auth-provider';
 import { CreateGymSchema } from '@/schemas';
 import { createGym } from '@/services/gym';
-
-import { Button } from '@/components/ui/button';
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-import { KFacebookFillIcon, KInstagramIcon } from '@/components/icons';
-import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
-import { FormControl } from '@/components/ui/form';
 
 type CreateGymStepData = z.infer<typeof CreateGymSchema>;
 

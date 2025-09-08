@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload } from 'lucide-react';
 
-import { useCSVImport } from '@/hooks/use-csv-import';
+import { Upload } from 'lucide-react';
 
 import { FieldMapper } from '@/components/table/field-mapper';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from '@/components/ui/dialog';
+import { useCSVImport } from '@/hooks/use-csv-import';
 
 interface ImportCSVModalProps<T> {
   isOpen: boolean;

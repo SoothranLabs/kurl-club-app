@@ -1,5 +1,5 @@
-import { AuthFooter, AuthHeader } from '@/components/auth/auth-wrapper-helpers';
 import { AuthVerify } from '@/components/auth/auth-verify';
+import { AuthFooter, AuthHeader } from '@/components/auth/auth-wrapper-helpers';
 import { Social } from '@/components/auth/social';
 
 interface AuthWrapperProps {

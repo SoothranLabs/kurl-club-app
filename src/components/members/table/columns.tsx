@@ -1,14 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+
 import { ColumnDef } from '@tanstack/react-table';
 import { Eye } from 'lucide-react';
 
-import { Member } from '@/types/members';
-import { getProfilePictureSrc, safeFormatDate } from '@/lib/utils';
+import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
+import { getProfilePictureSrc, safeFormatDate } from '@/lib/utils';
+import { Member } from '@/types/members';
 
 const ActionsCell: React.FC<{ user: Member }> = ({ user }) => {
   return (

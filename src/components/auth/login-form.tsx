@@ -1,23 +1,25 @@
 'use client';
 
-import { useState, useEffect, useTransition } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { z } from 'zod/v4';
-import { toast } from 'sonner';
-import { sendEmailVerification } from 'firebase/auth';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuth } from '@/providers/auth-provider';
-import { createSession, deleteSession } from '@/services/auth/session';
-import { auth } from '@/lib/firebase';
-import { LoginSchema } from '@/schemas';
-import { Form } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
+import { sendEmailVerification } from 'firebase/auth';
+import { toast } from 'sonner';
+import { z } from 'zod/v4';
+
 import { AuthWrapper } from '@/components/auth/auth-wrapper';
 import { EmailSendSuccess } from '@/components/auth/email-send-success';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { Button } from '@/components/ui/button';
+import { Form } from '@/components/ui/form';
+import { auth } from '@/lib/firebase';
+import { useAuth } from '@/providers/auth-provider';
+import { LoginSchema } from '@/schemas';
 import { extractUserDetails, updateUser } from '@/services/auth/helpers';
+import { createSession, deleteSession } from '@/services/auth/session';
 
 export const LoginForm = () => {
   const router = useRouter();

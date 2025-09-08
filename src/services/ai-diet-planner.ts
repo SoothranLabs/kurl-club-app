@@ -1,9 +1,9 @@
 import type {
-  Goal,
   ActivityKey,
-  Vitals,
   BloodPanels,
   DiabeticPanel,
+  Goal,
+  Vitals,
 } from '@/hooks/use-diet-calculator';
 import { generateAIContent } from '@/services/ai';
 

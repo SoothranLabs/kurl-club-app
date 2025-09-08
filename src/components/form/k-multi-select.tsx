@@ -1,12 +1,9 @@
 'use client';
 
 import * as React from 'react';
+
 import { X } from 'lucide-react';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+
 import { Badge } from '@/components/ui/badge';
 import {
   Command,
@@ -15,6 +12,11 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 
 export type Option = {

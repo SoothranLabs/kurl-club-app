@@ -1,21 +1,24 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod/v4';
-import { Button } from '@/components/ui/button';
-import { KSheet } from '@/components/form/k-sheet';
+
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { KSheet } from '@/components/form/k-sheet';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useMessagingTemplate } from '@/hooks/use-messaging-template';
+import { createAutomationSchema } from '@/schemas';
 import type {
   Automation,
   AutomationTiming,
   EventType,
 } from '@/types/msg-automation';
+
 import { AutomationFormRow } from './automation-form-row';
-import { useMessagingTemplate } from '@/hooks/use-messaging-template';
-import { createAutomationSchema } from '@/schemas';
 
 type Props = {
   open: boolean;

@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import React, { ReactNode } from 'react';
+
 import Navbar from './navbar';
 
 interface AppLayoutProps {

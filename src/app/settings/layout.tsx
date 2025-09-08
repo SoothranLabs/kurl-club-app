@@ -1,8 +1,10 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { KTabs, TabItem } from '@/components/form/k-tabs';
+
 import { IndianRupee, Map, Settings, Users } from 'lucide-react';
+
+import { KTabs, TabItem } from '@/components/form/k-tabs';
 
 const navItems: TabItem[] = [
   { id: 'staff-management', label: 'Staff Management', icon: Users },

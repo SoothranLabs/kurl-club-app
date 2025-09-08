@@ -1,6 +1,8 @@
 import React from 'react';
-import InfoCard from '../cards/info-card';
+
 import { IndianRupee, Users } from 'lucide-react';
+
+import InfoCard from '../cards/info-card';
 import { KDumbbell, KSkipper } from './../icons/index';
 
 function CardList() {

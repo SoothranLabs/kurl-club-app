@@ -1,16 +1,16 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { MessageSquareText, Trash2 } from 'lucide-react';
 
-import { useAppDialog } from '@/hooks/use-app-dialog';
-import { deleteMember } from '@/services/member';
+import { useQueryClient } from '@tanstack/react-query';
+import { MessageSquareText, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 import MemberStatusBadge from '@/components/badges/member-status-badge';
 import { KEdit } from '@/components/icons';
 import { Button } from '@/components/ui/button';
+import { useAppDialog } from '@/hooks/use-app-dialog';
+import { deleteMember } from '@/services/member';
 
 interface HeaderProps {
   isEditing: boolean;

@@ -1,13 +1,14 @@
 'use server';
 
-import { z } from 'zod/v4';
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from 'firebase/auth';
+import { z } from 'zod/v4';
+
 import { auth } from '@/lib/firebase';
-import { createUser, extractUserDetails } from '@/services/auth/helpers';
 import { RegisterSchema } from '@/schemas';
+import { createUser, extractUserDetails } from '@/services/auth/helpers';
 
 export const registerUser = async (values: z.infer<typeof RegisterSchema>) => {
   // Validate input fields

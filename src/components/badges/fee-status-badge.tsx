@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+
 import { KBadgeCheck, KBadgeClose, KBadgeFlag, KBadgeMinus } from '../icons';
 
 interface FeeStatusBadgeProps {

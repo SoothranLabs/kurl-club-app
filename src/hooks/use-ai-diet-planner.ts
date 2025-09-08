@@ -1,15 +1,17 @@
-import { useState, useCallback, useEffect } from 'react';
-import { useDietCalculator } from './use-diet-calculator';
+import { useCallback, useEffect, useState } from 'react';
+
 import {
-  generateAIDietPlan,
   type DietPlanResponse,
+  generateAIDietPlan,
 } from '@/services/ai-diet-planner';
+
+import { useDietCalculator } from './use-diet-calculator';
 import type {
-  Goal,
   ActivityKey,
-  Vitals,
   BloodPanels,
   DiabeticPanel,
+  Goal,
+  Vitals,
 } from './use-diet-calculator';
 
 type ThyroidPanel = { tsh?: number; ft4?: number; meds?: string };

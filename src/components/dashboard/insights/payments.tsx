@@ -1,5 +1,7 @@
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
+
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 
 const chartData = [

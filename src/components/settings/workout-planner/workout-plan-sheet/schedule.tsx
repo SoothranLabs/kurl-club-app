@@ -1,4 +1,5 @@
 import { Dumbbell } from 'lucide-react';
+
 import {
   Accordion,
   AccordionContent,
@@ -6,6 +7,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import type { WorkoutPlan } from '@/types/workoutplan';
+
 import { ExerciseList } from './exercise-list';
 
 interface ScheduleProps {

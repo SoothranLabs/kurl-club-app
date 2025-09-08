@@ -1,19 +1,21 @@
 'use client';
 
-import React, { createContext, useEffect, useState, useContext } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+
 import {
-  onAuthStateChanged,
-  getIdToken,
   User as FirebaseUser,
-  signOut,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signInWithPopup,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  getIdToken,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
 } from 'firebase/auth';
+
+import { api } from '@/lib/api';
 import { auth } from '@/lib/firebase';
 import { createSession, deleteSession } from '@/services/auth/session';
-import { api } from '@/lib/api';
 import { fetchGymById } from '@/services/gym';
 import { GymDetails } from '@/types/gym';
 

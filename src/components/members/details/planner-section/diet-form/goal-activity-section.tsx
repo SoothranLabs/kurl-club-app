@@ -1,3 +1,5 @@
+import { ActivityIcon, Target } from 'lucide-react';
+
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -6,8 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Target, ActivityIcon } from 'lucide-react';
-import { Goal, ActivityKey, ACTIVITY } from '@/hooks/use-diet-calculator';
+import { ACTIVITY, ActivityKey, Goal } from '@/hooks/use-diet-calculator';
 
 interface GoalActivitySectionProps {
   goal: Goal;

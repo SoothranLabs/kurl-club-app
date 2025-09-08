@@ -1,7 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { useSheet } from '@/hooks/use-sheet';
+
+import {
+  Bell,
+  CalendarClock,
+  ChevronRight,
+  CreditCard,
+  MessageSquare,
+} from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -9,19 +19,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import {
-  MessageSquare,
-  CreditCard,
-  Bell,
-  ChevronRight,
-  CalendarClock,
-} from 'lucide-react';
+import { useMessagingTemplate } from '@/hooks/use-messaging-template';
+import { useSheet } from '@/hooks/use-sheet';
+import type { MessageTemplate } from '@/types/messaging-template';
 
 import { MessagingTemplateForm } from './message-template-form';
-import { useMessagingTemplate } from '@/hooks/use-messaging-template';
-import type { MessageTemplate } from '@/types/messaging-template';
 
 export function MessagingTemplatePanel() {
   const { templates, refreshTemplates } = useMessagingTemplate();

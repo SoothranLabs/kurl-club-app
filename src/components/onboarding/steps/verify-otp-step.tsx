@@ -1,11 +1,11 @@
-import { z } from 'zod/v4';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { OTPSchema } from '@/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod/v4';
 
-import { Button } from '@/components/ui/button';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { Button } from '@/components/ui/button';
+import { OTPSchema } from '@/schemas';
 
 type VerifyOTPStepData = z.infer<typeof OTPSchema>;
 

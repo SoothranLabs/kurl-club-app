@@ -1,11 +1,11 @@
 import Link from 'next/link';
+
 import { ColumnDef } from '@tanstack/react-table';
 import { Eye } from 'lucide-react';
 
-import { Staff } from '@/types/staff';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Staff } from '@/types/staff';
 
 const ActionsCell: React.FC<{ user: Staff }> = ({ user }) => {
   return (

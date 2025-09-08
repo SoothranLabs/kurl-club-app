@@ -1,9 +1,6 @@
 import { Fragment } from 'react';
-import { X } from 'lucide-react';
 
-import type { EditableSectionProps } from '@/types/staff';
-import { useGymBranch } from '@/providers/gym-branch-provider';
-import { useGymFormOptions } from '@/hooks/use-gymform-options';
+import { X } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -15,6 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useGymFormOptions } from '@/hooks/use-gymform-options';
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import type { EditableSectionProps } from '@/types/staff';
 
 export function CertificationSection({
   isEditing,

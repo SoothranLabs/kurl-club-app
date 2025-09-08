@@ -1,14 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import { WebsiteIcon } from '@/components/icons';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
+  type SocialPlatform,
   detectSocialPlatform,
   validateSocialUrl,
-  type SocialPlatform,
 } from '@/lib/utils/social-icons';
-import { WebsiteIcon } from '@/components/icons';
 
 interface SocialLinkInputProps {
   value?: string;

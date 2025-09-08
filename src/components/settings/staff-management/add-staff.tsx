@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
 import { KSheet } from '@/components/form/k-sheet';
+import { Button } from '@/components/ui/button';
+
 import StaffForm from './staff-forms';
 
 type CreateStaffDetailsProps = {

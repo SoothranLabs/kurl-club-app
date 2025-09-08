@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
-import type {
-  MessageTemplate,
-  CreateMessageTemplateData,
-} from '@/types/messaging-template';
+import { useCallback, useEffect, useState } from 'react';
+
 import { extractMessageVariables } from '@/lib/utils/messaging-templates';
+import type {
+  CreateMessageTemplateData,
+  MessageTemplate,
+} from '@/types/messaging-template';
 
 const STORAGE_KEY = 'messaging-templates';
 

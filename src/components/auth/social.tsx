@@ -1,7 +1,7 @@
 'use client';
 
+import { KApple, KGoogle } from '@/components/icons';
 import { Button } from '@/components/ui/button';
-import { KGoogle, KApple } from '@/components/icons';
 
 interface SocialProps {
   isLogin?: boolean;

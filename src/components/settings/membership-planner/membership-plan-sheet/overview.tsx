@@ -2,22 +2,20 @@
 
 import { Clock, PenLine, User2 } from 'lucide-react';
 
-import { MembershipPlan } from '@/types/membership-plan';
-import { Member } from '@/types/members';
-import { getInitials, getProfilePictureSrc } from '@/lib/utils';
-
-import { Separator } from '@/components/ui/separator';
+import { KInput } from '@/components/form/k-input';
+import RichTextEditor from '@/components/rich-text-editor';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-
-import { KInput } from '@/components/form/k-input';
-import RichTextEditor from '@/components/rich-text-editor';
+import { getInitials, getProfilePictureSrc } from '@/lib/utils';
+import { Member } from '@/types/members';
+import { MembershipPlan } from '@/types/membership-plan';
 
 interface OverviewProps {
   plan: MembershipPlan;

@@ -1,11 +1,13 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
+
 import { KTabs, TabItem } from '@/components/form/k-tabs';
-import React, { useState, useEffect } from 'react';
 import { StaffType } from '@/types/staff';
+
+import AssignedMembersTable from './assigned-members-table';
 import Header from './header';
 import Permissions from './permissions';
-import AssignedMembersTable from './assigned-members-table';
 
 export default function Contents({
   staffId,

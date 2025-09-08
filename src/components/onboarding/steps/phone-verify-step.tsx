@@ -1,11 +1,11 @@
-import { z } from 'zod/v4';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { PhoneVerifySchema } from '@/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod/v4';
 
-import { Button } from '@/components/ui/button';
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { Button } from '@/components/ui/button';
+import { PhoneVerifySchema } from '@/schemas';
 
 type PhoneVerifyStepData = z.infer<typeof PhoneVerifySchema>;
 

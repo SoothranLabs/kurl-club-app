@@ -2,23 +2,21 @@
 
 import { Clock, PenLine, TrendingUp, User2 } from 'lucide-react';
 
-import type { WorkoutPlan } from '@/types/workoutplan';
-import { Member } from '@/types/members';
+import { KInput } from '@/components/form/k-input';
+import { KSelect } from '@/components/form/k-select';
+import { KTextarea } from '@/components/form/k-textarea';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
 import {
   getDifficultyColor,
   getInitials,
   getProfilePictureSrc,
 } from '@/lib/utils';
-
-import { Separator } from '@/components/ui/separator';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-
-import { KInput } from '@/components/form/k-input';
-import { KTextarea } from '@/components/form/k-textarea';
-import { KSelect } from '@/components/form/k-select';
+import { Member } from '@/types/members';
+import type { WorkoutPlan } from '@/types/workoutplan';
 
 interface OverviewProps {
   plan: WorkoutPlan;

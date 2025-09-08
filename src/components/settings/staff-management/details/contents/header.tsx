@@ -1,16 +1,16 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { MessageSquareText, Trash2 } from 'lucide-react';
 
-import { useAppDialog } from '@/hooks/use-app-dialog';
-import { deleteStaff } from '@/services/staff';
-import { StaffType } from '@/types/staff';
+import { useQueryClient } from '@tanstack/react-query';
+import { MessageSquareText, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { KEdit } from '@/components/icons';
 import { Button } from '@/components/ui/button';
+import { useAppDialog } from '@/hooks/use-app-dialog';
+import { deleteStaff } from '@/services/staff';
+import { StaffType } from '@/types/staff';
 
 interface HeaderProps {
   isEditing: boolean;

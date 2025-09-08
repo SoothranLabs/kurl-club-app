@@ -1,16 +1,18 @@
 'use client';
 
-import { useMemo, useEffect } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useEffect, useMemo } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Trash2 } from 'lucide-react';
 import { z } from 'zod/v4';
+
+import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import { useAppDialog } from '@/hooks/use-app-dialog';
 import { cn } from '@/lib/utils';
 import type { AutomationTiming, EventType } from '@/types/msg-automation';
-import { Trash2 } from 'lucide-react';
-import { useAppDialog } from '@/hooks/use-app-dialog';
 
 type TemplateOption = { id: string; name: string };
 

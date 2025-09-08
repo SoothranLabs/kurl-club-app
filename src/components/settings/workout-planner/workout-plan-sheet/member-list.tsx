@@ -2,14 +2,13 @@
 
 import Link from 'next/link';
 
+import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
+import { Search } from '@/components/search';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useSearch } from '@/hooks/use-search';
 import { getInitials, getProfilePictureSrc } from '@/lib/utils';
 import type { Member } from '@/types/members';
-import { useSearch } from '@/hooks/use-search';
-
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Search } from '@/components/search';
-import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
 
 interface MemberListProps {
   members: Member[];

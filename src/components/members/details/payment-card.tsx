@@ -1,13 +1,15 @@
 'use client';
 
-import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
 import React from 'react';
-import { Progress } from '@/components/ui/progress';
-import { Button } from '@/components/ui/button';
+
 import { Edit } from 'lucide-react';
-import { useMemberPaymentDetails } from '@/services/member';
-import { useSheet } from '@/hooks/use-sheet';
+
+import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
 import { ManagePaymentSheet } from '@/components/payments/manage-payment';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { useSheet } from '@/hooks/use-sheet';
+import { useMemberPaymentDetails } from '@/services/member';
 
 interface PaymentCardProps {
   memberId: string | number;

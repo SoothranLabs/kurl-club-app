@@ -1,11 +1,10 @@
 'use client';
 
 import React from 'react';
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
 
+import { EditorContent, useEditor } from '@tiptap/react';
 import type { Editor } from '@tiptap/react';
-import { Button } from '../ui/button';
+import StarterKit from '@tiptap/starter-kit';
 import {
   Bold,
   Heading1,
@@ -15,6 +14,8 @@ import {
   List,
   Strikethrough,
 } from 'lucide-react';
+
+import { Button } from '../ui/button';
 
 export const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const buttonStyle = (isActive: boolean) =>

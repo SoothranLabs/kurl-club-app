@@ -1,6 +1,7 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import React, { memo, useState } from 'react';
+
 import {
   DndContext,
   DragEndEvent,
@@ -10,16 +11,17 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import {
   SortableContext,
   arrayMove,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import React, { useState, memo } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+
+import { cn } from '@/lib/utils';
 
 interface WorkoutItem {
   id: string;

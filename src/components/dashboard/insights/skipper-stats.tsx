@@ -1,11 +1,13 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+
 import { KViewMore } from '@/components/icons';
-import { SkipperTable } from './table/skipper-table';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSkippers } from '@/hooks/use-skipper';
-import { SkipperColumns } from './table/skipper-column';
 import { skipperData } from '@/lib/dummy/data';
+
+import { SkipperColumns } from './table/skipper-column';
+import { SkipperTable } from './table/skipper-table';
 
 function SkipperStats() {
   const { outstanding } = useSkippers(skipperData);

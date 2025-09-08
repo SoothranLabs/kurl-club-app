@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+
+import { KSelect } from '@/components/form/k-select';
+import { KAi } from '@/components/icons';
 import {
+  DEFAULT_EXERCISES,
   type Exercise,
   MUSCLE_GROUPS,
-  DEFAULT_EXERCISES,
 } from '@/types/workoutplan';
-import { KAi } from '@/components/icons';
-import { KSelect } from '@/components/form/k-select';
 
 interface AddExerciseProps {
   onAddExercise: (exercise: Exercise, category: string) => void;

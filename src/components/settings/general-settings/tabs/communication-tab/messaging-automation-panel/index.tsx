@@ -1,7 +1,16 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+
+import {
+  BotMessageSquare,
+  ChevronRight,
+  SquarePen,
+  Trash2,
+} from 'lucide-react';
 import { z } from 'zod/v4';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -11,21 +20,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import { Badge } from '@/components/ui/badge';
-import { useMsgAutomation } from '@/hooks/use-msg-automation';
-import type { Automation, EventType } from '@/types/msg-automation';
-import { AutomationSheet } from './automation-sheet';
-import { createAutomationSchema } from '@/schemas';
-
-import {
-  ChevronRight,
-  BotMessageSquare,
-  SquarePen,
-  Trash2,
-} from 'lucide-react';
-import { useMessagingTemplate } from '@/hooks/use-messaging-template';
 import { useAppDialog } from '@/hooks/use-app-dialog';
+import { useMessagingTemplate } from '@/hooks/use-messaging-template';
+import { useMsgAutomation } from '@/hooks/use-msg-automation';
 import { useSheet } from '@/hooks/use-sheet';
+import { createAutomationSchema } from '@/schemas';
+import type { Automation, EventType } from '@/types/msg-automation';
+
+import { AutomationSheet } from './automation-sheet';
 
 const EVENT_LABEL: Record<EventType, string> = {
   payment_advance: 'Advance payment reminder',

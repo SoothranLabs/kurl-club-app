@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
-import { toast } from 'sonner';
+import { useCallback, useEffect, useState } from 'react';
+
 import { useQueryClient } from '@tanstack/react-query';
-import { useMemberByID, updateMember } from '@/services/member';
+import { toast } from 'sonner';
+
+import { updateMember, useMemberByID } from '@/services/member';
 import { MemberDetails } from '@/types/members';
 
 export function useMemberDetails(

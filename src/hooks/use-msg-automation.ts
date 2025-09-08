@@ -1,13 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import { z } from 'zod/v4';
-import type { Automation } from '@/types/msg-automation';
+
 import {
   automationSchema,
   createAutomationSchema,
   updateAutomationSchema,
 } from '@/schemas';
+import type { Automation } from '@/types/msg-automation';
 
 const STORAGE_KEY = 'gym-automations:v1';
 

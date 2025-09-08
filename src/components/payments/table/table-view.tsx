@@ -2,13 +2,12 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 
-import { searchItems } from '@/lib/utils';
-import { Payment } from '@/types/payment';
-import { useFilterableList } from '@/hooks/use-filterable-list';
-
 import { DataTable } from '@/components/table/data-table';
 import { DataTableToolbar } from '@/components/table/data-table-toolbar';
+import { useFilterableList } from '@/hooks/use-filterable-list';
 import { FilterConfig } from '@/lib/filters';
+import { searchItems } from '@/lib/utils';
+import { Payment } from '@/types/payment';
 
 type Props = {
   payments: Payment[];

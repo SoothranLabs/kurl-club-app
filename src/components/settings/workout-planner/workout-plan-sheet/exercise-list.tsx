@@ -1,8 +1,8 @@
 import { Dumbbell, X } from 'lucide-react';
 
-import type { DayPlan, Exercise } from '@/types/workoutplan';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import type { DayPlan, Exercise } from '@/types/workoutplan';
 
 interface ExerciseListProps {
   dayPlan: DayPlan;

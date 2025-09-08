@@ -1,6 +1,7 @@
 'use client';
 
-import React, { forwardRef, useState, useRef, useEffect } from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
+
 import { cn } from '@/lib/utils';
 
 interface KTextareaProps

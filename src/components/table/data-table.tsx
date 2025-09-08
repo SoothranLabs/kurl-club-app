@@ -1,17 +1,19 @@
 'use client';
 
 import * as React from 'react';
+
 import {
   ColumnDef,
+  HeaderContext,
   flexRender,
   getCoreRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
-  HeaderContext,
   useReactTable,
 } from '@tanstack/react-table';
 
+import { TableFooter } from '@/components/table/table-footer';
 import {
   Table,
   TableBody,
@@ -20,7 +22,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { TableFooter } from '@/components/table/table-footer';
 
 interface DataTableProps<TData extends object, TValue> {
   columns: ColumnDef<TData, TValue>[];

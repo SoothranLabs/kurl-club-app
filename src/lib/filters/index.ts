@@ -1,8 +1,8 @@
 import {
-  Minus,
   AlertCircle,
-  PersonStanding,
   CircleUserRound,
+  Minus,
+  PersonStanding,
 } from 'lucide-react';
 
 export interface FilterOption {

@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+
 import { toast } from 'sonner';
+
+import { updateStaff, useStaffByID } from '@/services/staff';
 import { StaffDetails, StaffType } from '@/types/staff';
-import { useStaffByID, updateStaff } from '@/services/staff';
 
 export function useStaffDetails(userId: string | number, role?: string) {
   const [isEditing, setIsEditing] = useState(false);

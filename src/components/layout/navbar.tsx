@@ -3,9 +3,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Bell, LogOut, Menu, Settings, User, X } from 'lucide-react';
-import { UserNav } from './user-nav';
 import { useState } from 'react';
+
+import { Bell, LogOut, Menu, Settings, User, X } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+
 import {
   Accordion,
   AccordionContent,
@@ -13,7 +16,7 @@ import {
   AccordionTrigger,
 } from '../ui/accordion';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { cn } from '@/lib/utils';
+import { UserNav } from './user-nav';
 
 function Navbar() {
   const [isActive, setActive] = useState(false);

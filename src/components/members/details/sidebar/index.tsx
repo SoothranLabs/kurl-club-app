@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from 'react';
 
-import { MemberDetails } from '@/types/members';
+import { PanelLeftOpen, PanelRightOpen } from 'lucide-react';
+
 import { Breadcrumb } from '@/components/breadcrumbs';
 import { CollapsibleSection } from '@/components/layout/collapsible-section';
-import { MemberHeader } from './member-header';
-import { BasicDetailsSection } from './basic-details-section';
-import { PersonalInfoSection } from './personal-info-section';
 import { Button } from '@/components/ui/button';
-import { PanelLeftOpen, PanelRightOpen } from 'lucide-react';
+import { MemberDetails } from '@/types/members';
+
+import { BasicDetailsSection } from './basic-details-section';
+import { MemberHeader } from './member-header';
+import { PersonalInfoSection } from './personal-info-section';
 
 type SectionKey = 'basicDetails' | 'personalInfo';
 

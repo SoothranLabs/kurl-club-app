@@ -1,5 +1,8 @@
-import { useState } from 'react';
 import Image from 'next/image';
+import { useState } from 'react';
+
+import { ClipboardCopy, Download, Share2 } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -7,7 +10,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { ClipboardCopy, Download, Share2 } from 'lucide-react';
 
 interface SharePlanModalProps {
   prescriptionText: string;

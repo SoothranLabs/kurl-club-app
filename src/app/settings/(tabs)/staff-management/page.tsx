@@ -1,17 +1,16 @@
 'use client';
 
-import { useSheet } from '@/hooks/use-sheet';
-import { useGymStaffs } from '@/services/staff';
-import { Staff } from '@/types/staff';
-import { useGymBranch } from '@/providers/gym-branch-provider';
-import { staffFilters } from '@/lib/dummy/fiters';
-import { searchItems } from '@/lib/utils';
-
-import { DataTable } from '@/components/table/data-table';
-import { useFilterableList } from '@/hooks/use-filterable-list';
-import { DataTableToolbar } from '@/components/table/data-table-toolbar';
 import { columns } from '@/components/settings/staff-management/columns';
 import { StaffsHeader } from '@/components/settings/staff-management/staff-header';
+import { DataTable } from '@/components/table/data-table';
+import { DataTableToolbar } from '@/components/table/data-table-toolbar';
+import { useFilterableList } from '@/hooks/use-filterable-list';
+import { useSheet } from '@/hooks/use-sheet';
+import { staffFilters } from '@/lib/dummy/fiters';
+import { searchItems } from '@/lib/utils';
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import { useGymStaffs } from '@/services/staff';
+import { Staff } from '@/types/staff';
 
 export default function StaffManagement() {
   const { isOpen, openSheet, closeSheet } = useSheet();

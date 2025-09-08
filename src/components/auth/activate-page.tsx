@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, Fragment } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { Fragment, useEffect, useState } from 'react';
+
 import { AuthWrapper } from '@/components/auth/auth-wrapper';
 import { UpdatePasswordForm } from '@/components/auth/update-pw-form';
 

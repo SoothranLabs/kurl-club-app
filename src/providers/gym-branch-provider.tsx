@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useEffect, useState, useContext } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 // Global ref to access clearGymBranch from auth provider
 let globalClearGymBranch: (() => void) | null = null;

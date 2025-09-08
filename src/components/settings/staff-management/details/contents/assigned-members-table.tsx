@@ -1,14 +1,14 @@
 'use client';
 
-import { useGymMembers } from '@/services/member';
-import { useGymBranch } from '@/providers/gym-branch-provider';
-import { useFilterableList } from '@/hooks/use-filterable-list';
-import { searchItems } from '@/lib/utils';
-import { Member } from '@/types/members';
-import { DataTable } from '@/components/table/data-table';
 import { columns } from '@/components/members/table/columns';
+import { DataTable } from '@/components/table/data-table';
 import { DataTableToolbar } from '@/components/table/data-table-toolbar';
+import { useFilterableList } from '@/hooks/use-filterable-list';
 import { filters } from '@/lib/dummy/fiters';
+import { searchItems } from '@/lib/utils';
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import { useGymMembers } from '@/services/member';
+import { Member } from '@/types/members';
 
 interface AssignedMembersTableProps {
   trainerId: string;

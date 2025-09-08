@@ -2,22 +2,20 @@
 
 import { useState } from 'react';
 
-import { useFilterableList } from '@/hooks/use-filterable-list';
-import { useSheet } from '@/hooks/use-sheet';
-
-import { useGymBranch } from '@/providers/gym-branch-provider';
-import { filters } from '@/lib/dummy/fiters';
-import { searchItems } from '@/lib/utils';
-
-import { useGymMembers, bulkImportMembers } from '@/services/member';
 import { useQueryClient } from '@tanstack/react-query';
-import { Member } from '@/types/members';
 
 import { MembersHeader } from '@/components/members/members-header';
-import { DataTable } from '@/components/table/data-table';
 import { columns } from '@/components/members/table/columns';
-import { ImportCSVModal } from '@/components/table/import-csv-modal';
+import { DataTable } from '@/components/table/data-table';
 import { DataTableToolbar } from '@/components/table/data-table-toolbar';
+import { ImportCSVModal } from '@/components/table/import-csv-modal';
+import { useFilterableList } from '@/hooks/use-filterable-list';
+import { useSheet } from '@/hooks/use-sheet';
+import { filters } from '@/lib/dummy/fiters';
+import { searchItems } from '@/lib/utils';
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import { bulkImportMembers, useGymMembers } from '@/services/member';
+import { Member } from '@/types/members';
 
 export default function MembersPage() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);

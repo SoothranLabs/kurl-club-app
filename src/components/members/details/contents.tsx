@@ -1,13 +1,16 @@
 'use client';
 
 import React from 'react';
-import Header from './header';
-import InfoCard from '@/components/cards/info-card';
+
 import { Clock4 } from 'lucide-react';
+
+import InfoCard from '@/components/cards/info-card';
+import { MemberDetails } from '@/types/members';
+
 import { Chart } from './chart';
+import Header from './header';
 import PaymentCard from './payment-card';
 import PlannerSection from './planner-section';
-import { MemberDetails } from '@/types/members';
 
 function Contents({
   memberId,

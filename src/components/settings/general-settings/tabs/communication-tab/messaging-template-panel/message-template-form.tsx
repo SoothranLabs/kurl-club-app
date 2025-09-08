@@ -1,24 +1,27 @@
 'use client';
 
-import { z } from 'zod/v4';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Code, Eye, Pencil, Wand2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Eye, Code, Wand2, Pencil } from 'lucide-react';
-import { KSheet } from '@/components/form/k-sheet';
+import { z } from 'zod/v4';
+
 import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-import { messagingTemplateSchema } from '@/schemas/index';
+import { KSheet } from '@/components/form/k-sheet';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useAppDialog } from '@/hooks/use-app-dialog';
 import { useMessagingTemplate } from '@/hooks/use-messaging-template';
-import type { MessageTemplate } from '@/types/messaging-template';
 import {
   extractMessageVariables,
   messageVariableSuggestions,
 } from '@/lib/utils/messaging-templates';
+import { messagingTemplateSchema } from '@/schemas/index';
+import type { MessageTemplate } from '@/types/messaging-template';
+
 import { MessageLivePreviewer } from './message-live-previewer';
-import { useAppDialog } from '@/hooks/use-app-dialog';
 
 type CreateMessagingTemplateData = z.infer<typeof messagingTemplateSchema>;
 

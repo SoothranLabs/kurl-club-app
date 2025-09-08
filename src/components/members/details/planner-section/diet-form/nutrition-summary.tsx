@@ -1,15 +1,17 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Activity, Beef, Egg, Target, Wheat, Zap } from 'lucide-react';
+import { Cell, Label, Pie, PieChart } from 'recharts';
+
 import { Badge } from '@/components/ui/badge';
-import { PieChart, Pie, Cell, Label } from 'recharts';
-import { Activity, Target, Zap, Beef, Wheat, Egg } from 'lucide-react';
-import { Goal, ACTIVITY, ActivityKey } from '@/hooks/use-diet-calculator';
-import { SharePlanModal } from './share-plan-modal';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  ChartContainer,
   ChartConfig,
+  ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { ACTIVITY, ActivityKey, Goal } from '@/hooks/use-diet-calculator';
+
+import { SharePlanModal } from './share-plan-modal';
 
 interface NutritionSummaryProps {
   goal: Goal;

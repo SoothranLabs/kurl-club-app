@@ -1,4 +1,7 @@
 import { useState } from 'react';
+
+import { Check } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -7,7 +10,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Check } from 'lucide-react';
 import { DiabeticPanel } from '@/hooks/use-diet-calculator';
 
 type ThyroidPanel = { tsh?: number; ft4?: number; meds?: string };

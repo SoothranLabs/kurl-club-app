@@ -2,14 +2,15 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import {
-  getBufferConfigsByGym,
-  createBufferConfig,
-  updateBufferConfig,
-  deleteBufferConfig,
-  type CreateBufferConfigData,
-} from '@/services/buffer-config';
+
 import { useGymBranch } from '@/providers/gym-branch-provider';
+import {
+  type CreateBufferConfigData,
+  createBufferConfig,
+  deleteBufferConfig,
+  getBufferConfigsByGym,
+  updateBufferConfig,
+} from '@/services/buffer-config';
 
 export function useBufferConfigs() {
   const queryClient = useQueryClient();

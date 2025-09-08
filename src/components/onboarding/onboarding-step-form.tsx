@@ -1,14 +1,15 @@
 'use client';
 
-import { useMultiStepForm, Step } from '@/hooks/use-multistep-form';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+
+import { StepperIndicator } from '@/components/onboarding/stepper-indicator';
 import {
   CreateGymStep,
   InviteTrainerStep,
   PhoneVerifyStep,
   VerifyOTPStep,
 } from '@/components/onboarding/steps';
-import { StepperIndicator } from '@/components/onboarding/stepper-indicator';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { Step, useMultiStepForm } from '@/hooks/use-multistep-form';
 
 const steps: Step[] = [
   { id: 'mobileNumber', component: PhoneVerifyStep },

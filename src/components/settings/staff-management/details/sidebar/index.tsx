@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { StaffDetails, StaffType } from '@/types/staff';
+
 import { Breadcrumb } from '@/components/breadcrumbs';
 import { CollapsibleSection } from '@/components/layout/collapsible-section';
-import { StaffHeader } from './staff-header';
-import { PersonalInfoSection } from './personal-info-section';
+import { StaffDetails, StaffType } from '@/types/staff';
+
 import { CertificationSection } from './certification-section';
+import { PersonalInfoSection } from './personal-info-section';
+import { StaffHeader } from './staff-header';
 
 type SectionKey = 'personalInfo' | 'certifications';
 

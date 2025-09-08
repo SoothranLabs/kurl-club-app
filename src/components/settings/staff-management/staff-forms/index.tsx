@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from 'react';
 
+import { KSelect } from '@/components/form/k-select';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 import { StaffType } from '@/types/staff';
 
-import { KSelect } from '@/components/form/k-select';
-import TrainerForm from './trainer-form';
 import AdministratorForm from './administrator-form';
+import TrainerForm from './trainer-form';
 
 interface StaffFormProps {
   onSuccess: () => void;

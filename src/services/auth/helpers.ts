@@ -1,6 +1,7 @@
+import { applyActionCode, getAuth } from 'firebase/auth';
+
 import { api } from '@/lib/api';
 import { FirebaseResponse, UserRequest } from '@/types/user';
-import { applyActionCode, getAuth } from 'firebase/auth';
 
 export const extractUserDetails = (response: FirebaseResponse): UserRequest => {
   const { uid, email, emailVerified, providerData } = response;

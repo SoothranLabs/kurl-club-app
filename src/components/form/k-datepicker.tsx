@@ -1,9 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import { format, getYear, setYear } from 'date-fns';
 import type { DateRange } from 'react-day-picker';
-import { calculateDateRange, cn, formatDayWithLeadingZero } from '@/lib/utils';
+
+import { format, getYear, setYear } from 'date-fns';
+import { CalendarDays } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -11,8 +13,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import PresetSidebar from './preset-sidebar';
-import { CalendarDays } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -20,6 +20,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { calculateDateRange, cn, formatDayWithLeadingZero } from '@/lib/utils';
+
+import PresetSidebar from './preset-sidebar';
 
 interface KDatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
   numberOfMonths?: number;
