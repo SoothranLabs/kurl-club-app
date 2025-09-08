@@ -21,7 +21,7 @@ export async function createSession(idToken: string) {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     expires: expiresAt,
-    path: '/dashboard',
+    path: '/',
   });
 }
 
@@ -39,7 +39,7 @@ export async function storeGymBranch(gymBranch: {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     expires: expiresAt,
-    path: '/dashboard',
+    path: '/',
   });
 }
 

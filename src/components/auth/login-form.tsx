@@ -58,11 +58,13 @@ export const LoginForm = () => {
           return;
         }
         const userDetails = extractUserDetails(user);
-        await updateUser(userDetails);
         const token = await user.getIdToken();
         await createSession(token);
         router.push('/dashboard');
         toast.success('Welcome back!');
+
+        // Update user in background (non-blocking)
+        updateUser(userDetails).catch(console.error);
       } catch {
         toast.error('Login failed. Check your credentials.');
       }

@@ -18,6 +18,8 @@ export const useGymPayments = (gymId: number | string) => {
     queryFn: () => fetchGymPayments(gymId),
 
     enabled: !!gymId,
+    refetchOnMount: true,
+    retry: 1,
   });
 };
 

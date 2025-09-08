@@ -16,7 +16,6 @@ import { createSession, deleteSession } from '@/services/auth/session';
 import { api } from '@/lib/api';
 import { fetchGymById } from '@/services/gym';
 import { GymDetails } from '@/types/gym';
-import { clearGymBranchGlobally } from './gym-branch-provider';
 
 const AuthContext = createContext<
   | {
@@ -55,7 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [gymDetails, setGymDetails] = useState<GymDetails | null>(null);
 
   // Fetch the appUser from the backend
-  const fetchAppUser = React.useCallback(async (uid: string) => {
+  const fetchAppUser = async (uid: string) => {
     try {
       const response = await api.get<{
         status: string;
@@ -75,7 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error('Failed to fetch app user:', error);
       setAppUser(null);
     }
-  }, []);
+  };
 
   const fetchGymDetailsInternal = async (gymId: number) => {
     try {
@@ -102,11 +101,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       } else {
         setAppUser(null);
+        setGymDetails(null);
       }
     });
 
     return () => unsubscribe();
-  }, [fetchAppUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const signIn = async (options: SignInOptions) => {
     try {
@@ -155,11 +156,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const logout = async () => {
-    await signOut(auth);
-    await deleteSession();
-    clearGymBranchGlobally();
-    setAppUser(null);
-    setGymDetails(null);
+    try {
+      // Clear states first to prevent re-renders
+      setAppUser(null);
+      setGymDetails(null);
+
+      // Clear localStorage
+      localStorage.removeItem('gymBranch');
+
+      // Sign out from Firebase (this will trigger onAuthStateChanged)
+      await signOut(auth);
+
+      // Clear session
+      await deleteSession();
+    } catch (error) {
+      console.error('Logout error:', error);
+      throw error;
+    }
   };
 
   return (
