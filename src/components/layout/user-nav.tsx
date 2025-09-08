@@ -49,6 +49,7 @@ export function UserNav() {
           gymName: gymList[0].gymName,
           id: gymList[0].gymId,
           location: gymList[0].gymLocation,
+          gymIdentifier: gymList[0].gymIdentifier,
         }
       : null);
 
@@ -115,7 +116,7 @@ export function UserNav() {
             </h6>
             <div className="bg-primary-green-100/50 w-fit px-2.5 py-0.5 rounded-md">
               <p className="text-sm font-normal leading-normal text-primary-blue-500">
-                {currentGym ? `#${currentGym.id}` : ''}
+                {currentGym ? `#${currentGym.gymIdentifier}` : ''}
               </p>
             </div>
           </div>

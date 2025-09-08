@@ -8,6 +8,7 @@ export interface GymDetails {
   socialLinks?: string | null;
   gymAdminId: number;
   status: string;
+  gymIdentifier: string;
 }
 
 export interface GymResponse {

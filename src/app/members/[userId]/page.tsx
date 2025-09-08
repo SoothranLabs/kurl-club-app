@@ -33,7 +33,7 @@ export default function MemberDetailsPage({ params }: MemberDetailsPageProps) {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <main className="flex flex-auto gap-4 md:gap-0">
+    <main className="container p-0 flex flex-auto gap-4 md:gap-0">
       <Sidebar
         memberId={userId}
         isEditing={isEditing}

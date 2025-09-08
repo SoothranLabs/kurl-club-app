@@ -45,6 +45,7 @@ interface AppUser {
     gymId: number;
     gymName: string;
     gymLocation: string;
+    gymIdentifier: string;
   }[];
 }
 

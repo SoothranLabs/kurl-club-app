@@ -25,7 +25,7 @@ type CreateGymStepProps = {
 
 export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
   const [isPending, startTransition] = useTransition();
-  const { firebaseUser } = useAuth();
+  const { appUser } = useAuth();
 
   const form = useForm<CreateGymStepData>({
     resolver: zodResolver(CreateGymSchema),
@@ -41,7 +41,7 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
   });
 
   const handleSubmit = async (data: CreateGymStepData) => {
-    if (!firebaseUser?.uid) {
+    if (!appUser?.userId) {
       toast.error('User is not authenticated.');
       return;
     }
@@ -61,8 +61,7 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
       Email: data.Email,
       SocialLinks: socialLinks,
       ProfilePicture: data.ProfilePicture,
-      GymAdminId: firebaseUser.uid,
-      Status: 'Active',
+      GymAdminId: appUser.userId.toString(),
     };
 
     startTransition(async () => {
