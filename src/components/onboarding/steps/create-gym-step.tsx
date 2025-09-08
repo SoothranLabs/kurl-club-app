@@ -33,11 +33,10 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
       GymName: '',
       Location: '',
       ContactNumber1: '',
+      ContactNumber2: '',
       Email: '',
       ProfilePicture: null,
-      SocialLink1: '',
-      SocialLink2: '',
-      SocialLink3: '',
+      socialLinks: [{ url: '' }, { url: '' }, { url: '' }],
     },
   });
 
@@ -47,9 +46,23 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
       return;
     }
 
+    // Combine social links into a single string
+    const socialLinks =
+      data.socialLinks
+        ?.map((link) => link.url)
+        .filter((url) => url && url.trim())
+        .join(', ') || '';
+
     const payload = {
-      ...data,
-      gymAdminId: firebaseUser.uid,
+      GymName: data.GymName,
+      Location: data.Location,
+      ContactNumber1: data.ContactNumber1,
+      ContactNumber2: data.ContactNumber2,
+      Email: data.Email,
+      SocialLinks: socialLinks,
+      ProfilePicture: data.ProfilePicture,
+      GymAdminId: firebaseUser.uid,
+      Status: 'Active',
     };
 
     startTransition(async () => {
@@ -122,6 +135,15 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
               label="Primary Phone number"
               disabled={isPending}
               placeholder="(555) 123-4567"
+              mandetory
+            />
+            <KFormField
+              fieldType={KFormFieldType.PHONE_INPUT}
+              control={form.control}
+              name="ContactNumber2"
+              label="Secondary Phone number"
+              disabled={isPending}
+              placeholder="(555) 123-4567"
             />
             <KFormField
               fieldType={KFormFieldType.INPUT}
@@ -134,7 +156,7 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
-              name="SocialLink1"
+              name="socialLinks.0.url"
               label="Enter website link"
               placeholder="https://www.google.com"
               disabled={isPending}
@@ -143,7 +165,7 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
-              name="SocialLink2"
+              name="socialLinks.1.url"
               label="Enter Facebook page link"
               placeholder="https://www.google.com"
               disabled={isPending}
@@ -152,7 +174,7 @@ export const CreateGymStep = ({ onSubmit }: CreateGymStepProps) => {
             <KFormField
               fieldType={KFormFieldType.INPUT}
               control={form.control}
-              name="SocialLink3"
+              name="socialLinks.2.url"
               label="Enter instagram link"
               placeholder="https://www.google.com"
               disabled={isPending}

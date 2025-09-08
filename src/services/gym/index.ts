@@ -1,34 +1,30 @@
-import { z } from 'zod/v4';
-
 import { api } from '@/lib/api';
-import { CreateGymSchema } from '@/schemas';
 import { GymDetails, GymResponse } from '@/types/gym';
 
-export const createGym = async (
-  values: z.infer<typeof CreateGymSchema> & { gymAdminId: string }
-) => {
-  const { gymAdminId, ProfilePicture, ...schemaValues } = values;
-
-  // Validate input schema
-  const validationResult = CreateGymSchema.safeParse(schemaValues);
-
-  if (!validationResult.success) {
-    const errorMessages = validationResult.error.issues
-      .map((err) => err.message)
-      .join(', ');
-    return { error: errorMessages };
-  }
+export const createGym = async (values: {
+  GymName: string;
+  Location: string;
+  ContactNumber1: string;
+  ContactNumber2?: string;
+  Email: string;
+  SocialLinks?: string;
+  ProfilePicture?: File | null;
+  GymAdminId: string;
+  Status?: string;
+}) => {
+  const { ProfilePicture, ...otherValues } = values;
 
   // FormData for multipart/form-data
   const formData = new FormData();
-  formData.append('GymAdminId', gymAdminId);
 
   if (ProfilePicture instanceof File) {
     formData.append('ProfilePicture', ProfilePicture);
   }
 
-  Object.entries(validationResult.data).forEach(([key, value]) => {
-    formData.append(key, value as string);
+  Object.entries(otherValues).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      formData.append(key, String(value));
+    }
   });
 
   try {

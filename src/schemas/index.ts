@@ -205,8 +205,16 @@ export const CreateGymSchema = z.object({
     .string()
     .regex(
       /^\+?[1-9]\d{1,14}$/,
-      'Gym phone number must be a valid phone number.'
+      'Primary phone number must be a valid phone number.'
     ),
+  ContactNumber2: z
+    .string()
+    .regex(
+      /^\+?[1-9]\d{1,14}$/,
+      'Secondary phone number must be a valid phone number.'
+    )
+    .optional()
+    .or(z.literal('')),
   Email: z.email('Gym email must be a valid email address.'),
   ProfilePicture: z
     .custom<File | null>((value) => value instanceof File || value === null, {
@@ -216,9 +224,13 @@ export const CreateGymSchema = z.object({
       error: 'File size must be less than 5MB',
     })
     .optional(),
-  SocialLink1: z.string().optional(),
-  SocialLink2: z.string().optional(),
-  SocialLink3: z.string().optional(),
+  socialLinks: z
+    .array(
+      z.object({
+        url: z.string().optional(),
+      })
+    )
+    .optional(),
 });
 
 // Trainer Form Schema

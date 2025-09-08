@@ -40,14 +40,14 @@ export const createBufferConfig = async (data: CreateBufferConfigData) => {
 
 export const getBufferConfig = async (id: number) => {
   const response = await api.get<ApiResponse<BufferConfig>>(
-    `/Gym/get-buffer-config/${id}`
+    `/Transaction/get-buffer-config/${id}`
   );
   return response.data;
 };
 
 export const getBufferConfigsByGym = async (gymId: number) => {
   const response = await api.get<ApiResponse<BufferConfig[]>>(
-    `/Gym/get-buffer-configs-by-gym/${gymId}`
+    `/Transaction/get-buffer-configs-by-gym/${gymId}`
   );
   return response.data || [];
 };
@@ -58,7 +58,7 @@ export const updateBufferConfig = async (
 ) => {
   try {
     const response = await api.put<ApiResponse<BufferConfig>>(
-      `/Gym/update-buffer-config/${id}`,
+      `/Transaction/update-buffer-config/${id}`,
       data
     );
     return {
@@ -77,7 +77,7 @@ export const updateBufferConfig = async (
 
 export const deleteBufferConfig = async (id: number) => {
   try {
-    await api.delete(`/Gym/delete-buffer-config/${id}`);
+    await api.delete(`/Transaction/delete-buffer-config/${id}`);
     return { success: 'Buffer configuration deleted successfully!' };
   } catch (error) {
     console.error('Error deleting buffer config:', error);
