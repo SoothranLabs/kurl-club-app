@@ -16,7 +16,6 @@ export const useGymPayments = (gymId: number | string) => {
   return useQuery({
     queryKey: ['gymPayments', gymId],
     queryFn: () => fetchGymPayments(gymId),
-
     enabled: !!gymId,
     refetchOnMount: true,
     retry: 1,

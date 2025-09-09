@@ -1,8 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
-import { useSearch } from '@/hooks/use-search';
+import { useCallback, useMemo, useState } from 'react';
 
 type SearchFunction<T> = (items: T[], term: string) => T[];
 
@@ -10,30 +8,25 @@ export function useFilterableList<T>(
   initialData: T[] = [],
   searchFunction: SearchFunction<T>
 ) {
-  const [items, setItems] = useState<T[]>(initialData);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const {
-    items: filteredItems,
-    search,
-    searchTerm,
-  } = useSearch<T>(items, searchFunction);
+  const search = useCallback((term: string) => {
+    setSearchTerm(term);
+  }, []);
 
-  const addItems = (newItems: T[]) => {
-    setItems((prevItems) => [...new Set([...prevItems, ...newItems])]);
-  };
+  const items = useMemo(() => {
+    if (searchTerm.trim() === '') {
+      return initialData;
+    }
+    return searchFunction(initialData, searchTerm);
+  }, [initialData, searchTerm, searchFunction]);
 
-  // Prevent unnecessary updates
-  useEffect(() => {
-    setItems((prevItems) =>
-      prevItems.length === initialData.length &&
-      prevItems.every((item, index) => item === initialData[index])
-        ? prevItems
-        : [...new Set([...prevItems, ...initialData])]
-    );
-  }, [initialData]);
+  const addItems = useCallback(() => {
+    // Placeholder function for compatibility
+  }, []);
 
   return {
-    items: filteredItems,
+    items,
     addItems,
     search,
     searchTerm,

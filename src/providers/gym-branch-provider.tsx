@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+import { useAuth } from './auth-provider';
+
 // Global ref to access clearGymBranch from auth provider
 let globalClearGymBranch: (() => void) | null = null;
 
@@ -31,6 +33,7 @@ export const GymBranchProvider: React.FC<{ children: React.ReactNode }> = ({
     gymName: string;
     gymLocation: string;
   } | null>(null);
+  const { appUser } = useAuth();
 
   const handleSetGymBranch = (gymBranch: {
     gymId: number;
@@ -54,10 +57,31 @@ export const GymBranchProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   }, []);
 
+  // Sync with auth provider
+  useEffect(() => {
+    if (appUser?.gyms && appUser.gyms.length > 0) {
+      const gymData = {
+        gymId: appUser.gyms[0].gymId,
+        gymName: appUser.gyms[0].gymName,
+        gymLocation: appUser.gyms[0].gymLocation,
+      };
+      setGymBranch(gymData);
+      localStorage.setItem('gymBranch', JSON.stringify(gymData));
+    } else if (appUser === null) {
+      setGymBranch(null);
+      localStorage.removeItem('gymBranch');
+    }
+  }, [appUser]);
+
+  // Initial load from localStorage
   useEffect(() => {
     const storedGymBranch = localStorage.getItem('gymBranch');
     if (storedGymBranch) {
-      setGymBranch(JSON.parse(storedGymBranch));
+      try {
+        setGymBranch(JSON.parse(storedGymBranch));
+      } catch {
+        localStorage.removeItem('gymBranch');
+      }
     }
   }, []);
 
