@@ -244,41 +244,11 @@ export const TrainerFormSchema = z.object({
     .optional(),
 });
 
-export const SamplePageSchema = z.object({
-  email: z.email('Invalid email address'),
-  password: z.string().min(8, {
-    error: 'Password must be at least 8 characters',
-  }),
-  confirmPassword: z.string().min(1, {
-    error: 'Confirm password is required',
-  }),
-  privacyConsent: z.boolean().refine((val) => val === true, {
-    error: 'You must agree to the terms and conditions',
-  }),
-  fullName: z.string().min(1, {
-    error: 'Full Name is required',
-  }),
-  websiteUrl: z.string().min(1, {
-    error: 'Enter a valid Url',
-  }),
-  familyHistory: z.string().optional(),
-  phoneNumber: z.string().min(10, {
-    error: 'Phone number is invalid',
-  }),
-  identificationType: z.string().min(1, {
-    error: 'Please select an ID type',
-  }),
+export const DatePickerSchema = z.object({
   dateOfBirth: z.date({
     error: (issue) =>
       issue.input === undefined ? undefined : 'Invalid date format',
   }),
-  identificationDocument: z.string().optional(),
-  otp: z.string().length(6, 'OTP must be exactly 6 digits'),
-  profilePicture: z
-    .custom<File | null>((value) => value instanceof File || value === null, {
-      error: 'Profile picture must be a file.',
-    })
-    .optional(),
 });
 
 export const AddForm = z.object({

@@ -9,6 +9,7 @@ import { AttendanceChats } from '@/components/dashboard/insights/attendance-chat
 import OutstandingPayment from '@/components/dashboard/insights/outstanding-payment';
 import Payments from '@/components/dashboard/insights/payments';
 import SkipperStats from '@/components/dashboard/insights/skipper-stats';
+import { GymRequiredGuard } from '@/components/guards';
 import { useAuth } from '@/providers/auth-provider';
 
 function Dashboard() {
@@ -16,20 +17,24 @@ function Dashboard() {
 
   return (
     <div className="container py-5 md:py-8">
-      <Header />
-      <CardList />
+      <GymRequiredGuard>
+        <Header />
+        <CardList />
+      </GymRequiredGuard>
       {appUser?.gyms.length === 0 && <Banner />}
-      <div className="flex flex-col gap-4 mt-7">
-        <h2 className="text-white font-medium text-2xl leading-normal">
-          Insights
-        </h2>
-        <div className="grid [grid-template-columns:1fr] md:[grid-template-columns:repeat(auto-fit,minmax(680px,_1fr))] gap-4">
-          <Payments />
-          <OutstandingPayment />
-          <SkipperStats />
-          <AttendanceChats />
+      <GymRequiredGuard>
+        <div className="flex flex-col gap-4 mt-7">
+          <h2 className="text-white font-medium text-2xl leading-normal">
+            Insights
+          </h2>
+          <div className="grid [grid-template-columns:1fr] md:[grid-template-columns:repeat(auto-fit,minmax(680px,_1fr))] gap-4">
+            <Payments />
+            <OutstandingPayment />
+            <SkipperStats />
+            <AttendanceChats />
+          </div>
         </div>
-      </div>
+      </GymRequiredGuard>
     </div>
   );
 }

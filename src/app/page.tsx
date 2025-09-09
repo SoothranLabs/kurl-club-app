@@ -1,9 +1,5 @@
-import SampleTestPage from '@/components/sample-test-page';
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  return (
-    <main className="flex justify-center items-center min-h-screen p-8">
-      <SampleTestPage />
-    </main>
-  );
+  redirect('/auth/login');
 }

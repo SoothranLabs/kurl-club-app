@@ -25,6 +25,8 @@ const AuthContext = createContext<
       firebaseUser: FirebaseUser | null;
       appUser: AppUser | null;
       gymDetails: GymDetails | null;
+      isAuthLoading: boolean;
+      isAppUserLoading: boolean;
       signIn: (options: SignInOptions) => Promise<void>;
       logout: () => Promise<void>;
       fetchGymDetails: (gymId: number) => Promise<void>;
@@ -56,9 +58,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [appUser, setAppUser] = useState<AppUser | null>(null);
   const [gymDetails, setGymDetails] = useState<GymDetails | null>(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [isAppUserLoading, setIsAppUserLoading] = useState(false);
+
+  // Load cached data immediately
+  useEffect(() => {
+    const encryptedUser = localStorage.getItem('appUser');
+    if (encryptedUser) {
+      try {
+        const decryptedData = decrypt(encryptedUser);
+        if (decryptedData) {
+          const userData = JSON.parse(decryptedData) as AppUser;
+          setAppUser(userData);
+          if (userData.gyms.length > 0) {
+            localStorage.setItem('gymBranch', JSON.stringify(userData.gyms[0]));
+            fetchGymDetailsInternal(userData.gyms[0].gymId);
+          }
+        }
+      } catch (error) {
+        console.warn('Failed to load cached user:', error);
+      }
+    }
+  }, []);
 
   // Fetch the appUser from the backend
   const fetchAppUser = async (uid: string, forceRefresh = false) => {
+    setIsAppUserLoading(true);
     try {
       // Try to get cached user data first
       if (!forceRefresh) {
@@ -73,8 +98,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
                 'gymBranch',
                 JSON.stringify(userData.gyms[0])
               );
-              await fetchGymDetailsInternal(userData.gyms[0].gymId);
+              // Fetch gym details in parallel, don't await
+              fetchGymDetailsInternal(userData.gyms[0].gymId);
             }
+            setIsAppUserLoading(false);
             return;
           }
         }
@@ -95,11 +122,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           'gymBranch',
           JSON.stringify(response.data.gyms[0])
         );
-        await fetchGymDetailsInternal(response.data.gyms[0].gymId);
+        // Fetch gym details in parallel, don't await
+        fetchGymDetailsInternal(response.data.gyms[0].gymId);
       }
     } catch (error) {
       console.error('Failed to fetch app user:', error);
       setAppUser(null);
+    } finally {
+      setIsAppUserLoading(false);
     }
   };
 
@@ -117,6 +147,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setFirebaseUser(firebaseUser);
+      setIsAuthLoading(false);
 
       if (firebaseUser) {
         try {
@@ -125,10 +156,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           await fetchAppUser(firebaseUser.uid);
         } catch (error) {
           console.error('Failed to handle Firebase user change:', error);
+          setIsAppUserLoading(false);
         }
       } else {
         setAppUser(null);
         setGymDetails(null);
+        setIsAppUserLoading(false);
       }
     });
 
@@ -209,6 +242,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         firebaseUser,
         appUser,
         gymDetails,
+        isAuthLoading,
+        isAppUserLoading,
         signIn,
         logout,
         fetchGymDetails: fetchGymDetailsInternal,

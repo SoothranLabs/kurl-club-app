@@ -7,7 +7,7 @@ import { z } from 'zod/v4';
 
 import { getGreeting } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
-import { SamplePageSchema } from '@/schemas';
+import { DatePickerSchema } from '@/schemas';
 
 import { KFormField, KFormFieldType } from '../form/k-formfield';
 import { Form } from '../ui/form';
@@ -15,8 +15,8 @@ import { Form } from '../ui/form';
 function Header() {
   const { appUser } = useAuth();
 
-  const form = useForm<z.infer<typeof SamplePageSchema>>({
-    resolver: zodResolver(SamplePageSchema),
+  const form = useForm<z.infer<typeof DatePickerSchema>>({
+    resolver: zodResolver(DatePickerSchema),
     defaultValues: {
       dateOfBirth: undefined,
     },

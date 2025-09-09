@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import { Bell, LogOut, Menu, Settings, User, X } from 'lucide-react';
+import { LogOut, Menu, Settings, User, X } from 'lucide-react';
 
+import { GymRequiredGuard } from '@/components/guards';
 import { cn } from '@/lib/utils';
 
 import {
@@ -47,44 +48,47 @@ function Navbar() {
     <>
       <div className="w-full border-b-[1px] border-secondary-blue-500 bg-primary-blue-500 h-20 sticky top-0 z-50">
         <div className="container py-5 h-full flex items-center justify-between sm:grid sm:grid-cols-[3fr_1fr] lg:grid-cols-[1.6fr_1fr]">
-          <div className="flex justify-between items-center">
-            <span
-              onClick={() => {
-                router.push('/dashboard');
-              }}
-              className="max-w-[143px] cursor-pointer max-h-[20px] min-w-[143px] min-h-[20px]"
-            >
-              <Image
-                width={143}
-                height={20}
-                className="w-full object-cover h-full"
-                src="/assets/svg/logo-light.svg"
-                alt="logo"
-              />
-            </span>
-            <ul className="items-center gap-8 hidden md:flex">
-              {navLink.map((link) => (
-                <Link href={link.url} key={link.id}>
-                  <li
-                    className={`rounded-[35px] h-[35px] cursor-pointer py-2 px-3 text-whites text-[15px] font-normal capitalize ${
-                      pathname === link.url ||
-                      pathname.startsWith(`${link.url}/`)
-                        ? 'text-primary-blue-900 bg-primary-green-100'
-                        : ''
-                    }`}
-                  >
-                    {link.title}
-                  </li>
-                </Link>
-              ))}
-            </ul>
-          </div>
+          <GymRequiredGuard>
+            <div className="flex justify-between items-center">
+              <span
+                onClick={() => {
+                  router.push('/dashboard');
+                }}
+                className="max-w-[143px] cursor-pointer max-h-[20px] min-w-[143px] min-h-[20px]"
+              >
+                <Image
+                  width={143}
+                  height={20}
+                  className="w-full object-cover h-full"
+                  src="/assets/svg/logo-light.svg"
+                  alt="logo"
+                />
+              </span>
+              <ul className="items-center gap-8 hidden md:flex">
+                {navLink.map((link) => (
+                  <Link href={link.url} key={link.id}>
+                    <li
+                      className={`rounded-[35px] h-[35px] cursor-pointer py-2 px-3 text-whites text-[15px] font-normal capitalize ${
+                        pathname === link.url ||
+                        pathname.startsWith(`${link.url}/`)
+                          ? 'text-primary-blue-900 bg-primary-green-100'
+                          : ''
+                      }`}
+                    >
+                      {link.title}
+                    </li>
+                  </Link>
+                ))}
+              </ul>
+            </div>
+          </GymRequiredGuard>
           <div className="flex items-center gap-4 md:gap-6 justify-end">
-            <div className="flex items-center gap-[14px]">
+            {/* TODO: add notification back */}
+            {/* <div className="flex items-center gap-[14px]">
               <span className="w-8 h-8 cursor-pointer flex items-center justify-center">
                 <Bell size={20} />
               </span>
-            </div>
+            </div> */}
             <UserNav />
             <span
               onClick={() => setActive(true)}
@@ -212,12 +216,14 @@ function Navbar() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <span>
-              <User size={20} />
-            </span>
-            <span>
-              <Settings size={20} />
-            </span>
+            <GymRequiredGuard>
+              <span>
+                <User size={20} />
+              </span>
+              <span>
+                <Settings size={20} />
+              </span>
+            </GymRequiredGuard>
             <span>
               <LogOut size={20} />
             </span>
