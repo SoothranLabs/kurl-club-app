@@ -15,7 +15,7 @@ import { ManagePaymentSheet } from './manage-payment';
 import { createPaymentColumns } from './table/columns';
 import { TableView } from './table/table-view';
 
-type PaymentTabType = 'outstanding' | 'expired' | 'history';
+type PaymentTabType = 'outstanding' | 'expired' | 'completed' | 'history';
 
 type Props = {
   type: PaymentTabType;
@@ -48,6 +48,7 @@ const STATS_CONFIG = {
     },
   ],
   expired: [],
+  completed: [],
 };
 
 export function PaymentsTab({ type }: Props) {
@@ -57,8 +58,13 @@ export function PaymentsTab({ type }: Props) {
   const { gymBranch } = useGymBranch();
   const gymId = gymBranch?.gymId;
 
-  const { outstandingPayments, expiredPayments, historyPayments, isLoading } =
-    useFilteredPayments(gymId!);
+  const {
+    outstandingPayments,
+    expiredPayments,
+    completedPayments,
+    historyPayments,
+    isLoading,
+  } = useFilteredPayments(gymId!);
 
   const handleRecord = (payment: Payment) => {
     setSelectedPayment(payment);
@@ -73,6 +79,8 @@ export function PaymentsTab({ type }: Props) {
         return outstandingPayments;
       case 'expired':
         return expiredPayments;
+      case 'completed':
+        return completedPayments;
       case 'history':
         return historyPayments;
       default:

@@ -1,5 +1,5 @@
 import KDialog from '@/components/form/k-dialog';
-import { OnboardingStepForm } from '@/components/onboarding/onboarding-step-form';
+import { GymOnboardingForm } from '@/components/onboarding/gym-onboarding-from';
 import { Button } from '@/components/ui/button';
 
 function Banner() {
@@ -22,7 +22,7 @@ function Banner() {
               <Button className="py-[13px] px-6 h-10">Finish setting up</Button>
             }
           >
-            <OnboardingStepForm />
+            <GymOnboardingForm />
           </KDialog>
         </div>
       </div>

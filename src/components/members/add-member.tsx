@@ -51,9 +51,10 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
       gender: '',
       membershipPlanId: '',
       feeStatus: '',
-      personalTrainer: '',
+      personalTrainer: 0,
       bloodGroup: '',
       workoutPlanId: '',
+      modeOfPayment: '',
     },
   });
 
@@ -65,14 +66,16 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
   const handleSubmit = async (data: CreateMemberDetailsData) => {
     const formData = new FormData();
 
-    Object.keys(data).forEach((key) => {
-      const value = data[key as keyof CreateMemberDetailsData];
-
+    Object.entries(data).forEach(([key, value]) => {
       if (key === 'profilePicture' && value instanceof File) {
-        formData.append(key, value);
-      } else {
-        formData.append(key, String(value));
+        return formData.append(key, value);
       }
+
+      if (key === 'personalTrainer') {
+        return formData.append(key, value === '' ? '0' : String(value));
+      }
+
+      formData.append(key, String(value));
     });
 
     if (gymId) {
@@ -83,11 +86,12 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
 
     if (result.success) {
       toast.success(result.success);
+
+      // Invalidate and refetch fresh data
+      await queryClient.invalidateQueries({ queryKey: ['gymMembers', gymId] });
+
       closeSheet();
       form.reset();
-
-      // **Invalidate the gymMembers query to refetch data**
-      queryClient.invalidateQueries({ queryKey: ['gymMembers', gymId] });
     } else {
       toast.error(result.error);
     }
@@ -262,6 +266,18 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
               })()}
             </div>
           </div>
+
+          {/* Mode of Payment */}
+          <KFormField
+            fieldType={KFormFieldType.SELECT}
+            control={form.control}
+            name="modeOfPayment"
+            label="Mode of Payment"
+            options={[
+              { label: 'Cash', value: '0' },
+              { label: 'UPI', value: '1' },
+            ]}
+          />
 
           <div className="flex justify-between gap-3 flex-wrap sm:flex-nowrap">
             {/* Date of joining */}

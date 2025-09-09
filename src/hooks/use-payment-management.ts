@@ -21,6 +21,7 @@ export function usePaymentManagement() {
       if (result.success) {
         queryClient.invalidateQueries({ queryKey: ['gymPayments'] });
         queryClient.invalidateQueries({ queryKey: ['paymentHistory'] });
+        queryClient.invalidateQueries({ queryKey: ['memberPaymentDetails'] });
         toast.success(result.success);
       } else if (result.error) {
         toast.error(result.error);
@@ -41,6 +42,7 @@ export function usePaymentManagement() {
       if (result.success) {
         queryClient.invalidateQueries({ queryKey: ['gymPayments'] });
         queryClient.invalidateQueries({ queryKey: ['paymentHistory'] });
+        queryClient.invalidateQueries({ queryKey: ['memberPaymentDetails'] });
         toast.success(result.success);
       } else if (result.error) {
         toast.error(result.error);
@@ -58,6 +60,7 @@ export function usePaymentManagement() {
     onSuccess: (result) => {
       if (result.success) {
         queryClient.invalidateQueries({ queryKey: ['gymPayments'] });
+        queryClient.invalidateQueries({ queryKey: ['memberPaymentDetails'] });
         toast.success(result.success);
       } else if (result.error) {
         toast.error(result.error);

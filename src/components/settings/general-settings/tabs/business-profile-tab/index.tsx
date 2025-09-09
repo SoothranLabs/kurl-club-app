@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  useTransition,
-} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Controller,
   FormProvider,
@@ -33,9 +27,12 @@ import {
 import { FormControl } from '@/components/ui/form';
 import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
 import { useAppDialog } from '@/hooks/use-app-dialog';
+import {
+  useGymManagement,
+  useGymProfilePicture,
+} from '@/hooks/use-gym-management';
 import { useAuth } from '@/providers/auth-provider';
 import { GymDataDetailsSchema } from '@/schemas';
-import { fetchGymProfilePicture, updateGym } from '@/services/gym';
 
 type BusinessProfile = z.infer<typeof GymDataDetailsSchema>;
 
@@ -85,14 +82,21 @@ const createFormData = (apiData: Record<string, unknown>) => {
 };
 
 export function BusinessProfileTab() {
-  const { gymDetails } = useAuth();
+  const { gymDetails, fetchGymDetails } = useAuth();
   const { showConfirm } = useAppDialog();
-  const [isPending, startTransition] = useTransition();
-  const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(
-    null
+  const { updateGym, isUpdating } = useGymManagement();
+  const { data: profilePictureData } = useGymProfilePicture(
+    gymDetails?.id || 0
   );
   const [initialDataLoaded, setInitialDataLoaded] = useState(false);
   const [originalSocialLinks, setOriginalSocialLinks] = useState<string[]>([]);
+
+  const profilePictureUrl =
+    profilePictureData &&
+    typeof profilePictureData === 'object' &&
+    'data' in profilePictureData
+      ? (profilePictureData as { data: string }).data
+      : null;
 
   const form = useForm<BusinessProfile>({
     resolver: zodResolver(GymDataDetailsSchema),
@@ -118,59 +122,37 @@ export function BusinessProfileTab() {
     );
   }, [form.formState]);
 
-  const isSocialLinkDirty = useCallback(
-    (index: number) => {
-      const currentValue = form.watch(`socialLinks.${index}.url`);
-      return originalSocialLinks[index] !== currentValue;
-    },
-    [form, originalSocialLinks]
-  );
+  const isSocialLinkDirty = (index: number) => {
+    const currentValue = form.watch(`socialLinks.${index}.url`);
+    return originalSocialLinks[index] !== currentValue;
+  };
 
-  const isNewSocialLink = useCallback(
-    (index: number) => {
-      return index >= originalSocialLinks.length;
-    },
-    [originalSocialLinks]
-  );
+  const isNewSocialLink = (index: number) => {
+    return index >= originalSocialLinks.length;
+  };
 
   // Initialize form data
   useEffect(() => {
     if (!gymDetails || initialDataLoaded) return;
 
-    const initializeForm = async () => {
-      try {
-        // Fetch profile picture
-        const response = await fetchGymProfilePicture(gymDetails.id);
-        if (response && typeof response === 'object' && 'data' in response) {
-          setProfilePictureUrl((response as { data: string }).data);
-        }
-      } catch {
-        setProfilePictureUrl(null);
-      }
+    const socialLinksArray = parseSocialLinks(gymDetails.socialLinks);
+    const originalLinks = gymDetails.socialLinks
+      ? gymDetails.socialLinks.split(',').filter((link) => link.trim())
+      : [];
 
-      const socialLinksArray = parseSocialLinks(gymDetails.socialLinks);
-      const originalLinks = gymDetails.socialLinks
-        ? gymDetails.socialLinks.split(',').filter((link) => link.trim())
-        : [];
+    setOriginalSocialLinks(originalLinks);
 
-      setOriginalSocialLinks(originalLinks);
-
-      const formData = {
-        ProfilePicture: null,
-        GymName: gymDetails.gymName,
-        Phone: gymDetails.contactNumber1,
-        Email: gymDetails.email,
-        Address: gymDetails.location,
-        socialLinks: socialLinksArray,
-      };
-
-      form.reset(formData, { keepDefaultValues: false });
-
-      // Use setTimeout to ensure form state is properly reset
-      setTimeout(() => setInitialDataLoaded(true), 100);
+    const formData = {
+      ProfilePicture: null,
+      GymName: gymDetails.gymName,
+      Phone: gymDetails.contactNumber1,
+      Email: gymDetails.email,
+      Address: gymDetails.location,
+      socialLinks: socialLinksArray,
     };
 
-    initializeForm();
+    form.reset(formData, { keepDefaultValues: false });
+    setTimeout(() => setInitialDataLoaded(true), 100);
   }, [gymDetails, form, initialDataLoaded]);
 
   // Ensure at least one social link field exists
@@ -181,124 +163,97 @@ export function BusinessProfileTab() {
   }, [fields.length, append]);
 
   // Form submission handler
-  const handleSubmit = useCallback(
-    async (data: BusinessProfile) => {
-      if (!gymDetails?.id) {
-        toast.error('No gym selected');
-        return;
-      }
+  const handleSubmit = async (data: BusinessProfile) => {
+    if (!gymDetails?.id) {
+      toast.error('No gym selected');
+      return;
+    }
 
-      startTransition(async () => {
-        try {
-          const apiData = transformToApiData(
-            data,
-            gymDetails.id,
-            originalSocialLinks.join(',')
-          );
-          const formData = createFormData(apiData);
-          const result = await updateGym(gymDetails.id, formData);
-
-          if (result.error) {
-            toast.error(result.error);
-          } else {
-            form.reset(data);
-            toast.success('Profile updated successfully!');
-          }
-        } catch {
-          toast.error('Unable to save, Please try again.');
-        }
-      });
-    },
-    [gymDetails?.id, originalSocialLinks, form]
-  );
+    try {
+      const apiData = transformToApiData(
+        data,
+        gymDetails.id,
+        originalSocialLinks.join(',')
+      );
+      const formData = createFormData(apiData);
+      await updateGym({ gymId: gymDetails.id, data: formData });
+      await fetchGymDetails(gymDetails.id);
+      form.reset(data);
+    } catch {
+      // Error handled by hook
+    }
+  };
 
   // Social link handlers
-  const handleSaveSocialLink = useCallback(async () => {
+  const handleSaveSocialLink = async () => {
     if (!gymDetails?.id) return;
 
-    startTransition(async () => {
-      try {
-        const currentData = form.getValues();
-        const validSocialLinks =
-          currentData.socialLinks
-            ?.filter((link) => link.url.trim())
-            .map((link) => link.url)
-            .join(',') || '';
+    try {
+      const currentData = form.getValues();
+      const validSocialLinks =
+        currentData.socialLinks
+          ?.filter((link) => link.url.trim())
+          .map((link) => link.url)
+          .join(',') || '';
 
-        const apiData = transformToApiData(
-          currentData,
-          gymDetails.id,
-          validSocialLinks
-        );
-        const formData = createFormData(apiData);
-        const result = await updateGym(gymDetails.id, formData);
+      const apiData = transformToApiData(
+        currentData,
+        gymDetails.id,
+        validSocialLinks
+      );
+      const formData = createFormData(apiData);
+      await updateGym({ gymId: gymDetails.id, data: formData });
+      await fetchGymDetails(gymDetails.id);
+      setOriginalSocialLinks(
+        currentData.socialLinks
+          ?.filter((link) => link.url.trim())
+          .map((link) => link.url) || []
+      );
+    } catch {
+      toast.error('Failed to update social links');
+    }
+  };
 
-        if (result.error) {
-          toast.error(result.error);
-        } else {
-          setOriginalSocialLinks(
+  const handleDeleteSocialLink = (index: number) => {
+    if (isNewSocialLink(index)) {
+      remove(index);
+      return;
+    }
+
+    showConfirm({
+      title: 'Delete Social Link',
+      description:
+        'Are you sure you want to delete this social link? This action cannot be undone.',
+      variant: 'destructive',
+      onConfirm: async () => {
+        if (!gymDetails?.id) return;
+
+        remove(index);
+
+        try {
+          const currentData = form.getValues();
+          const validSocialLinks =
             currentData.socialLinks
               ?.filter((link) => link.url.trim())
-              .map((link) => link.url) || []
+              .map((link) => link.url)
+              .join(',') || '';
+
+          const apiData = transformToApiData(
+            currentData,
+            gymDetails.id,
+            validSocialLinks
           );
-          toast.success('Social links updated successfully!');
+          const formData = createFormData(apiData);
+          await updateGym({ gymId: gymDetails.id, data: formData });
+          await fetchGymDetails(gymDetails.id);
+        } catch {
+          toast.error('Failed to remove social link');
         }
-      } catch {
-        toast.error('Failed to update social links');
-      }
+      },
     });
-  }, [gymDetails?.id, form]);
+  };
 
-  const handleDeleteSocialLink = useCallback(
-    (index: number) => {
-      if (isNewSocialLink(index)) {
-        remove(index);
-        return;
-      }
-
-      showConfirm({
-        title: 'Delete Social Link',
-        description:
-          'Are you sure you want to delete this social link? This action cannot be undone.',
-        variant: 'destructive',
-        onConfirm: async () => {
-          if (!gymDetails?.id) return;
-
-          remove(index);
-
-          startTransition(async () => {
-            try {
-              const currentData = form.getValues();
-              const validSocialLinks =
-                currentData.socialLinks
-                  ?.filter((link) => link.url.trim())
-                  .map((link) => link.url)
-                  .join(',') || '';
-
-              const apiData = transformToApiData(
-                currentData,
-                gymDetails.id,
-                validSocialLinks
-              );
-              const formData = createFormData(apiData);
-              const result = await updateGym(gymDetails.id, formData);
-
-              if (result.error) {
-                toast.error(result.error);
-              } else {
-                toast.success('Social link removed successfully!');
-              }
-            } catch {
-              toast.error('Failed to remove social link');
-            }
-          });
-        },
-      });
-    },
-    [isNewSocialLink, remove, showConfirm, gymDetails?.id, form]
-  );
-
-  const handleDiscard = useCallback(() => {
+  const handleDiscard = () => {
     if (!gymDetails) return;
 
     const socialLinksArray = parseSocialLinks(gymDetails.socialLinks);
@@ -311,7 +266,7 @@ export function BusinessProfileTab() {
       socialLinks: socialLinksArray,
     };
     form.reset(formData);
-  }, [gymDetails, form]);
+  };
 
   return (
     <FormProvider {...form}>
@@ -335,12 +290,12 @@ export function BusinessProfileTab() {
                     type="button"
                     variant="secondary"
                     onClick={handleDiscard}
-                    disabled={isPending}
+                    disabled={isUpdating}
                   >
                     Discard
                   </Button>
-                  <Button type="submit" disabled={isPending}>
-                    {isPending ? 'Saving...' : 'Save Changes'}
+                  <Button type="submit" disabled={isUpdating}>
+                    {isUpdating ? 'Saving...' : 'Save Changes'}
                   </Button>
                 </div>
               )}
@@ -434,7 +389,7 @@ export function BusinessProfileTab() {
                     onClick={handleSaveSocialLink}
                     className="h-[52px] w-[52px] border border-secondary-blue-400"
                     variant="secondary"
-                    disabled={isPending}
+                    disabled={isUpdating}
                   >
                     <Check className="h-5 w-5" />
                   </Button>
@@ -444,7 +399,7 @@ export function BusinessProfileTab() {
                   onClick={() => handleDeleteSocialLink(index)}
                   className="h-[52px] w-[52px] border border-secondary-blue-400"
                   variant="secondary"
-                  disabled={isPending}
+                  disabled={isUpdating}
                 >
                   <Trash2 className="h-5 w-5" />
                 </Button>
@@ -456,7 +411,7 @@ export function BusinessProfileTab() {
               variant="secondary"
               className="hover:bg-primary-blue-500"
               onClick={() => append({ url: '' })}
-              disabled={isPending}
+              disabled={isUpdating}
             >
               Add Social Link
             </Button>

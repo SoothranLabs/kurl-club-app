@@ -27,7 +27,7 @@ function Header() {
   return (
     <div className="flex justify-between items-start gap-4 flex-wrap">
       <div className="flex flex-col">
-        <h6 className="text-2xl font-medium leading-normal text-[#747578] capitalize">
+        <h6 className="text-2xl font-medium leading-normal text-[#747578]">
           Hello, {userName}
         </h6>
         <h4 className="text-white font-semibold text-[32px] leading-normal">

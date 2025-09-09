@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { Edit } from 'lucide-react';
 
 import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
@@ -18,6 +19,15 @@ interface PaymentCardProps {
 function PaymentCard({ memberId }: PaymentCardProps) {
   const { data: paymentData, isLoading } = useMemberPaymentDetails(memberId);
   const { isOpen, openSheet, closeSheet } = useSheet();
+  const queryClient = useQueryClient();
+
+  const handleCloseSheet = () => {
+    closeSheet();
+    // Revalidate payment data after sheet closes
+    queryClient.invalidateQueries({
+      queryKey: ['memberPaymentDetails', memberId],
+    });
+  };
 
   if (isLoading) {
     return (
@@ -82,14 +92,19 @@ function PaymentCard({ memberId }: PaymentCardProps) {
     gymId: 0,
     package: paymentData.membershipPlanId,
     packageName: paymentData.membershipPlanName,
+    planFee: paymentData.planFee,
+    totalAmountPaid: paymentData.totalAmountPaid,
     amountPaid: paymentData.totalAmountPaid,
-    pendingAmount: paymentData.currentOutstandingAmount,
+    pendingAmount: paymentData.pendingAmount,
+    dueTodayAmount: paymentData.pendingAmount,
     paymentDate: paymentData.lastPaidDate,
     dueDate: paymentData.dueDate,
+    upcomingDueDate: paymentData.dueDate,
     bufferEndDate: paymentData.dueDate,
     bufferDaysRemaining: 0,
     bufferStatus: '',
     paymentMethod: '',
+    totalPayments: paymentData.totalPaymentsMade,
     feeStatus: paymentData.paymentStatus as 'Partially Paid' | 'Fully Paid',
     profilePicture: null,
   };
@@ -122,7 +137,7 @@ function PaymentCard({ memberId }: PaymentCardProps) {
           {[
             {
               label: 'Current outstanding',
-              value: paymentData.currentOutstandingAmount,
+              value: paymentData.pendingAmount,
               color: statusColor,
             },
             {
@@ -170,7 +185,7 @@ function PaymentCard({ memberId }: PaymentCardProps) {
 
       <ManagePaymentSheet
         open={isOpen}
-        onOpenChange={closeSheet}
+        onOpenChange={handleCloseSheet}
         member={memberForSheet}
       />
     </>

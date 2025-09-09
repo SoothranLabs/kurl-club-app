@@ -391,13 +391,14 @@ export const createMemberSchema = z.object({
   email: z.email('Invalid email format'),
   height: z.string().min(1, 'Height is required'),
   weight: z.string().min(1, 'Weight is required'),
-  personalTrainer: z.string().min(1, 'Personal trainer selection is required'),
+  personalTrainer: z.union([z.string(), z.number()]),
   address: z
     .string()
     .min(1, 'Address is required.')
     .max(250, 'Address must not exceed 250 characters.'),
   amountPaid: z.string().min(0, 'Amount paid must be a positive number'),
   workoutPlanId: z.string().min(1, 'Workout plan selection is required'),
+  modeOfPayment: z.string().min(1, 'Payment method is required'),
 });
 
 export const workoutPlanSchema = z.object({
