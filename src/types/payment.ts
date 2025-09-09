@@ -11,15 +11,20 @@ export type Payment = {
   gymId: number;
   package: number;
   packageName: string;
+  planFee: number;
+  totalAmountPaid: number;
   amountPaid: number;
   pendingAmount: number;
+  dueTodayAmount: number;
   paymentDate: string;
   dueDate: string;
+  upcomingDueDate: string;
   bufferEndDate: string;
   bufferDaysRemaining: number;
   bufferStatus: string;
   paymentMethod: string;
-  feeStatus: 'Partially Paid' | 'Fully Paid' | 'Paid';
+  totalPayments: number;
+  feeStatus: 'Pending' | 'Completed' | 'Partially Paid' | 'Fully Paid' | 'Paid';
   profilePicture: string | File | null;
 };
 
@@ -31,7 +36,7 @@ export interface MemberPaymentDetails {
   membershipPlanName: string;
   planFee: number;
   totalAmountPaid: number;
-  currentOutstandingAmount: number;
+  pendingAmount: number;
   lastPaidAmount: number;
   lastPaidDate: string;
   dueDate: string;

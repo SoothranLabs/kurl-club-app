@@ -106,16 +106,32 @@ export const createPaymentColumns = (
       }
 
       const bufferEndDate = new Date(row.original.bufferEndDate);
+      const currentDate = new Date();
+      const actualDaysRemaining = Math.ceil(
+        (bufferEndDate.getTime() - currentDate.getTime()) /
+          (1000 * 60 * 60 * 24)
+      );
+
       const formattedDate = bufferEndDate.toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short',
         year: 'numeric',
       });
 
+      // Determine color based on days remaining
+      let bgColor = 'bg-secondary-green-500/20'; // Default green
+      if (actualDaysRemaining <= 3) {
+        bgColor = 'bg-red-500/20'; // Red for 3 days or less
+      } else if (actualDaysRemaining <= 7) {
+        bgColor = 'bg-orange-500/20'; // Orange for 7 days or less
+      } else if (actualDaysRemaining <= 14) {
+        bgColor = 'bg-blue-500/20'; // Blue for 14 days or less
+      }
+
       return (
         <div className="min-w-[180px]">
-          <div className="bg-secondary-green-500/20 w-fit px-2 py-1 rounded-lg text-xs">
-            {bufferDaysRemaining} days • till {formattedDate}
+          <div className={`${bgColor} w-fit px-2 py-1 rounded-lg text-xs`}>
+            {actualDaysRemaining} days • till {formattedDate}
           </div>
         </div>
       );
@@ -140,11 +156,11 @@ export const createPaymentColumns = (
     cell: ({ row }) => {
       const status = row.getValue('feeStatus') as
         | 'Partially Paid'
-        | 'Fully Paid';
+        | 'Completed';
       return (
         <div className="min-w-[120px]">
           <FeeStatusBadge
-            status={status === 'Fully Paid' ? 'paid' : 'partially_paid'}
+            status={status === 'Completed' ? 'paid' : 'partially_paid'}
           />
         </div>
       );

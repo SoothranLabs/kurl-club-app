@@ -26,8 +26,14 @@ export const useGymPayments = (gymId: number | string) => {
 export const useFilteredPayments = (gymId: number | string) => {
   const { data = [], isLoading, error } = useGymPayments(gymId);
 
+  const today = new Date();
+
   const outstandingPayments = data
-    .filter((p) => p.pendingAmount > 0 && p.bufferDaysRemaining > 0)
+    .filter((p) => {
+      const bufferEndDate = new Date(p.bufferEndDate);
+      const dueDate = new Date(p.dueDate);
+      return p.pendingAmount > 0 && today <= bufferEndDate && today <= dueDate;
+    })
     .sort(
       (a, b) =>
         new Date(a.bufferEndDate).getTime() -
@@ -35,12 +41,12 @@ export const useFilteredPayments = (gymId: number | string) => {
     );
 
   const expiredPayments = data.filter((p) => {
-    const today = new Date();
     const bufferEndDate = new Date(p.bufferEndDate);
-    return (
-      p.pendingAmount > 0 && p.bufferDaysRemaining > 0 && today > bufferEndDate
-    );
+    const dueDate = new Date(p.dueDate);
+    return p.pendingAmount > 0 && (today > bufferEndDate || today > dueDate);
   });
+
+  const completedPayments = data.filter((p) => p.pendingAmount === 0);
 
   const historyPayments = data;
 
@@ -49,6 +55,7 @@ export const useFilteredPayments = (gymId: number | string) => {
     error,
     outstandingPayments,
     expiredPayments,
+    completedPayments,
     historyPayments,
   };
 };

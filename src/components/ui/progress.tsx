@@ -26,7 +26,7 @@ const Progress = React.forwardRef<
   };
 
   const isOverdue = safeValue <= 0;
-  const adjustedValue = isOverdue ? 8 : safeValue; // force tiny strip when overdue
+  const adjustedValue = isOverdue ? 5 : safeValue; // force tiny strip when overdue
 
   return (
     <ProgressPrimitive.Root

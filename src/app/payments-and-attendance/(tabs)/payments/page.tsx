@@ -4,11 +4,17 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { KTabs, TabItem } from '@/components/form/k-tabs';
-import { Expired, History, Outstanding } from '@/components/payments';
+import {
+  Completed,
+  Expired,
+  History,
+  Outstanding,
+} from '@/components/payments';
 
 const TABS: TabItem[] = [
   { id: 'outstanding-payments', label: 'Outstanding Payments' },
   { id: 'expired-payments', label: 'Expired Payments' },
+  { id: 'completed-payments', label: 'Completed' },
   { id: 'history', label: 'History' },
 ];
 
@@ -59,6 +65,7 @@ export default function Payments() {
           {
             'outstanding-payments': <Outstanding />,
             'expired-payments': <Expired />,
+            'completed-payments': <Completed />,
             history: <History />,
           }[activeTab]
         }

@@ -14,6 +14,7 @@ import {
 } from 'firebase/auth';
 
 import { api } from '@/lib/api';
+import { decrypt, encrypt } from '@/lib/crypto';
 import { auth } from '@/lib/firebase';
 import { createSession, deleteSession } from '@/services/auth/session';
 import { fetchGymById } from '@/services/gym';
@@ -57,20 +58,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [gymDetails, setGymDetails] = useState<GymDetails | null>(null);
 
   // Fetch the appUser from the backend
-  const fetchAppUser = async (uid: string) => {
+  const fetchAppUser = async (uid: string, forceRefresh = false) => {
     try {
+      // Try to get cached user data first
+      if (!forceRefresh) {
+        const encryptedUser = localStorage.getItem('appUser');
+        if (encryptedUser) {
+          const decryptedData = decrypt(encryptedUser);
+          if (decryptedData) {
+            const userData = JSON.parse(decryptedData) as AppUser;
+            setAppUser(userData);
+            if (userData.gyms.length > 0) {
+              localStorage.setItem(
+                'gymBranch',
+                JSON.stringify(userData.gyms[0])
+              );
+              await fetchGymDetailsInternal(userData.gyms[0].gymId);
+            }
+            return;
+          }
+        }
+      }
+
+      // Fetch from API if not cached or force refresh
       const response = await api.get<{
         status: string;
         message: string;
         data: AppUser;
       }>(`/User/GetUserById/${uid}`);
+
       setAppUser(response.data);
+      localStorage.setItem('appUser', encrypt(JSON.stringify(response.data)));
+
       if (response.data.gyms.length > 0) {
         localStorage.setItem(
           'gymBranch',
           JSON.stringify(response.data.gyms[0])
         );
-        // Fetch gym details for the first gym
         await fetchGymDetailsInternal(response.data.gyms[0].gymId);
       }
     } catch (error) {
@@ -124,7 +148,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           );
           const idToken = await getIdToken(user);
           await createSession(idToken);
-          await fetchAppUser(user.uid);
+          await fetchAppUser(user.uid, true);
           break;
         }
         case 'login': {
@@ -136,7 +160,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           );
           const idToken = await getIdToken(user);
           await createSession(idToken);
-          await fetchAppUser(user.uid);
+          await fetchAppUser(user.uid, true);
           break;
         }
         case 'oauth': {
@@ -145,7 +169,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             const { user } = await signInWithPopup(auth, provider);
             const idToken = await getIdToken(user);
             await createSession(idToken);
-            await fetchAppUser(user.uid);
+            await fetchAppUser(user.uid, true);
           }
           break;
         }
@@ -166,6 +190,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       // Clear localStorage
       localStorage.removeItem('gymBranch');
+      localStorage.removeItem('appUser');
 
       // Sign out from Firebase (this will trigger onAuthStateChanged)
       await signOut(auth);
