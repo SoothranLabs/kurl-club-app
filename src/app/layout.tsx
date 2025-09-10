@@ -22,6 +22,9 @@ const figtree = localFont({
 export const metadata: Metadata = {
   title: 'Kurl Club',
   description: 'Gym App',
+  icons: {
+    icon: '/kurl-club.svg',
+  },
 };
 
 export default function RootLayout({
