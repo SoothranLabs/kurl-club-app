@@ -96,16 +96,20 @@ function PaymentCard({ memberId }: PaymentCardProps) {
     totalAmountPaid: paymentData.totalAmountPaid,
     amountPaid: paymentData.totalAmountPaid,
     pendingAmount: paymentData.pendingAmount,
-    dueTodayAmount: paymentData.pendingAmount,
     paymentDate: paymentData.lastPaidDate,
     dueDate: paymentData.dueDate,
     upcomingDueDate: paymentData.dueDate,
-    bufferEndDate: paymentData.dueDate,
+    bufferEndDate: null,
     bufferDaysRemaining: 0,
-    bufferStatus: '',
     paymentMethod: '',
     totalPayments: paymentData.totalPaymentsMade,
-    feeStatus: paymentData.paymentStatus as 'Partially Paid' | 'Fully Paid',
+    cyclesElapsed: 1,
+    expectedTotalFee: paymentData.totalAmountPaid + paymentData.pendingAmount,
+    feeStatus: paymentData.paymentStatus as
+      | 'Pending'
+      | 'Completed'
+      | 'Partial'
+      | 'Arrears',
     profilePicture: null,
   };
 

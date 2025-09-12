@@ -18,6 +18,55 @@ import {
 import { getProfilePictureSrc } from '@/lib/utils';
 import { Payment } from '@/types/payment';
 
+const UrgencyIndicator = ({
+  color,
+}: {
+  color: 'red' | 'orange' | 'yellow' | 'green';
+}) => (
+  <span className="relative flex justify-center items-center size-3">
+    <span
+      className={`absolute inline-flex h-full w-full animate-pulse rounded-full bg-${color}-400/45`}
+    ></span>
+    <span
+      className={`relative inline-flex size-2 rounded-full bg-${color}-500`}
+    ></span>
+  </span>
+);
+
+const getUrgencyConfig = (daysRemaining: number) => {
+  if (daysRemaining <= 0) {
+    return {
+      bgColor: 'bg-red-500/20 text-red-300',
+      color: 'red' as const,
+      text: 'EXPIRED',
+    };
+  } else if (daysRemaining <= 1) {
+    return {
+      bgColor: 'bg-red-500/20 text-red-300',
+      color: 'red' as const,
+      text: daysRemaining === 1 ? 'Tomorrow' : 'Today',
+    };
+  } else if (daysRemaining <= 3) {
+    return {
+      bgColor: 'bg-orange-500/20 text-orange-300',
+      color: 'orange' as const,
+      text: `${daysRemaining}d left`,
+    };
+  } else if (daysRemaining <= 7) {
+    return {
+      bgColor: 'bg-yellow-500/20 text-yellow-300',
+      color: 'yellow' as const,
+      text: `${daysRemaining}d left`,
+    };
+  } else {
+    return {
+      bgColor: 'bg-secondary-green-500/20 text-green-300',
+      color: 'green' as const,
+      text: `${daysRemaining}d left`,
+    };
+  }
+};
+
 const ActionsCell: React.FC<{
   user: Payment;
   onRecord?: (payment: Payment) => void;
@@ -58,9 +107,10 @@ export const createPaymentColumns = (
 ): ColumnDef<Payment>[] => [
   {
     accessorKey: 'memberIdentifier',
-    header: 'GymNo',
+    header: 'Member ID',
     cell: ({ row }) => (
       <div className="w-[100px] uppercase">
+        <span className="text-primary-blue-300 font-bold mr-0.5">#</span>
         {row.getValue('memberIdentifier')}
       </div>
     ),
@@ -73,14 +123,14 @@ export const createPaymentColumns = (
     cell: ({ row }) => {
       const name = row.getValue<string>('memberName') || 'Unknown';
       return (
-        <div className="flex items-center gap-2 w-[200px]">
+        <div className="flex items-center gap-2 w-[160px]">
           <Avatar className="h-8 w-8">
             <AvatarFallback className="bg-primary-blue-400/70">
               {name.slice(0, 2)}
             </AvatarFallback>
             <AvatarImage
               src={getProfilePictureSrc(
-                row.original.profilePicture,
+                row.original.profilePicture ?? null,
                 name.slice(0, 2)
               )}
               alt={name}
@@ -94,74 +144,198 @@ export const createPaymentColumns = (
     enableHiding: false,
   },
   {
-    accessorKey: 'bufferStatus',
-    header: 'Buffer status',
+    accessorKey: 'dueDate',
+    header: 'Due Date',
     cell: ({ row }) => {
-      const bufferDaysRemaining = row.original.bufferDaysRemaining;
-      const pendingAmount = row.original.pendingAmount;
+      const { dueDate, bufferEndDate } = row.original;
+      const dueDateObj = new Date(dueDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      dueDateObj.setHours(0, 0, 0, 0);
 
-      // Only show buffer if there's pending amount and active buffer
-      if (pendingAmount === 0 || bufferDaysRemaining === 0) {
-        return <div className="min-w-[180px]">No buffer</div>;
-      }
-
-      const bufferEndDate = new Date(row.original.bufferEndDate);
-      const currentDate = new Date();
-      const actualDaysRemaining = Math.ceil(
-        (bufferEndDate.getTime() - currentDate.getTime()) /
-          (1000 * 60 * 60 * 24)
+      const daysDiff = Math.ceil(
+        (dueDateObj.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
       );
-
-      const formattedDate = bufferEndDate.toLocaleDateString('en-GB', {
+      const formattedDate = dueDateObj.toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short',
-        year: 'numeric',
       });
 
-      // Determine color based on days remaining
-      let bgColor = 'bg-secondary-green-500/20'; // Default green
-      if (actualDaysRemaining <= 3) {
-        bgColor = 'bg-red-500/20'; // Red for 3 days or less
-      } else if (actualDaysRemaining <= 7) {
-        bgColor = 'bg-orange-500/20'; // Orange for 7 days or less
-      } else if (actualDaysRemaining <= 14) {
-        bgColor = 'bg-blue-500/20'; // Blue for 14 days or less
+      let statusColor = 'text-primary-blue-100';
+      let statusText = '';
+
+      if (daysDiff < 0) {
+        statusColor = 'text-red-400';
+        if (bufferEndDate) {
+          statusText = 'On buffer period';
+        } else {
+          statusText = `${Math.abs(daysDiff)} days overdue`;
+        }
+      } else if (daysDiff === 0) {
+        statusColor = 'text-orange-400';
+        statusText = 'Due today';
+      } else if (daysDiff <= 3) {
+        statusColor = 'text-yellow-400';
+        statusText = `${daysDiff} days left`;
+      } else {
+        statusText = `${daysDiff} days left`;
       }
 
       return (
-        <div className="min-w-[180px]">
-          <div className={`${bgColor} w-fit px-2 py-1 rounded-lg text-xs`}>
-            {actualDaysRemaining} days • till {formattedDate}
-          </div>
+        <div className="min-w-24">
+          <div className="text-white text-sm">{formattedDate}</div>
+          <div className={`text-xs ${statusColor}`}>{statusText}</div>
         </div>
       );
+    },
+  },
+  {
+    accessorKey: 'bufferStatus',
+    header: 'Buffer',
+    cell: ({ row }) => {
+      const { bufferEndDate, pendingAmount } = row.original;
+
+      if (pendingAmount === 0) {
+        return (
+          <div className="min-w-[120px] text-primary-blue-300 text-sm">
+            Paid
+          </div>
+        );
+      }
+
+      // Only show buffer if bufferEndDate exists
+      if (!bufferEndDate) {
+        return (
+          <div className="min-w-24 text-primary-blue-100 text-sm">
+            No buffer
+          </div>
+        );
+      }
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const bufferEnd = new Date(bufferEndDate);
+      bufferEnd.setHours(0, 0, 0, 0);
+
+      const daysRemaining = Math.ceil(
+        (bufferEnd.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      const {
+        bgColor,
+        color,
+        text: urgencyText,
+      } = getUrgencyConfig(daysRemaining);
+
+      return (
+        <div className="min-w-24">
+          <div
+            className={`${bgColor} w-fit px-2 py-1 rounded-lg text-xs flex items-center gap-2 mb-1`}
+          >
+            <UrgencyIndicator color={color} />
+            <span className="font-medium">{urgencyText}</span>
+          </div>
+          <div className="text-xs text-primary-blue-100">Buffer period</div>
+        </div>
+      );
+    },
+    sortingFn: (rowA, rowB) => {
+      const aData = rowA.original;
+      const bData = rowB.original;
+
+      // Completed payments go to bottom
+      if (aData.pendingAmount === 0 && bData.pendingAmount > 0) return 1;
+      if (bData.pendingAmount === 0 && aData.pendingAmount > 0) return -1;
+      if (aData.pendingAmount === 0 && bData.pendingAmount === 0) return 0;
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // For sorting urgency: use buffer end date if exists, otherwise use due date
+      const getUrgencyDate = (data: Payment) => {
+        if (data.bufferEndDate) {
+          return new Date(data.bufferEndDate);
+        }
+        return new Date(data.dueDate);
+      };
+
+      const aDate = getUrgencyDate(aData);
+      const bDate = getUrgencyDate(bData);
+      aDate.setHours(0, 0, 0, 0);
+      bDate.setHours(0, 0, 0, 0);
+
+      // Calculate days remaining for each
+      const aDaysLeft = Math.ceil(
+        (aDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+      );
+      const bDaysLeft = Math.ceil(
+        (bDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      // Sort by urgency: expired first, then by days remaining (ascending)
+      return aDaysLeft - bDaysLeft;
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
   },
   {
-    accessorKey: 'pendingAmount',
-    header: 'Pending amount',
-    cell: ({ row }) => (
-      <div className="min-w-[120px]">₹{row.getValue('pendingAmount')}</div>
-    ),
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+    accessorKey: 'paymentSummary',
+    header: 'Payment Summary',
+    cell: ({ row }) => {
+      const { pendingAmount, totalAmountPaid, expectedTotalFee } = row.original;
+      const progress = (totalAmountPaid / expectedTotalFee) * 100;
+
+      return (
+        <div className="min-w-[180px] pr-4">
+          <div className="flex justify-between text-sm mb-1">
+            <span className="text-white">₹{totalAmountPaid}</span>
+            <span className="text-primary-blue-200">₹{expectedTotalFee}</span>
+          </div>
+          <div className="w-full bg-primary-blue-300/30 rounded-full h-1.5 mb-1">
+            <div
+              className="bg-primary-green-400 h-1.5 rounded-full transition-all"
+              style={{ width: `${Math.min(progress, 100)}%` }}
+            />
+          </div>
+          {pendingAmount > 0 && (
+            <div className="text-xs text-red-300">₹{pendingAmount} pending</div>
+          )}
+        </div>
+      );
     },
   },
   {
     accessorKey: 'feeStatus',
-    header: 'Fee status',
+    header: 'Status',
     cell: ({ row }) => {
-      const status = row.getValue('feeStatus') as
-        | 'Partially Paid'
-        | 'Completed';
+      const status = row.getValue('feeStatus') as string;
+      const pendingAmount = row.original.pendingAmount;
+
+      let badgeStatus: 'paid' | 'partially_paid' | 'pending' | 'overdue' =
+        'pending';
+
+      switch (status) {
+        case 'Completed':
+          badgeStatus = 'paid';
+          break;
+        case 'Partial':
+          badgeStatus = 'partially_paid';
+          break;
+        case 'Pending':
+          badgeStatus = 'pending';
+          break;
+        case 'Arrears':
+          badgeStatus = 'overdue';
+          break;
+        default:
+          badgeStatus = pendingAmount > 0 ? 'pending' : 'paid';
+      }
+
       return (
-        <div className="min-w-[120px]">
-          <FeeStatusBadge
-            status={status === 'Completed' ? 'paid' : 'partially_paid'}
-          />
+        <div className="min-w-24">
+          <FeeStatusBadge status={badgeStatus} />
         </div>
       );
     },
@@ -169,11 +343,20 @@ export const createPaymentColumns = (
   {
     accessorKey: 'packageName',
     header: 'Package',
-    cell: ({ row }) => (
-      <div className="min-w-[100px]">{row.getValue('packageName')}</div>
-    ),
+    cell: ({ row }) => {
+      const { packageName, cyclesElapsed, planFee } = row.original;
+
+      return (
+        <div className="min-w-[120px]">
+          <div className="text-white text-sm">{packageName}</div>
+          <div className="text-xs text-primary-blue-100">
+            {cyclesElapsed} cycle{cyclesElapsed !== 1 ? 's' : ''} • ₹{planFee}
+          </div>
+        </div>
+      );
+    },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return value.includes(row.getValue('packageName'));
     },
   },
   {

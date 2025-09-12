@@ -4,8 +4,9 @@ import { useState } from 'react';
 
 import { IndianRupee, Users } from 'lucide-react';
 
+import { useGymFormOptions } from '@/hooks/use-gymform-options';
 import { useSheet } from '@/hooks/use-sheet';
-import { outstandingPaymentFilters } from '@/lib/filters';
+import { getCompletedPaymentFilters, getPaymentFilters } from '@/lib/filters';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 import { useFilteredPayments } from '@/services/payments';
 import type { Payment } from '@/types/payment';
@@ -21,34 +22,81 @@ type Props = {
   type: PaymentTabType;
 };
 
-const STATS_CONFIG = {
-  outstanding: [
-    {
-      id: 1,
-      icon: <Users size={20} strokeWidth={1.75} color="#151821" />,
-      color: 'primary-green-500',
-      title: 'Active members',
-      count: 190,
-    },
-    {
-      id: 2,
-      icon: <IndianRupee size={20} strokeWidth={1.75} color="#151821" />,
-      color: 'secondary-pink-500',
-      title: 'Outstanding payments',
-      count: 30,
-    },
-  ],
-  history: [
-    {
-      id: 1,
-      icon: <Users size={20} strokeWidth={1.75} color="#151821" />,
-      color: 'primary-green-500',
-      title: 'Total revenue last month',
-      count: 230000,
-    },
-  ],
-  expired: [],
-  completed: [],
+const getStatsConfig = (payments: Payment[], type: PaymentTabType) => {
+  const totalOutstanding = payments.reduce(
+    (sum, p) => sum + p.pendingAmount,
+    0
+  );
+  const totalRevenue = payments.reduce((sum, p) => sum + p.totalAmountPaid, 0);
+
+  const configs = {
+    outstanding: [
+      {
+        id: 1,
+        icon: <Users size={20} strokeWidth={1.75} color="#151821" />,
+        color: 'primary-green-500',
+        title: 'Members with dues',
+        count: payments.length,
+      },
+      {
+        id: 2,
+        icon: <IndianRupee size={20} strokeWidth={1.75} color="#151821" />,
+        color: 'secondary-pink-500',
+        title: 'Total outstanding',
+        count: totalOutstanding,
+      },
+    ],
+    expired: [
+      {
+        id: 1,
+        icon: <Users size={20} strokeWidth={1.75} color="#151821" />,
+        color: 'alert-red-400',
+        title: 'Overdue members',
+        count: payments.length,
+      },
+      {
+        id: 2,
+        icon: <IndianRupee size={20} strokeWidth={1.75} color="#151821" />,
+        color: 'secondary-pink-500',
+        title: 'Overdue amount',
+        count: totalOutstanding,
+      },
+    ],
+    completed: [
+      {
+        id: 1,
+        icon: <Users size={20} strokeWidth={1.75} color="#151821" />,
+        color: 'primary-green-500',
+        title: 'Paid members',
+        count: payments.length,
+      },
+      {
+        id: 2,
+        icon: <IndianRupee size={20} strokeWidth={1.75} color="#151821" />,
+        color: 'primary-green-500',
+        title: 'Revenue collected',
+        count: totalRevenue,
+      },
+    ],
+    history: [
+      {
+        id: 1,
+        icon: <Users size={20} strokeWidth={1.75} color="#151821" />,
+        color: 'primary-green-500',
+        title: 'Total members',
+        count: payments.length,
+      },
+      {
+        id: 2,
+        icon: <IndianRupee size={20} strokeWidth={1.75} color="#151821" />,
+        color: 'primary-green-500',
+        title: 'Total revenue',
+        count: totalRevenue,
+      },
+    ],
+  };
+
+  return configs[type] || [];
 };
 
 export function PaymentsTab({ type }: Props) {
@@ -88,7 +136,25 @@ export function PaymentsTab({ type }: Props) {
     }
   };
 
-  const stats = STATS_CONFIG[type];
+  const stats = getStatsConfig(getPaymentsData(), type);
+
+  // Get dynamic package options from gym configuration
+  const { formOptions } = useGymFormOptions(gymId);
+
+  const getFilters = () => {
+    const membershipPlans = formOptions?.membershipPlans || [];
+
+    switch (type) {
+      case 'outstanding':
+      case 'expired':
+      case 'history':
+        return getPaymentFilters(membershipPlans);
+      case 'completed':
+        return getCompletedPaymentFilters(membershipPlans);
+      default:
+        return [];
+    }
+  };
 
   return (
     <div className="flex flex-col gap-7">
@@ -107,7 +173,7 @@ export function PaymentsTab({ type }: Props) {
           <TableView
             payments={getPaymentsData()}
             columns={columns}
-            filters={outstandingPaymentFilters}
+            filters={getFilters()}
           />
           <ManagePaymentSheet
             open={isOpen}

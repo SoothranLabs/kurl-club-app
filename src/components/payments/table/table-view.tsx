@@ -25,6 +25,7 @@ export const TableView = ({ payments, columns, filters }: Props) => {
     <DataTable
       columns={columns}
       data={filteredPayments}
+      initialSorting={[{ id: 'bufferStatus', desc: false }]}
       toolbar={(table) => (
         <DataTableToolbar
           table={table}

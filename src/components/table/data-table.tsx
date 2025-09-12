@@ -5,11 +5,13 @@ import * as React from 'react';
 import {
   ColumnDef,
   HeaderContext,
+  SortingState,
   flexRender,
   getCoreRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 
@@ -26,19 +28,28 @@ import {
 interface DataTableProps<TData extends object, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  initialSorting?: SortingState;
   toolbar?: (table: ReturnType<typeof useReactTable<TData>>) => React.ReactNode;
 }
 
 export function DataTable<TData extends object, TValue>({
   columns,
   data,
+  initialSorting = [],
   toolbar,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>(initialSorting);
+
   const table = useReactTable<TData>({
     data,
     columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });

@@ -15,17 +15,17 @@ export type Payment = {
   totalAmountPaid: number;
   amountPaid: number;
   pendingAmount: number;
-  dueTodayAmount: number;
   paymentDate: string;
   dueDate: string;
   upcomingDueDate: string;
-  bufferEndDate: string;
+  bufferEndDate: string | null;
   bufferDaysRemaining: number;
-  bufferStatus: string;
   paymentMethod: string;
   totalPayments: number;
-  feeStatus: 'Pending' | 'Completed' | 'Partially Paid' | 'Fully Paid' | 'Paid';
-  profilePicture: string | File | null;
+  cyclesElapsed: number;
+  expectedTotalFee: number;
+  feeStatus: 'Pending' | 'Completed' | 'Partial' | 'Arrears';
+  profilePicture?: string | File | null;
 };
 
 export interface MemberPaymentDetails {

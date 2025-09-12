@@ -16,25 +16,40 @@ export interface FilterConfig {
   options: FilterOption[];
 }
 
-export const outstandingPaymentFilters = [
-  {
-    columnId: 'feeStatus',
-    title: 'Fee Status',
-    options: [
-      { label: 'Partially Paid', value: 'partially_paid', icon: Minus },
-      { label: 'Unpaid', value: 'unpaid', icon: AlertCircle },
-    ],
-  },
-  {
-    columnId: 'packageName',
-    title: 'Package',
-    options: [
-      { label: 'Partially Paid', value: 'partially_paid', icon: Minus },
-      { label: 'Unpaid', value: 'unpaid', icon: AlertCircle },
-    ],
-  },
-];
+// Payment Status Filter (static)
+export const paymentStatusFilter = {
+  columnId: 'feeStatus',
+  title: 'Payment Status',
+  options: [
+    { label: 'Pending', value: 'Pending', icon: AlertCircle },
+    { label: 'Partial', value: 'Partial', icon: Minus },
+    { label: 'Completed', value: 'Completed', icon: CircleUserRound },
+    { label: 'Arrears', value: 'Arrears', icon: AlertCircle },
+  ],
+};
 
+// Helper function to create package filter with dynamic options
+export const createPackageFilter = (
+  membershipPlans: Array<{ planName: string }>
+) => ({
+  columnId: 'packageName',
+  title: 'Package Type',
+  options: membershipPlans.map((plan) => ({
+    label: plan.planName,
+    value: plan.planName,
+  })),
+});
+
+// Helper functions to get filters for each tab
+export const getPaymentFilters = (
+  membershipPlans: Array<{ planName: string }> = []
+) => [paymentStatusFilter, createPackageFilter(membershipPlans)];
+
+export const getCompletedPaymentFilters = (
+  membershipPlans: Array<{ planName: string }> = []
+) => [createPackageFilter(membershipPlans)];
+
+// Staff filters
 export const staffFilters = [
   {
     columnId: 'role',

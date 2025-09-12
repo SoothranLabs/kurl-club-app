@@ -19,6 +19,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ item, className }) => {
     'secondary-pink-500': 'bg-secondary-pink-500',
     'secondary-yellow-150': 'bg-secondary-yellow-150',
     'semantic-blue-500': 'bg-semantic-blue-500',
+    'alert-red-400': 'bg-alert-red-400',
   };
 
   return (
