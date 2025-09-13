@@ -5,12 +5,14 @@ import React, { forwardRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
-interface KInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface KInputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label: string;
   className?: string;
   suffix?: string;
   maxLength?: number;
   mandetory?: boolean;
+  size?: 'sm' | 'default';
 }
 
 const KInput = forwardRef<HTMLInputElement, KInputProps>(
@@ -24,6 +26,7 @@ const KInput = forwardRef<HTMLInputElement, KInputProps>(
       maxLength,
       onChange,
       value,
+      size = 'default',
       ...props
     },
     ref
@@ -46,7 +49,8 @@ const KInput = forwardRef<HTMLInputElement, KInputProps>(
         <Input
           type={type}
           className={cn(
-            'k-input px-4 pb-2.5 pt-6 bg-secondary-blue-500',
+            'k-input bg-secondary-blue-500',
+            size === 'sm' ? 'px-3 pb-2 pt-5 h-11' : 'px-4 pb-2.5 pt-6 h-[52px]',
             className
           )}
           ref={ref}
@@ -61,7 +65,12 @@ const KInput = forwardRef<HTMLInputElement, KInputProps>(
           value={value}
         />
         {suffix && (
-          <span className="absolute right-3 top-[42%] p-1 text-primary-blue-100 text-sm font-normal leading-normal bg-secondary-blue-500">
+          <span
+            className={cn(
+              'absolute right-3 p-1 text-primary-blue-100 text-sm font-normal leading-normal bg-secondary-blue-500',
+              size === 'sm' ? 'top-[35%]' : 'top-[42%]'
+            )}
+          >
             {suffix}
           </span>
         )}
@@ -69,8 +78,15 @@ const KInput = forwardRef<HTMLInputElement, KInputProps>(
           id={`floating-label-${label.replace(/\s+/g, '-').toLowerCase()}`}
           htmlFor={props.id}
           className={cn(
-            'text-sm text-primary-blue-100 absolute left-4 transition-all duration-200 pointer-events-none',
-            isFocused || hasContent ? 'top-1.5 text-xs' : 'top-3.5 text-sm'
+            'text-sm text-primary-blue-100 absolute transition-all duration-200 pointer-events-none',
+            size === 'sm' ? 'left-3' : 'left-4',
+            isFocused || hasContent
+              ? size === 'sm'
+                ? 'top-1.5 text-[10px]'
+                : 'top-1.5 text-xs'
+              : size === 'sm'
+                ? 'top-2.5 text-sm scale-90'
+                : 'top-3.5 text-sm scale-100'
           )}
         >
           {label}

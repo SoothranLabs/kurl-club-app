@@ -8,11 +8,14 @@ import { Globe } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod/v4';
 
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-import { KFacebookFillIcon, KInstagramIcon } from '@/components/icons';
+import {
+  KFormField,
+  KFormFieldType,
+} from '@/components/shared/form/k-formfield';
+import { KFacebookFillIcon, KInstagramIcon } from '@/components/shared/icons';
+import ProfilePictureUploader from '@/components/shared/uploaders/profile-uploader';
 import { Button } from '@/components/ui/button';
 import { FormControl } from '@/components/ui/form';
-import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
 import { useAuth } from '@/providers/auth-provider';
 import { CreateGymSchema } from '@/schemas';
 import { createGym } from '@/services/gym';

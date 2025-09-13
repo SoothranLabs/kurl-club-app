@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { WebsiteIcon } from '@/components/icons';
+import { WebsiteIcon } from '@/components/shared/icons';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {

@@ -2,8 +2,8 @@
 
 import { Clock, PenLine, User2 } from 'lucide-react';
 
-import { KInput } from '@/components/form/k-input';
-import RichTextEditor from '@/components/rich-text-editor';
+import { KInput } from '@/components/shared/form/k-input';
+import RichTextEditor from '@/components/shared/rich-text-editor';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Card,

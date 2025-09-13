@@ -9,7 +9,7 @@ import { AttendanceChats } from '@/components/dashboard/insights/attendance-chat
 import OutstandingPayment from '@/components/dashboard/insights/outstanding-payment';
 import Payments from '@/components/dashboard/insights/payments';
 import SkipperStats from '@/components/dashboard/insights/skipper-stats';
-import { GymRequiredGuard } from '@/components/guards';
+import { GymRequiredGuard } from '@/components/shared/guards';
 import { useAuth } from '@/providers/auth-provider';
 
 function Dashboard() {

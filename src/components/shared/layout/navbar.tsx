@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 import { LogOut, Menu, Settings, User, X } from 'lucide-react';
 
-import { GymRequiredGuard } from '@/components/guards';
+import { GymRequiredGuard } from '@/components/shared/guards';
 import { cn } from '@/lib/utils';
 
 import {
@@ -15,8 +15,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '../ui/accordion';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+} from '../../ui/accordion';
+import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
 import { UserNav } from './user-nav';
 
 function Navbar() {

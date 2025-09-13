@@ -1,6 +1,6 @@
 'use client';
 
-import { KApple, KGoogle } from '@/components/icons';
+import { KApple, KGoogle } from '@/components/shared/icons';
 import { Button } from '@/components/ui/button';
 
 interface SocialProps {

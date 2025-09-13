@@ -3,9 +3,9 @@
 import { Table } from '@tanstack/react-table';
 import { X } from 'lucide-react';
 
-import { Search } from '@/components/search';
-import { DataTableFacetedFilter } from '@/components/table/data-table-faceted-filter';
-import { DataTableViewOptions } from '@/components/table/data-table-view-options';
+import { Search } from '@/components/shared/search';
+import { DataTableFacetedFilter } from '@/components/shared/table/data-table-faceted-filter';
+import { DataTableViewOptions } from '@/components/shared/table/data-table-view-options';
 import { Button } from '@/components/ui/button';
 import { FilterConfig } from '@/lib/filters';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { KViewMore } from '@/components/icons';
+import { KViewMore } from '@/components/shared/icons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useOutstandingPayment } from '@/hooks/use-outstanding-payments';

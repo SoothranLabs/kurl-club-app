@@ -2,7 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 
-import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
+import { FeeStatusBadge } from '@/components/shared/badges/fee-status-badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { OutstandingPayments } from '@/types';
 

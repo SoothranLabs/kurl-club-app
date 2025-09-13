@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-import { KSelect } from '@/components/form/k-select';
-import { KAi } from '@/components/icons';
+import { KSelect } from '@/components/shared/form/k-select';
+import { KAi } from '@/components/shared/icons';
 import {
   DEFAULT_EXERCISES,
   type Exercise,

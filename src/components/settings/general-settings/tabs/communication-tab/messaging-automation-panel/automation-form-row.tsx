@@ -7,7 +7,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Trash2 } from 'lucide-react';
 import { z } from 'zod/v4';
 
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import {
+  KFormField,
+  KFormFieldType,
+} from '@/components/shared/form/k-formfield';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useAppDialog } from '@/hooks/use-app-dialog';

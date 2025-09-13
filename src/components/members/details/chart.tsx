@@ -5,7 +5,7 @@ import { DateRange } from 'react-day-picker';
 
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
-import { KDatePicker } from '@/components/form/k-datepicker';
+import { KDatePicker } from '@/components/shared/form/k-datepicker';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   ChartConfig,

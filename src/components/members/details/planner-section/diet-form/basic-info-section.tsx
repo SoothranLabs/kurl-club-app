@@ -1,6 +1,6 @@
 import { HeartPulse, Utensils } from 'lucide-react';
 
-import { KTextarea } from '@/components/form/k-textarea';
+import { KTextarea } from '@/components/shared/form/k-textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {

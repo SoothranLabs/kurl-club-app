@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 
-import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
-import { Search } from '@/components/search';
+import { FeeStatusBadge } from '@/components/shared/badges/fee-status-badge';
+import { Search } from '@/components/shared/search';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useSearch } from '@/hooks/use-search';

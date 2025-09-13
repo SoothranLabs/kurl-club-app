@@ -12,12 +12,12 @@ import 'react-phone-number-input/style.css';
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import { E164Number } from 'libphonenumber-js/core';
 
-import { KDatePicker } from '@/components/form/k-datepicker';
-import { KInput } from '@/components/form/k-input';
-import { KMultiSelect } from '@/components/form/k-multi-select';
-import { KPassword } from '@/components/form/k-password';
-import { KSelect } from '@/components/form/k-select';
-import { KTextarea } from '@/components/form/k-textarea';
+import { KDatePicker } from '@/components/shared/form/k-datepicker';
+import { KInput } from '@/components/shared/form/k-input';
+import { KMultiSelect } from '@/components/shared/form/k-multi-select';
+import { KPassword } from '@/components/shared/form/k-password';
+import { KSelect } from '@/components/shared/form/k-select';
+import { KTextarea } from '@/components/shared/form/k-textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   FormControl,
@@ -71,6 +71,7 @@ interface CustomProps<T extends FieldValues> {
   maxLength?: number;
   mandetory?: boolean;
   options?: Option[];
+  size?: 'sm' | 'default';
   renderSkeleton?: (
     field: ControllerRenderProps<T, FieldPath<T>>
   ) => React.ReactNode;
@@ -101,6 +102,7 @@ const RenderField = <T extends FieldValues>({
     suffix,
     maxLength,
     mandetory,
+    size,
     type,
   } = props;
 
@@ -125,6 +127,7 @@ const RenderField = <T extends FieldValues>({
                 suffix={suffix}
                 maxLength={maxLength}
                 mandetory={mandetory}
+                size={size}
                 type={type}
               />
             </div>
@@ -182,6 +185,7 @@ const RenderField = <T extends FieldValues>({
             label={label}
             options={props.options}
             className={className}
+            size={size}
           >
             {children}
           </KSelect>

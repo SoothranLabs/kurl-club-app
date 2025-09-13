@@ -1,8 +1,9 @@
 'use client';
 
 import { columns } from '@/components/members/table/columns';
-import { DataTable } from '@/components/table/data-table';
-import { DataTableToolbar } from '@/components/table/data-table-toolbar';
+import { TableSkeleton } from '@/components/shared/table-skeleton';
+import { DataTable } from '@/components/shared/table/data-table';
+import { DataTableToolbar } from '@/components/shared/table/data-table-toolbar';
 import { useFilterableList } from '@/hooks/use-filterable-list';
 import { filters } from '@/lib/dummy/fiters';
 import { searchItems } from '@/lib/utils';
@@ -33,7 +34,7 @@ export default function AssignedMembersTable({
   );
 
   if (isLoading) {
-    return <p className="text-center">Loading members...</p>;
+    return <TableSkeleton rows={8} columns={6} showToolbar />;
   }
 
   return (

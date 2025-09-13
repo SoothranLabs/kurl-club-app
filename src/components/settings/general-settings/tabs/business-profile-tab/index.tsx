@@ -13,9 +13,13 @@ import { Check, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod/v4';
 
-import { SubscriptionCard } from '@/components/cards/subscription-card';
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-import SocialLinkInput from '@/components/form/social-link-input';
+import { SubscriptionCard } from '@/components/shared/cards/subscription-card';
+import {
+  KFormField,
+  KFormFieldType,
+} from '@/components/shared/form/k-formfield';
+import SocialLinkInput from '@/components/shared/form/social-link-input';
+import ProfilePictureUploader from '@/components/shared/uploaders/profile-uploader';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -25,7 +29,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { FormControl } from '@/components/ui/form';
-import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
 import { useAppDialog } from '@/hooks/use-app-dialog';
 import {
   useGymManagement,

@@ -7,7 +7,7 @@ import {
   TiktokIcon,
   TwitterIcon,
   WebsiteIcon,
-} from '@/components/icons';
+} from '@/components/shared/icons';
 
 export interface SocialPlatform {
   name: string;

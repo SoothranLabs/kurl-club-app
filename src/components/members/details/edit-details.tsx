@@ -4,8 +4,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Check } from 'lucide-react';
 
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-import { KSelect } from '@/components/form/k-select';
+import {
+  KFormField,
+  KFormFieldType,
+} from '@/components/shared/form/k-formfield';
+import { KSelect } from '@/components/shared/form/k-select';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,

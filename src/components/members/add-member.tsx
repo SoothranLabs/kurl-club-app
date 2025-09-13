@@ -6,12 +6,15 @@ import { Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod/v4';
 
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-import { KSheet } from '@/components/form/k-sheet';
+import {
+  KFormField,
+  KFormFieldType,
+} from '@/components/shared/form/k-formfield';
+import { KSheet } from '@/components/shared/form/k-sheet';
+import ProfilePictureUploader from '@/components/shared/uploaders/profile-uploader';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FormControl } from '@/components/ui/form';
-import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
 import { useGymFormOptions } from '@/hooks/use-gymform-options';
 import {
   bloodGroupOptions,

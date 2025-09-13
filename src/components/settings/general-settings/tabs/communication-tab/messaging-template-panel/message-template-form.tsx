@@ -8,8 +8,11 @@ import { Code, Eye, Pencil, Wand2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod/v4';
 
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-import { KSheet } from '@/components/form/k-sheet';
+import {
+  KFormField,
+  KFormFieldType,
+} from '@/components/shared/form/k-formfield';
+import { KSheet } from '@/components/shared/form/k-sheet';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAppDialog } from '@/hooks/use-app-dialog';

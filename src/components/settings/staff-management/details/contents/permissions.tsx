@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { KSwitch } from '@/components/form/k-switch';
+import { KSwitch } from '@/components/shared/form/k-switch';
 import {
   Select,
   SelectContent,

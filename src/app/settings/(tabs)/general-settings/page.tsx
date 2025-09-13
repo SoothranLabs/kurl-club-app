@@ -3,13 +3,13 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { KTabs, TabItem } from '@/components/form/k-tabs';
 import {
   BusinessProfileTab,
   CommunicationTab,
   OperationsTab,
   SecurityAndPrivacyTab,
 } from '@/components/settings/general-settings/tabs';
+import { KTabs, TabItem } from '@/components/shared/form/k-tabs';
 
 const tabs: TabItem[] = [
   { id: 'business_profile', label: 'Business Profile' },

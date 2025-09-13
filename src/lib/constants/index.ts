@@ -24,6 +24,4 @@ export const bloodGroupOptions = [
 export const paymentMethodOptions = [
   { label: 'Cash', value: 'cash' },
   { label: 'UPI', value: 'upi' },
-  { label: 'Card', value: 'card' },
-  { label: 'Bank Transfer', value: 'bank' },
 ];

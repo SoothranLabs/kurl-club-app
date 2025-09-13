@@ -6,9 +6,10 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { MembersHeader } from '@/components/members/members-header';
 import { columns } from '@/components/members/table/columns';
-import { DataTable } from '@/components/table/data-table';
-import { DataTableToolbar } from '@/components/table/data-table-toolbar';
-import { ImportCSVModal } from '@/components/table/import-csv-modal';
+import { TableSkeleton } from '@/components/shared/table-skeleton';
+import { DataTable } from '@/components/shared/table/data-table';
+import { DataTableToolbar } from '@/components/shared/table/data-table-toolbar';
+import { ImportCSVModal } from '@/components/shared/table/import-csv-modal';
 import { useFilterableList } from '@/hooks/use-filterable-list';
 import { useSheet } from '@/hooks/use-sheet';
 import { filters } from '@/lib/dummy/fiters';
@@ -73,7 +74,7 @@ export default function MembersPage() {
       />
 
       {isLoading ? (
-        <p className="text-center">Loading members...</p>
+        <TableSkeleton rows={12} columns={8} showToolbar />
       ) : (
         <DataTable
           columns={columns}

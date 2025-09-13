@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { Eye } from 'lucide-react';
 
-import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
+import { FeeStatusBadge } from '@/components/shared/badges/fee-status-badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { getProfilePictureSrc, safeFormatDate } from '@/lib/utils';

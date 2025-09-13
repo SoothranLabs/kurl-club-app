@@ -9,7 +9,10 @@ import { toast } from 'sonner';
 import { z } from 'zod/v4';
 
 import { AuthWrapper } from '@/components/auth/auth-wrapper';
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import {
+  KFormField,
+  KFormFieldType,
+} from '@/components/shared/form/k-formfield';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { ResetSchema } from '@/schemas';

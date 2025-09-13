@@ -6,8 +6,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod/v4';
 
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
-import { KSheet } from '@/components/form/k-sheet';
+import {
+  KFormField,
+  KFormFieldType,
+} from '@/components/shared/form/k-formfield';
+import { KSheet } from '@/components/shared/form/k-sheet';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useMessagingTemplate } from '@/hooks/use-messaging-template';

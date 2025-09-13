@@ -2,7 +2,7 @@
 
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible';
 
-import { SectionHeader } from '../members/details/sidebar/section-headers';
+import { SectionHeader } from '../../members/details/sidebar/section-headers';
 
 interface CollapsibleSectionProps {
   title: string;

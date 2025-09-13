@@ -6,8 +6,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { MessageSquareText, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import MemberStatusBadge from '@/components/badges/member-status-badge';
-import { KEdit } from '@/components/icons';
+import MemberStatusBadge from '@/components/shared/badges/member-status-badge';
+import { KEdit } from '@/components/shared/icons';
 import { Button } from '@/components/ui/button';
 import { useAppDialog } from '@/hooks/use-app-dialog';
 import { deleteMember } from '@/services/member';

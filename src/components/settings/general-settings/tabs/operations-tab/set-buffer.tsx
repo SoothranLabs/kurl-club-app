@@ -5,7 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CheckCheck, Edit, Trash2 } from 'lucide-react';
 import { z } from 'zod/v4';
 
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import {
+  KFormField,
+  KFormFieldType,
+} from '@/components/shared/form/k-formfield';
 import { Button } from '@/components/ui/button';
 import { useAppDialog } from '@/hooks/use-app-dialog';
 import { useBufferConfigs } from '@/hooks/use-buffer-config';

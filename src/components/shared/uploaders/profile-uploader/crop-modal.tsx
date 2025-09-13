@@ -10,7 +10,7 @@ import ReactCrop, {
 } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
-import KDialog from '@/components/form/k-dialog';
+import KDialog from '@/components/shared/form/k-dialog';
 import { Button } from '@/components/ui/button';
 
 interface CropModalProps {

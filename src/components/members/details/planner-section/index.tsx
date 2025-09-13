@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { RefreshCw } from 'lucide-react';
 
-import { KTabs, TabItem } from '@/components/form/k-tabs';
+import { KTabs, TabItem } from '@/components/shared/form/k-tabs';
 import { Button } from '@/components/ui/button';
 import { calculateAge } from '@/lib/utils';
 import { MemberDetails } from '@/types/members';

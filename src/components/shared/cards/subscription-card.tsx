@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import { Button } from '../../ui/button';
 import { KPremiumListIcon } from '../icons';
-import { Button } from '../ui/button';
 
 type SubscriptionVariant = 'standard' | 'premium' | 'expired';
 

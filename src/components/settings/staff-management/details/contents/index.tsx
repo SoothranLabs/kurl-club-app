@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { KTabs, TabItem } from '@/components/form/k-tabs';
+import { KTabs, TabItem } from '@/components/shared/form/k-tabs';
 import { StaffType } from '@/types/staff';
 
 import AssignedMembersTable from './assigned-members-table';

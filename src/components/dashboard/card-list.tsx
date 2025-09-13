@@ -2,8 +2,8 @@ import React from 'react';
 
 import { IndianRupee, Users } from 'lucide-react';
 
-import InfoCard from '../cards/info-card';
-import { KDumbbell, KSkipper } from './../icons/index';
+import InfoCard from '../shared/cards/info-card';
+import { KDumbbell, KSkipper } from '../shared/icons/index';
 
 function CardList() {
   const cards = [

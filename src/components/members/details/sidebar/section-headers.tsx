@@ -1,4 +1,4 @@
-import { KAccordionClose, KAccordionOpen } from '@/components/icons';
+import { KAccordionClose, KAccordionOpen } from '@/components/shared/icons';
 import { CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface SectionHeaderProps {

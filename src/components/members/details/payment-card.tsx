@@ -5,8 +5,8 @@ import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Edit } from 'lucide-react';
 
-import { FeeStatusBadge } from '@/components/badges/fee-status-badge';
 import { ManagePaymentSheet } from '@/components/payments/manage-payment';
+import { FeeStatusBadge } from '@/components/shared/badges/fee-status-badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useSheet } from '@/hooks/use-sheet';

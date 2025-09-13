@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { ChevronLeft } from 'lucide-react';
 
-import { KSheet } from '@/components/form/k-sheet';
+import { KSheet } from '@/components/shared/form/k-sheet';
 import { Button } from '@/components/ui/button';
 import { useAppDialog } from '@/hooks/use-app-dialog';
 import { useGymBranch } from '@/providers/gym-branch-provider';

@@ -6,7 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { MessageSquareText, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { KEdit } from '@/components/icons';
+import { KEdit } from '@/components/shared/icons';
 import { Button } from '@/components/ui/button';
 import { useAppDialog } from '@/hooks/use-app-dialog';
 import { deleteStaff } from '@/services/staff';

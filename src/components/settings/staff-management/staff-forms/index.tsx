@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { KSelect } from '@/components/form/k-select';
+import { KSelect } from '@/components/shared/form/k-select';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 import { StaffType } from '@/types/staff';
 

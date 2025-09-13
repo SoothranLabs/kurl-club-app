@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Clock4 } from 'lucide-react';
 
-import InfoCard from '@/components/cards/info-card';
+import InfoCard from '@/components/shared/cards/info-card';
 import { MemberDetails } from '@/types/members';
 
 import { Chart } from './chart';

@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 
 import { PanelLeftOpen, PanelRightOpen } from 'lucide-react';
 
-import { Breadcrumb } from '@/components/breadcrumbs';
-import { CollapsibleSection } from '@/components/layout/collapsible-section';
+import { Breadcrumb } from '@/components/shared/layout/breadcrumbs';
+import { CollapsibleSection } from '@/components/shared/layout/collapsible-section';
 import { Button } from '@/components/ui/button';
 import { MemberDetails } from '@/types/members';
 

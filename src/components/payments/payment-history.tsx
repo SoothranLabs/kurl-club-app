@@ -3,6 +3,7 @@
 import { ArrowLeft, History } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { formatDateTime } from '@/lib/utils';
 
 type PaymentHistoryItem = {
@@ -18,6 +19,7 @@ type PaymentHistoryProps = {
   onBack?: () => void;
   onViewAll?: () => void;
   showRecent?: boolean;
+  isLoading?: boolean;
 };
 
 export function PaymentHistory({
@@ -26,10 +28,11 @@ export function PaymentHistory({
   onBack,
   onViewAll,
   showRecent = false,
+  isLoading = false,
 }: PaymentHistoryProps) {
   const displayHistory = showRecent ? history.slice(0, 2) : history;
 
-  if (showRecent && history.length === 0) return null;
+  if (showRecent && history.length === 0 && !isLoading) return null;
 
   if (showRecent) {
     return (
@@ -49,19 +52,29 @@ export function PaymentHistory({
           </Button>
         </div>
         <div className="space-y-2">
-          {displayHistory.map((payment) => (
-            <div
-              key={payment.id}
-              className="flex justify-between items-center text-xs"
-            >
-              <div className="text-white">
-                ₹{payment.amount} - {payment.paymentMethod}
-              </div>
-              <div className="text-primary-blue-200">
-                {formatDateTime(payment.paymentDate, 'date')}
-              </div>
-            </div>
-          ))}
+          {isLoading
+            ? Array.from({ length: 2 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="flex justify-between items-center text-xs"
+                >
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-3 w-16" />
+                </div>
+              ))
+            : displayHistory.map((payment) => (
+                <div
+                  key={payment.id}
+                  className="flex justify-between items-center text-xs"
+                >
+                  <div className="text-white">
+                    ₹{payment.amount} - {payment.paymentMethod}
+                  </div>
+                  <div className="text-primary-blue-200">
+                    {formatDateTime(payment.paymentDate, 'date')}
+                  </div>
+                </div>
+              ))}
         </div>
       </div>
     );
@@ -82,7 +95,20 @@ export function PaymentHistory({
       </div>
 
       <div className="space-y-2">
-        {history.length === 0 ? (
+        {isLoading ? (
+          Array.from({ length: 5 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex justify-between items-center p-3 rounded-md border border-primary-blue-400 bg-primary-blue-500/10"
+            >
+              <div>
+                <Skeleton className="h-5 w-16 mb-1" />
+                <Skeleton className="h-3 w-12" />
+              </div>
+              <Skeleton className="h-3 w-20" />
+            </div>
+          ))
+        ) : history.length === 0 ? (
           <div className="text-center py-8 text-primary-blue-300">
             No payment history found
           </div>

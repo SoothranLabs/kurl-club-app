@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 
-import { MaintainWeightIcon } from '@/components/icons';
+import { MaintainWeightIcon } from '@/components/shared/icons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAIDietPlanner } from '@/hooks/use-ai-diet-planner';

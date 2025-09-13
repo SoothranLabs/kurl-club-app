@@ -15,7 +15,7 @@ import {
   Strikethrough,
 } from 'lucide-react';
 
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 
 export const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const buttonStyle = (isActive: boolean) =>

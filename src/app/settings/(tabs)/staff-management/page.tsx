@@ -2,8 +2,9 @@
 
 import { columns } from '@/components/settings/staff-management/columns';
 import { StaffsHeader } from '@/components/settings/staff-management/staff-header';
-import { DataTable } from '@/components/table/data-table';
-import { DataTableToolbar } from '@/components/table/data-table-toolbar';
+import { TableSkeleton } from '@/components/shared/table-skeleton';
+import { DataTable } from '@/components/shared/table/data-table';
+import { DataTableToolbar } from '@/components/shared/table/data-table-toolbar';
 import { useFilterableList } from '@/hooks/use-filterable-list';
 import { useSheet } from '@/hooks/use-sheet';
 import { staffFilters } from '@/lib/dummy/fiters';
@@ -33,7 +34,7 @@ export default function StaffManagement() {
       />
 
       {isLoading ? (
-        <p className="text-center">Loading staffs...</p>
+        <TableSkeleton rows={8} columns={6} showToolbar />
       ) : (
         <DataTable
           columns={columns}

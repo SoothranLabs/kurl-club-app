@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import { IndianRupee, Map, Settings, Users } from 'lucide-react';
 
-import { KTabs, TabItem } from '@/components/form/k-tabs';
+import { KTabs, TabItem } from '@/components/shared/form/k-tabs';
 
 const navItems: TabItem[] = [
   { id: 'staff-management', label: 'Staff Management', icon: Users },

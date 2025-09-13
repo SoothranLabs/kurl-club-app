@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 
 import { Upload } from 'lucide-react';
 
-import { FieldMapper } from '@/components/table/field-mapper';
+import { FieldMapper } from '@/components/shared/table/field-mapper';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,

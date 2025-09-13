@@ -235,7 +235,7 @@
     .PhoneInputCountrySelect option {
       @apply bg-primary-blue-700 h-8 hover:bg-primary-green-600 text-white;
     } */
-  @apply w-full! h-[52px]! rounded-md! text-sm! font-semibold! text-white! border-0! transition-["outline"]! appearance-none! 
+  @apply w-full! rounded-md! text-sm! font-semibold! text-white! border-0! transition-["outline"]! appearance-none! 
            hover:outline-secondary-blue-400! hover:outline-1! shadow-none! ring-0! hover:outline-solid!
            focus:outline-solid! focus:outline-1! focus:outline-primary-green-700!  focus-visible:outline-offset-1! focus:border-0! outline-transparent!
            ease-in-out! disabled:cursor-not-allowed! disabled:opacity-50! resize-none! overflow-hidden!;

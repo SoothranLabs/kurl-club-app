@@ -2,9 +2,9 @@
 
 import { Clock, PenLine, TrendingUp, User2 } from 'lucide-react';
 
-import { KInput } from '@/components/form/k-input';
-import { KSelect } from '@/components/form/k-select';
-import { KTextarea } from '@/components/form/k-textarea';
+import { KInput } from '@/components/shared/form/k-input';
+import { KSelect } from '@/components/shared/form/k-select';
+import { KTextarea } from '@/components/shared/form/k-textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';

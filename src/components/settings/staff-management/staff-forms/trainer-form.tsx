@@ -8,9 +8,12 @@ import { Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod/v4';
 
-import { KFormField, KFormFieldType } from '@/components/form/k-formfield';
+import {
+  KFormField,
+  KFormFieldType,
+} from '@/components/shared/form/k-formfield';
+import ProfilePictureUploader from '@/components/shared/uploaders/profile-uploader';
 import { Form, FormControl } from '@/components/ui/form';
-import ProfilePictureUploader from '@/components/uploaders/profile-uploader';
 import { useGymFormOptions } from '@/hooks/use-gymform-options';
 import { bloodGroupOptions, genderOptions } from '@/lib/constants';
 import { trainerFormSchema } from '@/schemas';

@@ -9,7 +9,7 @@ import { getGreeting } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { DatePickerSchema } from '@/schemas';
 
-import { KFormField, KFormFieldType } from '../form/k-formfield';
+import { KFormField, KFormFieldType } from '../shared/form/k-formfield';
 import { Form } from '../ui/form';
 
 function Header() {

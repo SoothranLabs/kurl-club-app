@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { KSheet } from '@/components/form/k-sheet';
+import { KSheet } from '@/components/shared/form/k-sheet';
 import { Button } from '@/components/ui/button';
 
 import StaffForm from './staff-forms';

@@ -4,7 +4,7 @@ import 'react-phone-number-input/style.css';
 
 import { Calendar } from 'lucide-react';
 
-import { KDatePicker } from '@/components/form/k-datepicker';
+import { KDatePicker } from '@/components/shared/form/k-datepicker';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { safeDateFormat, safeParseDate } from '@/lib/utils';

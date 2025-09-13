@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { IndianRupee, Users } from 'lucide-react';
 
+import { TableSkeleton } from '@/components/shared/table-skeleton';
 import { useGymFormOptions } from '@/hooks/use-gymform-options';
 import { useSheet } from '@/hooks/use-sheet';
 import { getCompletedPaymentFilters, getPaymentFilters } from '@/lib/filters';
@@ -11,7 +12,7 @@ import { useGymBranch } from '@/providers/gym-branch-provider';
 import { useFilteredPayments } from '@/services/payments';
 import type { Payment } from '@/types/payment';
 
-import InfoCard from '../cards/info-card';
+import InfoCard from '../shared/cards/info-card';
 import { ManagePaymentSheet } from './manage-payment';
 import { createPaymentColumns } from './table/columns';
 import { TableView } from './table/table-view';
@@ -167,7 +168,7 @@ export function PaymentsTab({ type }: Props) {
       )}
 
       {isLoading ? (
-        <p className="text-center">Loading details...</p>
+        <TableSkeleton rows={10} columns={7} />
       ) : (
         <>
           <TableView

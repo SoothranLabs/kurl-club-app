@@ -1,5 +1,5 @@
-import KDialog from '@/components/form/k-dialog';
 import { GymOnboardingForm } from '@/components/onboarding/gym-onboarding-from';
+import KDialog from '@/components/shared/form/k-dialog';
 import { Button } from '@/components/ui/button';
 
 function Banner() {

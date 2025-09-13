@@ -3,13 +3,13 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { KTabs, TabItem } from '@/components/form/k-tabs';
 import {
   Completed,
   Expired,
   History,
   Outstanding,
 } from '@/components/payments';
+import { KTabs, TabItem } from '@/components/shared/form/k-tabs';
 
 const TABS: TabItem[] = [
   { id: 'outstanding-payments', label: 'Outstanding Payments' },
