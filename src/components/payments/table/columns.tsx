@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { getAvatarColor, getInitials } from '@/lib/avatar-utils';
 import { getProfilePictureSrc } from '@/lib/utils';
 import { Payment } from '@/types/payment';
 
@@ -122,16 +123,19 @@ export const createPaymentColumns = (
     header: 'Name',
     cell: ({ row }) => {
       const name = row.getValue<string>('memberName') || 'Unknown';
+      const avatarStyle = getAvatarColor(name);
+      const initials = getInitials(name);
+
       return (
         <div className="flex items-center gap-2 w-[160px]">
           <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-primary-blue-400/70">
-              {name.slice(0, 2)}
+            <AvatarFallback className="font-medium" style={avatarStyle}>
+              {initials}
             </AvatarFallback>
             <AvatarImage
               src={getProfilePictureSrc(
                 row.original.profilePicture ?? null,
-                name.slice(0, 2)
+                initials
               )}
               alt={name}
             />

@@ -36,7 +36,7 @@ export default function StaffDetailsPage({ params }: StaffDetailsPageProps) {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <main className="flex flex-auto">
+    <main className="container p-0 flex flex-auto gap-4 md:gap-0">
       <Sidebar
         isEditing={isEditing}
         details={details}

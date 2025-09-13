@@ -2,7 +2,8 @@ import ProfilePictureUploader from '@/components/shared/uploaders/profile-upload
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { base64ToFile, getInitials, safeDateFormat } from '@/lib/utils';
+import { getAvatarColor, getInitials } from '@/lib/avatar-utils';
+import { base64ToFile, safeDateFormat } from '@/lib/utils';
 import { EditableSectionProps } from '@/types/staff';
 
 export function StaffHeader({
@@ -33,13 +34,18 @@ export function StaffHeader({
               isSmall
             />
           ) : (
-            <Avatar className="size-[64px] bg-secondary-blue-500">
+            <Avatar className="size-[64px]">
               <AvatarImage
                 src={`data:image/png;base64,${details?.profilePicture}`}
                 alt="Profile picture"
               />
-              <AvatarFallback className="text-neutral-green-300 font-medium text-xl leading-normal">
-                {getInitials(details?.name || details?.trainerName)}
+              <AvatarFallback
+                className="font-medium text-xl leading-normal"
+                style={getAvatarColor(
+                  details?.name || details?.trainerName || ''
+                )}
+              >
+                {getInitials(details?.name || details?.trainerName || '')}
               </AvatarFallback>
             </Avatar>
           )}

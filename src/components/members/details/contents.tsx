@@ -28,7 +28,7 @@ function Contents({
   originalDetails: MemberDetails | null;
 }) {
   return (
-    <div className="md:px-8 pt-0 w-full max-w-[calc(100%-95px)] md:max-w-[calc(100%-300px)] lg:max-w-[calc(100%-336px)]  ">
+    <div className="md:px-8 pt-0 w-full max-w-[calc(100%-95px)] md:max-w-[calc(100%-300px)] lg:max-w-[calc(100%-336px)]">
       <Header
         memberId={memberId}
         isEditing={isEditing}

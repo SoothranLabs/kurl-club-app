@@ -8,6 +8,7 @@ import { Eye } from 'lucide-react';
 import { FeeStatusBadge } from '@/components/shared/badges/fee-status-badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { getAvatarColor, getInitials } from '@/lib/avatar-utils';
 import { getProfilePictureSrc, safeFormatDate } from '@/lib/utils';
 import { Member } from '@/types/members';
 
@@ -39,11 +40,14 @@ export const columns: ColumnDef<Member>[] = [
     header: 'Name',
     cell: ({ row }) => {
       const name = row.getValue<string>('name') || 'Unknown';
+      const avatarStyle = getAvatarColor(name);
+      const initials = getInitials(name);
+
       return (
         <div className="flex items-center gap-2 w-[200px]">
           <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-primary-blue-400/70">
-              {name.slice(0, 2)}
+            <AvatarFallback className="font-medium" style={avatarStyle}>
+              {initials}
             </AvatarFallback>
             <AvatarImage
               src={getProfilePictureSrc(

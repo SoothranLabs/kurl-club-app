@@ -19,7 +19,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { cn, getAvatarColors, getInitials } from '@/lib/utils';
+import { getAvatarColor, getInitials } from '@/lib/avatar-utils';
+import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { fetchGymProfilePicture } from '@/services/gym';
 
@@ -54,7 +55,7 @@ export function UserNav() {
         }
       : null);
 
-  const avatarColors = getAvatarColors(currentGym?.gymName || 'KC');
+  const avatarStyle = getAvatarColor(currentGym?.gymName || 'KC');
   const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(
     null
   );
@@ -86,9 +87,7 @@ export function UserNav() {
               src={profilePictureUrl || undefined}
               alt="Profile picture"
             />
-            <AvatarFallback
-              className={cn(avatarColors.bgClass, avatarColors.textClass)}
-            >
+            <AvatarFallback className="font-medium" style={avatarStyle}>
               {currentGym ? getInitials(currentGym.gymName) : 'KC'}
             </AvatarFallback>
           </Avatar>
@@ -105,9 +104,7 @@ export function UserNav() {
               src={profilePictureUrl || undefined}
               alt="Profile picture"
             />
-            <AvatarFallback
-              className={cn(avatarColors.bgClass, avatarColors.textClass)}
-            >
+            <AvatarFallback className="font-medium" style={avatarStyle}>
               {currentGym ? getInitials(currentGym.gymName) : 'KC'}
             </AvatarFallback>
           </Avatar>

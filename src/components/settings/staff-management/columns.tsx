@@ -5,6 +5,7 @@ import { Eye } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { getAvatarColor, getInitials } from '@/lib/avatar-utils';
 import { Staff } from '@/types/staff';
 
 const ActionsCell: React.FC<{ user: Staff }> = ({ user }) => {
@@ -35,11 +36,14 @@ export const columns: ColumnDef<Staff>[] = [
     header: 'Name',
     cell: ({ row }) => {
       const name = row.getValue<string>('name') || 'Unknown';
+      const avatarStyle = getAvatarColor(name);
+      const initials = getInitials(name);
+
       return (
         <div className="flex items-center gap-2 w-[200px]">
           <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-primary-blue-400/70">
-              {name.slice(0, 2)}
+            <AvatarFallback className="font-medium" style={avatarStyle}>
+              {initials}
             </AvatarFallback>
             <AvatarImage src={row.original.avatar} alt={name} />
           </Avatar>
@@ -64,28 +68,28 @@ export const columns: ColumnDef<Staff>[] = [
     accessorKey: 'email',
     header: 'Email',
     cell: ({ row }) => (
-      <div className="min-w-[200px]">{row.getValue('email')}</div>
+      <div className="min-w-[180px]">{row.getValue('email')}</div>
     ),
   },
   {
     accessorKey: 'phone',
     header: 'Phone',
     cell: ({ row }) => (
-      <div className="min-w-[150px]">{row.getValue('phone')}</div>
+      <div className="min-w-[120px]">{row.getValue('phone')}</div>
     ),
   },
   {
     accessorKey: 'bloodGroup',
     header: 'Blood Group',
     cell: ({ row }) => (
-      <div className="min-w-[150px]">{row.getValue('bloodGroup')}</div>
+      <div className="min-w-[100px]">{row.getValue('bloodGroup')}</div>
     ),
   },
   {
     accessorKey: 'gender',
     header: 'Gender',
     cell: ({ row }) => (
-      <div className="min-w-[150px] capitalize">{row.getValue('gender')}</div>
+      <div className="min-w-[80px] capitalize">{row.getValue('gender')}</div>
     ),
   },
   {
