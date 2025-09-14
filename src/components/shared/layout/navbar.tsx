@@ -37,7 +37,8 @@ function Navbar() {
     {
       id: 3,
       title: 'Payments & attendance',
-      url: '/payments-and-attendance/payments',
+      url: '/payments-and-attendance',
+      subUrl: '/payments-and-attendance/payments',
     },
   ];
   const routeChange = (link: string) => {
@@ -65,20 +66,23 @@ function Navbar() {
                 />
               </span>
               <ul className="items-center gap-8 hidden md:flex">
-                {navLink.map((link) => (
-                  <Link href={link.url} key={link.id}>
-                    <li
-                      className={`rounded-[35px] h-[35px] cursor-pointer py-2 px-3 text-whites text-[15px] font-normal capitalize ${
-                        pathname === link.url ||
-                        pathname.startsWith(`${link.url}/`)
-                          ? 'text-primary-blue-900 bg-primary-green-100'
-                          : ''
-                      }`}
-                    >
-                      {link.title}
-                    </li>
-                  </Link>
-                ))}
+                {navLink.map((link) => {
+                  const isActive =
+                    pathname === link.url ||
+                    pathname.startsWith(`${link.url}/`) ||
+                    (link.subUrl && pathname.startsWith(link.subUrl));
+
+                  return (
+                    <Link href={link.url} key={link.id}>
+                      <li
+                        className={`rounded-[35px] h-[35px] cursor-pointer py-2 px-3 text-whites text-[15px] font-normal capitalize
+            ${isActive ? 'text-primary-blue-900 bg-primary-green-100' : ''}`}
+                      >
+                        {link.title}
+                      </li>
+                    </Link>
+                  );
+                })}
               </ul>
             </div>
           </GymRequiredGuard>
