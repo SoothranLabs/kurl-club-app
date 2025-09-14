@@ -37,7 +37,7 @@ function Navbar() {
     {
       id: 3,
       title: 'Payments & attendance',
-      url: '/payments-and-attendance',
+      url: '/payments-and-attendance/payments',
     },
   ];
   const routeChange = (link: string) => {
