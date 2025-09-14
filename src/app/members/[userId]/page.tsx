@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import Contents from '@/components/members/details/contents';
+import { Loading } from '@/components/members/details/loading';
 import { Sidebar } from '@/components/members/details/sidebar';
 import { useMemberDetails } from '@/hooks/use-member-details';
 
@@ -28,8 +29,8 @@ export default function MemberDetailsPage({ params }: MemberDetailsPageProps) {
     updateMemberDetail,
   } = useMemberDetails(userId!);
 
-  if (!userId) return <p>Loading...</p>;
-  if (loading) return <p>Loading member details...</p>;
+  if (!userId) return <Loading />;
+  if (loading) return <Loading />;
   if (error) return <p>Error: {error}</p>;
 
   return (

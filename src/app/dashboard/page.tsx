@@ -1,7 +1,5 @@
 'use client';
 
-import React from 'react';
-
 import Banner from '@/components/dashboard/banner';
 import CardList from '@/components/dashboard/card-list';
 import Header from '@/components/dashboard/header';
