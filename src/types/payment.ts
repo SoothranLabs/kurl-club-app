@@ -43,4 +43,6 @@ export interface MemberPaymentDetails {
   paymentStatus: string;
   totalPaymentsMade: number;
   memberDOJ: string;
+  bufferEndDate?: string | null;
+  bufferDaysRemaining?: number;
 }

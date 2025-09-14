@@ -14,6 +14,14 @@ import {
 } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 
+// Payment-related types
+export type PaymentBadgeStatus =
+  | 'paid'
+  | 'partially_paid'
+  | 'pending'
+  | 'overdue';
+export type UrgencyColor = 'red' | 'orange' | 'yellow' | 'green';
+
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL!;
 
 /**
@@ -384,4 +392,86 @@ export const calculateAge = (dob: string): number => {
   }
 
   return age;
+};
+
+/**
+ * Calculates days remaining until a target date from today.
+ * Normalizes both dates to midnight for accurate day calculation.
+ *
+ * @param targetDate - The target date string.
+ * @returns Number of days remaining (negative if overdue).
+ */
+export const calculateDaysRemaining = (targetDate: string): number => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const target = new Date(targetDate);
+  target.setHours(0, 0, 0, 0);
+  return Math.ceil(
+    (target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+  );
+};
+
+/**
+ * Maps payment status strings to standardized badge status.
+ *
+ * @param paymentStatus - The payment status from API.
+ * @param pendingAmount - The pending amount (optional fallback).
+ * @returns Standardized status for badges.
+ */
+export const getPaymentBadgeStatus = (
+  paymentStatus: string,
+  pendingAmount?: number
+): 'paid' | 'partially_paid' | 'pending' | 'overdue' => {
+  switch (paymentStatus) {
+    case 'Completed':
+      return 'paid';
+    case 'Partial':
+      return 'partially_paid';
+    case 'Pending':
+      return 'pending';
+    case 'Arrears':
+      return 'overdue';
+    default:
+      return (pendingAmount ?? 0) > 0 ? 'pending' : 'paid';
+  }
+};
+
+/**
+ * Gets urgency configuration based on days remaining.
+ *
+ * @param daysRemaining - Number of days remaining.
+ * @returns Urgency configuration object.
+ */
+export const getUrgencyConfig = (daysRemaining: number) => {
+  if (daysRemaining <= 0) {
+    return {
+      bgColor: 'bg-red-500/20 text-red-300',
+      color: 'red' as const,
+      text: 'EXPIRED',
+    };
+  } else if (daysRemaining <= 1) {
+    return {
+      bgColor: 'bg-red-500/20 text-red-300',
+      color: 'red' as const,
+      text: daysRemaining === 1 ? 'Tomorrow' : 'Today',
+    };
+  } else if (daysRemaining <= 3) {
+    return {
+      bgColor: 'bg-orange-500/20 text-orange-300',
+      color: 'orange' as const,
+      text: `${daysRemaining}d left`,
+    };
+  } else if (daysRemaining <= 7) {
+    return {
+      bgColor: 'bg-yellow-500/20 text-yellow-300',
+      color: 'yellow' as const,
+      text: `${daysRemaining}d left`,
+    };
+  } else {
+    return {
+      bgColor: 'bg-secondary-green-500/20 text-green-300',
+      color: 'green' as const,
+      text: `${daysRemaining}d left`,
+    };
+  }
 };

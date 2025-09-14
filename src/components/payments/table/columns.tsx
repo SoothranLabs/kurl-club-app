@@ -16,7 +16,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { getAvatarColor, getInitials } from '@/lib/avatar-utils';
-import { getProfilePictureSrc } from '@/lib/utils';
+import {
+  calculateDaysRemaining,
+  getPaymentBadgeStatus,
+  getProfilePictureSrc,
+  getUrgencyConfig,
+} from '@/lib/utils';
 import { Payment } from '@/types/payment';
 
 const UrgencyIndicator = ({
@@ -33,40 +38,6 @@ const UrgencyIndicator = ({
     ></span>
   </span>
 );
-
-const getUrgencyConfig = (daysRemaining: number) => {
-  if (daysRemaining <= 0) {
-    return {
-      bgColor: 'bg-red-500/20 text-red-300',
-      color: 'red' as const,
-      text: 'EXPIRED',
-    };
-  } else if (daysRemaining <= 1) {
-    return {
-      bgColor: 'bg-red-500/20 text-red-300',
-      color: 'red' as const,
-      text: daysRemaining === 1 ? 'Tomorrow' : 'Today',
-    };
-  } else if (daysRemaining <= 3) {
-    return {
-      bgColor: 'bg-orange-500/20 text-orange-300',
-      color: 'orange' as const,
-      text: `${daysRemaining}d left`,
-    };
-  } else if (daysRemaining <= 7) {
-    return {
-      bgColor: 'bg-yellow-500/20 text-yellow-300',
-      color: 'yellow' as const,
-      text: `${daysRemaining}d left`,
-    };
-  } else {
-    return {
-      bgColor: 'bg-secondary-green-500/20 text-green-300',
-      color: 'green' as const,
-      text: `${daysRemaining}d left`,
-    };
-  }
-};
 
 const ActionsCell: React.FC<{
   user: Payment;
@@ -152,15 +123,8 @@ export const createPaymentColumns = (
     header: 'Due Date',
     cell: ({ row }) => {
       const { dueDate, bufferEndDate } = row.original;
-      const dueDateObj = new Date(dueDate);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      dueDateObj.setHours(0, 0, 0, 0);
-
-      const daysDiff = Math.ceil(
-        (dueDateObj.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
-      );
-      const formattedDate = dueDateObj.toLocaleDateString('en-GB', {
+      const daysDiff = calculateDaysRemaining(dueDate);
+      const formattedDate = new Date(dueDate).toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short',
       });
@@ -216,15 +180,7 @@ export const createPaymentColumns = (
         );
       }
 
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      const bufferEnd = new Date(bufferEndDate);
-      bufferEnd.setHours(0, 0, 0, 0);
-
-      const daysRemaining = Math.ceil(
-        (bufferEnd.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
-      );
+      const daysRemaining = calculateDaysRemaining(bufferEndDate);
 
       const {
         bgColor,
@@ -270,12 +226,8 @@ export const createPaymentColumns = (
       bDate.setHours(0, 0, 0, 0);
 
       // Calculate days remaining for each
-      const aDaysLeft = Math.ceil(
-        (aDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
-      );
-      const bDaysLeft = Math.ceil(
-        (bDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
-      );
+      const aDaysLeft = calculateDaysRemaining(aDate.toISOString());
+      const bDaysLeft = calculateDaysRemaining(bDate.toISOString());
 
       // Sort by urgency: expired first, then by days remaining (ascending)
       return aDaysLeft - bDaysLeft;
@@ -317,25 +269,7 @@ export const createPaymentColumns = (
       const status = row.getValue('feeStatus') as string;
       const pendingAmount = row.original.pendingAmount;
 
-      let badgeStatus: 'paid' | 'partially_paid' | 'pending' | 'overdue' =
-        'pending';
-
-      switch (status) {
-        case 'Completed':
-          badgeStatus = 'paid';
-          break;
-        case 'Partial':
-          badgeStatus = 'partially_paid';
-          break;
-        case 'Pending':
-          badgeStatus = 'pending';
-          break;
-        case 'Arrears':
-          badgeStatus = 'overdue';
-          break;
-        default:
-          badgeStatus = pendingAmount > 0 ? 'pending' : 'paid';
-      }
+      const badgeStatus = getPaymentBadgeStatus(status, pendingAmount);
 
       return (
         <div className="min-w-24">

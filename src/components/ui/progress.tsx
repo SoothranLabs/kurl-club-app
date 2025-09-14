@@ -16,17 +16,15 @@ const Progress = React.forwardRef<
 
   const getColor = (val: number) => {
     if (gradient) {
-      return 'linear-gradient(to right, #22A311 30%, #EBFB8B 85%, #FF0000 120%)';
+      return 'linear-gradient(to right, #22A311 5%, #EAB308 30%, #F97316 60%, #DC2626 100%)';
     }
-    if (val > 75) return '#22A311';
-    if (val > 50) return '#EAB308';
-    if (val > 25) return '#F97316';
-    if (val > 0) return '#DC2626';
-    return '#DC2626';
+    if (val >= 90) return '#DC2626';
+    if (val >= 70) return '#F97316';
+    if (val >= 40) return '#EAB308';
+    return '#22A311';
   };
 
-  const isOverdue = safeValue <= 0;
-  const adjustedValue = isOverdue ? 5 : safeValue; // force tiny strip when overdue
+  const adjustedValue = safeValue;
 
   return (
     <ProgressPrimitive.Root
