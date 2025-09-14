@@ -2,7 +2,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
-import { Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod/v4';
 
@@ -289,25 +288,19 @@ export const AddMember: React.FC<CreateMemberDetailsProps> = ({
                 fieldType={KFormFieldType.DATE_PICKER}
                 control={form.control}
                 name="doj"
-                dateLabel="Date of joining"
+                label="Date of joining"
                 mode="single"
-                className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-                iconSrc={<Calendar className="w-5! h-5! text-white" />}
+                floating
               />
             </div>
 
             {/* Date of birth */}
             <div className="w-full sm:w-1/2 ">
               <KFormField
-                fieldType={KFormFieldType.DATE_PICKER}
-                showPresets
+                fieldType={KFormFieldType.DATE_INPUT}
                 control={form.control}
                 name="dob"
-                dateLabel="Date of birth"
-                mode="single"
-                className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-                iconSrc={<Calendar className="w-5! h-5! text-white" />}
-                showYearSelector
+                label="Date of birth"
               />
             </div>
           </div>

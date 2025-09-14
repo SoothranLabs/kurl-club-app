@@ -29,6 +29,7 @@ interface KDatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
   showPresets?: boolean;
   showYearSelector?: boolean;
   label?: string;
+  floating?: boolean;
   value?: DateRange | Date | undefined;
   onDateChange?: (range: DateRange | Date | undefined) => void;
   presets?: string[];
@@ -44,6 +45,7 @@ export function KDatePicker({
   showPresets = true,
   showYearSelector = false,
   label = 'Pick a date range',
+  floating = false,
   value,
   onDateChange,
   className,
@@ -61,7 +63,7 @@ export function KDatePicker({
   startYear = getYear(new Date()) - 100,
   endYear = getYear(new Date()) + 100,
   mode = 'range',
-  icon = <CalendarDays className="text-primary-green-500" />,
+  icon = <CalendarDays className="text-primary-green-100" />,
 }: KDatePickerProps) {
   const [rangeDate, setRangeDate] = React.useState<DateRange | undefined>(
     mode === 'range' ? (value as DateRange) : undefined
@@ -75,9 +77,12 @@ export function KDatePicker({
   );
   const [activePreset, setActivePreset] = React.useState<string | null>(null);
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+  const [isFocused, setIsFocused] = React.useState(false);
   const [viewDate, setViewDate] = React.useState<Date>(
     rangeDate?.from || singleDate || new Date()
   );
+
+  const hasValue = mode === 'single' ? !!singleDate : !!rangeDate?.from;
 
   React.useEffect(() => {
     if (value) {
@@ -222,6 +227,88 @@ export function KDatePicker({
       );
     }
   };
+
+  if (floating) {
+    return (
+      <div className="relative">
+        <Popover
+          open={isPopoverOpen}
+          onOpenChange={(open) => {
+            if (!open) {
+              handleCancel();
+              setIsFocused(false);
+            }
+            setIsPopoverOpen(open);
+          }}
+        >
+          <PopoverTrigger asChild>
+            <button
+              type="button"
+              className={cn(
+                'k-input bg-secondary-blue-500 flex items-center w-full text-left relative px-4 h-[52px] pb-2.5 pt-3.5',
+                className
+              )}
+              onClick={() => {
+                setIsPopoverOpen(true);
+                setIsFocused(true);
+              }}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => !isPopoverOpen && setIsFocused(false)}
+            >
+              <span
+                className={cn(
+                  'flex-1',
+                  hasValue ? 'text-white mt-2' : 'text-transparent'
+                )}
+              >
+                {mode === 'single' && singleDate
+                  ? format(singleDate, 'dd/MM/yyyy')
+                  : mode === 'range' && rangeDate?.from
+                    ? rangeDate.to
+                      ? `${format(rangeDate.from, 'dd/MM/yyyy')} - ${format(rangeDate.to, 'dd/MM/yyyy')}`
+                      : format(rangeDate.from, 'dd/MM/yyyy')
+                    : 'Select date'}
+              </span>
+              <div className="flex items-center">{icon}</div>
+            </button>
+          </PopoverTrigger>
+          <label
+            className={cn(
+              'text-sm text-primary-blue-100 absolute left-4 transition-all duration-200 pointer-events-none',
+              isFocused || hasValue
+                ? 'top-1.5 text-xs'
+                : 'top-3.5 text-sm scale-100'
+            )}
+          >
+            {label}
+          </label>
+          <PopoverContent
+            className="flex w-auto overflow-hidden rounded-xl border border-primary-blue-400 bg-secondary-blue-800 p-0 pointer-events-auto"
+            align="start"
+          >
+            {showPresets && mode === 'range' && (
+              <PresetSidebar
+                presets={presets}
+                activePreset={activePreset}
+                onSelectPreset={handlePresetSelection}
+                years={Array.from(
+                  { length: endYear - startYear + 1 },
+                  (_, i) => startYear + i
+                )}
+                currentYear={getYear(viewDate).toString()}
+                onYearChange={(year) =>
+                  setViewDate(setYear(viewDate, Number.parseInt(year)))
+                }
+              />
+            )}
+            <div className="flex flex-col justify-between gap-4 p-4">
+              {renderCalendar()}
+            </div>
+          </PopoverContent>
+        </Popover>
+      </div>
+    );
+  }
 
   return (
     <div className={cn('grid gap-2')}>

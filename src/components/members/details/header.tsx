@@ -70,10 +70,10 @@ function Header({ isEditing, handleSave, toggleEdit, memberId }: HeaderProps) {
             </Button>
             <Button
               className="h-10"
-              variant="outline"
+              variant="destructive"
               onClick={() => handleDeleteCustomer(memberId)}
             >
-              <Trash2 className="text-primary-green-500 h-5! w-5!" />
+              <Trash2 className="h-5! w-5!" />
               Delete
             </Button>
           </>

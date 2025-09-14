@@ -26,28 +26,30 @@ export default function StaffManagement() {
   );
 
   return (
-    <div className="h-full flex-1 flex-col space-y-8 p-8 flex container">
+    <div>
       <StaffsHeader
         onAddNewClick={() => openSheet()}
         isOpen={isOpen}
         closeSheet={closeSheet}
       />
 
-      {isLoading ? (
-        <TableSkeleton rows={8} columns={6} showToolbar />
-      ) : (
-        <DataTable
-          columns={columns}
-          data={staffs}
-          toolbar={(table) => (
-            <DataTableToolbar
-              table={table}
-              onSearch={search}
-              filters={staffFilters}
-            />
-          )}
-        />
-      )}
+      <div className="p-8 max-w-[calc(100vw-342px)]">
+        {isLoading ? (
+          <TableSkeleton rows={8} columns={6} showToolbar />
+        ) : (
+          <DataTable
+            columns={columns}
+            data={staffs}
+            toolbar={(table) => (
+              <DataTableToolbar
+                table={table}
+                onSearch={search}
+                filters={staffFilters}
+              />
+            )}
+          />
+        )}
+      </div>
     </div>
   );
 }

@@ -12,6 +12,7 @@ import 'react-phone-number-input/style.css';
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import { E164Number } from 'libphonenumber-js/core';
 
+import { KDateInput } from '@/components/shared/form/k-date-input';
 import { KDatePicker } from '@/components/shared/form/k-datepicker';
 import { KInput } from '@/components/shared/form/k-input';
 import { KMultiSelect } from '@/components/shared/form/k-multi-select';
@@ -40,6 +41,7 @@ export enum KFormFieldType {
   PHONE_INPUT = 'phoneInput',
   CHECKBOX = 'checkbox',
   DATE_PICKER = 'datePicker',
+  DATE_INPUT = 'dateInput',
   SELECT = 'select',
   MULTISELECT = 'multiSelect',
   OTP = 'otp',
@@ -63,6 +65,7 @@ interface CustomProps<T extends FieldValues> {
   numberOfMonths?: number;
   mode?: 'range' | 'single';
   dateLabel?: string;
+  floating?: boolean;
   showPresets?: boolean;
   showYearSelector?: boolean;
   children?: React.ReactNode;
@@ -95,6 +98,7 @@ const RenderField = <T extends FieldValues>({
     iconSrc,
     numberOfMonths,
     dateLabel,
+    floating,
     mode,
     showPresets,
     showYearSelector,
@@ -232,7 +236,8 @@ const RenderField = <T extends FieldValues>({
         <FormControl>
           <KDatePicker
             numberOfMonths={numberOfMonths}
-            label={dateLabel}
+            label={floating ? label : dateLabel}
+            floating={floating}
             showPresets={showPresets}
             showYearSelector={showYearSelector}
             onDateChange={(date) => {
@@ -250,6 +255,20 @@ const RenderField = <T extends FieldValues>({
             mode={mode ?? 'range'}
             className={className}
             icon={iconSrc}
+          />
+        </FormControl>
+      );
+
+    case KFormFieldType.DATE_INPUT:
+      return (
+        <FormControl>
+          <KDateInput
+            label={label ?? 'Date'}
+            id={name}
+            {...field}
+            disabled={props.disabled}
+            className={className}
+            size={size}
           />
         </FormControl>
       );

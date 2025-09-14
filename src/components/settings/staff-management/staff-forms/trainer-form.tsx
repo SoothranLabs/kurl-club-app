@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
-import { Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod/v4';
 
@@ -142,9 +141,9 @@ export default function TrainerForm({
           label="Phone Number"
           disabled={isSubmitting}
         />
-        <div className="flex justify-between gap-3">
+        <div className="flex justify-between gap-3 flex-wrap sm:flex-nowrap">
           {/* Gender */}
-          <div className="w-1/2">
+          <div className="w-full sm:w-1/2">
             <KFormField
               fieldType={KFormFieldType.SELECT}
               control={form.control}
@@ -156,7 +155,7 @@ export default function TrainerForm({
           </div>
 
           {/* Blood Group */}
-          <div className="w-1/2">
+          <div className="w-full sm:w-1/2">
             <KFormField
               fieldType={KFormFieldType.SELECT}
               control={form.control}
@@ -167,33 +166,27 @@ export default function TrainerForm({
             />
           </div>
         </div>
-        <div className="flex justify-between gap-3">
-          {/* Dob */}
-          <div className="w-1/2">
-            <KFormField
-              fieldType={KFormFieldType.DATE_PICKER}
-              control={form.control}
-              name="Dob"
-              dateLabel="Date of birth"
-              mode="single"
-              className="bg-secondary-blue-500 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-              iconSrc={<Calendar className="w-5! h-5! text-white" />}
-              showYearSelector
-              disabled={isSubmitting}
-            />
-          </div>
-
-          {/* Doj */}
-          <div className="w-1/2">
+        <div className="flex justify-between gap-3 flex-wrap sm:flex-nowrap">
+          {/* Date of joining */}
+          <div className="w-full sm:w-1/2">
             <KFormField
               fieldType={KFormFieldType.DATE_PICKER}
               control={form.control}
               name="Doj"
               label="Date of joining"
-              dateLabel="Date of joining"
               mode="single"
-              className="bg-secondary-blue-500 z-1000 h-[52px] rounded-md flex flex-row-reverse text-primary-blue-100 font-normal leading-normal text-sm w-full justify-between"
-              iconSrc={<Calendar className="w-5! h-5! text-white" />}
+              floating
+              disabled={isSubmitting}
+            />
+          </div>
+
+          {/* Date of birth */}
+          <div className="w-full sm:w-1/2">
+            <KFormField
+              fieldType={KFormFieldType.DATE_INPUT}
+              control={form.control}
+              name="Dob"
+              label="Date of birth"
               disabled={isSubmitting}
             />
           </div>

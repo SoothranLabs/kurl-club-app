@@ -51,7 +51,7 @@ export const AddStaff: React.FC<CreateStaffDetailsProps> = ({
 
   return (
     <KSheet
-      className="w-[582px]"
+      className="w-[450px]"
       isOpen={isOpen}
       onClose={closeSheet}
       title="Add New Staff"

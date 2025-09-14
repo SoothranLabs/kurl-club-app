@@ -16,7 +16,7 @@ export const StaffsHeader = ({
   closeSheet,
 }: StaffsHeaderProps) => {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex px-8 pt-8 items-center justify-between">
       <h4 className="text-[20px] leading-normal tracking-tight font-medium text-white">
         Staff Management
       </h4>
