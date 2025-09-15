@@ -10,6 +10,7 @@ import { FeeStatusBadge } from '@/components/shared/badges/fee-status-badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useSheet } from '@/hooks/use-sheet';
 import {
   calculateDaysRemaining,
@@ -36,11 +37,7 @@ function PaymentCard({ memberId }: PaymentCardProps) {
   };
 
   if (isLoading) {
-    return (
-      <div className="rounded-lg h-full bg-secondary-blue-500 p-5 pb-7 w-full">
-        <p className="text-white">Loading payment details...</p>
-      </div>
-    );
+    return <Skeleton />;
   }
 
   if (!paymentData) {

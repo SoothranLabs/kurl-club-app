@@ -47,7 +47,7 @@ export function KTabs({
                 key={item.id}
                 onClick={() => onTabChange?.(item.id)}
                 className={cn(
-                  'relative flex items-center gap-2.5 px-8 py-2.5 h-10 text-[15px] leading-normal transition-colors hover:bg-secondary-blue-500',
+                  'relative flex items-center gap-2.5 px-8 py-2.5 h-10 text-[15px] leading-normal transition-colors hover:bg-secondary-blue-500 cursor-pointer',
                   {
                     'bg-secondary-blue-500 text-white before:absolute before:left-0 before:top-0 before:h-full before:w-[2px] before:bg-primary-green-100':
                       isActive,

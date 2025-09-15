@@ -80,7 +80,7 @@ export function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-10 w-10 rounded-full hidden md:flex"
+          className="relative h-10 w-10 rounded-full hidden md:flex cursor-pointer"
         >
           <Avatar className="h-10 w-10">
             <AvatarImage

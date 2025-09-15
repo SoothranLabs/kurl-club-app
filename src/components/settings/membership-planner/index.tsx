@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useMembershipPlans } from '@/hooks/use-membership-plan';
 import { useSheet } from '@/hooks/use-sheet';
 import { useGymBranch } from '@/providers/gym-branch-provider';
@@ -17,7 +18,8 @@ export function PackageManager() {
   const [selectedPlan, setSelectedPlan] = useState<MembershipPlan | null>(null);
   const { isOpen, openSheet, closeSheet } = useSheet();
   const { gymBranch } = useGymBranch();
-  const { plans, createPlan, updatePlan, deletePlan } = useMembershipPlans();
+  const { plans, createPlan, updatePlan, deletePlan, isLoading } =
+    useMembershipPlans();
 
   const handleCreatePlan = () => {
     if (!gymBranch?.gymId) {
@@ -92,7 +94,11 @@ export function PackageManager() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {plans.length === 0 ? (
+          {isLoading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="w-full h-[400px] rounded-xl" />
+            ))
+          ) : plans.length === 0 ? (
             <div className="col-span-full text-center py-10">
               <p className="text-gray-400">
                 No membership plans available. Click &quot;Create Plan&quot; to
@@ -112,7 +118,6 @@ export function PackageManager() {
             ))
           )}
         </div>
-
         <MembershipPlanSheet
           plan={selectedPlan}
           isOpen={isOpen}

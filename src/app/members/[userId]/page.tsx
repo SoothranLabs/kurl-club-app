@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import Loading from '@/app/loading';
 import Contents from '@/components/members/details/contents';
-import { Loading } from '@/components/members/details/loading';
 import { Sidebar } from '@/components/members/details/sidebar';
 import { useMemberDetails } from '@/hooks/use-member-details';
 
