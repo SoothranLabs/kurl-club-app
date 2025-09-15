@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import Loading from '@/app/loading';
 import Contents from '@/components/members/details/contents';
-import { Loading } from '@/components/members/details/loading';
 import { Sidebar } from '@/components/members/details/sidebar';
 import { useMemberDetails } from '@/hooks/use-member-details';
 
@@ -25,19 +24,16 @@ export default function MemberDetailsPage({ params }: MemberDetailsPageProps) {
     toggleEdit,
     details,
     originalDetails,
-    loading,
     error,
     updateMemberDetail,
   } = useMemberDetails(userId!);
 
-  if (!userId) return <Loading />;
-  if (loading) return <Loading />;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <main className="container p-0 flex flex-auto gap-4 md:gap-0">
       <Sidebar
-        memberId={userId}
+        memberId={userId ? userId : ''}
         isEditing={isEditing}
         details={details}
         updateMemberDetail={updateMemberDetail}
@@ -45,7 +41,7 @@ export default function MemberDetailsPage({ params }: MemberDetailsPageProps) {
         toggleEdit={toggleEdit}
       />
       <Contents
-        memberId={userId}
+        memberId={userId ? userId : ''}
         isEditing={isEditing}
         handleSave={handleSave}
         toggleEdit={toggleEdit}

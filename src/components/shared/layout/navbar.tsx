@@ -73,14 +73,15 @@ function Navbar() {
                     (link.subUrl && pathname.startsWith(link.subUrl));
 
                   return (
-                    <Link href={link.url} key={link.id}>
-                      <li
-                        className={`rounded-[35px] h-[35px] cursor-pointer py-2 px-3 text-whites text-[15px] font-normal capitalize
+                    <li key={link.id}>
+                      <Link
+                        href={link?.subUrl || link.url}
+                        className={`rounded-[35px] h-[35px] flex items-center cursor-pointer py-2 px-3 text-whites text-[15px] font-normal capitalize 
             ${isActive ? 'text-primary-blue-900 bg-primary-green-100' : ''}`}
                       >
                         {link.title}
-                      </li>
-                    </Link>
+                      </Link>
+                    </li>
                   );
                 })}
               </ul>
