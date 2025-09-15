@@ -20,8 +20,20 @@ const figtree = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Kurl Club',
-  description: 'Gym App',
+  title: {
+    template: '%s | Kurl Club Admin',
+    default: 'Kurl Club Admin',
+  },
+  description: 'Gym management system for fitness center owners',
+  applicationName: 'Kurl Club Admin',
+  icons: {
+    icon: '/kurl-club.svg',
+  },
+  manifest: '/manifest.json',
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({

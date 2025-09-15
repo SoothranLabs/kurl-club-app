@@ -1,0 +1,20 @@
+{
+  "name": "Kurl Club Admin",
+  "short_name": "Kurl Club",
+  "description": "Gym management system for fitness center owners",
+  "start_url": "/auth/login",
+  "display": "standalone",
+  "background_color": "#11141c",
+  "theme_color": "#d3f702",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/kurl-club.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

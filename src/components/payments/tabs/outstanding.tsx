@@ -1,4 +1,4 @@
-import { PaymentsTab } from './payments-tab';
+import { PaymentsTab } from '../payments-tab';
 
 const Outstanding = () => {
   return <PaymentsTab type="outstanding" />;

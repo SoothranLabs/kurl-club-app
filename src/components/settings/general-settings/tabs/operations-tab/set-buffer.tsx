@@ -10,6 +10,7 @@ import {
   KFormFieldType,
 } from '@/components/shared/form/k-formfield';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useAppDialog } from '@/hooks/use-app-dialog';
 import { useBufferConfigs } from '@/hooks/use-buffer-config';
 import { useGymFormOptions } from '@/hooks/use-gymform-options';
@@ -115,7 +116,7 @@ export default function SetBuffer() {
   };
 
   if (isLoading) {
-    return <div className="text-white">Loading buffer configurations...</div>;
+    return <Skeleton className="h-[390px]" />;
   }
 
   return (

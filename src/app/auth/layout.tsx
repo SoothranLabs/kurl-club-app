@@ -1,4 +1,14 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
+
+export const metadata: Metadata = {
+  title: 'Authentication',
+  description: 'Secure login to Kurl Club Admin - Gym Management System',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function AuthLayout({
   children,

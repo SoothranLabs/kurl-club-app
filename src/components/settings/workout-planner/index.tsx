@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useSheet } from '@/hooks/use-sheet';
 import { useWorkoutPlans } from '@/hooks/use-workout-plan';
 import { useGymBranch } from '@/providers/gym-branch-provider';
@@ -17,7 +18,8 @@ export function WorkoutPlanner() {
   const [selectedPlan, setSelectedPlan] = useState<WorkoutPlan | null>(null);
   const { isOpen, openSheet, closeSheet } = useSheet();
   const { gymBranch } = useGymBranch();
-  const { plans, createPlan, updatePlan, deletePlan } = useWorkoutPlans();
+  const { plans, createPlan, updatePlan, deletePlan, isLoading } =
+    useWorkoutPlans();
 
   const handleCreatePlan = () => {
     if (!gymBranch?.gymId) {
@@ -92,7 +94,11 @@ export function WorkoutPlanner() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {plans.length === 0 ? (
+          {isLoading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="w-full h-[250px] rounded-xl" />
+            ))
+          ) : plans.length === 0 ? (
             <div className="col-span-full text-center py-10">
               <p className="text-gray-400">
                 No workout plans found. Create your first plan!
@@ -111,7 +117,6 @@ export function WorkoutPlanner() {
             ))
           )}
         </div>
-
         <WorkoutPlanSheet
           plan={selectedPlan}
           isOpen={isOpen}

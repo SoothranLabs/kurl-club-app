@@ -1,4 +1,4 @@
-import { PaymentsTab } from './payments-tab';
+import { PaymentsTab } from '../payments-tab';
 
 const Expired = () => {
   return <PaymentsTab type="expired" />;

@@ -1,4 +1,4 @@
-import { PaymentsTab } from './payments-tab';
+import { PaymentsTab } from '../payments-tab';
 
 const Completed = () => {
   return <PaymentsTab type="completed" />;
