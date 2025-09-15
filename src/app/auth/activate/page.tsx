@@ -1,13 +1,12 @@
-import { Suspense } from 'react';
+import type { Metadata } from 'next';
 
 import ActivateScreen from '@/components/auth/activate-page';
 
-const ActivatePage = () => {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ActivateScreen />
-    </Suspense>
-  );
+export const metadata: Metadata = {
+  title: 'Activate Account',
+  description: 'Activate your Kurl Club Admin account',
 };
 
-export default ActivatePage;
+export default function ActivatePage() {
+  return <ActivateScreen />;
+}
