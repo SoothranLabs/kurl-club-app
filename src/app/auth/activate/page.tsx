@@ -4,7 +4,7 @@ import ActivateScreen from '@/components/auth/activate-page';
 
 export const metadata: Metadata = {
   title: 'Activate Account',
-  description: 'Activate your Kurl Club Admin account',
+  description: 'Activate your KurlClub Admin account',
 };
 
 export default function ActivatePage() {

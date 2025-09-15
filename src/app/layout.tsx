@@ -21,13 +21,19 @@ const figtree = localFont({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Kurl Club Admin',
-    default: 'Kurl Club Admin',
+    template: '%s | KurlClub Admin',
+    default: 'KurlClub Admin',
   },
   description: 'Gym management system for fitness center owners',
-  applicationName: 'Kurl Club Admin',
+  applicationName: 'KurlClub Admin',
+  appleWebApp: {
+    title: 'KurlClub',
+    capable: true,
+    statusBarStyle: 'black-translucent',
+  },
   icons: {
-    icon: '/kurl-club.svg',
+    icon: ['/favicon.ico', '/icon.svg'],
+    apple: '/apple-icon.png',
   },
   manifest: '/manifest.json',
   robots: {

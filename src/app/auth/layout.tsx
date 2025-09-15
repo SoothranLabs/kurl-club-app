@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Authentication',
-  description: 'Secure login to Kurl Club Admin - Gym Management System',
+  description: 'Secure login to KurlClub Admin - Gym Management System',
   robots: {
     index: false,
     follow: false,

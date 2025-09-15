@@ -4,7 +4,7 @@ import { RegisterForm } from '@/components/auth/register-form';
 
 export const metadata: Metadata = {
   title: 'Register',
-  description: 'Create your Kurl Club Admin account to start managing your gym',
+  description: 'Create your KurlClub Admin account to start managing your gym',
 };
 
 const RegisterPage = () => {
