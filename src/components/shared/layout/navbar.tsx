@@ -43,12 +43,13 @@ function Navbar() {
   ];
   const routeChange = (link: string) => {
     router.push(link);
+    setActive(false);
   };
 
   return (
     <>
-      <div className="w-full border-b-[1px] border-secondary-blue-500 bg-primary-blue-500 h-20 sticky top-0 z-50">
-        <div className="container py-5 h-full flex items-center justify-between sm:grid sm:grid-cols-[3fr_1fr] lg:grid-cols-[1.6fr_1fr]">
+      <div className="w-full border-b-[1px] border-secondary-blue-500 bg-primary-blue-500 md:h-20 sticky top-0 z-50">
+        <div className="container py-3 md:py-5 h-full flex items-center justify-between sm:grid sm:grid-cols-[3fr_1fr] lg:grid-cols-[1.6fr_1fr]">
           <GymRequiredGuard>
             <div className="flex justify-between items-center">
               <span
@@ -97,7 +98,7 @@ function Navbar() {
             <UserNav />
             <span
               onClick={() => setActive(true)}
-              className="w-10 h-10 flex justify-center items-center md:hidden"
+              className="w-[30px] h-[30px] flex justify-center items-center md:hidden"
             >
               <Menu size={30} />
             </span>
@@ -106,7 +107,7 @@ function Navbar() {
       </div>
       {/* responsive */}
       <div
-        className={`h-screen max-w-[400px] w-full fixed top-0 right-0 md:hidden bg-primary-blue-700 z-[100] transform transition-transform duration-300 flex flex-col pt-7  gap-8
+        className={`h-screen max-w-[400px] w-full fixed top-0 right-0 md:hidden bg-primary-blue-700 z-[100] transform transition-transform duration-300 flex flex-col pt-7 gap-8
     ${isActive ? 'translate-x-0' : 'translate-x-[100%]'}`}
       >
         <span

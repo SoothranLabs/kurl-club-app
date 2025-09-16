@@ -246,7 +246,7 @@
 }
 
 @utility container {
-  @apply max-w-[1530px] mx-auto px-8;
+  @apply max-w-[1530px] mx-auto px-3 sm:px-4 md:px-8;
 }
 
 @utility checkbox-label {

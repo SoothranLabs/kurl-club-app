@@ -73,14 +73,14 @@ export function Sidebar({
     <>
       <Button
         onClick={() => setSidebarOpen(true)}
-        className="p-3 ml-2 mt-2 sticky top-[88px] md:hidden"
+        className="p-3 ml-2 mt-2 sticky top-[62px] md:hidden"
       >
         <PanelLeftOpen />
       </Button>
       <div
-        className={`fixed z-40 left-0 sm:max-w-[50%] md:max-w-[300px] lg:max-w-[336px] w-full md:max-h-[calc(100vh-80px)] md:sticky md:left-0 top-[80px] md:h-full pb-8 max-h-full bg-primary-blue-500 text-white overflow-y-auto scrollbar-thin border-r border-secondary-blue-500 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed z-40 left-0 sm:max-w-[50%] md:max-w-[300px] lg:max-w-[336px] w-full md:max-h-[calc(100vh-80px)] md:sticky md:left-0 top-[54px] md:top-[80px] md:h-full pb-8 max-h-full bg-primary-blue-500 text-white overflow-y-auto scrollbar-thin border-r border-secondary-blue-500 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        <div className="px-8 sticky top-0 bg-primary-blue-500 py-8 z-20 flex items-start justify-between">
+        <div className="px-4 md:px-8 sticky top-0 bg-primary-blue-500 py-4 md:py-8 z-20 flex items-start justify-between">
           <div className="">
             <Breadcrumb
               items={[
@@ -122,7 +122,7 @@ export function Sidebar({
               setSectionStates((prev) => ({ ...prev, [key]: isOpen }))
             }
           >
-            <div className="px-8">{content}</div>
+            <div className="px-4 md:px-8">{content}</div>
           </CollapsibleSection>
         ))}
       </div>
