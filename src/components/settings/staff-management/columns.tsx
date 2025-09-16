@@ -26,7 +26,10 @@ export const columns: ColumnDef<Staff>[] = [
     accessorKey: 'identifier',
     header: 'TrID',
     cell: ({ row }) => (
-      <div className="w-[100px]">{row.getValue('identifier')}</div>
+      <div className="w-[100px] uppercase">
+        <span className="text-primary-blue-200/80 font-bold mr-0.5">#</span>
+        {row.getValue('identifier')}
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,

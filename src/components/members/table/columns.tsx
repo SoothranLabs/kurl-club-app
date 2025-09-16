@@ -29,6 +29,7 @@ export const columns: ColumnDef<Member>[] = [
     header: 'Member ID',
     cell: ({ row }) => (
       <div className="w-[100px] uppercase">
+        <span className="text-primary-blue-200/80 font-bold mr-0.5">#</span>
         {row.getValue('memberIdentifier')}
       </div>
     ),

@@ -82,7 +82,7 @@ export const createPaymentColumns = (
     header: 'Member ID',
     cell: ({ row }) => (
       <div className="w-[100px] uppercase">
-        <span className="text-primary-blue-300 font-bold mr-0.5">#</span>
+        <span className="text-primary-blue-200/80 font-bold mr-0.5">#</span>
         {row.getValue('memberIdentifier')}
       </div>
     ),
@@ -163,19 +163,13 @@ export const createPaymentColumns = (
     cell: ({ row }) => {
       const { bufferEndDate, pendingAmount } = row.original;
 
-      if (pendingAmount === 0) {
+      // Shows when there's no buffer OR payment is completed
+      if (!bufferEndDate || pendingAmount === 0) {
         return (
-          <div className="min-w-[120px] text-primary-blue-300 text-sm">
-            Paid
-          </div>
-        );
-      }
-
-      // Only show buffer if bufferEndDate exists
-      if (!bufferEndDate) {
-        return (
-          <div className="min-w-24 text-primary-blue-100 text-sm">
-            No buffer
+          <div className="min-w-24">
+            <span className="bg-primary-blue-300/50 text-primary-blue-100 px-2 py-1 rounded text-xs font-medium">
+              No buffer
+            </span>
           </div>
         );
       }
@@ -191,7 +185,7 @@ export const createPaymentColumns = (
       return (
         <div className="min-w-24">
           <div
-            className={`${bgColor} w-fit px-2 py-1 rounded-lg text-xs flex items-center gap-2 mb-1`}
+            className={`${bgColor} w-fit px-2 py-1 rounded text-xs flex items-center gap-2 mb-1`}
           >
             <UrgencyIndicator color={color} />
             <span className="font-medium">{urgencyText}</span>
