@@ -8,10 +8,24 @@ import OutstandingPayment from '@/components/dashboard/insights/outstanding-paym
 import Payments from '@/components/dashboard/insights/payments';
 import SkipperStats from '@/components/dashboard/insights/skipper-stats';
 import { GymRequiredGuard } from '@/components/shared/guards';
+import { MultiStepLoader } from '@/components/shared/loaders/multi-step-loader';
 import { useAuth } from '@/providers/auth-provider';
 
+import { dashboardLoadingStates } from '../shared/loaders';
+
 function Dashboard() {
-  const { appUser } = useAuth();
+  const { appUser, isAppUserLoading } = useAuth();
+
+  if (isAppUserLoading) {
+    return (
+      <MultiStepLoader
+        loadingStates={dashboardLoadingStates}
+        loading={isAppUserLoading}
+        duration={2500}
+        loop={false}
+      />
+    );
+  }
 
   return (
     <div className="container py-5 md:py-8">

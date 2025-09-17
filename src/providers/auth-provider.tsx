@@ -30,6 +30,7 @@ const AuthContext = createContext<
       signIn: (options: SignInOptions) => Promise<void>;
       logout: () => Promise<void>;
       fetchGymDetails: (gymId: number) => Promise<void>;
+      refreshAppUser: () => Promise<void>;
     }
   | undefined
 >(undefined);
@@ -236,6 +237,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const refreshAppUser = async () => {
+    if (firebaseUser) {
+      await fetchAppUser(firebaseUser.uid, true);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -247,6 +254,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         signIn,
         logout,
         fetchGymDetails: fetchGymDetailsInternal,
+        refreshAppUser,
       }}
     >
       {children}

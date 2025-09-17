@@ -1,8 +1,14 @@
+'use client';
+
+import { useState } from 'react';
+
 import { GymOnboardingForm } from '@/components/onboarding/gym-onboarding-from';
 import KDialog from '@/components/shared/form/k-dialog';
 import { Button } from '@/components/ui/button';
 
 function Banner() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   return (
     <div className="rounded-xl mt-6 p-px bg-linear-to-br from-white/50 via-white/30 to-white/0">
       <div className='relative flex flex-col items-start rounded-xl px-9 py-[39px] bg-[url("/assets/png/dashboard-banner.png")] bg-cover bg-right'>
@@ -16,13 +22,15 @@ function Banner() {
             features
           </p>
           <KDialog
+            open={isDialogOpen}
+            onOpenChange={() => setIsDialogOpen(!isDialogOpen)}
             closable={false}
             className="p-[48px] w-[638px]"
             trigger={
               <Button className="py-[13px] px-6 h-10">Finish setting up</Button>
             }
           >
-            <GymOnboardingForm />
+            <GymOnboardingForm onSuccess={() => setIsDialogOpen(false)} />
           </KDialog>
         </div>
       </div>

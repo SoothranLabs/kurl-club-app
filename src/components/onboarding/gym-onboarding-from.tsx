@@ -1,6 +1,5 @@
 'use client';
 
-import { useTransition } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,9 +15,9 @@ import { KFacebookFillIcon, KInstagramIcon } from '@/components/shared/icons';
 import ProfilePictureUploader from '@/components/shared/uploaders/profile-uploader';
 import { Button } from '@/components/ui/button';
 import { FormControl } from '@/components/ui/form';
+import { useGymManagement } from '@/hooks/use-gym-management';
 import { useAuth } from '@/providers/auth-provider';
 import { CreateGymSchema } from '@/schemas';
-import { createGym } from '@/services/gym';
 
 type CreateGymData = z.infer<typeof CreateGymSchema>;
 
@@ -27,8 +26,8 @@ type SimpleGymOnboardingProps = {
 };
 
 export const GymOnboardingForm = ({ onSuccess }: SimpleGymOnboardingProps) => {
-  const [isPending, startTransition] = useTransition();
-  const { appUser } = useAuth();
+  const { appUser, refreshAppUser } = useAuth();
+  const { createGym, isCreating } = useGymManagement();
 
   const form = useForm<CreateGymData>({
     resolver: zodResolver(CreateGymSchema),
@@ -66,22 +65,14 @@ export const GymOnboardingForm = ({ onSuccess }: SimpleGymOnboardingProps) => {
       GymAdminId: appUser.userId.toString(),
     };
 
-    startTransition(async () => {
-      try {
-        const response = await createGym(payload);
+    const result = await createGym(payload);
 
-        if (response.success) {
-          toast.success(response.success);
-          // Trigger revalidation and close modal
-          window.location.reload();
-          onSuccess?.();
-        } else {
-          console.error(response.error);
-        }
-      } catch (error) {
-        toast.error(`Error creating gym, please try again!, ${error}`);
-      }
-    });
+    if (result.success) {
+      form.reset();
+      onSuccess?.();
+      // Refresh user data with loading state
+      requestAnimationFrame(() => refreshAppUser());
+    }
   };
 
   return (
@@ -105,7 +96,7 @@ export const GymOnboardingForm = ({ onSuccess }: SimpleGymOnboardingProps) => {
               fieldType={KFormFieldType.SKELETON}
               control={form.control}
               name="ProfilePicture"
-              disabled={isPending}
+              disabled={isCreating}
               renderSkeleton={(field) => (
                 <FormControl>
                   <ProfilePictureUploader
@@ -120,7 +111,7 @@ export const GymOnboardingForm = ({ onSuccess }: SimpleGymOnboardingProps) => {
               control={form.control}
               name="GymName"
               label="Enter gym name"
-              disabled={isPending}
+              disabled={isCreating}
               mandetory
             />
             <KFormField
@@ -128,7 +119,7 @@ export const GymOnboardingForm = ({ onSuccess }: SimpleGymOnboardingProps) => {
               control={form.control}
               name="Location"
               label="Address line 01"
-              disabled={isPending}
+              disabled={isCreating}
               mandetory
             />
             <KFormField
@@ -136,7 +127,7 @@ export const GymOnboardingForm = ({ onSuccess }: SimpleGymOnboardingProps) => {
               control={form.control}
               name="ContactNumber1"
               label="Primary Phone number"
-              disabled={isPending}
+              disabled={isCreating}
               placeholder="(555) 123-4567"
               mandetory
             />
@@ -145,7 +136,7 @@ export const GymOnboardingForm = ({ onSuccess }: SimpleGymOnboardingProps) => {
               control={form.control}
               name="ContactNumber2"
               label="Secondary Phone number"
-              disabled={isPending}
+              disabled={isCreating}
               placeholder="(555) 123-4567"
             />
             <KFormField
@@ -153,7 +144,7 @@ export const GymOnboardingForm = ({ onSuccess }: SimpleGymOnboardingProps) => {
               control={form.control}
               name="Email"
               label="Enter email"
-              disabled={isPending}
+              disabled={isCreating}
               mandetory
             />
             <KFormField
@@ -162,7 +153,7 @@ export const GymOnboardingForm = ({ onSuccess }: SimpleGymOnboardingProps) => {
               name="socialLinks.0.url"
               label="Enter website link"
               placeholder="https://www.google.com"
-              disabled={isPending}
+              disabled={isCreating}
               iconSrc={<Globe size={20} />}
             />
             <KFormField
@@ -171,7 +162,7 @@ export const GymOnboardingForm = ({ onSuccess }: SimpleGymOnboardingProps) => {
               name="socialLinks.1.url"
               label="Enter Facebook page link"
               placeholder="https://www.google.com"
-              disabled={isPending}
+              disabled={isCreating}
               iconSrc={<KFacebookFillIcon />}
             />
             <KFormField
@@ -180,16 +171,16 @@ export const GymOnboardingForm = ({ onSuccess }: SimpleGymOnboardingProps) => {
               name="socialLinks.2.url"
               label="Enter instagram link"
               placeholder="https://www.google.com"
-              disabled={isPending}
+              disabled={isCreating}
               iconSrc={<KInstagramIcon width={20} height={20} />}
             />
           </div>
           <Button
             type="submit"
             className="w-full mt-5 h-[48px]"
-            disabled={isPending}
+            disabled={isCreating}
           >
-            {isPending ? 'Creating...' : 'Create Gym'}
+            {isCreating ? 'Creating...' : 'Create Gym'}
           </Button>
         </form>
       </FormProvider>
