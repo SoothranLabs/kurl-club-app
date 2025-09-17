@@ -64,7 +64,7 @@ export default function Members() {
   };
 
   return (
-    <div className="h-full flex-1 flex-col space-y-8 p-8 flex container">
+    <div className="h-full flex-1 flex-col space-y-8 py-3 sm:py-4 md:py-8 flex container">
       <MembersHeader
         onImportClick={() => setIsImportModalOpen(true)}
         onAddNewClick={openSheet}

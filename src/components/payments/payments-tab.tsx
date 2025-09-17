@@ -160,7 +160,7 @@ export function PaymentsTab({ type }: Props) {
   return (
     <div className="flex flex-col gap-7">
       {stats.length > 0 && (
-        <div className="grid grid-cols-3 gap-4 h-[74px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {stats.map((stat) => (
             <InfoCard item={stat} key={stat.id} />
           ))}

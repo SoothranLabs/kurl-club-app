@@ -42,7 +42,7 @@ export default function Payments() {
 
   return (
     <div>
-      <div className="p-8 flex items-center justify-between">
+      <div className="px-4 py-5 md:p-8 flex items-center justify-between">
         <h4 className="text-white font-medium leading-normal text-xl">
           Payments
         </h4>
@@ -53,10 +53,10 @@ export default function Payments() {
         variant="underline"
         value={activeTab}
         onTabChange={handleTabChange}
-        className="px-2 border-secondary-blue-500"
+        className="p-0 md:px-2 border-secondary-blue-500"
       />
 
-      <div className="p-8 max-w-[calc(100vw-342px)]">
+      <div className="px-4 py-5 md:p-8 max-w-[calc(100vw-200px)] md:max-w-[calc(100vw-250px)]">
         {
           {
             'outstanding-payments': <Outstanding />,

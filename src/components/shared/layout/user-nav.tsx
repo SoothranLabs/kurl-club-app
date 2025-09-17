@@ -129,7 +129,7 @@ export function UserNav() {
                 </span>
               </DropdownMenuItem>
             </Link>
-            <Link href="/settings">
+            <Link href="/settings/staff-management">
               <DropdownMenuItem className="py-2.5 px-4 h-[44px] cursor-pointer hover:bg-secondary-blue-800 k-transition">
                 <Settings className="mr-2.5 h-6! w-6!" />
                 <span className="text-white font-semibold text-xs leading-normal">
