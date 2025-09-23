@@ -1,43 +1,38 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+
+import { z } from 'zod/v4';
 
 import { KSelect } from '@/components/shared/form/k-select';
-import { useGymBranch } from '@/providers/gym-branch-provider';
+import { adminstratorFormSchema, trainerFormSchema } from '@/schemas';
 import { StaffType } from '@/types/staff';
 
 import AdministratorForm from './administrator-form';
 import TrainerForm from './trainer-form';
 
+type TrainerFormValues = z.infer<typeof trainerFormSchema>;
+type AdministratorFormValues = z.infer<typeof adminstratorFormSchema>;
+
 interface StaffFormProps {
-  onSuccess: () => void;
-  onActiveIdChange: (activeId: string) => void;
-  onSubmittingChange: (isSubmitting: boolean) => void;
+  staffType: StaffType;
+  onStaffTypeChange: (staffType: StaffType) => void;
+  onSubmit: (data: TrainerFormValues | AdministratorFormValues) => void;
+  isSubmitting: boolean;
+  gymId?: number;
 }
 
 export default function StaffForm({
-  onSuccess,
-  onActiveIdChange,
-  onSubmittingChange,
+  staffType,
+  onStaffTypeChange,
+  onSubmit,
+  isSubmitting,
+  gymId,
 }: StaffFormProps) {
-  const { gymBranch } = useGymBranch();
-
-  const [staffType, setStaffType] = useState<StaffType>('trainer');
+  const form = useFormContext();
 
   const activeId =
     staffType === 'trainer' ? 'trainer-form' : 'administrator-form';
-
-  useEffect(() => {
-    onActiveIdChange(activeId);
-  }, [activeId, onActiveIdChange]);
-
-  const handleStaffTypeChange = (value: StaffType) => {
-    setStaffType(value);
-  };
-
-  const handleSubmitSuccess = () => {
-    onSuccess();
-  };
 
   return (
     <div className="space-y-6">
@@ -45,7 +40,7 @@ export default function StaffForm({
         <KSelect
           label="Staff Type"
           value={staffType}
-          onValueChange={(value) => handleStaffTypeChange(value as StaffType)}
+          onValueChange={(value) => onStaffTypeChange(value as StaffType)}
           options={[
             { label: 'Trainer', value: 'trainer' },
             { label: 'Staff', value: 'staff' },
@@ -54,21 +49,21 @@ export default function StaffForm({
         />
       </div>
 
-      {staffType === 'trainer' && (
-        <TrainerForm
-          gymId={gymBranch?.gymId}
-          onSuccess={handleSubmitSuccess}
-          onSubmittingChange={onSubmittingChange}
-        />
-      )}
+      <form
+        id={activeId}
+        onSubmit={form.handleSubmit((data) =>
+          onSubmit(data as TrainerFormValues | AdministratorFormValues)
+        )}
+        className="space-y-4"
+      >
+        {staffType === 'trainer' && (
+          <TrainerForm gymId={gymId} isSubmitting={isSubmitting} />
+        )}
 
-      {staffType === 'staff' && (
-        <AdministratorForm
-          gymId={gymBranch?.gymId}
-          onSuccess={handleSubmitSuccess}
-          onSubmittingChange={onSubmittingChange}
-        />
-      )}
+        {staffType === 'staff' && (
+          <AdministratorForm gymId={gymId} isSubmitting={isSubmitting} />
+        )}
+      </form>
     </div>
   );
 }
