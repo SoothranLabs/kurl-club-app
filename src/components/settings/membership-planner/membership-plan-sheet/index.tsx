@@ -144,7 +144,7 @@ export function MembershipPlanSheet({
       );
     }
 
-    return editedPlan.planName;
+    return editedPlan.planName || 'New Membership Plan';
   })();
 
   const sheetFooter = (() => {

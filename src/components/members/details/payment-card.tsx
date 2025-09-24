@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
+import { FormOptionsResponse } from '@/hooks/use-gymform-options';
 import { useSheet } from '@/hooks/use-sheet';
 import {
   calculateDaysRemaining,
@@ -21,9 +22,10 @@ import { useMemberPaymentDetails } from '@/services/member';
 
 interface PaymentCardProps {
   memberId: string | number;
+  formOptions?: FormOptionsResponse | null;
 }
 
-function PaymentCard({ memberId }: PaymentCardProps) {
+function PaymentCard({ memberId, formOptions }: PaymentCardProps) {
   const { data: paymentData, isLoading } = useMemberPaymentDetails(memberId);
   const { isOpen, openSheet, closeSheet } = useSheet();
   const queryClient = useQueryClient();
@@ -40,7 +42,7 @@ function PaymentCard({ memberId }: PaymentCardProps) {
     return <Skeleton />;
   }
 
-  if (!paymentData) {
+  if (!paymentData?.data) {
     return (
       <div className="rounded-lg h-full bg-secondary-blue-500 p-5 pb-7 w-full">
         <p className="text-white">No payment data available</p>
@@ -48,65 +50,58 @@ function PaymentCard({ memberId }: PaymentCardProps) {
     );
   }
 
+  const { currentCycle, memberStatus } = paymentData.data;
   const status = getPaymentBadgeStatus(
-    paymentData.paymentStatus,
-    paymentData.pendingAmount
+    currentCycle.status,
+    currentCycle.pendingAmount
   );
-  const daysRemaining = calculateDaysRemaining(paymentData.dueDate);
-  const bufferDaysRemaining = paymentData.bufferEndDate
-    ? calculateDaysRemaining(paymentData.bufferEndDate)
+  const bufferDaysRemaining = currentCycle.bufferEndDate
+    ? calculateDaysRemaining(currentCycle.bufferEndDate)
     : 0;
-  const hasBuffer = paymentData.bufferEndDate && bufferDaysRemaining >= 0;
-  const isPartialPayment = paymentData.paymentStatus === 'Partial';
+  const hasBuffer =
+    currentCycle.bufferEligible &&
+    currentCycle.bufferEndDate &&
+    bufferDaysRemaining >= 0;
+  const daysRemaining = hasBuffer
+    ? calculateDaysRemaining(currentCycle.bufferEndDate!)
+    : calculateDaysRemaining(currentCycle.dueDate);
+  const isPartialPayment = currentCycle.status === 'Partial';
 
   // Progress calculation based on payment cycle
   const progressValue = (() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const dueDate = new Date(paymentData.dueDate);
-    dueDate.setHours(0, 0, 0, 0);
-    const lastPaidDate = new Date(paymentData.lastPaidDate);
-    lastPaidDate.setHours(0, 0, 0, 0);
+    const startDate = new Date(currentCycle.startDate);
+    startDate.setHours(0, 0, 0, 0);
+    const endDate = new Date(currentCycle.endDate);
+    endDate.setHours(0, 0, 0, 0);
 
     const cycleDays = Math.ceil(
-      (dueDate.getTime() - lastPaidDate.getTime()) / (1000 * 60 * 60 * 24)
+      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
     );
     const daysPassed = Math.ceil(
-      (today.getTime() - lastPaidDate.getTime()) / (1000 * 60 * 60 * 24)
+      (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
     );
 
     if (cycleDays <= 0) return 0;
     return Math.max(0, Math.min(100, (daysPassed / cycleDays) * 100));
   })();
 
-  // Convert to Payment type for the sheet
+  // Get membership plan name from form options
+  const membershipPlan = formOptions?.membershipPlans.find(
+    (plan) => plan.membershipPlanId === paymentData.data.membershipPlanId
+  );
+
+  // Essential data for ManagePaymentSheet
   const memberForSheet = {
-    id: 0,
-    memberId: paymentData.memberId,
-    memberIdentifier: paymentData.memberIdentifier,
-    memberName: paymentData.memberName,
-    gymId: 0,
-    package: paymentData.membershipPlanId,
-    packageName: paymentData.membershipPlanName,
-    planFee: paymentData.planFee,
-    totalAmountPaid: paymentData.totalAmountPaid,
-    amountPaid: paymentData.totalAmountPaid,
-    pendingAmount: paymentData.pendingAmount,
-    paymentDate: paymentData.lastPaidDate,
-    dueDate: paymentData.dueDate,
-    upcomingDueDate: paymentData.dueDate,
-    bufferEndDate: null,
-    bufferDaysRemaining: 0,
-    paymentMethod: '',
-    totalPayments: paymentData.totalPaymentsMade,
-    cyclesElapsed: 1,
-    expectedTotalFee: paymentData.totalAmountPaid + paymentData.pendingAmount,
-    feeStatus: paymentData.paymentStatus as
-      | 'Pending'
-      | 'Completed'
-      | 'Partial'
-      | 'Arrears',
-    profilePicture: null,
+    memberId: paymentData.data.memberId,
+    memberIdentifier: paymentData.data.memberIdentifier,
+    memberName: paymentData.data.memberName,
+    package: paymentData.data.membershipPlanId,
+    packageName: membershipPlan?.planName || '',
+    amountPaid: currentCycle.amountPaid,
+    pendingAmount: currentCycle.pendingAmount,
+    paymentDate: currentCycle.dueDate,
   };
 
   return (
@@ -143,17 +138,16 @@ function PaymentCard({ memberId }: PaymentCardProps) {
             <span className="text-secondary-blue-50 text-sm font-medium">
               Payment Timeline
             </span>
-            <span className="text-secondary-blue-50 text-sm">
-              {paymentData.membershipPlanName} Plan - ₹
-              {paymentData.planFee.toLocaleString()}
+            <span className="text-secondary-blue-50 text-sm capitalize">
+              Current Plan - {membershipPlan?.planName}
             </span>
           </div>
 
           <div className="relative">
             <Progress value={progressValue} className="w-full h-2 mb-2" />
             <div className="flex justify-between text-xs text-secondary-blue-50">
-              <span>{formatDateTime(paymentData.lastPaidDate, 'date')}</span>
-              <span>{formatDateTime(paymentData.dueDate, 'date')}</span>
+              <span>{formatDateTime(currentCycle.startDate, 'date')}</span>
+              <span>{formatDateTime(currentCycle.endDate, 'date')}</span>
             </div>
           </div>
         </div>
@@ -169,9 +163,9 @@ function PaymentCard({ memberId }: PaymentCardProps) {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-2">
               <div className="text-center flex-1">
                 <div
-                  className={`text-lg font-bold ${paymentData.pendingAmount > 0 ? 'text-red-400' : 'text-green-400'}`}
+                  className={`text-lg font-bold ${currentCycle.pendingAmount > 0 ? 'text-red-400' : 'text-green-400'}`}
                 >
-                  ₹{paymentData.pendingAmount.toLocaleString()}
+                  ₹{currentCycle.pendingAmount.toLocaleString()}
                 </div>
                 <div className="text-primary-blue-50 text-xs">Outstanding</div>
               </div>
@@ -183,11 +177,11 @@ function PaymentCard({ memberId }: PaymentCardProps) {
 
               <div className="text-center flex-1">
                 <div className="text-lg font-bold text-blue-400">
-                  ₹{paymentData.lastPaidAmount.toLocaleString()}
+                  ₹{currentCycle.lastAmountPaid.toLocaleString()}
                 </div>
                 <div className="text-primary-blue-50 text-xs">Last Paid</div>
                 <div className="text-white/70 text-xs">
-                  {formatDateTime(paymentData.lastPaidDate, 'date')}
+                  {formatDateTime(currentCycle.lastAmountPaidDate, 'date')}
                 </div>
               </div>
 
@@ -210,11 +204,11 @@ function PaymentCard({ memberId }: PaymentCardProps) {
           </div>
         </div>
 
-        {/* Footer - Payment History */}
+        {/* Footer */}
         <div className="px-5 py-2 border-t border-white/10 mt-auto">
           <div className="flex items-center justify-center gap-2 text-primary-blue-50 text-xs">
             <Clock className="h-3 w-3" />
-            <span>{paymentData.totalPaymentsMade} payments made</span>
+            <span>{memberStatus}</span>
           </div>
         </div>
       </div>

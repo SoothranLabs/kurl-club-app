@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 import { Plus } from 'lucide-react';
@@ -21,6 +22,11 @@ export function PackageManager() {
   const { plans, createPlan, updatePlan, deletePlan, isLoading } =
     useMembershipPlans();
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get('return');
+  const isFromSetup = searchParams.get('setup') === 'true';
+
   const handleCreatePlan = () => {
     if (!gymBranch?.gymId) {
       return;
@@ -38,6 +44,10 @@ export function PackageManager() {
     const success = await createPlan(planWithGymId);
     if (success) {
       closeSheet();
+      // If user came from setup, redirect back to return URL
+      if (isFromSetup && returnUrl) {
+        router.push(`${returnUrl}?setup=true`);
+      }
     }
   };
 

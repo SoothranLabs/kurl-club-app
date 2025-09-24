@@ -4,45 +4,54 @@ export interface PaymentResponse {
 }
 
 export type Payment = {
-  id: number;
   memberId: number;
   memberIdentifier: string;
   memberName: string;
-  gymId: number;
   package: number;
   packageName: string;
-  planFee: number;
-  totalAmountPaid: number;
   amountPaid: number;
   pendingAmount: number;
   paymentDate: string;
-  dueDate: string;
-  upcomingDueDate: string;
-  bufferEndDate: string | null;
-  bufferDaysRemaining: number;
-  paymentMethod: string;
-  totalPayments: number;
-  cyclesElapsed: number;
-  expectedTotalFee: number;
-  feeStatus: 'Pending' | 'Completed' | 'Partial' | 'Arrears';
+  id?: number;
+  gymId?: number;
+  planFee?: number;
+  totalAmountPaid?: number;
+  dueDate?: string;
+  upcomingDueDate?: string;
+  bufferEndDate?: string | null;
+  bufferDaysRemaining?: number;
+  paymentMethod?: string;
+  totalPayments?: number;
+  cyclesElapsed?: number;
+  expectedTotalFee?: number;
+  feeStatus?: 'Pending' | 'Completed' | 'Partial' | 'Arrears';
   profilePicture?: string | File | null;
 };
 
+export interface PaymentCycle {
+  cycleId: number;
+  startDate: string;
+  endDate: string;
+  dueDate: string;
+  planFee: number;
+  amountPaid: number;
+  pendingAmount: number;
+  status: string;
+  bufferEndDate: string | null;
+  totalBufferDays?: number;
+  bufferEligible: boolean;
+  lastAmountPaid: number;
+  lastAmountPaidDate: string;
+}
+
 export interface MemberPaymentDetails {
   memberId: number;
-  memberName: string;
   memberIdentifier: string;
+  memberName: string;
   membershipPlanId: number;
-  membershipPlanName: string;
-  planFee: number;
-  totalAmountPaid: number;
-  pendingAmount: number;
-  lastPaidAmount: number;
-  lastPaidDate: string;
-  dueDate: string;
-  paymentStatus: string;
-  totalPaymentsMade: number;
-  memberDOJ: string;
-  bufferEndDate?: string | null;
-  bufferDaysRemaining?: number;
+  currentCycle: PaymentCycle;
+  previousCycles: PaymentCycle[];
+  totalDebtCycles: number;
+  totalDebtAmount: number;
+  memberStatus: string;
 }

@@ -10,18 +10,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useGymFormOptions } from '@/hooks/use-gymform-options';
+import { FormOptionsResponse } from '@/hooks/use-gymform-options';
 import { bloodGroupOptions } from '@/lib/constants';
-import { useGymBranch } from '@/providers/gym-branch-provider';
 import type { EditableSectionProps } from '@/types/members';
 
 export function BasicDetailsSection({
   isEditing,
   details,
   onUpdate,
-}: EditableSectionProps) {
-  const { gymBranch } = useGymBranch();
-  const { formOptions, loading, error } = useGymFormOptions(gymBranch?.gymId);
+  formOptions,
+}: EditableSectionProps & { formOptions?: FormOptionsResponse }) {
+  const options = formOptions;
 
   return (
     <Fragment>
@@ -55,21 +54,17 @@ export function BasicDetailsSection({
             ? details?.membershipPlanId
               ? String(details.membershipPlanId)
               : undefined
-            : formOptions?.membershipPlans.find(
+            : options?.membershipPlans.find(
                 (plan) => plan.membershipPlanId === details?.membershipPlanId
               )?.planName || 'Not Selected'
         }
         isEditing={isEditing}
         onChange={(value) => onUpdate('membershipPlanId', Number(value))}
         options={
-          loading
-            ? [{ value: '', label: 'Loading...' }]
-            : error
-              ? [{ value: '', label: 'Error loading data' }]
-              : formOptions?.membershipPlans.map((plan) => ({
-                  value: String(plan.membershipPlanId),
-                  label: plan.planName,
-                })) || []
+          options?.membershipPlans.map((plan) => ({
+            value: String(plan.membershipPlanId),
+            label: plan.planName,
+          })) || []
         }
       />
 
@@ -81,21 +76,16 @@ export function BasicDetailsSection({
             ? details?.workoutPlan
               ? String(details.workoutPlan)
               : undefined
-            : formOptions?.workoutPlans.find(
-                (t) => t.id === details?.workoutPlan
-              )?.name || 'Not Selected'
+            : options?.workoutPlans.find((t) => t.id === details?.workoutPlan)
+                ?.name || 'Not Selected'
         }
         isEditing={isEditing}
         onChange={(value) => onUpdate('workoutPlan', Number(value))}
         options={
-          loading
-            ? [{ value: '', label: 'Loading...' }]
-            : error
-              ? [{ value: '', label: 'Error loading data' }]
-              : formOptions?.workoutPlans.map((plan) => ({
-                  value: String(plan.id),
-                  label: plan.name,
-                })) || []
+          options?.workoutPlans.map((plan) => ({
+            value: String(plan.id),
+            label: plan.name,
+          })) || []
         }
       />
 
@@ -107,22 +97,17 @@ export function BasicDetailsSection({
             ? details?.personalTrainer
               ? String(details.personalTrainer)
               : undefined
-            : formOptions?.trainers.find(
-                (t) => t.id === details?.personalTrainer
-              )?.trainerName || 'Not Assigned'
+            : options?.trainers.find((t) => t.id === details?.personalTrainer)
+                ?.trainerName || 'Not Assigned'
         }
         isEditing={isEditing}
         onChange={(value) => onUpdate('personalTrainer', Number(value))}
         options={
-          loading
-            ? [{ value: '', label: 'Loading...' }]
-            : error
-              ? [{ value: '', label: 'Error loading data' }]
-              : formOptions?.trainers.map((trainer) => ({
-                  value: String(trainer.id),
-                  label: trainer.trainerName,
-                  avatar: '/assets/svg/Trainer-pic.svg',
-                })) || []
+          options?.trainers.map((trainer) => ({
+            value: String(trainer.id),
+            label: trainer.trainerName,
+            avatar: '/assets/svg/Trainer-pic.svg',
+          })) || []
         }
       />
 

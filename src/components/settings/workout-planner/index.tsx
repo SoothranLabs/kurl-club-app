@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { Plus } from 'lucide-react';
 
@@ -20,6 +21,17 @@ export function WorkoutPlanner() {
   const { gymBranch } = useGymBranch();
   const { plans, createPlan, updatePlan, deletePlan, isLoading } =
     useWorkoutPlans();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get('return');
+  const isFromSetup = searchParams.get('setup') === 'true';
+
+  useEffect(() => {
+    // If user came from setup and has plans, redirect back to return URL
+    if (isFromSetup && returnUrl && plans.length > 0) {
+      router.push(`${returnUrl}?setup=true`);
+    }
+  }, [isFromSetup, returnUrl, plans.length, router]);
 
   const handleCreatePlan = () => {
     if (!gymBranch?.gymId) {

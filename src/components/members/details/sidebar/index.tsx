@@ -7,6 +7,7 @@ import { PanelLeftOpen, PanelRightOpen } from 'lucide-react';
 import { Breadcrumb } from '@/components/shared/layout/breadcrumbs';
 import { CollapsibleSection } from '@/components/shared/layout/collapsible-section';
 import { Button } from '@/components/ui/button';
+import { FormOptionsResponse } from '@/hooks/use-gymform-options';
 import { MemberDetails } from '@/types/members';
 
 import { BasicDetailsSection } from './basic-details-section';
@@ -21,6 +22,7 @@ export function Sidebar({
   updateMemberDetail,
   handleSave,
   toggleEdit,
+  formOptions,
 }: {
   memberId: string;
   isEditing: boolean;
@@ -31,6 +33,7 @@ export function Sidebar({
     key: K,
     value: MemberDetails[K]
   ) => void;
+  formOptions?: FormOptionsResponse | null;
 }) {
   const [sectionStates, setSectionStates] = useState<
     Record<SectionKey, boolean>
@@ -53,6 +56,7 @@ export function Sidebar({
           isEditing={isEditing}
           details={details}
           onUpdate={updateMemberDetail}
+          formOptions={formOptions || undefined}
         />
       ),
     },

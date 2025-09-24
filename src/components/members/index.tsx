@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -20,8 +21,18 @@ import { Member } from '@/types/members';
 
 export default function Members() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const searchParams = useSearchParams();
 
   const { isOpen, openSheet, closeSheet } = useSheet();
+
+  // Check if user returned from setup and should open dialog
+  useEffect(() => {
+    if (searchParams.get('setup') === 'true') {
+      openSheet();
+      // Clean up URL without page refresh
+      window.history.replaceState({}, '', '/members');
+    }
+  }, [searchParams, openSheet]);
 
   const { gymBranch } = useGymBranch();
   const gymId = gymBranch?.gymId;
