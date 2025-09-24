@@ -3,12 +3,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 
 import { LogOut, Menu, Settings, User, X } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { GymRequiredGuard } from '@/components/shared/guards';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/providers/auth-provider';
 
 import {
   Accordion,
@@ -17,12 +20,16 @@ import {
   AccordionTrigger,
 } from '../../ui/accordion';
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
+import KDialog from '../form/k-dialog';
 import { UserNav } from './user-nav';
 
 function Navbar() {
   const [isActive, setActive] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const [isLogout, setLogout] = useState(false);
+  const { logout } = useAuth();
+  const [isPending, startTransition] = useTransition();
   const navLink = [
     {
       id: 1,
@@ -44,6 +51,20 @@ function Navbar() {
   const routeChange = (link: string) => {
     router.push(link);
     setActive(false);
+  };
+
+  const handleLogout = () => {
+    startTransition(() => {
+      logout()
+        .then(() => {
+          router.push('/auth/login');
+          toast.success('Logged out successfully!');
+        })
+        .catch((error) => {
+          toast.error('Failed to log out. Please try again.');
+          console.error('Logout error:', error);
+        });
+    });
   };
 
   return (
@@ -95,7 +116,7 @@ function Navbar() {
                 <Bell size={20} />
               </span>
             </div> */}
-            <UserNav />
+            <UserNav handleLogout={() => setLogout(true)} />
             <span
               onClick={() => setActive(true)}
               className="w-[30px] h-[30px] flex justify-center items-center md:hidden"
@@ -223,19 +244,50 @@ function Navbar() {
           </div>
           <div className="flex items-center gap-4">
             <GymRequiredGuard>
-              <span>
+              <span
+                onClick={() =>
+                  routeChange('/settings/general-settings?tab=business_profile')
+                }
+              >
                 <User size={20} />
               </span>
-              <span>
+              <span onClick={() => routeChange('/settings/staff-management')}>
                 <Settings size={20} />
               </span>
             </GymRequiredGuard>
-            <span>
+            <span
+              onClick={() => {
+                setLogout(true);
+                setActive(false);
+              }}
+            >
               <LogOut size={20} />
             </span>
           </div>
         </div>
       </div>
+      <KDialog
+        footer={
+          <div className="flex items-center gap-2">
+            <Button variant="outline" onClick={() => setLogout(false)}>
+              Cancel
+            </Button>
+            <Button
+              isLoading={isPending}
+              variant="destructive"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </div>
+        }
+        open={isLogout}
+        onOpenChange={() => setLogout(false)}
+        title="Are you sure?"
+        className="max-w-[500px]"
+      >
+        Logging out will end your current session.
+      </KDialog>
     </>
   );
 }

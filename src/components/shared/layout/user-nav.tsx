@@ -1,11 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 
 import { LogOut, Settings, User } from 'lucide-react';
-import { toast } from 'sonner';
 
 import { GymRequiredGuard } from '@/components/shared/guards';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -24,24 +22,12 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { fetchGymProfilePicture } from '@/services/gym';
 
-export function UserNav() {
-  const router = useRouter();
-  const { logout, appUser, gymDetails } = useAuth();
-  const [isPending, startTransition] = useTransition();
+interface UserNavProps {
+  handleLogout?: () => void;
+}
 
-  const handleLogout = () => {
-    startTransition(() => {
-      logout()
-        .then(() => {
-          router.push('/auth/login');
-          toast.success('Logged out successfully!');
-        })
-        .catch((error) => {
-          toast.error('Failed to log out. Please try again.');
-          console.error('Logout error:', error);
-        });
-    });
-  };
+export function UserNav({ handleLogout }: UserNavProps) {
+  const { appUser, gymDetails } = useAuth();
 
   const gymList = appUser?.gyms || [];
   const currentGym =
@@ -181,13 +167,12 @@ export function UserNav() {
         <DropdownMenuItem
           onClick={handleLogout}
           className={cn(
-            'p-4 cursor-pointer hover:bg-secondary-blue-800 k-transition',
-            isPending && 'opacity-50 pointer-events-none'
+            'p-4 cursor-pointer hover:bg-secondary-blue-800 k-transition'
           )}
         >
           <LogOut className="mr-3 h-6! w-6!" />
           <span className="text-white font-semibold text-sm leading-normal">
-            {isPending ? 'Logging out...' : 'Logout'}
+            Logout
           </span>
         </DropdownMenuItem>
       </DropdownMenuContent>
