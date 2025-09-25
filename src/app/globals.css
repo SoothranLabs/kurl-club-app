@@ -367,3 +367,89 @@
     max-width: 500px !important;
   }
 }  */
+/*
+  ---break---
+*/
+:root {
+  --sidebar: #282b32;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #d3f702;
+  --sidebar-primary-foreground: #11141c;
+  --sidebar-accent: #414349;
+  --sidebar-accent-foreground: #d3f702;
+  --sidebar-border: #53555b;
+  --sidebar-ring: #d3f702;
+}
+/*
+  ---break---
+*/
+.dark {
+  --sidebar: #282b32;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #d3f702;
+  --sidebar-primary-foreground: #11141c;
+  --sidebar-accent: #414349;
+  --sidebar-accent-foreground: #d3f702;
+  --sidebar-border: #53555b;
+  --sidebar-ring: #d3f702;
+}
+/*
+  ---break---
+*/
+@theme inline {
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+/*
+  ---break---
+*/
+
+/* Custom Sidebar Styles */
+[data-sidebar='sidebar'] {
+  background: linear-gradient(180deg, #282b32 0%, #24272e 100%);
+  border-right: 1px solid #414349;
+}
+
+[data-sidebar='menu-button'][data-active='true'] {
+  background: #414349;
+  color: #d3f702;
+}
+
+[data-sidebar='menu-button']:hover {
+  background: rgba(65, 67, 73, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+[data-sidebar='group-label'] {
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
+}
+
+/* Collapsed sidebar icon glow effect */
+[data-state='collapsed'] [data-sidebar='menu-button'] svg {
+  filter: drop-shadow(0 0 4px rgba(211, 247, 2, 0.3));
+}
+
+/* Sidebar scrollbar styling */
+[data-sidebar='content']::-webkit-scrollbar {
+  width: 4px;
+}
+
+[data-sidebar='content']::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-sidebar='content']::-webkit-scrollbar-thumb {
+  background: rgba(211, 247, 2, 0.2);
+  border-radius: 2px;
+}
+
+[data-sidebar='content']::-webkit-scrollbar-thumb:hover {
+  background: rgba(211, 247, 2, 0.4);
+}

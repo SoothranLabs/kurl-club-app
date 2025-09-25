@@ -4,9 +4,11 @@ import { usePathname } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
 import Loading from '@/app/loading';
+import { AppSidebar } from '@/components/app-sidebar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useAuth } from '@/providers/auth-provider';
 
-import Navbar from './navbar';
+import { AppHeader } from './app-header';
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -30,11 +32,18 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     return <Loading />;
   }
 
+  if (isAuthRoute) {
+    return <main>{children}</main>;
+  }
+
   return (
-    <main>
-      {!isAuthRoute && <Navbar />}
-      {children}
-    </main>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <AppHeader />
+        {children}
+      </SidebarInset>
+    </SidebarProvider>
   );
 };
 
