@@ -4,8 +4,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { KTabs, TabItem } from '@/components/shared/form/k-tabs';
+import { useGymFormOptions } from '@/hooks/use-gymform-options';
+import { useGymBranch } from '@/providers/gym-branch-provider';
 
-import { Completed, Expired, History, Outstanding } from './tabs';
+import { PaymentsTab } from './payments-tab';
 
 const TABS: TabItem[] = [
   { id: 'outstanding-payments', label: 'Outstanding Payments' },
@@ -17,6 +19,8 @@ const TABS: TabItem[] = [
 export default function Payments() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { gymBranch } = useGymBranch();
+  const { formOptions } = useGymFormOptions(gymBranch?.gymId);
 
   const defaultTab = 'outstanding-payments';
   const queryTab = searchParams.get('tab');
@@ -59,10 +63,16 @@ export default function Payments() {
       <div className="px-4 py-5 md:p-8 max-w-[calc(100vw-200px)] md:max-w-[calc(100vw-250px)]">
         {
           {
-            'outstanding-payments': <Outstanding />,
-            'expired-payments': <Expired />,
-            'completed-payments': <Completed />,
-            history: <History />,
+            'outstanding-payments': (
+              <PaymentsTab type="outstanding" formOptions={formOptions} />
+            ),
+            'expired-payments': (
+              <PaymentsTab type="expired" formOptions={formOptions} />
+            ),
+            'completed-payments': (
+              <PaymentsTab type="completed" formOptions={formOptions} />
+            ),
+            history: <PaymentsTab type="history" formOptions={formOptions} />,
           }[activeTab]
         }
       </div>

@@ -1,32 +1,7 @@
 export interface PaymentResponse {
   status: string;
-  data: Payment[];
+  data: MemberPaymentDetails[];
 }
-
-export type Payment = {
-  memberId: number;
-  memberIdentifier: string;
-  memberName: string;
-  package: number;
-  packageName: string;
-  amountPaid: number;
-  pendingAmount: number;
-  paymentDate: string;
-  id?: number;
-  gymId?: number;
-  planFee?: number;
-  totalAmountPaid?: number;
-  dueDate?: string;
-  upcomingDueDate?: string;
-  bufferEndDate?: string | null;
-  bufferDaysRemaining?: number;
-  paymentMethod?: string;
-  totalPayments?: number;
-  cyclesElapsed?: number;
-  expectedTotalFee?: number;
-  feeStatus?: 'Pending' | 'Completed' | 'Partial' | 'Arrears';
-  profilePicture?: string | File | null;
-};
 
 export interface PaymentCycle {
   cycleId: number;
@@ -36,9 +11,9 @@ export interface PaymentCycle {
   planFee: number;
   amountPaid: number;
   pendingAmount: number;
-  status: string;
+  status: 'Pending' | 'Completed' | 'Partial' | 'Debt';
   bufferEndDate: string | null;
-  totalBufferDays?: number;
+  totalBufferDays: number;
   bufferEligible: boolean;
   lastAmountPaid: number;
   lastAmountPaidDate: string;
@@ -46,12 +21,13 @@ export interface PaymentCycle {
 
 export interface MemberPaymentDetails {
   memberId: number;
-  memberIdentifier: string;
   memberName: string;
   membershipPlanId: number;
   currentCycle: PaymentCycle;
   previousCycles: PaymentCycle[];
   totalDebtCycles: number;
   totalDebtAmount: number;
-  memberStatus: string;
+  memberStatus: 'Outstanding' | 'Expired' | 'Completed' | 'Debts';
+  // Computed fields for backward compatibility
+  memberIdentifier?: string;
 }

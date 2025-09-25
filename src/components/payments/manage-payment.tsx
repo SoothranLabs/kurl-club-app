@@ -36,7 +36,7 @@ import { paymentMethodOptions } from '@/lib/constants';
 import { formatDateTime } from '@/lib/utils';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 import { paymentFormSchema } from '@/schemas';
-import type { Payment } from '@/types/payment';
+import type { MemberPaymentDetails } from '@/types/payment';
 
 import { PaymentHistory } from './payment-history';
 
@@ -45,7 +45,7 @@ type PaymentFormData = z.infer<typeof paymentFormSchema>;
 type ManagePaymentSheetProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  member: Payment | null;
+  member: MemberPaymentDetails | null;
 };
 
 export function ManagePaymentSheet({
@@ -55,7 +55,7 @@ export function ManagePaymentSheet({
 }: ManagePaymentSheetProps) {
   const [showHistory, setShowHistory] = useState(false);
   const [paymentType, setPaymentType] = useState<'partial' | 'full'>('partial');
-  const pending = member?.pendingAmount || 0;
+  const pending = member?.currentCycle.pendingAmount || 0;
   const { gymBranch } = useGymBranch();
   const {
     recordPartialPayment,
@@ -95,7 +95,7 @@ export function ManagePaymentSheet({
         await recordPartialPayment({
           memberId: member.memberId,
           gymId: gymBranch.gymId,
-          membershipPlanId: member.package,
+          membershipPlanId: member.membershipPlanId,
           amount: amountNum,
           paymentMethod: formValues.method,
           paymentType: 0,
@@ -118,7 +118,7 @@ export function ManagePaymentSheet({
         await recordFullPayment({
           memberId: member.memberId,
           gymId: gymBranch.gymId,
-          membershipPlanId: member.package,
+          membershipPlanId: member.membershipPlanId,
           amount: pending,
           paymentMethod: formValues.method,
           paymentType: 1,
@@ -183,13 +183,15 @@ export function ManagePaymentSheet({
             <div>
               <div className="flex items-center justify-between">
                 <div className="space-y-1 mb-2">
-                  <div className="text-xs font-medium text-primary-green-200ctracking-wide uppercase">
-                    #{member.memberIdentifier}
+                  <div className="text-xs font-medium text-primary-green-200 tracking-wide uppercase">
+                    #
+                    {member.memberIdentifier ||
+                      `KC${member.memberId.toString().padStart(3, '0')}`}
                   </div>
                   <h1 className="text-base text-white">{member.memberName}</h1>
                 </div>
                 <Badge className="bg-primary-blue-400 text-primary-blue-100">
-                  {member.packageName}
+                  Plan {member.membershipPlanId}
                 </Badge>
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -200,7 +202,7 @@ export function ManagePaymentSheet({
                       Total Fee
                     </div>
                     <div className="text-white">
-                      ₹{member.amountPaid + member.pendingAmount}
+                      ₹{member.currentCycle.planFee}
                     </div>
                   </div>
                 </div>
@@ -216,7 +218,9 @@ export function ManagePaymentSheet({
                       Due Date
                     </div>
                     <div className="text-white">
-                      {formatDateTime(member.paymentDate, 'date')}
+                      {member.currentCycle.dueDate
+                        ? formatDateTime(member.currentCycle.dueDate, 'date')
+                        : 'N/A'}
                     </div>
                   </div>
                 </div>

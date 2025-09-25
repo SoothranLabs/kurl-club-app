@@ -50,7 +50,7 @@ function PaymentCard({ memberId, formOptions }: PaymentCardProps) {
     );
   }
 
-  const { currentCycle, memberStatus } = paymentData.data;
+  const { currentCycle, memberStatus, membershipPlanId } = paymentData.data;
   const status = getPaymentBadgeStatus(
     currentCycle.status,
     currentCycle.pendingAmount
@@ -89,20 +89,8 @@ function PaymentCard({ memberId, formOptions }: PaymentCardProps) {
 
   // Get membership plan name from form options
   const membershipPlan = formOptions?.membershipPlans.find(
-    (plan) => plan.membershipPlanId === paymentData.data.membershipPlanId
+    (plan) => plan.membershipPlanId === membershipPlanId
   );
-
-  // Essential data for ManagePaymentSheet
-  const memberForSheet = {
-    memberId: paymentData.data.memberId,
-    memberIdentifier: paymentData.data.memberIdentifier,
-    memberName: paymentData.data.memberName,
-    package: paymentData.data.membershipPlanId,
-    packageName: membershipPlan?.planName || '',
-    amountPaid: currentCycle.amountPaid,
-    pendingAmount: currentCycle.pendingAmount,
-    paymentDate: currentCycle.dueDate,
-  };
 
   return (
     <>
@@ -216,7 +204,7 @@ function PaymentCard({ memberId, formOptions }: PaymentCardProps) {
       <ManagePaymentSheet
         open={isOpen}
         onOpenChange={handleCloseSheet}
-        member={memberForSheet}
+        member={paymentData.data}
       />
     </>
   );

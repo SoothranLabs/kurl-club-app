@@ -6,7 +6,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Eye, MoreHorizontal, Receipt } from 'lucide-react';
 
 import { FeeStatusBadge } from '@/components/shared/badges/fee-status-badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -19,10 +19,9 @@ import { getAvatarColor, getInitials } from '@/lib/avatar-utils';
 import {
   calculateDaysRemaining,
   getPaymentBadgeStatus,
-  getProfilePictureSrc,
   getUrgencyConfig,
 } from '@/lib/utils';
-import { Payment } from '@/types/payment';
+import { MemberPaymentDetails } from '@/types/payment';
 
 const UrgencyIndicator = ({
   color,
@@ -40,8 +39,8 @@ const UrgencyIndicator = ({
 );
 
 const ActionsCell: React.FC<{
-  user: Payment;
-  onRecord?: (payment: Payment) => void;
+  user: MemberPaymentDetails;
+  onRecord?: (member: MemberPaymentDetails) => void;
 }> = ({ user, onRecord }) => {
   return (
     <DropdownMenu>
@@ -75,17 +74,23 @@ const ActionsCell: React.FC<{
 };
 
 export const createPaymentColumns = (
-  onRecord?: (payment: Payment) => void
-): ColumnDef<Payment>[] => [
+  onRecord?: (member: MemberPaymentDetails) => void,
+  membershipPlans: Array<{ membershipPlanId: number; planName: string }> = []
+): ColumnDef<MemberPaymentDetails>[] => [
   {
     accessorKey: 'memberIdentifier',
     header: 'Member ID',
-    cell: ({ row }) => (
-      <div className="w-[100px] uppercase">
-        <span className="text-primary-blue-200/80 font-bold mr-0.5">#</span>
-        {row.getValue('memberIdentifier')}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const { memberId, memberIdentifier } = row.original;
+      const identifier =
+        memberIdentifier || `KC${memberId.toString().padStart(3, '0')}`;
+      return (
+        <div className="w-[100px] uppercase">
+          <span className="text-primary-blue-200/80 font-bold mr-0.5">#</span>
+          {identifier}
+        </div>
+      );
+    },
     enableSorting: false,
     enableHiding: false,
   },
@@ -103,13 +108,6 @@ export const createPaymentColumns = (
             <AvatarFallback className="font-medium" style={avatarStyle}>
               {initials}
             </AvatarFallback>
-            <AvatarImage
-              src={getProfilePictureSrc(
-                row.original.profilePicture ?? null,
-                initials
-              )}
-              alt={name}
-            />
           </Avatar>
           <span>{name}</span>
         </div>
@@ -119,10 +117,13 @@ export const createPaymentColumns = (
     enableHiding: false,
   },
   {
-    accessorKey: 'dueDate',
+    accessorKey: 'currentCycle.dueDate',
     header: 'Due Date',
     cell: ({ row }) => {
-      const { dueDate, bufferEndDate } = row.original;
+      const { currentCycle } = row.original;
+      const { dueDate, bufferEndDate } = currentCycle;
+      if (!dueDate) return <div className="min-w-24">-</div>;
+
       const daysDiff = calculateDaysRemaining(dueDate);
       const formattedDate = new Date(dueDate).toLocaleDateString('en-GB', {
         day: 'numeric',
@@ -158,10 +159,12 @@ export const createPaymentColumns = (
     },
   },
   {
-    accessorKey: 'bufferStatus',
+    id: 'currentCycle.bufferEndDate',
+    accessorKey: 'currentCycle.bufferEndDate',
     header: 'Buffer',
     cell: ({ row }) => {
-      const { bufferEndDate, pendingAmount } = row.original;
+      const { currentCycle } = row.original;
+      const { bufferEndDate, pendingAmount } = currentCycle;
 
       // Shows when there's no buffer OR payment is completed
       if (!bufferEndDate || pendingAmount === 0) {
@@ -195,8 +198,8 @@ export const createPaymentColumns = (
       );
     },
     sortingFn: (rowA, rowB) => {
-      const aData = rowA.original;
-      const bData = rowB.original;
+      const aData = rowA.original.currentCycle;
+      const bData = rowB.original.currentCycle;
 
       // Completed payments go to bottom
       if (aData.pendingAmount === 0 && bData.pendingAmount > 0) return 1;
@@ -207,11 +210,14 @@ export const createPaymentColumns = (
       today.setHours(0, 0, 0, 0);
 
       // For sorting urgency: use buffer end date if exists, otherwise use due date
-      const getUrgencyDate = (data: Payment) => {
-        if (data.bufferEndDate) {
-          return new Date(data.bufferEndDate);
+      const getUrgencyDate = (cycle: {
+        bufferEndDate?: string | null;
+        dueDate: string;
+      }) => {
+        if (cycle.bufferEndDate) {
+          return new Date(cycle.bufferEndDate);
         }
-        return new Date(data.dueDate);
+        return new Date(cycle.dueDate);
       };
 
       const aDate = getUrgencyDate(aData);
@@ -226,22 +232,47 @@ export const createPaymentColumns = (
       // Sort by urgency: expired first, then by days remaining (ascending)
       return aDaysLeft - bDaysLeft;
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+    filterFn: (row, id, value: string[]) => {
+      const { currentCycle } = row.original;
+      const { bufferEndDate, dueDate } = currentCycle;
+
+      // Use buffer end date if exists, otherwise use due date
+      const targetDate = bufferEndDate || dueDate;
+      if (!targetDate) return false;
+
+      const daysRemaining = calculateDaysRemaining(targetDate);
+
+      return value.some((filterValue: string) => {
+        switch (filterValue) {
+          case 'overdue':
+            return daysRemaining < 0;
+          case 'today':
+            return daysRemaining === 0;
+          case '1-3':
+            return daysRemaining >= 1 && daysRemaining <= 3;
+          case '4-7':
+            return daysRemaining >= 4 && daysRemaining <= 7;
+          case '7+':
+            return daysRemaining > 7;
+          default:
+            return false;
+        }
+      });
     },
   },
   {
-    accessorKey: 'paymentSummary',
+    accessorKey: 'currentCycle.paymentSummary',
     header: 'Payment Summary',
     cell: ({ row }) => {
-      const { pendingAmount, totalAmountPaid, expectedTotalFee } = row.original;
-      const progress = (totalAmountPaid / expectedTotalFee) * 100;
+      const { currentCycle } = row.original;
+      const { pendingAmount, amountPaid, planFee } = currentCycle;
+      const progress = planFee > 0 ? (amountPaid / planFee) * 100 : 0;
 
       return (
         <div className="min-w-[180px] pr-4">
           <div className="flex justify-between text-sm mb-1">
-            <span className="text-white">₹{totalAmountPaid}</span>
-            <span className="text-primary-blue-200">₹{expectedTotalFee}</span>
+            <span className="text-white">₹{amountPaid}</span>
+            <span className="text-primary-blue-200">₹{planFee}</span>
           </div>
           <div className="w-full bg-primary-blue-300/30 rounded-full h-1.5 mb-1">
             <div
@@ -257,11 +288,13 @@ export const createPaymentColumns = (
     },
   },
   {
-    accessorKey: 'feeStatus',
+    id: 'currentCycle.status',
+    accessorFn: (row) => row.currentCycle.status,
     header: 'Status',
     cell: ({ row }) => {
-      const status = row.getValue('feeStatus') as string;
-      const pendingAmount = row.original.pendingAmount;
+      const { currentCycle } = row.original;
+      const status = currentCycle.status;
+      const pendingAmount = currentCycle.pendingAmount;
 
       const badgeStatus = getPaymentBadgeStatus(status, pendingAmount);
 
@@ -271,24 +304,39 @@ export const createPaymentColumns = (
         </div>
       );
     },
+    filterFn: (row, id, value: string[]) => {
+      return value.includes(row.original.currentCycle.status);
+    },
   },
   {
-    accessorKey: 'packageName',
+    accessorKey: 'membershipPlanId',
     header: 'Package',
     cell: ({ row }) => {
-      const { packageName, cyclesElapsed, planFee } = row.original;
+      const { currentCycle, membershipPlanId } = row.original;
+      const { planFee } = currentCycle;
+      const planName = membershipPlans.find(
+        (p) => p.membershipPlanId === membershipPlanId
+      )?.planName;
 
       return (
         <div className="min-w-[120px]">
-          <div className="text-white text-sm">{packageName}</div>
+          <div className="text-white text-sm">
+            {planName ? (
+              planName
+            ) : (
+              <div className="h-4 bg-primary-blue-300/30 rounded animate-pulse" />
+            )}
+          </div>
           <div className="text-xs text-primary-blue-100">
-            {cyclesElapsed} cycle{cyclesElapsed !== 1 ? 's' : ''} • ₹{planFee}
+            Current cycle • ₹{planFee}
           </div>
         </div>
       );
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue('packageName'));
+    filterFn: (row, id, value: string[]) => {
+      return value.includes(
+        row.getValue<number>('membershipPlanId').toString()
+      );
     },
   },
   {

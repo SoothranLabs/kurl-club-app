@@ -5,12 +5,12 @@ import { useState } from 'react';
 import { IndianRupee, Users } from 'lucide-react';
 
 import { TableSkeleton } from '@/components/shared/table-skeleton';
-import { useGymFormOptions } from '@/hooks/use-gymform-options';
+import { FormOptionsResponse } from '@/hooks/use-gymform-options';
 import { useSheet } from '@/hooks/use-sheet';
 import { getCompletedPaymentFilters, getPaymentFilters } from '@/lib/filters';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 import { useFilteredPayments } from '@/services/payments';
-import type { Payment } from '@/types/payment';
+import type { MemberPaymentDetails } from '@/types/payment';
 
 import InfoCard from '../shared/cards/info-card';
 import { ManagePaymentSheet } from './manage-payment';
@@ -21,14 +21,21 @@ type PaymentTabType = 'outstanding' | 'expired' | 'completed' | 'history';
 
 type Props = {
   type: PaymentTabType;
+  formOptions?: FormOptionsResponse | null;
 };
 
-const getStatsConfig = (payments: Payment[], type: PaymentTabType) => {
+const getStatsConfig = (
+  payments: MemberPaymentDetails[],
+  type: PaymentTabType
+) => {
   const totalOutstanding = payments.reduce(
-    (sum, p) => sum + p.pendingAmount,
+    (sum, member) => sum + member.currentCycle.pendingAmount,
     0
   );
-  const totalRevenue = payments.reduce((sum, p) => sum + p.totalAmountPaid, 0);
+  const totalRevenue = payments.reduce(
+    (sum, member) => sum + member.currentCycle.amountPaid,
+    0
+  );
 
   const configs = {
     outstanding: [
@@ -100,8 +107,9 @@ const getStatsConfig = (payments: Payment[], type: PaymentTabType) => {
   return configs[type] || [];
 };
 
-export function PaymentsTab({ type }: Props) {
-  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
+export function PaymentsTab({ type, formOptions }: Props) {
+  const [selectedPayment, setSelectedPayment] =
+    useState<MemberPaymentDetails | null>(null);
   const { isOpen, openSheet, closeSheet } = useSheet();
 
   const { gymBranch } = useGymBranch();
@@ -115,12 +123,15 @@ export function PaymentsTab({ type }: Props) {
     isLoading,
   } = useFilteredPayments(gymId!);
 
-  const handleRecord = (payment: Payment) => {
-    setSelectedPayment(payment);
+  const handleRecord = (member: MemberPaymentDetails) => {
+    setSelectedPayment(member);
     openSheet();
   };
 
-  const columns = createPaymentColumns(handleRecord);
+  const columns = createPaymentColumns(
+    handleRecord,
+    formOptions?.membershipPlans || []
+  );
 
   const getPaymentsData = () => {
     switch (type) {
@@ -138,9 +149,6 @@ export function PaymentsTab({ type }: Props) {
   };
 
   const stats = getStatsConfig(getPaymentsData(), type);
-
-  // Get dynamic package options from gym configuration
-  const { formOptions } = useGymFormOptions(gymId);
 
   const getFilters = () => {
     const membershipPlans = formOptions?.membershipPlans || [];
