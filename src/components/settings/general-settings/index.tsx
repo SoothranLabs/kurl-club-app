@@ -45,7 +45,7 @@ export default function GeneralSettings() {
   }, [queryTab]);
 
   return (
-    <div className="">
+    <div className="rounded-[12px] bg-background-dark h-full">
       <div className="p-8 flex items-center justify-between">
         <h4 className="text-white font-medium leading-normal text-xl">
           General settings

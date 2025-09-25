@@ -45,7 +45,7 @@ export default function Payments() {
   }, [queryTab]);
 
   return (
-    <div>
+    <div className="rounded-[12px] bg-background-dark h-full">
       <div className="px-4 py-5 md:p-8 flex items-center justify-between">
         <h4 className="text-white font-medium leading-normal text-xl">
           Payments

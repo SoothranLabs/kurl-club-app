@@ -40,7 +40,7 @@ export default function StaffManagement() {
   }, [isFromSetup, returnUrl, gymStaffs.length, router]);
 
   return (
-    <div>
+    <div className="rounded-[12px] bg-background-dark h-full">
       <StaffsHeader
         onAddNewClick={() => openSheet()}
         isOpen={isOpen}

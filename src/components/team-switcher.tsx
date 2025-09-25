@@ -17,7 +17,7 @@ export function TeamSwitcher() {
       <SidebarMenuItem>
         <SidebarMenuButton
           size="lg"
-          className="cursor-default hover:bg-transparent"
+          className="cursor-default hover:bg-transparent h-auto"
         >
           {state === 'collapsed' ? (
             <Image
@@ -28,20 +28,13 @@ export function TeamSwitcher() {
               className="drop-shadow-[0_0_12px_rgba(211,247,2,0.4)]"
             />
           ) : (
-            <>
-              <Image
-                width={120}
-                height={18}
-                className="w-auto object-contain h-4"
-                src="/assets/svg/logo-light.svg"
-                alt="KurlClub Logo"
-              />
-              <div className="grid flex-1 text-left leading-tight ml-1">
-                <span className="truncate text-[10px] text-sidebar-foreground/50 font-medium uppercase tracking-wide">
-                  Studio Dashboard
-                </span>
-              </div>
-            </>
+            <Image
+              width={120}
+              height={18}
+              className="w-auto object-contain h-4"
+              src="/assets/svg/logo-light.svg"
+              alt="KurlClub Logo"
+            />
           )}
         </SidebarMenuButton>
       </SidebarMenuItem>

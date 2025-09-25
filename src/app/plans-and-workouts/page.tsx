@@ -32,7 +32,7 @@ function PlansAndWorkoutsContent() {
   };
 
   return (
-    <main className="p-8">
+    <main className="p-8 rounded-[12px] bg-background-dark h-full">
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-2">Plans & Workouts</h1>
         <p className="text-muted-foreground">

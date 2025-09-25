@@ -6,7 +6,11 @@ export const metadata: Metadata = {
 };
 
 const AttendancePage = () => {
-  return <div>AttendancePage</div>;
+  return (
+    <div className="rounded-[12px] bg-background-dark h-full">
+      AttendancePage
+    </div>
+  );
 };
 
 export default AttendancePage;

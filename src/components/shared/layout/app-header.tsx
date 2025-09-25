@@ -32,7 +32,7 @@ export function AppHeader() {
   const userName = appUser?.userName || appUser?.userEmail || 'User';
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-3 border-b px-4">
+    <header className="flex h-16 shrink-0 items-center gap-3 sticky top-0 z-50 px-4 bg-secondary-blue-500">
       <div className="flex min-w-0 flex-1 items-center gap-3">
         <SidebarTrigger className="-ml-1" />
         <Separator
