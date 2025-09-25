@@ -5,20 +5,20 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod/v4';
 
-import Banner from '@/components/dashboard/banner';
-import CardList from '@/components/dashboard/card-list';
-import { AttendanceChats } from '@/components/dashboard/insights/attendance-chats';
-import OutstandingPayment from '@/components/dashboard/insights/outstanding-payment';
-import Payments from '@/components/dashboard/insights/payments';
-import SkipperStats from '@/components/dashboard/insights/skipper-stats';
+import Banner from '@/components/pages/dashboard/banner';
+import CardList from '@/components/pages/dashboard/card-list';
+import { AttendanceChats } from '@/components/pages/dashboard/insights/attendance-chats';
+import OutstandingPayment from '@/components/pages/dashboard/insights/outstanding-payment';
+import Payments from '@/components/pages/dashboard/insights/payments';
+import SkipperStats from '@/components/pages/dashboard/insights/skipper-stats';
 import { GymRequiredGuard } from '@/components/shared/guards';
 import { MultiStepLoader } from '@/components/shared/loaders/multi-step-loader';
 import { useAuth } from '@/providers/auth-provider';
 import { DatePickerSchema } from '@/schemas';
 
-import { KFormField, KFormFieldType } from '../shared/form/k-formfield';
-import { dashboardLoadingStates } from '../shared/loaders';
-import { Form } from '../ui/form';
+import { KFormField, KFormFieldType } from '../../shared/form/k-formfield';
+import { dashboardLoadingStates } from '../../shared/loaders';
+import { Form } from '../../ui/form';
 
 function Dashboard() {
   const { appUser, isAppUserLoading } = useAuth();

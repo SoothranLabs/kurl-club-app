@@ -4,11 +4,11 @@ import { usePathname } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
 import Loading from '@/app/loading';
-import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useAuth } from '@/providers/auth-provider';
 
 import { AppHeader } from './app-header';
+import { AppSidebar } from './sidebar';
 
 interface AppLayoutProps {
   children: ReactNode;

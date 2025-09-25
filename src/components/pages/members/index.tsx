@@ -5,8 +5,6 @@ import { useEffect, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import { MembersHeader } from '@/components/members/members-header';
-import { columns } from '@/components/members/table/columns';
 import { TableSkeleton } from '@/components/shared/table-skeleton';
 import { DataTable } from '@/components/shared/table/data-table';
 import { DataTableToolbar } from '@/components/shared/table/data-table-toolbar';
@@ -18,6 +16,9 @@ import { searchItems } from '@/lib/utils';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 import { bulkImportMembers, useGymMembers } from '@/services/member';
 import { Member } from '@/types/members';
+
+import { MembersHeader } from './members-header';
+import { columns } from './table/columns';
 
 export default function Members() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);

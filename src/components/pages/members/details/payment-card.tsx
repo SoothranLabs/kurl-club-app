@@ -5,7 +5,6 @@ import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Clock, Edit, Info } from 'lucide-react';
 
-import { ManagePaymentSheet } from '@/components/payments/manage-payment';
 import { FeeStatusBadge } from '@/components/shared/badges/fee-status-badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -19,6 +18,8 @@ import {
   getPaymentBadgeStatus,
 } from '@/lib/utils';
 import { useMemberPaymentDetails } from '@/services/member';
+
+import { ManagePaymentSheet } from '../../payments/manage-payment';
 
 interface PaymentCardProps {
   memberId: string | number;

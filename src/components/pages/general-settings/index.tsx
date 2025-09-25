@@ -8,7 +8,7 @@ import {
   CommunicationTab,
   OperationsTab,
   SecurityAndPrivacyTab,
-} from '@/components/settings/general-settings/tabs';
+} from '@/components/pages/general-settings/tabs';
 import { KTabs, TabItem } from '@/components/shared/form/k-tabs';
 
 const tabs: TabItem[] = [
@@ -36,7 +36,11 @@ export default function GeneralSettings() {
   };
 
   useEffect(() => {
-    if (queryTab !== activeTab) {
+    if (!queryTab && activeTab === defaultTab) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', defaultTab);
+      router.replace(url.toString(), { scroll: false });
+    } else if (queryTab !== activeTab) {
       setActiveTab(
         tabs.some((tab) => tab.id === queryTab) ? queryTab! : defaultTab
       );

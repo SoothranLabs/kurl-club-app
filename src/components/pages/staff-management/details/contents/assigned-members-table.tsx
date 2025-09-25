@@ -1,6 +1,6 @@
 'use client';
 
-import { columns } from '@/components/members/table/columns';
+import { columns } from '@/components/pages/members/table/columns';
 import { TableSkeleton } from '@/components/shared/table-skeleton';
 import { DataTable } from '@/components/shared/table/data-table';
 import { DataTableToolbar } from '@/components/shared/table/data-table-toolbar';

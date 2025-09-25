@@ -17,15 +17,16 @@ export function TeamSwitcher() {
       <SidebarMenuItem>
         <SidebarMenuButton
           size="lg"
-          className="cursor-default hover:bg-transparent h-auto"
+          className={`cursor-default hover:bg-transparent h-auto ${
+            state === 'collapsed' ? 'inline-flex justify-center' : ''
+          }`}
         >
           {state === 'collapsed' ? (
             <Image
               src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%203-1bUu3foSGcahraLSyANoyl4dlcVN2Z.png"
               alt="KurlClub Logo"
-              width={28}
-              height={28}
-              className="drop-shadow-[0_0_12px_rgba(211,247,2,0.4)]"
+              width={36}
+              height={36}
             />
           ) : (
             <Image

@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-import Contents from '@/components/members/details/contents';
-import { Sidebar } from '@/components/members/details/sidebar';
+import Contents from '@/components/pages/members/details/contents';
+import { Sidebar } from '@/components/pages/members/details/sidebar';
 import { useGymFormOptions } from '@/hooks/use-gymform-options';
 import { useMemberDetails } from '@/hooks/use-member-details';
 import { useGymBranch } from '@/providers/gym-branch-provider';

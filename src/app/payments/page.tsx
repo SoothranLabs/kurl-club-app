@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import Payments from '@/components/payments';
+import Payments from '@/components/pages/payments';
 
 export const metadata: Metadata = {
   title: 'Payments',

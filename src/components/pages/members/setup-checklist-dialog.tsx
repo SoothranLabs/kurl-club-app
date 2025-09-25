@@ -126,7 +126,11 @@ export const SetupChecklistDialog = ({
               className="relative z-10"
             >
               <Link
-                href={`${href}?return=/members&setup=true`}
+                href={
+                  href.includes('?')
+                    ? `${href}&return=/members&setup=true`
+                    : `${href}?return=/members&setup=true`
+                }
                 onClick={onClose}
                 className="relative inline-flex items-center gap-2 text-sm text-neutral-ochre-500 hover:text-neutral-ochre-400 transition-colors mt-3 group/link cursor-pointer z-20"
               >
@@ -241,7 +245,7 @@ export const SetupChecklistDialog = ({
                 completed={hasPackages}
                 title="Membership Plans"
                 description="Add at least one membership package"
-                href="/settings/membership-plans"
+                href="/plans-and-workouts?tab=membership-plans"
                 icon={Package}
                 delay={0}
               />
@@ -250,7 +254,7 @@ export const SetupChecklistDialog = ({
                 completed={hasTrainers}
                 title="Trainers"
                 description="Add trainers to assign to members"
-                href="/settings/staff-management"
+                href="/staff-management"
                 icon={Users}
                 delay={0.1}
               />
@@ -259,7 +263,7 @@ export const SetupChecklistDialog = ({
                 completed={hasWorkoutPlans}
                 title="Workout Plans"
                 description="Create workout plans for members"
-                href="/settings/workout-plans"
+                href="/plans-and-workouts?tab=workout-plans"
                 icon={Dumbbell}
                 delay={0.2}
               />

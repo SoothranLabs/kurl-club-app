@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { IndianRupee, Users } from 'lucide-react';
 
+import InfoCard from '@/components/shared/cards/info-card';
 import { TableSkeleton } from '@/components/shared/table-skeleton';
 import { FormOptionsResponse } from '@/hooks/use-gymform-options';
 import { useSheet } from '@/hooks/use-sheet';
@@ -12,7 +13,6 @@ import { useGymBranch } from '@/providers/gym-branch-provider';
 import { useFilteredPayments } from '@/services/payments';
 import type { MemberPaymentDetails } from '@/types/payment';
 
-import InfoCard from '../shared/cards/info-card';
 import { ManagePaymentSheet } from './manage-payment';
 import { createPaymentColumns } from './table/columns';
 import { TableView } from './table/table-view';

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import StaffManagement from '@/components/settings/staff-management';
+import StaffManagement from '@/components/pages/staff-management';
 
 export const metadata: Metadata = {
   title: 'Staff Management',

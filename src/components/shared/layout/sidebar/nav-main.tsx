@@ -10,6 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar';
 
 export function NavMain({
@@ -26,13 +27,19 @@ export function NavMain({
     }[];
   }[];
 }) {
+  const { state } = useSidebar();
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>GENERAL</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton asChild isActive={item.isActive}>
+            <SidebarMenuButton
+              asChild
+              isActive={item.isActive}
+              tooltip={state === 'collapsed' ? item.title : undefined}
+            >
               <Link href={item.url}>
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>

@@ -3,8 +3,6 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { columns } from '@/components/settings/staff-management/columns';
-import { StaffsHeader } from '@/components/settings/staff-management/staff-header';
 import { TableSkeleton } from '@/components/shared/table-skeleton';
 import { DataTable } from '@/components/shared/table/data-table';
 import { DataTableToolbar } from '@/components/shared/table/data-table-toolbar';
@@ -15,6 +13,9 @@ import { searchItems } from '@/lib/utils';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 import { useGymStaffs } from '@/services/staff';
 import { Staff } from '@/types/staff';
+
+import { columns } from './columns';
+import { StaffsHeader } from './staff-header';
 
 export default function StaffManagement() {
   const { isOpen, openSheet, closeSheet } = useSheet();

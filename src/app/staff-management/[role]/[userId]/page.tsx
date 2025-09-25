@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-import Contents from '@/components/settings/staff-management/details/contents';
-import { Sidebar } from '@/components/settings/staff-management/details/sidebar';
+import Contents from '@/components/pages/staff-management/details/contents';
+import { Sidebar } from '@/components/pages/staff-management/details/sidebar';
 import { useStaffDetails } from '@/hooks/use-staff-details';
 import { StaffType } from '@/types/staff';
 
