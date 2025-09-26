@@ -12,7 +12,7 @@ export function NotificationBell({ count, onClick }: NotificationBellProps) {
   return (
     <motion.button
       onClick={onClick}
-      className="relative p-2 text-white hover:bg-secondary-blue-600 rounded-lg transition-colors"
+      className="relative cursor-pointer p-2 text-white hover:bg-secondary-blue-600 rounded-lg transition-colors"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       transition={{ duration: 0.15 }}

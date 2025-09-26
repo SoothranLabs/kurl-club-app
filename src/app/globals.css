@@ -450,7 +450,7 @@
 /* Custom Sidebar Styles */
 [data-sidebar='sidebar'] {
   background: linear-gradient(180deg, #282b32 0%, #24272e 100%);
-  border-right: 1px solid #414349;
+  /* border-right: 1px solid #414349; */
 }
 
 [data-sidebar='menu-button'][data-active='true'] {

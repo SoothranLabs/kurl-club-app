@@ -15,7 +15,7 @@ export function AppHeader() {
   const notificationCount = 3;
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-3 sticky top-0 z-50 px-4 bg-secondary-blue-500">
+    <header className="flex h-16 shrink-0 items-center gap-3 sticky top-3 z-50 border-b border-b-secondary-blue-500 px-4 bg-background-dark rounded-tl-xl">
       <CommandPalette />
       <div className="flex min-w-0 flex-1 items-center gap-3">
         <SidebarTrigger className="-ml-1" />

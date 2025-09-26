@@ -83,6 +83,7 @@ export function NavUser() {
             onClick={handleLogout}
             disabled={isPending}
             tooltip="Logout"
+            className="cursor-pointer"
           >
             <LogOut className="h-5 w-5" />
           </SidebarMenuButton>

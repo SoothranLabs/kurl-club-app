@@ -35,7 +35,7 @@ export const StudioLayout = ({
   };
 
   return (
-    <div className="rounded-[12px] bg-background-dark h-full">
+    <div className="bg-background-dark h-full">
       {/* Header Section */}
       <div className="px-4 py-5 md:p-8">
         <div className="flex items-center justify-between flex-wrap gap-2">
