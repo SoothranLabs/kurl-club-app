@@ -86,57 +86,55 @@ export function PackageManager() {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight text-white">
-              Membership Plans
-            </h1>
-            <p className="text-gray-400 mt-2">
-              Create and manage your gym membership plans
+    <div>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">
+            Membership Plans
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Create and manage your gym membership plans
+          </p>
+        </div>
+        <Button onClick={handleCreatePlan}>
+          <Plus className="w-5 h-5 mr-2" />
+          Create Plan
+        </Button>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {isLoading ? (
+          Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton key={i} className="w-full h-[400px] rounded-xl" />
+          ))
+        ) : plans.length === 0 ? (
+          <div className="col-span-full text-center py-10">
+            <p className="text-gray-400">
+              No membership plans available. Click &quot;Create Plan&quot; to
+              add one.
             </p>
           </div>
-          <Button onClick={handleCreatePlan}>
-            <Plus className="w-5 h-5 mr-2" />
-            Create Plan
-          </Button>
-        </div>
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {isLoading ? (
-            Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={i} className="w-full h-[400px] rounded-xl" />
-            ))
-          ) : plans.length === 0 ? (
-            <div className="col-span-full text-center py-10">
-              <p className="text-gray-400">
-                No membership plans available. Click &quot;Create Plan&quot; to
-                add one.
-              </p>
-            </div>
-          ) : (
-            plans.map((plan, index) => (
-              <MembershipCard
-                key={index}
-                plan={plan}
-                onClick={() => {
-                  setSelectedPlan(plan);
-                  openSheet();
-                }}
-              />
-            ))
-          )}
-        </div>
-        <MembershipPlanSheet
-          plan={selectedPlan}
-          isOpen={isOpen}
-          closeSheet={closeSheet}
-          onUpdate={handleUpdatePlan}
-          onDelete={handleDeletePlan}
-          onSaveNew={handleSaveNewPlan}
-        />
+        ) : (
+          plans.map((plan, index) => (
+            <MembershipCard
+              key={index}
+              plan={plan}
+              onClick={() => {
+                setSelectedPlan(plan);
+                openSheet();
+              }}
+            />
+          ))
+        )}
       </div>
+      <MembershipPlanSheet
+        plan={selectedPlan}
+        isOpen={isOpen}
+        closeSheet={closeSheet}
+        onUpdate={handleUpdatePlan}
+        onDelete={handleDeletePlan}
+        onSaveNew={handleSaveNewPlan}
+      />
     </div>
   );
 }

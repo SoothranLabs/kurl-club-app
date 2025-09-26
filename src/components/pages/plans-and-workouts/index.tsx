@@ -3,7 +3,8 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { KTabs, TabItem } from '@/components/shared/form/k-tabs';
+import { TabItem } from '@/components/shared/form/k-tabs';
+import { StudioLayout } from '@/components/shared/layout';
 
 import { PackageManager } from './tabs/membership-planner';
 import { WorkoutPlanner } from './tabs/workout-planner';
@@ -50,26 +51,15 @@ export default function PlansAndWorkoutsContent() {
   }, [queryTab]);
 
   return (
-    <main className="p-8 rounded-[12px] bg-background-dark h-full">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-2">Plans & Workouts</h1>
-        <p className="text-muted-foreground">
-          Manage membership plans and workout programs
-        </p>
-      </div>
-
-      <KTabs
-        items={tabs}
-        variant="underline"
-        value={activeTab}
-        onTabChange={handleTabChange}
-        className="mb-6"
-      />
-
-      <div className="mt-6">
-        {activeTab === 'membership-plans' && <PackageManager />}
-        {activeTab === 'workout-plans' && <WorkoutPlanner />}
-      </div>
-    </main>
+    <StudioLayout
+      title="Plans & Workouts"
+      description="Manage membership plans and workout programs"
+      tabs={tabs}
+      activeTab={activeTab}
+      onTabChange={handleTabChange}
+    >
+      {activeTab === 'membership-plans' && <PackageManager />}
+      {activeTab === 'workout-plans' && <WorkoutPlanner />}
+    </StudioLayout>
   );
 }

@@ -1,12 +1,10 @@
-import {
-  CommandPalette,
-  QuickActionsButton,
-} from '@/components/shared/layout/command-palette';
-import { NotificationBell } from '@/components/shared/layout/notification-bell';
 import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { getGreeting } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
+
+import { CommandPalette, QuickActionsButton } from './command-palette';
+import { NotificationBell } from './notification-bell';
 
 export function AppHeader() {
   const { appUser } = useAuth();

@@ -16,11 +16,8 @@ export const StaffsHeader = ({
   closeSheet,
 }: StaffsHeaderProps) => {
   return (
-    <div className="flex px-8 pt-8 items-center justify-between">
-      <h4 className="text-[20px] leading-normal tracking-tight font-medium text-white">
-        Staff Management
-      </h4>
-      <div className="flex items-center space-x-2">
+    <div className="flex items-center justify-end flex-wrap gap-2">
+      <div className="flex items-center space-x-2 flex-wrap">
         <Button className="h-10" onClick={onAddNewClick}>
           <Plus className="h-4 w-4" />
           Add new

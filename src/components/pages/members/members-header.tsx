@@ -59,8 +59,7 @@ export const MembersHeader = ({
   };
 
   return (
-    <div className="flex items-center justify-between flex-wrap gap-2">
-      <h2 className="text-2xl font-bold tracking-tight">Members</h2>
+    <div className="flex items-center justify-end flex-wrap gap-2">
       <div className="flex items-center space-x-2 flex-wrap">
         <Button variant="outline" className="h-10" onClick={onImportClick}>
           <Download className=" h-4 w-4" />

@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
+import { StudioLayout } from '@/components/shared/layout';
 import { TableSkeleton } from '@/components/shared/table-skeleton';
 import { DataTable } from '@/components/shared/table/data-table';
 import { DataTableToolbar } from '@/components/shared/table/data-table-toolbar';
@@ -41,30 +42,31 @@ export default function StaffManagement() {
   }, [isFromSetup, returnUrl, gymStaffs.length, router]);
 
   return (
-    <div className="rounded-[12px] bg-background-dark h-full">
-      <StaffsHeader
-        onAddNewClick={() => openSheet()}
-        isOpen={isOpen}
-        closeSheet={closeSheet}
-      />
-
-      <div className="p-8 max-w-[calc(100vw-342px)]">
-        {isLoading ? (
-          <TableSkeleton rows={8} columns={6} showToolbar />
-        ) : (
-          <DataTable
-            columns={columns}
-            data={staffs}
-            toolbar={(table) => (
-              <DataTableToolbar
-                table={table}
-                onSearch={search}
-                filters={staffFilters}
-              />
-            )}
-          />
-        )}
-      </div>
-    </div>
+    <StudioLayout
+      title="Staff Management"
+      headerActions={
+        <StaffsHeader
+          onAddNewClick={() => openSheet()}
+          isOpen={isOpen}
+          closeSheet={closeSheet}
+        />
+      }
+    >
+      {isLoading ? (
+        <TableSkeleton rows={8} columns={6} showToolbar />
+      ) : (
+        <DataTable
+          columns={columns}
+          data={staffs}
+          toolbar={(table) => (
+            <DataTableToolbar
+              table={table}
+              onSearch={search}
+              filters={staffFilters}
+            />
+          )}
+        />
+      )}
+    </StudioLayout>
   );
 }

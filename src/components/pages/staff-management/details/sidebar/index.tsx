@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 
-import { Breadcrumb } from '@/components/shared/layout/breadcrumbs';
-import { CollapsibleSection } from '@/components/shared/layout/collapsible-section';
+import { Breadcrumb, CollapsibleSection } from '@/components/shared/layout';
 import { StaffDetails, StaffType } from '@/types/staff';
 
 import { CertificationSection } from './certification-section';

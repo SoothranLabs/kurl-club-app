@@ -3,7 +3,8 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { KTabs, TabItem } from '@/components/shared/form/k-tabs';
+import { TabItem } from '@/components/shared/form/k-tabs';
+import { StudioLayout } from '@/components/shared/layout';
 import { useGymFormOptions } from '@/hooks/use-gymform-options';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 
@@ -45,37 +46,26 @@ export default function Payments() {
   }, [queryTab]);
 
   return (
-    <div className="rounded-[12px] bg-background-dark h-full">
-      <div className="px-4 py-5 md:p-8 flex items-center justify-between">
-        <h4 className="text-white font-medium leading-normal text-xl">
-          Payments
-        </h4>
-      </div>
-
-      <KTabs
-        items={TABS}
-        variant="underline"
-        value={activeTab}
-        onTabChange={handleTabChange}
-        className="p-0 md:px-2 border-secondary-blue-500"
-      />
-
-      <div className="px-4 py-5 md:p-8 max-w-[calc(100vw-200px)] md:max-w-[calc(100vw-250px)]">
+    <StudioLayout
+      title="Payments"
+      tabs={TABS}
+      activeTab={activeTab}
+      onTabChange={handleTabChange}
+    >
+      {
         {
-          {
-            'outstanding-payments': (
-              <PaymentsTab type="outstanding" formOptions={formOptions} />
-            ),
-            'expired-payments': (
-              <PaymentsTab type="expired" formOptions={formOptions} />
-            ),
-            'completed-payments': (
-              <PaymentsTab type="completed" formOptions={formOptions} />
-            ),
-            history: <PaymentsTab type="history" formOptions={formOptions} />,
-          }[activeTab]
-        }
-      </div>
-    </div>
+          'outstanding-payments': (
+            <PaymentsTab type="outstanding" formOptions={formOptions} />
+          ),
+          'expired-payments': (
+            <PaymentsTab type="expired" formOptions={formOptions} />
+          ),
+          'completed-payments': (
+            <PaymentsTab type="completed" formOptions={formOptions} />
+          ),
+          history: <PaymentsTab type="history" formOptions={formOptions} />,
+        }[activeTab]
+      }
+    </StudioLayout>
   );
 }

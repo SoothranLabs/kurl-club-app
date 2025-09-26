@@ -9,7 +9,8 @@ import {
   OperationsTab,
   SecurityAndPrivacyTab,
 } from '@/components/pages/general-settings/tabs';
-import { KTabs, TabItem } from '@/components/shared/form/k-tabs';
+import { TabItem } from '@/components/shared/form/k-tabs';
+import { StudioLayout } from '@/components/shared/layout';
 
 const tabs: TabItem[] = [
   { id: 'business_profile', label: 'Business Profile' },
@@ -49,25 +50,17 @@ export default function GeneralSettings() {
   }, [queryTab]);
 
   return (
-    <div className="rounded-[12px] bg-background-dark h-full">
-      <div className="p-8 flex items-center justify-between">
-        <h4 className="text-white font-medium leading-normal text-xl">
-          General settings
-        </h4>
-      </div>
-      <KTabs
-        items={tabs}
-        variant="underline"
-        value={activeTab}
-        onTabChange={handleTabChange}
-        className="px-2 border-secondary-blue-500"
-      />
-      <div className="p-8 max-w-[960px]">
-        {activeTab === 'business_profile' && <BusinessProfileTab />}
-        {activeTab === 'communication' && <CommunicationTab />}
-        {activeTab === 'operations' && <OperationsTab />}
-        {activeTab === 'security_and_privacy' && <SecurityAndPrivacyTab />}
-      </div>
-    </div>
+    <StudioLayout
+      title="General Settings"
+      tabs={tabs}
+      activeTab={activeTab}
+      onTabChange={handleTabChange}
+      maxContentWidth="narrow"
+    >
+      {activeTab === 'business_profile' && <BusinessProfileTab />}
+      {activeTab === 'communication' && <CommunicationTab />}
+      {activeTab === 'operations' && <OperationsTab />}
+      {activeTab === 'security_and_privacy' && <SecurityAndPrivacyTab />}
+    </StudioLayout>
   );
 }

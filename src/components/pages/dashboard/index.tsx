@@ -67,7 +67,7 @@ function Dashboard() {
               </form>
             </Form>
           </div>
-          <div className="grid [grid-template-columns:1fr] md:[grid-template-columns:repeat(auto-fit,minmax(680px,_1fr))] gap-4">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
             <Payments />
             <OutstandingPayment />
             <SkipperStats />

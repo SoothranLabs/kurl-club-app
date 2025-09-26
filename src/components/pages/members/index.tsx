@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import { StudioLayout } from '@/components/shared/layout';
 import { TableSkeleton } from '@/components/shared/table-skeleton';
 import { DataTable } from '@/components/shared/table/data-table';
 import { DataTableToolbar } from '@/components/shared/table/data-table-toolbar';
@@ -76,30 +77,35 @@ export default function Members() {
   };
 
   return (
-    <div className="h-full flex-1 flex-col space-y-8 py-3 sm:py-4 md:py-8 flex container rounded-[12px] bg-background-dark">
-      <MembersHeader
-        onImportClick={() => setIsImportModalOpen(true)}
-        onAddNewClick={openSheet}
-        isOpen={isOpen}
-        closeSheet={closeSheet}
-        gymId={gymId}
-      />
-
-      {isLoading ? (
-        <TableSkeleton rows={12} columns={8} showToolbar />
-      ) : (
-        <DataTable
-          columns={columns}
-          data={filteredMembers}
-          toolbar={(table) => (
-            <DataTableToolbar
-              table={table}
-              onSearch={search}
-              filters={filters}
-            />
-          )}
-        />
-      )}
+    <>
+      <StudioLayout
+        title="Members"
+        headerActions={
+          <MembersHeader
+            onImportClick={() => setIsImportModalOpen(true)}
+            onAddNewClick={openSheet}
+            isOpen={isOpen}
+            closeSheet={closeSheet}
+            gymId={gymId}
+          />
+        }
+      >
+        {isLoading ? (
+          <TableSkeleton rows={12} columns={8} showToolbar />
+        ) : (
+          <DataTable
+            columns={columns}
+            data={filteredMembers}
+            toolbar={(table) => (
+              <DataTableToolbar
+                table={table}
+                onSearch={search}
+                filters={filters}
+              />
+            )}
+          />
+        )}
+      </StudioLayout>
 
       <ImportCSVModal<Member>
         isOpen={isImportModalOpen}
@@ -117,6 +123,6 @@ export default function Members() {
         requiredFields={requiredFields}
         transformations={memberTransformations}
       />
-    </div>
+    </>
   );
 }
