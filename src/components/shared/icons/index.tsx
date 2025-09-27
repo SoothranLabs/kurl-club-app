@@ -208,8 +208,8 @@ export const KAccordionClose: React.FC<SVGProps<SVGSVGElement>> = (props) => (
 
 export const KBadgeCheck: React.FC<SVGProps<SVGSVGElement>> = () => (
   <svg
-    width="18"
-    height="18"
+    width="16"
+    height="16"
     viewBox="0 0 18 18"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -223,8 +223,8 @@ export const KBadgeCheck: React.FC<SVGProps<SVGSVGElement>> = () => (
 
 export const KBadgeMinus: React.FC<SVGProps<SVGSVGElement>> = () => (
   <svg
-    width="18"
-    height="18"
+    width="16"
+    height="16"
     viewBox="0 0 18 18"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -238,8 +238,8 @@ export const KBadgeMinus: React.FC<SVGProps<SVGSVGElement>> = () => (
 
 export const KBadgeClose: React.FC<SVGProps<SVGSVGElement>> = () => (
   <svg
-    width="18"
-    height="18"
+    width="16"
+    height="16"
     viewBox="0 0 18 18"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -253,8 +253,8 @@ export const KBadgeClose: React.FC<SVGProps<SVGSVGElement>> = () => (
 
 export const KBadgeFlag: React.FC<SVGProps<SVGSVGElement>> = (props) => (
   <svg
-    width="18"
-    height="18"
+    width="16"
+    height="16"
     viewBox="0 0 18 18"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

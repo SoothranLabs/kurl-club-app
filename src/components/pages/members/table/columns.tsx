@@ -28,7 +28,7 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: 'memberIdentifier',
     header: 'Member ID',
     cell: ({ row }) => (
-      <div className="w-[100px] uppercase">
+      <div className="w-[80px] uppercase">
         <span className="text-primary-blue-200/80 font-bold mr-0.5">#</span>
         {row.getValue('memberIdentifier')}
       </div>
@@ -45,7 +45,7 @@ export const columns: ColumnDef<Member>[] = [
       const initials = getInitials(name);
 
       return (
-        <div className="flex items-center gap-2 w-[200px]">
+        <div className="flex items-center gap-2 w-[140px]">
           <Avatar className="h-8 w-8">
             <AvatarFallback className="font-medium" style={avatarStyle}>
               {initials}
@@ -69,7 +69,7 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: 'package',
     header: 'Package',
     cell: ({ row }) => (
-      <div className="min-w-[100px]">{row.getValue('package')}</div>
+      <div className="w-[80px]">{row.getValue('package')}</div>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -84,7 +84,7 @@ export const columns: ColumnDef<Member>[] = [
         | 'partially_paid'
         | 'unpaid';
       return (
-        <div className="min-w-[120px]">
+        <div className="w-[120px]">
           <FeeStatusBadge status={status} />
         </div>
       );
@@ -97,21 +97,19 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: 'email',
     header: 'Email',
     cell: ({ row }) => (
-      <div className="min-w-[200px]">{row.getValue('email')}</div>
+      <div className="w-[120px] truncate">{row.getValue('email')}</div>
     ),
   },
   {
     accessorKey: 'phone',
     header: 'Phone',
-    cell: ({ row }) => (
-      <div className="min-w-[150px]">{row.getValue('phone')}</div>
-    ),
+    cell: ({ row }) => <div className="w-[100px]">{row.getValue('phone')}</div>,
   },
   {
     accessorKey: 'bloodGroup',
     header: 'Blood group',
     cell: ({ row }) => (
-      <div className="min-w-[100px]">{row.getValue('bloodGroup')}</div>
+      <div className="w-[80px] text-center">{row.getValue('bloodGroup')}</div>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -121,14 +119,14 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: 'gender',
     header: 'Gender',
     cell: ({ row }) => (
-      <div className="min-w-[100px] capitalize">{row.getValue('gender')}</div>
+      <div className="w-[70px] capitalize">{row.getValue('gender')}</div>
     ),
   },
   {
     accessorKey: 'doj',
     header: 'Date of Joining',
     cell: ({ row }) => (
-      <div className="min-w-[120px]">
+      <div className="w-[100px]">
         {safeFormatDate(row.getValue<string>('doj'))}
       </div>
     ),
@@ -137,7 +135,7 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: 'dob',
     header: 'Date of Birth',
     cell: ({ row }) => (
-      <div className="min-w-[120px]">
+      <div className="w-[100px]">
         {safeFormatDate(row.getValue<string>('dob'))}
       </div>
     ),
