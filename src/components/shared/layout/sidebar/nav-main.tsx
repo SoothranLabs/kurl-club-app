@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { type LucideIcon } from 'lucide-react';
 
@@ -28,25 +29,30 @@ export function NavMain({
   }[];
 }) {
   const { state } = useSidebar();
+  const pathname = usePathname();
 
   return (
     <SidebarGroup>
       <SidebarGroupLabel>GENERAL</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
-          <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton
-              asChild
-              isActive={item.isActive}
-              tooltip={state === 'collapsed' ? item.title : undefined}
-            >
-              <Link href={item.url}>
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        ))}
+        {items.map((item) => {
+          const isCurrentPage = pathname === item.url || item.isActive;
+
+          return (
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton
+                asChild
+                isActive={isCurrentPage}
+                tooltip={state === 'collapsed' ? item.title : undefined}
+              >
+                <Link href={item.url}>
+                  {item.icon && <item.icon />}
+                  <span>{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          );
+        })}
       </SidebarMenu>
     </SidebarGroup>
   );

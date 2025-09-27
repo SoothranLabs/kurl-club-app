@@ -2,8 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 
-import { DataTable } from '@/components/shared/table/data-table';
-import { DataTableToolbar } from '@/components/shared/table/data-table-toolbar';
+import { DataTable, DataTableToolbar } from '@/components/shared/table';
 import { useFilterableList } from '@/hooks/use-filterable-list';
 import { FilterConfig } from '@/lib/filters';
 import { searchItems } from '@/lib/utils';

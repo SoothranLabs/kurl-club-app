@@ -1,9 +1,11 @@
 'use client';
 
 import { columns } from '@/components/pages/members/table/columns';
-import { TableSkeleton } from '@/components/shared/table-skeleton';
-import { DataTable } from '@/components/shared/table/data-table';
-import { DataTableToolbar } from '@/components/shared/table/data-table-toolbar';
+import {
+  DataTable,
+  DataTableToolbar,
+  TableSkeleton,
+} from '@/components/shared/table';
 import { useFilterableList } from '@/hooks/use-filterable-list';
 import { filters } from '@/lib/dummy/fiters';
 import { searchItems } from '@/lib/utils';

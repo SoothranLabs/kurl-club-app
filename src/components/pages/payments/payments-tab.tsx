@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { IndianRupee, Users } from 'lucide-react';
 
 import InfoCard from '@/components/shared/cards/info-card';
-import { TableSkeleton } from '@/components/shared/table-skeleton';
+import { TableSkeleton } from '@/components/shared/table';
 import { FormOptionsResponse } from '@/hooks/use-gymform-options';
 import { useSheet } from '@/hooks/use-sheet';
 import { getCompletedPaymentFilters, getPaymentFilters } from '@/lib/filters';

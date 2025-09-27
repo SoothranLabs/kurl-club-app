@@ -6,9 +6,11 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { StudioLayout } from '@/components/shared/layout';
-import { TableSkeleton } from '@/components/shared/table-skeleton';
-import { DataTable } from '@/components/shared/table/data-table';
-import { DataTableToolbar } from '@/components/shared/table/data-table-toolbar';
+import {
+  DataTable,
+  DataTableToolbar,
+  TableSkeleton,
+} from '@/components/shared/table';
 import { ImportCSVModal } from '@/components/shared/table/import-csv-modal';
 import { useFilterableList } from '@/hooks/use-filterable-list';
 import { useSheet } from '@/hooks/use-sheet';

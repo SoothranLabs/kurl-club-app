@@ -4,9 +4,11 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { StudioLayout } from '@/components/shared/layout';
-import { TableSkeleton } from '@/components/shared/table-skeleton';
-import { DataTable } from '@/components/shared/table/data-table';
-import { DataTableToolbar } from '@/components/shared/table/data-table-toolbar';
+import {
+  DataTable,
+  DataTableToolbar,
+  TableSkeleton,
+} from '@/components/shared/table';
 import { useFilterableList } from '@/hooks/use-filterable-list';
 import { useSheet } from '@/hooks/use-sheet';
 import { staffFilters } from '@/lib/dummy/fiters';

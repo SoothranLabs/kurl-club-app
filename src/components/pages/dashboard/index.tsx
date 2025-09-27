@@ -42,7 +42,7 @@ function Dashboard() {
   }
 
   return (
-    <div className="container py-5 md:py-8 bg-background-dark">
+    <div className="p-5 md:p-8 bg-background-dark">
       <GymRequiredGuard>
         <CardList />
       </GymRequiredGuard>
