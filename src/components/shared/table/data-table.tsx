@@ -15,7 +15,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { TableFooter } from '@/components/shared/table/table-footer';
+import { TableFooter } from '@/components/shared/table';
 import {
   Table,
   TableBody,
