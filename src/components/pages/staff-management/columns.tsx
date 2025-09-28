@@ -12,9 +12,7 @@ const ActionsCell: React.FC<{ user: Staff }> = ({ user }) => {
   return (
     <Button variant="ghost" className="h-8 w-8 p-0">
       <span className="sr-only">View member profile</span>
-      <Link
-        href={`/settings/staff-management/${user.role.toLowerCase()}/${user.id}`}
-      >
+      <Link href={`/staff-management/${user.role.toLowerCase()}/${user.id}`}>
         <Eye className="h-4 w-4 text-primary-green-600" />
       </Link>
     </Button>

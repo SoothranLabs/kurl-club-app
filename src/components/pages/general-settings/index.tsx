@@ -55,12 +55,14 @@ export default function GeneralSettings() {
       tabs={tabs}
       activeTab={activeTab}
       onTabChange={handleTabChange}
-      maxContentWidth="narrow"
+      maxContentWidth="wide"
     >
-      {activeTab === 'business_profile' && <BusinessProfileTab />}
-      {activeTab === 'communication' && <CommunicationTab />}
-      {activeTab === 'operations' && <OperationsTab />}
-      {activeTab === 'security_and_privacy' && <SecurityAndPrivacyTab />}
+      <div className="max-w-4xl">
+        {activeTab === 'business_profile' && <BusinessProfileTab />}
+        {activeTab === 'communication' && <CommunicationTab />}
+        {activeTab === 'operations' && <OperationsTab />}
+        {activeTab === 'security_and_privacy' && <SecurityAndPrivacyTab />}
+      </div>
     </StudioLayout>
   );
 }

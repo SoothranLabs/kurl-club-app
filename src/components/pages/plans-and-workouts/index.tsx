@@ -53,7 +53,6 @@ export default function PlansAndWorkoutsContent() {
   return (
     <StudioLayout
       title="Plans & Workouts"
-      description="Manage membership plans and workout programs"
       tabs={tabs}
       activeTab={activeTab}
       onTabChange={handleTabChange}

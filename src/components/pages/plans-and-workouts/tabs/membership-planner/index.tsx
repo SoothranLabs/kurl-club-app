@@ -89,10 +89,10 @@ export function PackageManager() {
     <div>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="text-lg md:text-2xl font-bold tracking-tight">
             Membership Plans
           </h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-muted-foreground text-[14px]">
             Create and manage your gym membership plans
           </p>
         </div>
