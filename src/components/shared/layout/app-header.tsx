@@ -1,5 +1,5 @@
 import { Separator } from '@/components/ui/separator';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { getGreeting } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 
@@ -8,6 +8,7 @@ import { NotificationBell } from './notification-bell';
 
 export function AppHeader() {
   const { appUser } = useAuth();
+  const { isMobile } = useSidebar();
 
   const userName = appUser?.userName || appUser?.userEmail || 'User';
 
@@ -15,7 +16,9 @@ export function AppHeader() {
   const notificationCount = 3;
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-3 sticky top-3 z-50 border-b border-b-secondary-blue-500 px-4 bg-background-dark md:rounded-tl-3xl">
+    <header
+      className={`flex h-16 shrink-0 items-center gap-3 sticky top-3 z-50 border-b border-b-secondary-blue-500 px-4 bg-background-dark ${!isMobile ? 'rounded-tl-3xl' : ''}`}
+    >
       <CommandPalette />
       <div className="flex min-w-0 flex-1 items-center gap-3">
         <SidebarTrigger className="-ml-1" />

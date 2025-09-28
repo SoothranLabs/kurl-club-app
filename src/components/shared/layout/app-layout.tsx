@@ -39,18 +39,12 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="hidden md:flex flex-col h-screen">
-        <div className="sticky top-0 z-50">
+      <SidebarInset className="flex flex-col min-h-screen">
+        <div className="sticky top-0 z-50 shrink-0">
           <AppHeader />
         </div>
-        <div className="flex-1 overflow-auto">{children}</div>
+        <div className="h-full">{children}</div>
       </SidebarInset>
-      <div className="md:hidden flex flex-col h-screen">
-        <div className="sticky top-0 z-50">
-          <AppHeader />
-        </div>
-        <div className="flex-1 overflow-auto">{children}</div>
-      </div>
     </SidebarProvider>
   );
 };
