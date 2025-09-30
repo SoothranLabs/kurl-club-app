@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { MessageSquareText, Trash2 } from 'lucide-react';
+import { ArrowLeft, MessageSquareText, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import MemberStatusBadge from '@/components/shared/badges/member-status-badge';
@@ -50,7 +50,13 @@ function Header({ isEditing, handleSave, toggleEdit, memberId }: HeaderProps) {
 
   return (
     <div className="flex sticky pt-4 md:pt-[26px] pb-4 z-20 drop-shadow-xl top-[54px] md:top-[64px] w-full items-center bg-primary-blue-500 justify-between gap-3 flex-wrap">
-      <MemberStatusBadge status="active" />
+      <div className="flex items-center gap-2">
+        <Button variant="link">
+          <ArrowLeft />
+        </Button>
+        <h2 className="text-2xl font-bold truncate">Member details</h2>
+        <MemberStatusBadge status="active" />
+      </div>
       <div className="flex items-center gap-2">
         {isEditing ? (
           <>

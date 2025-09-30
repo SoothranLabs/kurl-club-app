@@ -20,7 +20,7 @@ export function PersonalInfoSection({
   return (
     <Fragment>
       {/* CALENDER | DOB  */}
-      <div className="py-3 flex flex-col gap-2">
+      <div className="pt-3 flex flex-col gap-2">
         <Label className="text-primary-blue-100 font-normal text-sm leading-normal">
           DOB
         </Label>
@@ -69,7 +69,7 @@ export function PersonalInfoSection({
         }
       />
 
-      <div className="py-3 flex flex-col gap-2">
+      <div className="pt-3 flex flex-col gap-2">
         <Label className="text-primary-blue-100 font-normal text-sm leading-normal">
           Address
         </Label>

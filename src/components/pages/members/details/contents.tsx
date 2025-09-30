@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import { Clock4 } from 'lucide-react';
+// import { Clock4 } from 'lucide-react';
 
-import InfoCard from '@/components/shared/cards/info-card';
+// import InfoCard from '@/components/shared/cards/info-card';
 import { FormOptionsResponse } from '@/hooks/use-gymform-options';
 import { MemberDetails } from '@/types/members';
 
@@ -12,6 +12,7 @@ import { Chart } from './chart';
 import Header from './header';
 import PaymentCard from './payment-card';
 import PlannerSection from './planner-section';
+import { Sidebar } from './sidebar';
 
 function Contents({
   memberId,
@@ -21,6 +22,7 @@ function Contents({
   details,
   originalDetails,
   formOptions,
+  updateMemberDetail,
 }: {
   memberId: string;
   isEditing: boolean;
@@ -29,24 +31,27 @@ function Contents({
   details: MemberDetails | null;
   originalDetails: MemberDetails | null;
   formOptions?: FormOptionsResponse;
+  updateMemberDetail: <K extends keyof MemberDetails>(
+    key: K,
+    value: MemberDetails[K]
+  ) => void;
 }) {
   return (
-    <div className="md:px-8 pt-0 w-full max-w-[calc(100%-80px)] md:max-w-[calc(100%-300px)] xl:max-w-[calc(100%-336px)]">
+    <div className="md:px-8 pt-0 w-full">
       <Header
         memberId={memberId}
         isEditing={isEditing}
         handleSave={handleSave}
         toggleEdit={toggleEdit}
       />
-      <InfoCard
-        item={{
-          id: 1,
-          icon: <Clock4 className="text-black" />,
-          color: 'primary-green-500',
-          title: 'Total hours spent',
-          count: 10,
-        }}
-        className="max-w-[332px]! w-full md:mt-4"
+      <Sidebar
+        memberId={memberId || ''}
+        isEditing={isEditing}
+        details={details}
+        updateMemberDetail={updateMemberDetail}
+        handleSave={handleSave}
+        toggleEdit={toggleEdit}
+        formOptions={formOptions || undefined}
       />
       <div className="grid grid-cols-1 [@media(max-width:900px)]:grid-cols-1 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 gap-4 mt-3">
         <Chart />

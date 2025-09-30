@@ -141,7 +141,7 @@ export function EditableField({
   customInput,
 }: EditableFieldProps) {
   return (
-    <div className="py-3 flex flex-col gap-2">
+    <div className="pt-3 flex flex-col gap-2">
       <Label className="text-primary-blue-100 font-normal text-sm leading-normal">
         {label}
       </Label>
@@ -195,7 +195,7 @@ function EditableSelect<T extends string>({
   options,
 }: EditableSelectProps<T>) {
   return (
-    <div className="py-3 flex flex-col gap-2">
+    <div className="pt-3 flex flex-col gap-2">
       <Label className="text-primary-blue-100 font-normal text-sm leading-normal">
         {label}
       </Label>

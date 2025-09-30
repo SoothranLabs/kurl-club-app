@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 
 import Contents from '@/components/pages/members/details/contents';
-import { Sidebar } from '@/components/pages/members/details/sidebar';
 import { useGymFormOptions } from '@/hooks/use-gymform-options';
 import { useMemberDetails } from '@/hooks/use-member-details';
 import { useGymBranch } from '@/providers/gym-branch-provider';
@@ -34,8 +33,8 @@ export default function MemberDetailsPage({ params }: MemberDetailsPageProps) {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <main className="p-0 flex flex-auto gap-4 md:gap-0 bg-background-dark h-full">
-      <Sidebar
+    <main className="pb-8 flex flex-col flex-auto gap-4 md:gap-0 bg-background-dark h-full">
+      {/* <Sidebar
         memberId={userId || ''}
         isEditing={isEditing}
         details={details}
@@ -43,7 +42,7 @@ export default function MemberDetailsPage({ params }: MemberDetailsPageProps) {
         handleSave={handleSave}
         toggleEdit={toggleEdit}
         formOptions={formOptions || undefined}
-      />
+      /> */}
       <Contents
         memberId={userId || ''}
         isEditing={isEditing}
@@ -52,6 +51,7 @@ export default function MemberDetailsPage({ params }: MemberDetailsPageProps) {
         details={details}
         originalDetails={originalDetails}
         formOptions={formOptions || undefined}
+        updateMemberDetail={updateMemberDetail}
       />
     </main>
   );
