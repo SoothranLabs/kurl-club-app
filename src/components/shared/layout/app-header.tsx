@@ -17,7 +17,7 @@ export function AppHeader() {
 
   return (
     <header
-      className={`flex h-16 shrink-0 items-center gap-3 sticky top-3 z-50 border-b border-b-secondary-blue-500 px-4 bg-background-dark ${!isMobile ? 'rounded-tl-3xl' : ''}`}
+      className={`flex h-16 shrink-0 items-center  gap-3 sticky top-3 z-50 border-b border-b-secondary-blue-500 px-4 bg-background-dark ${!isMobile ? 'rounded-tl-3xl' : ''}`}
     >
       <CommandPalette />
       <div className="flex min-w-0 flex-1 items-center gap-3">
@@ -38,7 +38,7 @@ export function AppHeader() {
 
         <Separator
           orientation="vertical"
-          className="mx-2 data-[orientation=vertical]:h-4 bg-[#747578]"
+          className="mx-2 data-[orientation=vertical]:h-4 bg-[#747578] hidden md:flex"
         />
         <QuickActionsButton />
       </div>

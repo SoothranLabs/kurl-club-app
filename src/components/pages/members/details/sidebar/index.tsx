@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { PanelLeftOpen, PanelRightOpen } from 'lucide-react';
 
@@ -42,9 +42,27 @@ export function Sidebar({
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     setSidebarOpen(isEditing);
   }, [isEditing]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node) &&
+        sidebarOpen &&
+        window.innerWidth < 768
+      ) {
+        setSidebarOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [sidebarOpen]);
 
   const sections = [
     {
@@ -80,11 +98,21 @@ export function Sidebar({
       >
         <PanelLeftOpen />
       </Button>
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 bg-black/30 z-40 md:hidden"
+        />
+      )}
+
       <div
-        className={`fixed z-40 left-0 sm:max-w-[50%] md:max-w-[300px] lg:max-w-[336px] w-full md:max-h-[calc(100vh-80px)] md:sticky md:left-0 top-[54px] md:top-[80px] md:h-full pb-8 max-h-full bg-primary-blue-500 text-white overflow-y-auto scrollbar-thin border-r border-secondary-blue-500 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        ref={sidebarRef}
+        className={`fixed z-50 left-0 sm:max-w-[50%] md:max-w-[300px] lg:max-w-[336px] w-full md:max-h-[calc(100vh-80px)] md:sticky md:left-0 top-0 md:h-full pb-8 max-h-full bg-primary-blue-500 text-white overflow-y-auto scrollbar-thin border-r border-secondary-blue-500 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
       >
         <div className="px-4 md:px-8 sticky top-0 bg-primary-blue-500 py-4 md:py-8 z-20 flex items-start justify-between">
-          <div className="">
+          <div>
             <Breadcrumb
               items={[
                 { label: 'Members', href: '/members' },

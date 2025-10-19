@@ -101,7 +101,7 @@ export function QuickActionsButton() {
       <Button
         onClick={() => setOpen(true)}
         variant="ghost"
-        className="group hidden lg:flex items-center gap-0 px-1 py-1 text-sm font-medium text-white bg-gradient-to-r from-secondary-blue-600 to-secondary-blue-500 hover:from-secondary-blue-500 hover:to-secondary-blue-400 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 ease-out border border-secondary-blue-400/30 backdrop-blur-sm"
+        className="group hidden md:flex items-center gap-0 px-1 py-1 text-sm font-medium text-white bg-gradient-to-r from-secondary-blue-600 to-secondary-blue-500 hover:from-secondary-blue-500 hover:to-secondary-blue-400 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 ease-out border border-secondary-blue-400/30 backdrop-blur-sm"
       >
         <span className="flex items-center gap-1.5 text-xs px-2 py-1 border-r border-secondary-blue-200/40">
           <div className="w-2 h-2 bg-primary-green-500 rounded-full animate-pulse"></div>
