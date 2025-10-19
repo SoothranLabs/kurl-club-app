@@ -23,12 +23,12 @@ export function TableSkeleton({
     <div className="space-y-4 animate-pulse">
       {/* Sleek Toolbar Skeleton */}
       {showToolbar && (
-        <div className="flex justify-between items-center flex-wrap">
+        <div className="flex justify-between items-center gap-y-3 flex-wrap">
           <div className="flex items-center gap-3 flex-wrap">
-            <Skeleton className="h-10 w-72" />
+            <Skeleton className="h-10 w-50 md:w-72" />
             <Skeleton className="h-10 w-36" />
           </div>
-          <Skeleton className="h-10 w-32" />
+          <Skeleton className="h-10 w-15" />
         </div>
       )}
 
