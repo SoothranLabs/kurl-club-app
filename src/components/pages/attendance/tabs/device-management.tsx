@@ -4,16 +4,9 @@ import { useState } from 'react';
 
 import { Plus, Wifi } from 'lucide-react';
 
+import KDialog from '@/components/shared/form/k-dialog';
+import { KInput } from '@/components/shared/form/k-input';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import type { BiometricDevice } from '@/types/attendance';
 
 import { DeviceTableView, createDeviceColumns } from '../table';
@@ -92,83 +85,60 @@ export default function DeviceManagement() {
             Configure and monitor biometric devices
           </p>
         </div>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
+        <KDialog
+          open={isAddDialogOpen}
+          onOpenChange={() => setIsAddDialogOpen(!isAddDialogOpen)}
+          title="Add New Device"
+          trigger={
             <Button className="bg-primary-green-500 text-black hover:bg-primary-green-600">
               <Plus size={16} className="mr-2" />
               Add Device
             </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-secondary-blue-500 border-secondary-blue-600">
-            <DialogHeader>
-              <DialogTitle className="text-white">Add New Device</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="deviceName" className="text-white">
-                  Device Name
-                </Label>
-                <Input
-                  id="deviceName"
-                  value={newDevice.name}
-                  onChange={(e) =>
-                    setNewDevice({ ...newDevice, name: e.target.value })
-                  }
-                  className="bg-secondary-blue-600 border-secondary-blue-700 text-white"
-                />
-              </div>
-              <div>
-                <Label htmlFor="ipAddress" className="text-white">
-                  IP Address
-                </Label>
-                <Input
-                  id="ipAddress"
-                  value={newDevice.ipAddress}
-                  onChange={(e) =>
-                    setNewDevice({ ...newDevice, ipAddress: e.target.value })
-                  }
-                  className="bg-secondary-blue-600 border-secondary-blue-700 text-white"
-                />
-              </div>
-              <div>
-                <Label htmlFor="port" className="text-white">
-                  Port
-                </Label>
-                <Input
-                  id="port"
-                  type="number"
-                  value={newDevice.port}
-                  onChange={(e) =>
-                    setNewDevice({
-                      ...newDevice,
-                      port: parseInt(e.target.value),
-                    })
-                  }
-                  className="bg-secondary-blue-600 border-secondary-blue-700 text-white"
-                />
-              </div>
-              <div>
-                <Label htmlFor="location" className="text-white">
-                  Location
-                </Label>
-                <Input
-                  id="location"
-                  value={newDevice.location}
-                  onChange={(e) =>
-                    setNewDevice({ ...newDevice, location: e.target.value })
-                  }
-                  className="bg-secondary-blue-600 border-secondary-blue-700 text-white"
-                />
-              </div>
-              <Button
-                onClick={handleAddDevice}
-                className="w-full bg-primary-green-500 text-black"
-              >
-                Add Device
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+          }
+          footer={
+            <Button
+              onClick={handleAddDevice}
+              className="w-full bg-primary-green-500 text-black"
+            >
+              Add Device
+            </Button>
+          }
+        >
+          <div className="space-y-4">
+            <KInput
+              label="Device Name"
+              value={newDevice.name}
+              onChange={(e) =>
+                setNewDevice({ ...newDevice, name: e.target.value })
+              }
+            />
+            <KInput
+              label="IP Address"
+              value={newDevice.ipAddress}
+              onChange={(e) =>
+                setNewDevice({ ...newDevice, ipAddress: e.target.value })
+              }
+            />
+            <KInput
+              label="Port"
+              type="number"
+              value={newDevice.port.toString()}
+              onChange={(e) =>
+                setNewDevice({
+                  ...newDevice,
+                  port: parseInt(e.target.value) || 0,
+                })
+              }
+            />
+            <KInput
+              label="Location"
+              value={newDevice.location}
+              onChange={(e) =>
+                setNewDevice({ ...newDevice, location: e.target.value })
+              }
+            />
+          </div>
+        </KDialog>
       </div>
 
       <div className="grid grid-cols-3 gap-4 h-[74px]">

@@ -1,11 +1,6 @@
-import AttendanceDashboard from './attendance-dashboard';
 import AttendanceRecords from './attendance-records';
+import Dashboard from './dashboard';
 import DeviceManagement from './device-management';
-import MemberAttendance from './member-attendance';
+import MemberInsights from './member-insights';
 
-export {
-  AttendanceDashboard,
-  AttendanceRecords,
-  DeviceManagement,
-  MemberAttendance,
-};
+export { Dashboard, AttendanceRecords, MemberInsights, DeviceManagement };

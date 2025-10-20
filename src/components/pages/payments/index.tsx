@@ -1,11 +1,9 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-
 import { TabItem } from '@/components/shared/form/k-tabs';
 import { StudioLayout } from '@/components/shared/layout';
 import { useGymFormOptions } from '@/hooks/use-gymform-options';
+import { useTabState } from '@/hooks/use-tab-state';
 import { useGymBranch } from '@/providers/gym-branch-provider';
 
 import { PaymentsTab } from './payments-tab';
@@ -18,32 +16,12 @@ const TABS: TabItem[] = [
 ];
 
 export default function Payments() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
   const { gymBranch } = useGymBranch();
   const { formOptions } = useGymFormOptions(gymBranch?.gymId);
-
-  const defaultTab = 'outstanding-payments';
-  const queryTab = searchParams.get('tab');
-  const [activeTab, setActiveTab] = useState<string>(
-    TABS.some((tab) => tab.id === queryTab) ? queryTab! : defaultTab
+  const { activeTab, handleTabChange } = useTabState(
+    TABS,
+    'outstanding-payments'
   );
-
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
-    const url = new URL(window.location.href);
-    url.searchParams.set('tab', tab);
-    router.push(url.toString(), { scroll: false });
-  };
-
-  useEffect(() => {
-    if (queryTab !== activeTab) {
-      setActiveTab(
-        TABS.some((tab) => tab.id === queryTab) ? queryTab! : defaultTab
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryTab]);
 
   return (
     <StudioLayout
@@ -52,20 +30,18 @@ export default function Payments() {
       activeTab={activeTab}
       onTabChange={handleTabChange}
     >
-      {
-        {
-          'outstanding-payments': (
-            <PaymentsTab type="outstanding" formOptions={formOptions} />
-          ),
-          'expired-payments': (
-            <PaymentsTab type="expired" formOptions={formOptions} />
-          ),
-          'completed-payments': (
-            <PaymentsTab type="completed" formOptions={formOptions} />
-          ),
-          history: <PaymentsTab type="history" formOptions={formOptions} />,
-        }[activeTab]
-      }
+      {activeTab === 'outstanding-payments' && (
+        <PaymentsTab type="outstanding" formOptions={formOptions} />
+      )}
+      {activeTab === 'expired-payments' && (
+        <PaymentsTab type="expired" formOptions={formOptions} />
+      )}
+      {activeTab === 'completed-payments' && (
+        <PaymentsTab type="completed" formOptions={formOptions} />
+      )}
+      {activeTab === 'history' && (
+        <PaymentsTab type="history" formOptions={formOptions} />
+      )}
     </StudioLayout>
   );
 }

@@ -73,7 +73,7 @@ export function KTabs({
         </nav>
       ) : (
         // Underline Variant
-        <nav className="px-2 md:px-6 flex w-full overflow-x-auto gap-4 md:gap-6">
+        <nav className="px-2 flex w-full overflow-x-auto gap-4 md:gap-6">
           {items.map((item) => {
             const isActive = value === item.id;
             return (

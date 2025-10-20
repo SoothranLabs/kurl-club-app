@@ -1,42 +1,37 @@
 'use client';
 
-import { useState } from 'react';
-
 import { TabItem } from '@/components/shared/form/k-tabs';
 import { StudioLayout } from '@/components/shared/layout';
+import { useTabState } from '@/hooks/use-tab-state';
 
 import {
-  AttendanceDashboard,
   AttendanceRecords,
+  Dashboard,
   DeviceManagement,
-  MemberAttendance,
+  MemberInsights,
 } from './tabs';
 
 const TABS: TabItem[] = [
   { id: 'dashboard', label: 'Dashboard' },
   { id: 'records', label: 'Attendance Records' },
-  { id: 'members', label: 'Member Attendance' },
+  { id: 'insights', label: 'Member Insights' },
   { id: 'devices', label: 'Device Management' },
 ];
 
 export default function AttendanceMain() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const { activeTab, handleTabChange } = useTabState(TABS, 'dashboard');
 
   return (
     <StudioLayout
       title="Attendance Management"
       tabs={TABS}
       activeTab={activeTab}
-      onTabChange={setActiveTab}
+      onTabChange={handleTabChange}
     >
-      {
-        {
-          dashboard: <AttendanceDashboard />,
-          records: <AttendanceRecords />,
-          members: <MemberAttendance />,
-          devices: <DeviceManagement />,
-        }[activeTab]
-      }
+      {activeTab === 'dashboard' && <Dashboard />}
+      {activeTab === 'records' && <AttendanceRecords />}
+      {activeTab === 'insights' && <MemberInsights />}
+      {activeTab === 'devices' && <DeviceManagement />}
     </StudioLayout>
   );
 }
