@@ -13,6 +13,7 @@ import {
   Users,
 } from 'lucide-react';
 
+import { GymRequiredGuard } from '@/components/shared/guards';
 import { NavMain } from '@/components/shared/layout/sidebar/nav-main';
 import { NavUser } from '@/components/shared/layout/sidebar/nav-user';
 import { TeamSwitcher } from '@/components/shared/layout/sidebar/team-switcher';
@@ -88,10 +89,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {...props}
     >
       <SidebarHeader>
-        <TeamSwitcher />
+        <GymRequiredGuard>
+          <TeamSwitcher />
+        </GymRequiredGuard>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navItems} />
+        <GymRequiredGuard>
+          <NavMain items={navItems} />
+        </GymRequiredGuard>
       </SidebarContent>
       <SidebarSeparator />
       <SidebarFooter>

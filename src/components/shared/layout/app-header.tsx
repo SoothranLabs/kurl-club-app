@@ -3,6 +3,7 @@ import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { getGreeting } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 
+import { GymRequiredGuard } from '../guards';
 import { CommandPalette, QuickActionsButton } from './command-palette';
 import { NotificationBell } from './notification-bell';
 
@@ -33,15 +34,16 @@ export function AppHeader() {
           <span className="text-base font-semibold">{getGreeting()}</span>
         </div>
       </div>
-      <div className="ml-auto flex items-center gap-2">
-        <NotificationBell count={notificationCount} onClick={() => {}} />
-
-        <Separator
-          orientation="vertical"
-          className="mx-2 data-[orientation=vertical]:h-4 bg-[#747578] hidden md:flex"
-        />
-        <QuickActionsButton />
-      </div>
+      <GymRequiredGuard>
+        <div className="ml-auto flex items-center gap-2">
+          <NotificationBell count={notificationCount} onClick={() => {}} />
+          <Separator
+            orientation="vertical"
+            className="mx-2 data-[orientation=vertical]:h-4 bg-[#747578] hidden md:flex"
+          />
+          <QuickActionsButton />
+        </div>
+      </GymRequiredGuard>
     </header>
   );
 }
