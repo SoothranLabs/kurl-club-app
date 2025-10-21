@@ -112,10 +112,9 @@ export const bulkImportMembers = async (members: Member[]) => {
 export const fetchMemberPaymentDetails = async (memberId: number | string) => {
   const response = await api.get<{
     status: string;
-    message: string;
     data: MemberPaymentDetails;
   }>(`/Transaction/GetPaymentDetailsByMember/${memberId}`);
-  return response.data;
+  return response;
 };
 
 export const useMemberPaymentDetails = (memberId: number | string) => {

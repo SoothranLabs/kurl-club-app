@@ -1,15 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { api } from '@/lib/api';
-import { ApiResponse } from '@/types';
-import { Payment } from '@/types/payment';
+import { PaymentResponse } from '@/types/payment';
 
 export const fetchGymPayments = async (gymId: number | string) => {
-  const response = await api.get<ApiResponse<Payment[]>>(
+  const response = await api.get<PaymentResponse>(
     `/Transaction/GetPaymentDetailsByGymId/${gymId}`
   );
 
-  return response.data || [];
+  if (response.status === 'Success' && response.data) {
+    // Add memberIdentifier for backward compatibility
+    return response.data.map((member) => ({
+      ...member,
+      memberIdentifier:
+        member.memberIdentifier ||
+        `KC${member.memberId.toString().padStart(3, '0')}`,
+    }));
+  }
+
+  return [];
 };
 
 export const useGymPayments = (gymId: number | string) => {
@@ -28,76 +37,51 @@ export const useFilteredPayments = (gymId: number | string) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  // Outstanding: Partial payments with active buffer or within due date
+  // Outstanding: Use memberStatus from API
   const outstandingPayments = data
-    .filter((p) => {
-      if (p.pendingAmount <= 0) return false;
-
-      const dueDate = new Date(p.dueDate);
-      dueDate.setHours(0, 0, 0, 0);
-
-      // If has buffer, check buffer end date
-      if (p.bufferEndDate) {
-        const bufferEndDate = new Date(p.bufferEndDate);
-        bufferEndDate.setHours(0, 0, 0, 0);
-        return today <= bufferEndDate;
-      }
-
-      // No buffer, check due date
-      return today <= dueDate;
-    })
+    .filter((member) => member.memberStatus === 'Outstanding')
     .sort((a, b) => {
       // Sort by urgency: buffer end date or due date
-      const aDate = a.bufferEndDate
-        ? new Date(a.bufferEndDate)
-        : new Date(a.dueDate);
-      const bDate = b.bufferEndDate
-        ? new Date(b.bufferEndDate)
-        : new Date(b.dueDate);
+      const aDate = a.currentCycle.bufferEndDate
+        ? new Date(a.currentCycle.bufferEndDate)
+        : new Date(a.currentCycle.dueDate);
+      const bDate = b.currentCycle.bufferEndDate
+        ? new Date(b.currentCycle.bufferEndDate)
+        : new Date(b.currentCycle.dueDate);
       return aDate.getTime() - bDate.getTime();
     });
 
-  // Expired: Payments past due date and buffer (if any)
+  // Expired: Use memberStatus from API (includes Expired and Debts)
   const expiredPayments = data
-    .filter((p) => {
-      if (p.pendingAmount <= 0) return false;
-
-      const dueDate = new Date(p.dueDate);
-      dueDate.setHours(0, 0, 0, 0);
-
-      // If has buffer, check if buffer expired
-      if (p.bufferEndDate) {
-        const bufferEndDate = new Date(p.bufferEndDate);
-        bufferEndDate.setHours(0, 0, 0, 0);
-        return today > bufferEndDate;
-      }
-
-      // No buffer, check if past due date
-      return today > dueDate;
-    })
+    .filter(
+      (member) =>
+        member.memberStatus === 'Expired' || member.memberStatus === 'Debts'
+    )
     .sort((a, b) => {
       // Sort by most overdue first
-      const aDate = a.bufferEndDate
-        ? new Date(a.bufferEndDate)
-        : new Date(a.dueDate);
-      const bDate = b.bufferEndDate
-        ? new Date(b.bufferEndDate)
-        : new Date(b.dueDate);
+      const aDate = a.currentCycle.bufferEndDate
+        ? new Date(a.currentCycle.bufferEndDate)
+        : new Date(a.currentCycle.dueDate);
+      const bDate = b.currentCycle.bufferEndDate
+        ? new Date(b.currentCycle.bufferEndDate)
+        : new Date(b.currentCycle.dueDate);
       return aDate.getTime() - bDate.getTime();
     });
 
-  // Completed: No pending amount
+  // Completed: Use memberStatus from API
   const completedPayments = data
-    .filter((p) => p.pendingAmount === 0)
+    .filter((member) => member.memberStatus === 'Completed')
     .sort(
       (a, b) =>
-        new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime()
+        new Date(b.currentCycle.lastAmountPaidDate).getTime() -
+        new Date(a.currentCycle.lastAmountPaidDate).getTime()
     );
 
   // History: All payments sorted by recent
   const historyPayments = data.sort(
     (a, b) =>
-      new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime()
+      new Date(b.currentCycle.lastAmountPaidDate).getTime() -
+      new Date(a.currentCycle.lastAmountPaidDate).getTime()
   );
 
   return {

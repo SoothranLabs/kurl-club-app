@@ -72,7 +72,7 @@ export const FeeStatusBadge = ({
     <Badge
       variant="outline"
       className={cn(
-        'rounded-[35px] h-[30px] gap-2',
+        'rounded-[35px] text-xs h-[28px] gap-2',
         getBadgeStyles(),
         className
       )}

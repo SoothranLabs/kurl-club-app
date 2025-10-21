@@ -15,7 +15,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { TableFooter } from '@/components/shared/table/table-footer';
+import { TableFooter } from '@/components/shared/table';
 import {
   Table,
   TableBody,
@@ -73,7 +73,7 @@ export function DataTable<TData extends object, TValue>({
                         .headers[0].getContext() as HeaderContext<TData, TValue>
                     )}
                   </TableHead>
-                  <TableHead className="sticky left-[100px] z-20 bg-primary-blue-400">
+                  <TableHead className="sticky left-[96px] z-20 bg-primary-blue-400">
                     {flexRender(
                       columns[1].header,
                       table
@@ -118,7 +118,7 @@ export function DataTable<TData extends object, TValue>({
                           row.getVisibleCells()[0].getContext()
                         )}
                       </TableCell>
-                      <TableCell className="sticky left-[100px] z-10 bg-secondary-blue-500">
+                      <TableCell className="sticky left-[96px] z-10 bg-secondary-blue-500">
                         {flexRender(
                           row.getVisibleCells()[1].column.columnDef.cell,
                           row.getVisibleCells()[1].getContext()

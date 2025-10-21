@@ -4,9 +4,11 @@ import { usePathname } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
 import Loading from '@/app/loading';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useAuth } from '@/providers/auth-provider';
 
-import Navbar from './navbar';
+import { AppHeader } from './app-header';
+import { AppSidebar } from './sidebar';
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -30,11 +32,20 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     return <Loading />;
   }
 
+  if (isAuthRoute) {
+    return <main>{children}</main>;
+  }
+
   return (
-    <main>
-      {!isAuthRoute && <Navbar />}
-      {children}
-    </main>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset className="flex flex-col min-h-screen">
+        <div className="sticky top-0 z-50 shrink-0">
+          <AppHeader />
+        </div>
+        <div className="h-full">{children}</div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 };
 
