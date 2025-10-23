@@ -38,13 +38,7 @@ const StatusBadge = ({ status }: { status: string }) => {
   );
 };
 
-const ActionsCell = ({
-  record,
-  onEdit,
-}: {
-  record: AttendanceRecord;
-  onEdit?: (record: AttendanceRecord) => void;
-}) => (
+const ActionsCell = () => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
       <Button variant="ghost" className="h-8 w-8 p-0">
@@ -52,10 +46,7 @@ const ActionsCell = ({
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" className="shad-select-content">
-      <DropdownMenuItem
-        className="shad-select-item"
-        onClick={() => onEdit?.(record)}
-      >
+      <DropdownMenuItem className="shad-select-item">
         <Edit className="h-4 w-4 mr-2" />
         Edit Record
       </DropdownMenuItem>
@@ -67,9 +58,7 @@ const ActionsCell = ({
   </DropdownMenu>
 );
 
-export const createAttendanceColumns = (
-  onEdit?: (record: AttendanceRecord) => void
-): ColumnDef<AttendanceRecord>[] => [
+export const attendanceColumns: ColumnDef<AttendanceRecord>[] = [
   {
     accessorKey: 'memberIdentifier',
     header: 'Member ID',
@@ -105,9 +94,9 @@ export const createAttendanceColumns = (
             />
           </Avatar>
           <div>
-            <span className="text-white">{name}</span>
+            <span className="text-gray-900 dark:text-white">{name}</span>
             {row.original.biometricId && (
-              <div className="text-xs text-primary-blue-200">
+              <div className="text-xs text-gray-600 dark:text-primary-blue-200">
                 Bio: {row.original.biometricId}
               </div>
             )}
@@ -126,10 +115,10 @@ export const createAttendanceColumns = (
       const date = new Date(row.original.date);
       return (
         <div className="min-w-[100px]">
-          <div className="text-white text-sm">
+          <div className="text-gray-900 dark:text-white text-sm">
             {date.toLocaleDateString('en-GB')}
           </div>
-          <div className="text-xs text-primary-blue-100">
+          <div className="text-xs text-gray-600 dark:text-primary-blue-100">
             {date.toLocaleDateString('en-GB', { weekday: 'short' })}
           </div>
         </div>
@@ -147,10 +136,12 @@ export const createAttendanceColumns = (
           {checkIn ? (
             <div className="flex items-center gap-1">
               <Clock size={12} className="text-primary-green-500" />
-              <span className="text-white text-sm">{checkIn}</span>
+              <span className="text-gray-900 dark:text-white text-sm">
+                {checkIn}
+              </span>
             </div>
           ) : (
-            <span className="text-gray-400 text-sm">--</span>
+            <span className="text-gray-600 dark:text-gray-400 text-sm">--</span>
           )}
         </div>
       );
@@ -167,10 +158,14 @@ export const createAttendanceColumns = (
           {checkOut ? (
             <div className="flex items-center gap-1">
               <Clock size={12} className="text-semantic-blue-500" />
-              <span className="text-white text-sm">{checkOut}</span>
+              <span className="text-gray-900 dark:text-white text-sm">
+                {checkOut}
+              </span>
             </div>
           ) : (
-            <span className="text-gray-400 text-sm">Active</span>
+            <span className="text-gray-600 dark:text-gray-400 text-sm">
+              Active
+            </span>
           )}
         </div>
       );
@@ -185,11 +180,11 @@ export const createAttendanceColumns = (
       return (
         <div className="min-w-[80px]">
           {duration ? (
-            <span className="text-white text-sm">
+            <span className="text-gray-900 dark:text-white text-sm">
               {Math.floor(duration / 60)}h {duration % 60}m
             </span>
           ) : (
-            <span className="text-gray-400 text-sm">--</span>
+            <span className="text-gray-600 dark:text-gray-400 text-sm">--</span>
           )}
         </div>
       );
@@ -214,9 +209,13 @@ export const createAttendanceColumns = (
       return (
         <div className="min-w-[100px]">
           {deviceId ? (
-            <span className="text-primary-blue-200 text-sm">{deviceId}</span>
+            <span className="text-gray-600 dark:text-primary-blue-200 text-sm">
+              {deviceId}
+            </span>
           ) : (
-            <span className="text-gray-400 text-sm">Manual</span>
+            <span className="text-gray-600 dark:text-gray-400 text-sm">
+              Manual
+            </span>
           )}
         </div>
       );
@@ -224,6 +223,6 @@ export const createAttendanceColumns = (
   },
   {
     id: 'actions',
-    cell: ({ row }) => <ActionsCell record={row.original} onEdit={onEdit} />,
+    cell: () => <ActionsCell />,
   },
 ];

@@ -4,18 +4,15 @@ import { FilterConfig } from '@/lib/filters';
 import type {
   AttendanceRecord,
   BiometricDevice,
-  Member,
+  MemberInsight,
 } from '@/types/attendance';
 
 import { BaseTable } from './base-table';
 
-// Base reusable table component
-export { BaseTable } from './base-table';
-
 // Column definitions
-export { createAttendanceColumns } from './attendance-columns';
-export { createDeviceColumns } from './device-columns';
-export { createMemberColumns } from './member-columns';
+export { attendanceColumns } from './attendance-columns';
+export { deviceColumns } from './device-columns';
+export { memberInsightsColumns as insightsColumns } from './member-insights-columns';
 
 // Specific table implementations
 export const AttendanceTableView = ({
@@ -36,10 +33,13 @@ export const DeviceTableView = ({
   columns: ColumnDef<BiometricDevice, unknown>[];
 }) => <BaseTable data={devices} columns={columns} />;
 
-export const MemberTableView = ({
-  members,
+export const InsightsTableView = ({
+  insights,
   columns,
 }: {
-  members: Member[];
-  columns: ColumnDef<Member, unknown>[];
-}) => <BaseTable data={members} columns={columns} />;
+  insights: MemberInsight[];
+  columns: ColumnDef<MemberInsight, unknown>[];
+}) => <BaseTable data={insights} columns={columns} />;
+
+// Legacy export
+export const MemberInsightsTableView = InsightsTableView;

@@ -8,7 +8,7 @@ import { Download, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { AttendanceRecord } from '@/types/attendance';
 
-import { BaseTable, createAttendanceColumns } from '../table';
+import { AttendanceTableView, attendanceColumns } from '../table';
 
 const mockAttendanceData: AttendanceRecord[] = [
   {
@@ -44,12 +44,6 @@ const mockAttendanceData: AttendanceRecord[] = [
 export default function AttendanceRecords() {
   const [attendanceRecords] = useState(mockAttendanceData);
 
-  const handleEditRecord = (record: AttendanceRecord) => {
-    console.log('Edit record:', record);
-  };
-
-  const columns = createAttendanceColumns(handleEditRecord);
-
   const filters = [
     {
       columnId: 'status',
@@ -66,8 +60,10 @@ export default function AttendanceRecords() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-white text-lg font-medium">Visit Records</h3>
-          <p className="text-gray-400 text-sm">
+          <h3 className="text-gray-900 dark:text-white text-lg font-medium">
+            Visit Records
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
             Track member visits and gym usage patterns
           </p>
         </div>
@@ -83,7 +79,11 @@ export default function AttendanceRecords() {
         </div>
       </div>
 
-      <BaseTable data={attendanceRecords} columns={columns} filters={filters} />
+      <AttendanceTableView
+        records={attendanceRecords}
+        columns={attendanceColumns}
+        filters={filters}
+      />
     </div>
   );
 }

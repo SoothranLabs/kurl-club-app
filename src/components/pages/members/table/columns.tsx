@@ -142,6 +142,7 @@ export const columns: ColumnDef<Member>[] = [
   },
   {
     id: 'actions',
+    header: 'Actions',
     cell: ({ row }) => <ActionsCell user={row.original} />,
   },
 ];

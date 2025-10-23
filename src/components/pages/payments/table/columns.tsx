@@ -134,17 +134,17 @@ export const createPaymentColumns = (
       let statusText = '';
 
       if (daysDiff < 0) {
-        statusColor = 'text-red-400';
+        statusColor = 'text-alert-red-400';
         if (bufferEndDate) {
           statusText = 'On buffer period';
         } else {
           statusText = `${Math.abs(daysDiff)} days overdue`;
         }
       } else if (daysDiff === 0) {
-        statusColor = 'text-orange-400';
+        statusColor = 'text-neutral-ochre-400';
         statusText = 'Due today';
       } else if (daysDiff <= 3) {
-        statusColor = 'text-yellow-400';
+        statusColor = 'text-secondary-yellow-150';
         statusText = `${daysDiff} days left`;
       } else {
         statusText = `${daysDiff} days left`;
@@ -281,7 +281,9 @@ export const createPaymentColumns = (
             />
           </div>
           {pendingAmount > 0 && (
-            <div className="text-xs text-red-300">₹{pendingAmount} pending</div>
+            <div className="text-xs text-alert-red-300">
+              ₹{pendingAmount} pending
+            </div>
           )}
         </div>
       );
@@ -341,6 +343,7 @@ export const createPaymentColumns = (
   },
   {
     id: 'actions',
+    header: 'Actions',
     cell: ({ row }) => <ActionsCell user={row.original} onRecord={onRecord} />,
   },
 ];
