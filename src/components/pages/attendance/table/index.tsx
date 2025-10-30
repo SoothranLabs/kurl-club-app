@@ -10,7 +10,7 @@ import type {
 import { BaseTable } from './base-table';
 
 // Column definitions
-export { attendanceColumns } from './attendance-columns';
+export { attendanceColumns, manualModeColumns } from './attendance-columns';
 export { deviceColumns } from './device-columns';
 export { memberInsightsColumns as insightsColumns } from './member-insights-columns';
 

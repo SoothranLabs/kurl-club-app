@@ -67,7 +67,22 @@ export default function DeviceManagement() {
   const offlineDevices = devices.filter((d) => d.status === 'offline').length;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 relative">
+      <div className="absolute inset-0 bg-secondary-blue-500/30 backdrop-blur-[2px] rounded-lg z-50 flex items-center justify-center">
+        <div className="bg-secondary-blue-500 border border-secondary-blue-400 rounded-lg p-8 max-w-md text-center">
+          <div className="mb-4">
+            <Wifi size={48} className="mx-auto text-primary-green-500" />
+          </div>
+          <h3 className="text-xl font-semibold text-white mb-2">
+            Coming Soon!
+          </h3>
+          <p className="text-gray-400 text-sm">
+            We&apos;re working on biometric device integration to make
+            attendance tracking even easier. Stay tuned for this exciting
+            feature!
+          </p>
+        </div>
+      </div>
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-gray-900 dark:text-white text-lg font-medium">

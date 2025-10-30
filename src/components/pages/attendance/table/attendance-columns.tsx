@@ -1,7 +1,7 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { Clock, Edit, Eye, MoreHorizontal } from 'lucide-react';
+import { Clock, Edit, Eye, LogOut, MoreHorizontal } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -58,7 +58,7 @@ const ActionsCell = () => (
   </DropdownMenu>
 );
 
-export const attendanceColumns: ColumnDef<AttendanceRecord>[] = [
+const baseColumns: ColumnDef<AttendanceRecord>[] = [
   {
     accessorKey: 'memberIdentifier',
     header: 'Member ID',
@@ -224,5 +224,39 @@ export const attendanceColumns: ColumnDef<AttendanceRecord>[] = [
   {
     id: 'actions',
     cell: () => <ActionsCell />,
+  },
+];
+
+export const attendanceColumns = baseColumns;
+
+export const manualModeColumns = (
+  onCheckOut: (memberId: string) => void
+): ColumnDef<AttendanceRecord>[] => [
+  ...baseColumns.slice(0, -2),
+  {
+    id: 'manualActions',
+    header: 'Actions',
+    cell: ({ row }) => {
+      const isCheckedIn = row.original.status === 'checked-in';
+      return (
+        <div className="min-w-[100px]">
+          {isCheckedIn ? (
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-7 gap-1 border-semantic-blue-500 text-semantic-blue-500 hover:bg-semantic-blue-500/10"
+              onClick={() => onCheckOut(row.original.memberId)}
+            >
+              <LogOut size={14} />
+              Check Out
+            </Button>
+          ) : (
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              Completed
+            </span>
+          )}
+        </div>
+      );
+    },
   },
 ];
