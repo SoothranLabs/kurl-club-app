@@ -106,17 +106,29 @@ export const memberInsightsColumns: ColumnDef<MemberInsight>[] = [
   {
     accessorKey: 'averageDuration',
     header: () => <div className="text-center">Avg Duration</div>,
-    cell: ({ row }) => (
-      <div className="min-w-[130px]">
-        <div className="flex flex-col items-center">
-          <div className="text-gray-900 dark:text-white font-bold text-lg">
-            {row.getValue('averageDuration')}m
-          </div>
-          <div className="text-gray-600 dark:text-gray-400 text-xs">
-            Peak: {row.original.favoriteTime}
+    cell: ({ row }) => {
+      const peakTime = row.original.favoriteTime;
+      const formatTime = (time: string) => {
+        if (!time || time === '00:00:00') return 'N/A';
+        const [hours, minutes] = time.split(':');
+        const hour = parseInt(hours);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 || 12;
+        return `${displayHour}:${minutes} ${ampm}`;
+      };
+
+      return (
+        <div className="min-w-[130px]">
+          <div className="flex flex-col items-center">
+            <div className="text-gray-900 dark:text-white font-bold text-lg">
+              {row.getValue('averageDuration')}m
+            </div>
+            <div className="text-gray-600 dark:text-gray-400 text-xs">
+              Peak: {formatTime(peakTime)}
+            </div>
           </div>
         </div>
-      </div>
-    ),
+      );
+    },
   },
 ];

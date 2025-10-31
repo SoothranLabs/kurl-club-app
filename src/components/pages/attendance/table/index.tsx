@@ -1,11 +1,8 @@
 import { ColumnDef } from '@tanstack/react-table';
 
 import { FilterConfig } from '@/lib/filters';
-import type {
-  AttendanceRecord,
-  BiometricDevice,
-  MemberInsight,
-} from '@/types/attendance';
+import type { AttendanceRecordResponse } from '@/services/attendance';
+import type { BiometricDevice, MemberInsight } from '@/types/attendance';
 
 import { BaseTable } from './base-table';
 
@@ -20,8 +17,8 @@ export const AttendanceTableView = ({
   columns,
   filters,
 }: {
-  records: AttendanceRecord[];
-  columns: ColumnDef<AttendanceRecord, unknown>[];
+  records: AttendanceRecordResponse[];
+  columns: ColumnDef<AttendanceRecordResponse, unknown>[];
   filters?: FilterConfig[];
 }) => <BaseTable data={records} columns={columns} filters={filters} />;
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React from 'react';
 
 import { UserCheck, UserPlus, UserX } from 'lucide-react';
 
@@ -20,42 +20,35 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { getAvatarColor, getInitials } from '@/lib/avatar-utils';
-
-type Member = {
-  id: string;
-  name: string;
-  identifier: string;
-  isCheckedIn: boolean;
-};
-
-const mockMembers: Member[] = [
-  { id: 'M001', name: 'John Doe', identifier: 'GYM001', isCheckedIn: false },
-  { id: 'M002', name: 'Jane Smith', identifier: 'GYM002', isCheckedIn: true },
-  { id: 'M003', name: 'Mike Chen', identifier: 'GYM003', isCheckedIn: false },
-  {
-    id: 'M004',
-    name: 'Sarah Johnson',
-    identifier: 'GYM004',
-    isCheckedIn: true,
-  },
-  { id: 'M005', name: 'Emma Davis', identifier: 'GYM005', isCheckedIn: false },
-];
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import { useAttendanceRecords } from '@/services/attendance';
+import { useGymMembers } from '@/services/member';
+import type { Member } from '@/types/members';
 
 type Props = {
-  onCheckIn: (member: Member) => void;
-  onCheckOut: (member: Member) => void;
-  checkedInMembers: Set<string>;
+  onCheckIn: (
+    member: Pick<Member, 'id' | 'name'> & { identifier: string }
+  ) => void;
+  onCheckOut: (
+    member: Pick<Member, 'id' | 'name'> & { identifier: string }
+  ) => void;
 };
 
-export function MemberSearchCommand({
-  onCheckIn,
-  onCheckOut,
-  checkedInMembers,
-}: Props) {
-  const [open, setOpen] = useState(false);
+export function QuickAttendanceCommand({ onCheckIn, onCheckOut }: Props) {
+  const { gymBranch } = useGymBranch();
+  const { data: members = [] } = useGymMembers(gymBranch?.gymId || 0);
+  const { data: attendanceResponse } = useAttendanceRecords(gymBranch?.gymId);
+  const attendanceRecords = attendanceResponse?.data || [];
+  const [open, setOpen] = React.useState(false);
 
-  const handleAction = (member: Member) => {
-    const isCheckedIn = checkedInMembers.has(member.id);
+  const handleAction = (
+    member: Pick<Member, 'id' | 'name'> & { identifier: string }
+  ) => {
+    const attendanceRecord = attendanceRecords.find(
+      (r) => r.memberId === member.identifier
+    );
+    const isCheckedIn = attendanceRecord && !attendanceRecord.checkOutTime;
+
     if (isCheckedIn) {
       onCheckOut(member);
     } else {
@@ -72,26 +65,36 @@ export function MemberSearchCommand({
           Record Attendance
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[400px] p-0 shad-select-content" align="end">
+      <PopoverContent
+        className="w-[calc(100vw-2rem)] sm:w-[400px] p-0 shad-select-content"
+        align="end"
+        sideOffset={5}
+        avoidCollisions={false}
+      >
         <Command className="shad-command">
           <CommandInput
             placeholder="Search member..."
             className="shad-command-input"
+            autoFocus={false}
           />
           <CommandList className="shad-command-list">
             <CommandEmpty className="shad-command-empty">
               No member found.
             </CommandEmpty>
             <CommandGroup className="shad-command-group">
-              {mockMembers.map((member) => {
-                const isCheckedIn = checkedInMembers.has(member.id);
+              {members.map((member) => {
+                const attendanceRecord = attendanceRecords.find(
+                  (r) => r.memberId === member.memberIdentifier
+                );
+                const isCheckedIn =
+                  attendanceRecord && !attendanceRecord.checkOutTime;
                 const avatarStyle = getAvatarColor(member.name);
                 const initials = getInitials(member.name);
 
                 return (
                   <CommandItem
                     key={member.id}
-                    value={`${member.name} ${member.identifier}`}
+                    value={`${member.name} ${member.memberIdentifier || ''}`}
                     className="shad-command-item px-3 py-2.5 !cursor-default"
                   >
                     <div className="flex items-center justify-between w-full gap-3">
@@ -118,7 +121,7 @@ export function MemberSearchCommand({
                               {member.name}
                             </span>
                             <span className="text-[9px] text-gray-400">
-                              #{member.identifier}
+                              #{member.memberIdentifier || 'N/A'}
                             </span>
                           </div>
                         </div>
@@ -128,7 +131,11 @@ export function MemberSearchCommand({
                         variant={isCheckedIn ? 'destructive' : 'default'}
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleAction(member);
+                          handleAction({
+                            id: member.id,
+                            name: member.name,
+                            identifier: member.memberIdentifier || '',
+                          });
                         }}
                       >
                         {isCheckedIn ? (

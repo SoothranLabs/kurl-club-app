@@ -1,75 +1,24 @@
-'use client';
-
-import { useState } from 'react';
-
-import { Award, Calendar, TrendingDown } from 'lucide-react';
+import {
+  Award,
+  Calendar,
+  Percent,
+  TrendingDown,
+  TrendingUp,
+  UserCheck,
+  Users,
+} from 'lucide-react';
 import { motion } from 'motion/react';
 
+import InfoCard from '@/components/shared/cards/info-card';
 import { MedalIcon } from '@/components/shared/icons';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getAvatarColor, getInitials } from '@/lib/avatar-utils';
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import { useMemberAnalytics } from '@/services/attendance';
 import type { MemberInsight } from '@/types/attendance';
 
 import { MemberInsightsTableView, insightsColumns } from '../table';
-
-const mockMemberInsights: MemberInsight[] = [
-  {
-    id: 'M001',
-    memberIdentifier: 'KC001',
-    name: 'Sarah Johnson',
-    totalVisits: 45,
-    visitsThisMonth: 12,
-    currentStreak: 7,
-    longestStreak: 14,
-    averageDuration: 85,
-    favoriteTime: '6:00 AM',
-    attendanceRate: 92,
-    profilePicture: null,
-  },
-  {
-    id: 'M002',
-    memberIdentifier: 'KC002',
-    name: 'Mike Chen',
-    totalVisits: 23,
-    visitsThisMonth: 4,
-    currentStreak: 0,
-    longestStreak: 8,
-    averageDuration: 65,
-    favoriteTime: '7:00 PM',
-    attendanceRate: 45,
-    profilePicture: null,
-  },
-  {
-    id: 'M003',
-    memberIdentifier: 'KC003',
-    name: 'Emma Davis',
-    totalVisits: 67,
-    visitsThisMonth: 18,
-    currentStreak: 12,
-    longestStreak: 21,
-    averageDuration: 95,
-    favoriteTime: '12:00 PM',
-    attendanceRate: 98,
-    profilePicture: null,
-  },
-];
-
-const mockTopPerformers = [
-  { name: 'Emma Davis', streak: 12, visits: 18 },
-  { name: 'Sarah Johnson', streak: 7, visits: 12 },
-  { name: 'John Wilson', streak: 5, visits: 15 },
-];
-
-const mockAtRiskMembers = [
-  { name: 'Mike Chen', lastVisit: '5 days ago', visits: 4 },
-  { name: 'Lisa Brown', lastVisit: '8 days ago', visits: 2 },
-  { name: 'Tom Anderson', lastVisit: '12 days ago', visits: 1 },
-  { name: 'Rachel Green', lastVisit: '14 days ago', visits: 3 },
-  { name: 'David Miller', lastVisit: '16 days ago', visits: 2 },
-  { name: 'Jessica Taylor', lastVisit: '18 days ago', visits: 1 },
-  { name: 'Kevin White', lastVisit: '20 days ago', visits: 2 },
-];
 
 const MemberAvatar = ({
   name,
@@ -249,13 +198,97 @@ function AtRiskMembersCard({
   );
 }
 
+function SummaryStats({
+  summary,
+}: {
+  summary?: {
+    totalMembers: number;
+    activeMembers: number;
+    averageAttendanceRate: number;
+    topPerformerCount: number;
+    atRiskCount: number;
+  };
+}) {
+  const stats = [
+    {
+      id: 1,
+      icon: <Users size={20} strokeWidth={1.75} color="#151821" />,
+      color: 'semantic-blue-500',
+      title: 'Total Members',
+      count: summary?.totalMembers ?? 0,
+    },
+    {
+      id: 2,
+      icon: <UserCheck size={20} strokeWidth={1.75} color="#151821" />,
+      color: 'primary-green-500',
+      title: 'Active Members',
+      count: summary?.activeMembers ?? 0,
+    },
+    {
+      id: 3,
+      icon: <Percent size={20} strokeWidth={1.75} color="#151821" />,
+      color: 'secondary-yellow-150',
+      title: 'Avg Attendance',
+      count: `${summary?.averageAttendanceRate ?? 0}%`,
+    },
+    {
+      id: 4,
+      icon: <TrendingUp size={20} strokeWidth={1.75} color="#151821" />,
+      color: 'alert-red-400',
+      title: 'Top Performers',
+      count: summary?.topPerformerCount ?? 0,
+    },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {stats.map((stat) => (
+        <InfoCard item={stat} key={stat.id} />
+      ))}
+    </div>
+  );
+}
+
 export default function MemberInsights() {
-  const [memberInsights] = useState(mockMemberInsights);
-  const [topPerformers] = useState(mockTopPerformers);
-  const [atRiskMembers] = useState(mockAtRiskMembers);
+  const { gymBranch } = useGymBranch();
+  const { data: analyticsData } = useMemberAnalytics(gymBranch?.gymId);
+
+  const topPerformers = (analyticsData?.topPerformers || []).map((member) => ({
+    name: member.name,
+    streak: member.streak,
+    visits: member.visits,
+  }));
+
+  const atRiskMembers = (analyticsData?.atRiskMembers || []).map((member) => ({
+    name: member.name,
+    lastVisit:
+      member.daysAgo === null
+        ? 'Never'
+        : member.daysAgo === 0
+          ? 'Today'
+          : `${member.daysAgo} days ago`,
+    visits: member.visits,
+  }));
+
+  const memberInsights: MemberInsight[] = (
+    analyticsData?.memberAnalytics || []
+  ).map((item) => ({
+    id: item.memberIdentifier,
+    memberIdentifier: item.memberIdentifier,
+    name: item.name,
+    totalVisits: item.totalVisits,
+    visitsThisMonth: item.visitsThisMonth,
+    currentStreak: item.currentStreak,
+    longestStreak: item.longestStreak,
+    averageDuration: Math.round(item.averageDuration),
+    favoriteTime: item.peakTime,
+    attendanceRate: item.attendanceRate,
+    profilePicture: item.profilePicture,
+  }));
 
   return (
     <div className="flex flex-col gap-4">
+      <SummaryStats summary={analyticsData?.summary} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <TopPerformersCard topPerformers={topPerformers} />
         <AtRiskMembersCard atRiskMembers={atRiskMembers} />

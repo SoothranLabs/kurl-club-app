@@ -25,75 +25,8 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { getAvatarColor, getInitials } from '@/lib/avatar-utils';
-
-// TYPES
-interface LiveData {
-  todayStats: {
-    totalCheckIns: number;
-    uniqueMembers: number;
-    averageDuration: number;
-    peakHour: string;
-    currentlyActive: number;
-    todayCheckOuts: number;
-  };
-  recentActivity: Array<{
-    memberName: string;
-    action: string;
-    time: string;
-    duration: string | null;
-  }>;
-  peakHours: Array<{ time: string; count: number; trend: string }>;
-}
-
-// MOCK DATA
-const mockLiveData: LiveData = {
-  todayStats: {
-    totalCheckIns: 142,
-    uniqueMembers: 98,
-    averageDuration: 72,
-    peakHour: '6:00 PM',
-    currentlyActive: 87,
-    todayCheckOuts: 55,
-  },
-  recentActivity: [
-    {
-      memberName: 'Sarah Johnson',
-      action: 'checked-in',
-      time: '2 min ago',
-      duration: null,
-    },
-    {
-      memberName: 'Mike Chen',
-      action: 'checked-out',
-      time: '5 min ago',
-      duration: '1h 25m',
-    },
-    {
-      memberName: 'Emma Davis',
-      action: 'checked-in',
-      time: '8 min ago',
-      duration: null,
-    },
-    {
-      memberName: 'John Wilson',
-      action: 'checked-out',
-      time: '12 min ago',
-      duration: '45m',
-    },
-    {
-      memberName: 'Lisa Brown',
-      action: 'checked-in',
-      time: '15 min ago',
-      duration: null,
-    },
-  ],
-  peakHours: [
-    { time: '6AM', count: 45, trend: 'up' },
-    { time: '12PM', count: 32, trend: 'down' },
-    { time: '6PM', count: 89, trend: 'up' },
-    { time: '9PM', count: 67, trend: 'down' },
-  ],
-};
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import { useAttendanceDashboard } from '@/services/attendance';
 
 // WIDGETS
 function LiveStatusHeader({ currentTime }: { currentTime: Date }) {
@@ -107,35 +40,44 @@ function LiveStatusHeader({ currentTime }: { currentTime: Date }) {
   );
 }
 
-function StatsCards({ liveData }: { liveData: LiveData }) {
+function StatsCards({
+  dashboardData,
+}: {
+  dashboardData?: {
+    totalCheckIns: number;
+    totalCheckOuts: number;
+    currentlyActive: number;
+    avgSessionMinutes: number;
+  };
+}) {
   const stats = [
     {
       id: 1,
       icon: <Users size={20} strokeWidth={1.75} color="#151821" />,
       color: 'primary-green-500',
       title: 'Currently Active',
-      count: liveData.todayStats.currentlyActive,
+      count: dashboardData?.currentlyActive ?? 0,
     },
     {
       id: 2,
       icon: <UserCheck size={20} strokeWidth={1.75} color="#151821" />,
       color: 'semantic-blue-500',
       title: "Today's Check-ins",
-      count: liveData.todayStats.totalCheckIns,
+      count: dashboardData?.totalCheckIns ?? 0,
     },
     {
       id: 3,
       icon: <UserX size={20} strokeWidth={1.75} color="#151821" />,
       color: 'secondary-yellow-150',
       title: "Today's Check-outs",
-      count: liveData.todayStats.todayCheckOuts,
+      count: dashboardData?.totalCheckOuts ?? 0,
     },
     {
       id: 4,
       icon: <Timer size={20} strokeWidth={1.75} color="#151821" />,
       color: 'alert-red-400',
       title: 'Avg Session',
-      count: `${liveData.todayStats.averageDuration}m`,
+      count: `${dashboardData?.avgSessionMinutes ?? 0}m`,
     },
   ];
 
@@ -166,21 +108,30 @@ const StatItem = ({
   </div>
 );
 
-function TodaysSummary({ liveData }: { liveData: LiveData }) {
+function TodaysSummary({
+  dashboardData,
+}: {
+  dashboardData?: {
+    totalCheckIns: number;
+    totalCheckOuts: number;
+    currentlyActive: number;
+    avgSessionMinutes: number;
+  };
+}) {
   const chartData = [
     {
       name: 'Check-ins',
-      value: liveData.todayStats.totalCheckIns,
+      value: dashboardData?.totalCheckIns ?? 0,
       fill: '#EBFB8B',
     },
     {
       name: 'Check-outs',
-      value: liveData.todayStats.todayCheckOuts,
+      value: dashboardData?.totalCheckOuts ?? 0,
       fill: '#90A8ED',
     },
     {
       name: 'Currently Active',
-      value: liveData.todayStats.currentlyActive,
+      value: dashboardData?.currentlyActive ?? 0,
       fill: '#96AF01',
     },
   ];
@@ -220,7 +171,7 @@ function TodaysSummary({ liveData }: { liveData: LiveData }) {
           </ChartContainer>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center pointer-events-none">
             <div className="text-2xl font-bold">
-              {liveData.todayStats.totalCheckIns}
+              {dashboardData?.totalCheckIns ?? 0}
             </div>
             <div className="text-[10px] text-gray-400">Total Check-ins</div>
           </div>
@@ -230,24 +181,24 @@ function TodaysSummary({ liveData }: { liveData: LiveData }) {
             <StatItem
               color="#EBFB8B"
               label="Check-ins"
-              value={liveData.todayStats.totalCheckIns}
+              value={dashboardData?.totalCheckIns ?? 0}
             />
             <StatItem
               color="#90A8ED"
               label="Check-outs"
-              value={liveData.todayStats.todayCheckOuts}
+              value={dashboardData?.totalCheckOuts ?? 0}
             />
           </div>
           <div className="bg-primary-blue-400 rounded-lg p-3 space-y-2">
             <StatItem
               color="#96AF01"
               label="Currently Active"
-              value={liveData.todayStats.currentlyActive}
+              value={dashboardData?.currentlyActive ?? 0}
             />
             <StatItem
               color="#96AF01"
               label="Unique Members"
-              value={liveData.todayStats.uniqueMembers}
+              value={dashboardData?.currentlyActive ?? 0}
             />
           </div>
         </div>
@@ -256,9 +207,24 @@ function TodaysSummary({ liveData }: { liveData: LiveData }) {
   );
 }
 
-function LiveActivityFeed({ liveData }: { liveData: LiveData }) {
+function LiveActivityFeed() {
+  const placeholderActivity = [
+    {
+      memberName: 'Sample User',
+      action: 'checked-in',
+      time: '2 min ago',
+      duration: null,
+    },
+  ];
   return (
     <Card className="relative border-none bg-secondary-blue-500 rounded-lg overflow-hidden">
+      <div className="absolute inset-0 backdrop-blur-[2px] bg-secondary-blue-500/15 z-20 flex items-center justify-center">
+        <div className="bg-white dark:bg-secondary-blue-400 rounded-lg px-6 py-3 shadow-lg">
+          <p className="text-sm font-medium text-gray-900 dark:text-white">
+            Coming Soon
+          </p>
+        </div>
+      </div>
       <CardHeader className="p-5 pb-5">
         <CardTitle className="text-white text-base font-normal leading-normal flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -274,7 +240,7 @@ function LiveActivityFeed({ liveData }: { liveData: LiveData }) {
         <div className="relative max-h-[200px] overflow-y-auto pr-2">
           <div className="absolute left-[15px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-gray-200 via-gray-300 to-transparent dark:from-secondary-blue-400 dark:via-secondary-blue-400" />
           <div className="space-y-3">
-            {liveData.recentActivity.map((activity, index) => {
+            {placeholderActivity.map((activity, index) => {
               const avatarStyle = getAvatarColor(activity.memberName);
               const initials = getInitials(activity.memberName);
               const isCheckIn = activity.action === 'checked-in';
@@ -344,8 +310,19 @@ function LiveActivityFeed({ liveData }: { liveData: LiveData }) {
   );
 }
 
-function PeakHoursAnalysis({ liveData }: { liveData: LiveData }) {
-  const maxCount = Math.max(...liveData.peakHours.map((h) => h.count));
+function PeakHoursAnalysis({
+  dashboardData,
+}: {
+  dashboardData?: {
+    peakHoursAnalysis: Array<{
+      time: string;
+      members: number;
+      isPeak: boolean;
+    }>;
+  };
+}) {
+  const peakHours = dashboardData?.peakHoursAnalysis ?? [];
+  const maxCount = Math.max(...peakHours.map((h) => h.members), 1);
 
   return (
     <Card className="border-none bg-secondary-blue-500 rounded-lg">
@@ -357,9 +334,9 @@ function PeakHoursAnalysis({ liveData }: { liveData: LiveData }) {
       </CardHeader>
       <CardContent className="p-5 pt-0">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {liveData.peakHours.map((hour, index) => {
-            const isHighest = hour.count === maxCount;
-            const relativeWidth = (hour.count / maxCount) * 100;
+          {peakHours.map((hour, index) => {
+            const isHighest = hour.isPeak;
+            const relativeWidth = (hour.members / maxCount) * 100;
 
             return (
               <div
@@ -387,7 +364,7 @@ function PeakHoursAnalysis({ liveData }: { liveData: LiveData }) {
                           : 'text-gray-900 dark:text-white'
                       }`}
                     >
-                      {hour.count}
+                      {hour.members}
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400 pb-1">
                       members
@@ -423,7 +400,8 @@ function PeakHoursAnalysis({ liveData }: { liveData: LiveData }) {
 }
 
 export default function Dashboard() {
-  const [liveData] = useState(mockLiveData);
+  const { gymBranch } = useGymBranch();
+  const { data: dashboardData } = useAttendanceDashboard(gymBranch?.gymId);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -434,12 +412,12 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col gap-6">
       <LiveStatusHeader currentTime={currentTime} />
-      <StatsCards liveData={liveData} />
+      <StatsCards dashboardData={dashboardData} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <TodaysSummary liveData={liveData} />
-        <LiveActivityFeed liveData={liveData} />
+        <TodaysSummary dashboardData={dashboardData} />
+        <LiveActivityFeed />
       </div>
-      <PeakHoursAnalysis liveData={liveData} />
+      <PeakHoursAnalysis dashboardData={dashboardData} />
     </div>
   );
 }

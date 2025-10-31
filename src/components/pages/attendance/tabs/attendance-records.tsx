@@ -3,59 +3,40 @@
 import { useState } from 'react';
 
 import { format } from 'date-fns';
+import { toast } from 'sonner';
 
 import { Switch } from '@/components/ui/switch';
-import type { AttendanceRecord } from '@/types/attendance';
+import { useAuth } from '@/providers/auth-provider';
+import { useGymBranch } from '@/providers/gym-branch-provider';
+import {
+  useAttendanceRecords,
+  useCheckInMember,
+  useCheckOutMember,
+} from '@/services/attendance';
+import { useGymMembers } from '@/services/member';
 
-import { AttendanceConfirmationDialog } from '../attendance-confirmation-dialog';
-import { MemberSearchCommand } from '../member-search-command';
+import { AttendanceSuccessModal } from '../attendance-success-modal';
+import { QuickAttendanceCommand } from '../quick-attendance-command';
 import {
   AttendanceTableView,
   attendanceColumns,
   manualModeColumns,
 } from '../table';
 
-const mockAttendanceData: AttendanceRecord[] = [
-  {
-    id: '1',
-    memberId: 'M001',
-    memberName: 'John Doe',
-    memberIdentifier: 'GYM001',
-    biometricId: 'BIO001',
-    date: format(new Date(), 'yyyy-MM-dd'),
-    checkInTime: '06:30',
-    checkOutTime: '08:00',
-    status: 'checked-out',
-    eventType: 'check-out',
-    timestamp: new Date().toISOString(),
-    deviceId: 'Main Entrance',
-    duration: 90,
-  },
-  {
-    id: '2',
-    memberId: 'M002',
-    memberName: 'Jane Smith',
-    memberIdentifier: 'GYM002',
-    biometricId: 'BIO002',
-    date: format(new Date(), 'yyyy-MM-dd'),
-    checkInTime: '07:15',
-    status: 'checked-in',
-    eventType: 'check-in',
-    timestamp: new Date().toISOString(),
-    deviceId: 'Main Entrance',
-  },
-];
-
 export default function AttendanceRecords() {
-  const [attendanceRecords, setAttendanceRecords] =
-    useState(mockAttendanceData);
+  const { appUser } = useAuth();
+  const { gymBranch } = useGymBranch();
+  const { data: members = [] } = useGymMembers(gymBranch?.gymId || 0);
+  const { data: attendanceResponse } = useAttendanceRecords(gymBranch?.gymId);
+  const attendanceRecords = attendanceResponse?.data || [];
+  const checkInMutation = useCheckInMember();
+  const checkOutMutation = useCheckOutMember();
+
   const [isManualMode, setIsManualMode] = useState(() => {
     const saved = localStorage.getItem('attendance-manual-mode');
     return saved ? JSON.parse(saved) : false;
   });
-  const [checkedInMembers, setCheckedInMembers] = useState<Set<string>>(
-    new Set(['M002'])
-  );
+
   const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean;
     member: { name: string; identifier: string } | null;
@@ -68,102 +49,88 @@ export default function AttendanceRecords() {
     localStorage.setItem('attendance-manual-mode', JSON.stringify(checked));
   };
 
-  const handleCheckIn = (member: {
+  const handleCheckIn = async (member: {
     id: string;
     name: string;
     identifier: string;
   }) => {
-    const newRecord: AttendanceRecord = {
-      id: `${Date.now()}`,
-      memberId: member.id,
-      memberName: member.name,
-      memberIdentifier: member.identifier,
-      date: format(new Date(), 'yyyy-MM-dd'),
-      checkInTime: format(new Date(), 'HH:mm'),
-      status: 'checked-in',
-      eventType: 'check-in',
-      timestamp: new Date().toISOString(),
-      deviceId: 'Manual',
-    };
-    setAttendanceRecords([newRecord, ...attendanceRecords]);
-    setCheckedInMembers(new Set(checkedInMembers).add(member.id));
-    setConfirmDialog({
-      open: true,
-      member: { name: member.name, identifier: member.identifier },
-      action: 'checkin',
-      time: format(new Date(), 'h:mm a'),
-    });
+    if (!gymBranch?.gymId || !appUser?.userId) return;
+
+    try {
+      await checkInMutation.mutateAsync({
+        memberId: parseInt(member.id),
+        gymId: gymBranch.gymId,
+        recordedBy: appUser.userId,
+      });
+
+      setConfirmDialog({
+        open: true,
+        member: { name: member.name, identifier: member.identifier },
+        action: 'checkin',
+        time: format(new Date(), 'h:mm a'),
+      });
+      toast.success('Member checked in successfully');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Check-in failed');
+    }
   };
 
-  const handleCheckOut = (member: {
+  const handleCheckOut = async (member: {
     id: string;
     name: string;
     identifier: string;
   }) => {
-    setAttendanceRecords(
-      attendanceRecords.map((record) => {
-        if (record.memberId === member.id && record.status === 'checked-in') {
-          const checkInTime = new Date(`${record.date} ${record.checkInTime}`);
-          const checkOutTime = new Date();
-          const duration = Math.floor(
-            (checkOutTime.getTime() - checkInTime.getTime()) / (1000 * 60)
-          );
-          return {
-            ...record,
-            checkOutTime: format(checkOutTime, 'HH:mm'),
-            status: 'checked-out' as const,
-            eventType: 'check-out' as const,
-            duration,
-          };
-        }
-        return record;
-      })
-    );
-    const newCheckedIn = new Set(checkedInMembers);
-    newCheckedIn.delete(member.id);
-    setCheckedInMembers(newCheckedIn);
-    setConfirmDialog({
-      open: true,
-      member: { name: member.name, identifier: member.identifier },
-      action: 'checkout',
-      time: format(new Date(), 'h:mm a'),
-    });
+    if (!gymBranch?.gymId || !appUser?.userId) return;
+
+    try {
+      await checkOutMutation.mutateAsync({
+        memberId: parseInt(member.id),
+        gymId: gymBranch.gymId,
+        recordedBy: appUser.userId,
+      });
+
+      setConfirmDialog({
+        open: true,
+        member: { name: member.name, identifier: member.identifier },
+        action: 'checkout',
+        time: format(new Date(), 'h:mm a'),
+      });
+      toast.success('Member checked out successfully');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Check-out failed');
+    }
   };
 
-  const handleQuickCheckOut = (memberId: string) => {
-    setAttendanceRecords(
-      attendanceRecords.map((record) => {
-        if (record.memberId === memberId && record.status === 'checked-in') {
-          const checkInTime = new Date(`${record.date} ${record.checkInTime}`);
-          const checkOutTime = new Date();
-          const duration = Math.floor(
-            (checkOutTime.getTime() - checkInTime.getTime()) / (1000 * 60)
-          );
-          return {
-            ...record,
-            checkOutTime: format(checkOutTime, 'HH:mm'),
-            status: 'checked-out' as const,
-            eventType: 'check-out' as const,
-            duration,
-          };
-        }
-        return record;
-      })
+  const handleQuickCheckOut = async (memberId: string) => {
+    if (!gymBranch?.gymId || !appUser?.userId) return;
+
+    const attendanceRecord = attendanceRecords.find(
+      (r) => r.memberId === memberId
     );
-    const newCheckedIn = new Set(checkedInMembers);
-    newCheckedIn.delete(memberId);
-    setCheckedInMembers(newCheckedIn);
-    const member = attendanceRecords.find((r) => r.memberId === memberId);
-    if (member) {
+    if (!attendanceRecord) return;
+
+    const member = members.find((m) => m.memberIdentifier === memberId);
+    if (!member) return;
+
+    try {
+      await checkOutMutation.mutateAsync({
+        memberId: parseInt(member.id),
+        gymId: gymBranch.gymId,
+        recordedBy: appUser.userId,
+      });
+
       setConfirmDialog({
         open: true,
         member: {
-          name: member.memberName,
-          identifier: member.memberIdentifier,
+          name: attendanceRecord.member,
+          identifier: attendanceRecord.memberId,
         },
         action: 'checkout',
         time: format(new Date(), 'h:mm a'),
       });
+      toast.success('Member checked out successfully');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Check-out failed');
     }
   };
 
@@ -192,10 +159,9 @@ export default function AttendanceRecords() {
         </div>
         <div className="flex items-center gap-3">
           {isManualMode && (
-            <MemberSearchCommand
+            <QuickAttendanceCommand
               onCheckIn={handleCheckIn}
               onCheckOut={handleCheckOut}
-              checkedInMembers={checkedInMembers}
             />
           )}
           <div className="flex items-center gap-2">
@@ -221,7 +187,7 @@ export default function AttendanceRecords() {
         filters={filters}
       />
 
-      <AttendanceConfirmationDialog
+      <AttendanceSuccessModal
         open={confirmDialog.open}
         onClose={() => setConfirmDialog({ ...confirmDialog, open: false })}
         member={confirmDialog.member}

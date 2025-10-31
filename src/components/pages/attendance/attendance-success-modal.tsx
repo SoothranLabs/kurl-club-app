@@ -25,7 +25,7 @@ type Props = {
   time: string;
 };
 
-export function AttendanceConfirmationDialog({
+export function AttendanceSuccessModal({
   open,
   onClose,
   member,
