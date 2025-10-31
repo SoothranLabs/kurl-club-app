@@ -333,7 +333,7 @@ function PeakHoursAnalysis({
         </CardTitle>
       </CardHeader>
       <CardContent className="p-5 pt-0">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {peakHours.map((hour, index) => {
             const isHighest = hour.isPeak;
             const relativeWidth = (hour.members / maxCount) * 100;
