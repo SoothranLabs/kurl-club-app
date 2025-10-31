@@ -148,7 +148,7 @@ export default function AttendanceRecords() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-y-2">
         <div>
           <h3 className="text-gray-900 dark:text-white text-lg font-medium">
             Visit Records

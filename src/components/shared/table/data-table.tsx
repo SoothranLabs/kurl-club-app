@@ -69,7 +69,7 @@ export function DataTable<TData extends object, TValue>({
               <TableHeader className="bg-primary-blue-400 [&_tr]:border-b-0">
                 <TableRow>
                   {/* Fixed Columns */}
-                  <TableHead className="sticky left-0 z-20 bg-primary-blue-400">
+                  <TableHead className="sm:sticky left-0 z-20 bg-primary-blue-400">
                     {flexRender(
                       columns[0].header,
                       table
@@ -77,7 +77,7 @@ export function DataTable<TData extends object, TValue>({
                         .headers[0].getContext() as HeaderContext<TData, TValue>
                     )}
                   </TableHead>
-                  <TableHead className="sticky left-[96px] z-20 bg-primary-blue-400">
+                  <TableHead className="sm:sticky left-[96px] z-20 bg-primary-blue-400">
                     {flexRender(
                       columns[1].header,
                       table
@@ -103,7 +103,7 @@ export function DataTable<TData extends object, TValue>({
                   <TableHead
                     className={
                       isActionsColumn
-                        ? 'sticky right-0 z-20 bg-primary-blue-400'
+                        ? 'sm:sticky right-0 z-20 bg-primary-blue-400'
                         : ''
                     }
                   >
@@ -129,13 +129,13 @@ export function DataTable<TData extends object, TValue>({
                       className="relative"
                     >
                       {/* Fixed Columns */}
-                      <TableCell className="sticky left-0 z-10 bg-secondary-blue-500">
+                      <TableCell className="sm:sticky left-0 z-10 bg-secondary-blue-500">
                         {flexRender(
                           row.getVisibleCells()[0].column.columnDef.cell,
                           row.getVisibleCells()[0].getContext()
                         )}
                       </TableCell>
-                      <TableCell className="sticky left-[96px] z-10 bg-secondary-blue-500">
+                      <TableCell className="sm:sticky left-[96px] z-10 bg-secondary-blue-500">
                         {flexRender(
                           row.getVisibleCells()[1].column.columnDef.cell,
                           row.getVisibleCells()[1].getContext()
@@ -157,7 +157,7 @@ export function DataTable<TData extends object, TValue>({
                       <TableCell
                         className={
                           isActionsColumn
-                            ? 'sticky right-0 z-10 bg-secondary-blue-500 p-0'
+                            ? 'sm:sticky right-0 z-10 bg-secondary-blue-500 p-0'
                             : ''
                         }
                       >

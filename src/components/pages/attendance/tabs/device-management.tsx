@@ -83,7 +83,7 @@ export default function DeviceManagement() {
           </p>
         </div>
       </div>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-y-3">
         <div>
           <h3 className="text-gray-900 dark:text-white text-lg font-medium">
             Device Management
@@ -148,7 +148,7 @@ export default function DeviceManagement() {
         </KDialog>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 h-[74px]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:h-[74px]">
         <div className="bg-white dark:bg-secondary-blue-500 rounded-lg flex gap-4 items-center p-3">
           <span className="md:rounded-[18px] rounded-[12px] min-w-[40px] min-h-[40px] max-w-[40px] max-h-[40px] md:min-w-[48px] md:min-h-[48px] md:max-w-[48px] md:max-h-[48px] flex items-center justify-center bg-semantic-blue-500">
             <Wifi size={20} strokeWidth={1.75} color="#151821" />
